@@ -1,0 +1,589 @@
+Screens:
+  ScrReq:
+    Properties:
+      Fill: =RGBA(243, 241, 234, 1)
+    Children:
+    - qHdrBg:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(94, 111, 92, 1)
+          Height: =52
+          Size: =13
+          Text: '=""
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width
+          X: =0
+          Y: =0
+    - qAppTitle:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(255, 255, 255, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =52
+          Size: =16
+          Text: '="権限申請"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =320
+          X: =28
+          Y: =0
+    - qBack:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Right
+          Color: =RGBA(255, 255, 255, 1)
+          Height: =52
+          OnSelect: '=Set(gblTab, "hist"); Navigate(ScrHome)
+
+            '
+          Size: =13
+          Text: '="申請履歴へ戻る"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =192
+          X: =Parent.Width - 220
+          Y: =0
+    - qCard1:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(250, 250, 247, 1)
+          Height: =160
+          RadiusTopLeft: =8
+          RadiusTopRight: =8
+          RadiusBottomLeft: =8
+          RadiusBottomRight: =8
+          Size: =13
+          Text: '=""
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width - 56
+          X: =28
+          Y: =72
+    - qTitle:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =32
+          Size: =16
+          Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value) & "　" + "" & LookUp(PRM_Requests, Title = gblReqNo).TargetName
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width - 104
+          X: =52
+          Y: =86
+    - qmC0:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: '="申請番号"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =52
+          Y: =126
+    - qmV0:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =24
+          Size: =13
+          Text: '=LookUp(PRM_Requests, Title = gblReqNo).Title
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =52
+          Y: =144
+    - qmC1:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: '="申請種別"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =292
+          Y: =126
+    - qmV1:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =24
+          Size: =13
+          Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value)
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =292
+          Y: =144
+    - qmC2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: '="対象"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =532
+          Y: =126
+    - qmV2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =24
+          Size: =13
+          Text: '=LookUp(PRM_Requests, Title = gblReqNo).TargetName
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =532
+          Y: =144
+    - qmC3:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: '="申請者"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =772
+          Y: =126
+    - qmV3:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =24
+          Size: =13
+          Text: '=LookUp(PRM_Requests, Title = gblReqNo).ApplicantName
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =772
+          Y: =144
+    - qnC0:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: '="申請日時"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =52
+          Y: =180
+    - qnV0:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =24
+          Size: =13
+          Text: '=Text(LookUp(PRM_Requests, Title = gblReqNo).SubmittedAt, "yyyy/mm/dd hh:mm")
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =52
+          Y: =198
+    - qnC1:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: '="状態"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =292
+          Y: =180
+    - qnV1:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(47, 111, 94, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =24
+          Size: =13
+          Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).Status.Value, "APPLIED", "反映済", "SUBMITTED", "処理中", "ERROR", "エラー", LookUp(PRM_Requests, Title = gblReqNo).Status.Value)
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =292
+          Y: =198
+    - qnC2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: '="明細件数"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =532
+          Y: =180
+    - qnV2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =24
+          Size: =13
+          Text: '=Text(LookUp(PRM_Requests, Title = gblReqNo).ItemCount) & "件"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =532
+          Y: =198
+    - qnC3:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: '="組織区分1"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =772
+          Y: =180
+    - qnV3:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =24
+          Size: =13
+          Text: '=LookUp(colOrg1, Title = LookUp(PRM_Requests, Title = gblReqNo).Org1Code).NameJa
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =220
+          X: =772
+          Y: =198
+    - qCard2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(250, 250, 247, 1)
+          Height: =Parent.Height - 336
+          RadiusTopLeft: =8
+          RadiusTopRight: =8
+          RadiusBottomLeft: =8
+          RadiusBottomRight: =8
+          Size: =13
+          Text: '=""
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width - 56
+          X: =28
+          Y: =248
+    - qItemHead:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =28
+          Size: =15
+          Text: '="申請内容"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =300
+          X: =52
+          Y: =262
+    - qH0:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: '="#"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =40
+          X: =52
+          Y: =298
+    - qH1:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: '="操作"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =70
+          X: =100
+          Y: =298
+    - qH2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: '="対象種別"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =90
+          X: =178
+          Y: =298
+    - qH3:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: '="対象"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =260
+          X: =276
+          Y: =298
+    - qH4:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: '="変更内容"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =600
+          X: =544
+          Y: =298
+    - qHRule:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(42, 42, 38, 0.12)
+          Height: =1
+          Size: =13
+          Text: '=""
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width - 104
+          X: =52
+          Y: =324
+    - cntQItems:
+        Control: GroupContainer@1.5.0
+        Variant: AutoLayout
+        Properties:
+          Height: =Parent.Height - 400
+          LayoutAlignItems: =LayoutAlignItems.Stretch
+          LayoutDirection: =LayoutDirection.Vertical
+          PaddingBottom: =0
+          PaddingLeft: =0
+          PaddingRight: =0
+          PaddingTop: =0
+          Width: =Parent.Width - 104
+          X: =52
+          Y: =326
+        Children:
+        - galQItems:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              FillPortions: =1
+              Items: '=Sort(Filter(PRM_RequestItems, ReqNo = gblReqNo), Seq)
+
+                '
+              ShowScrollbar: =true
+              TemplatePadding: =0
+              TemplateSize: =64
+            Children:
+            - qiSeq:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Left
+                  Color: =RGBA(122, 118, 108, 1)
+                  Height: =64
+                  Size: =12
+                  Text: '=ThisItem.Seq
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =40
+                  X: =0
+                  Y: =0
+            - qiOp:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Center
+                  Color: =RGBA(74, 71, 64, 1)
+                  Fill: =RGBA(232, 228, 216, 1)
+                  FontWeight: ='TextCanvas.FontWeight'.Bold
+                  Height: =28
+                  RadiusTopLeft: =3
+                  RadiusTopRight: =3
+                  RadiusBottomLeft: =3
+                  RadiusBottomRight: =3
+                  Size: =11
+                  Text: '=Switch(ThisItem.Operation.Value, "ADD", "追加", "UPDATE", "変更", "DELETE", "削除", ThisItem.Operation.Value)
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =60
+                  X: =46
+                  Y: =17
+            - qiKind:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Left
+                  Color: =RGBA(74, 71, 64, 1)
+                  Height: =64
+                  Size: =12
+                  Text: '=Switch(ThisItem.EntityKind.Value, "ORG1", "組織区分1", "ORG2", "組織区分2", "USER", "利用者", "USERORG1", "所属", "GRANT", "権限", ThisItem.EntityKind.Value)
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =90
+                  X: =126
+                  Y: =0
+            - qiKey:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Left
+                  Color: =RGBA(42, 42, 38, 1)
+                  Height: =64
+                  Size: =12
+                  Text: '=ThisItem.EntityKey
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =260
+                  X: =224
+                  Y: =0
+            - qiChange:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Left
+                  Color: =RGBA(74, 71, 64, 1)
+                  Height: =64
+                  Size: =12
+                  Text: '=ThisItem.ChangeText
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =Parent.TemplateWidth - 500
+                  X: =492
+                  Y: =0
+            - qiRule:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Left
+                  Color: =RGBA(42, 42, 38, 1)
+                  Fill: =RGBA(42, 42, 38, 0.12)
+                  Height: =1
+                  Size: =13
+                  Text: '=""
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =Parent.TemplateWidth
+                  X: =0
+                  Y: =63
+    - qEmpty:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(168, 163, 154, 1)
+          Height: =40
+          Size: =12
+          Text: '="この申請の明細がありません。"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: =CountRows(Filter(PRM_RequestItems, ReqNo = gblReqNo)) = 0
+          Width: =Parent.Width - 104
+          X: =52
+          Y: =360
+    - qNote:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(74, 71, 64, 1)
+          Fill: =RGBA(122, 138, 120, 0.18)
+          Height: =36
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =11
+          Text: '="変更前・変更後は申請した時点の値を保存している。マスタが後で改名されても、この申請書は当時の名称のまま読める。"
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width - 104
+          X: =52
+          Y: =Parent.Height - 74

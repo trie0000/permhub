@@ -1,0 +1,804 @@
+Screens:
+  ScrUser:
+    Properties:
+      Fill: =RGBA(243, 241, 234, 1)
+      OnVisible: '=Set(gblU, LookUp(colUsersAll, Title = gblUserGid)); Set(gblGid, If(gblUserMode = "New", "", gblUserGid)); Set(gblErr, "")
+
+        '
+    Children:
+    - uHdrBg:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(94, 111, 92, 1)
+          Height: =52
+          Size: =13
+          Text: =""
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width
+          X: =0
+          Y: =0
+    - uAppTitle:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(255, 255, 255, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =52
+          Size: =16
+          Text: ="権限申請"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =320
+          X: =28
+          Y: =0
+    - uBack:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Right
+          Color: =RGBA(255, 255, 255, 1)
+          Height: =52
+          OnSelect: '=Navigate(ScrHome)
+
+            '
+          Size: =13
+          Text: ="一覧へ戻る"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =172
+          X: =Parent.Width - 200
+          Y: =0
+    - uModeBg:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(250, 250, 247, 1)
+          Height: =52
+          RadiusTopLeft: =6
+          RadiusTopRight: =6
+          RadiusBottomLeft: =6
+          RadiusBottomRight: =6
+          Size: =13
+          Text: =""
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width - 56
+          X: =28
+          Y: =72
+    - uModeBar:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =If(gblUserMode = "New", RGBA(122, 138, 120, 1), RGBA(196, 127, 28, 1))
+          Height: =52
+          Size: =13
+          Text: =""
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =3
+          X: =28
+          Y: =72
+    - uMode:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =If(gblUserMode = "New", RGBA(94, 111, 92, 1), RGBA(196, 127, 28, 1))
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =52
+          Size: =14
+          Text: =If(gblUserMode = "New", "新規申請", "変更申請")
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =120
+          X: =52
+          Y: =72
+    - uModeNote:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =52
+          Size: =12
+          Text: =If(gblUserMode = "New", "新しいユーザの権限を申請します。グローバルIDは重複できません。", "既存ユーザの情報と権限を変更します。グローバルIDは変更できません。")
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width - 240
+          X: =180
+          Y: =72
+    - uCard1:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(250, 250, 247, 1)
+          Height: =150
+          RadiusTopLeft: =8
+          RadiusTopRight: =8
+          RadiusBottomLeft: =8
+          RadiusBottomRight: =8
+          Size: =13
+          Text: =""
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width - 56
+          X: =28
+          Y: =140
+    - uBasicHead:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =28
+          Size: =15
+          Text: ="基本情報"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =300
+          X: =52
+          Y: =154
+    - uGidCap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: ="グローバルID"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =200
+          X: =52
+          Y: =190
+    - txtGid:
+        Control: ModernTextInput@1.1.1
+        Properties:
+          Default: =gblGid
+          Height: =34
+          Placeholder: ="1234567"
+          Width: =180
+          X: =52
+          Y: =208
+    - uGidHint:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =If(gblUserMode <> "New" || IsBlank(txtGid.Text), RGBA(168, 163, 154, 1), If(IsMatch(Upper(txtGid.Text), "^([0-9]{7}|[A-Z][0-9]{6})$"), RGBA(94, 111, 92, 1), RGBA(184, 83, 74, 1)))
+          Height: =18
+          Size: =10
+          Text: =If(gblUserMode <> "New", "変更不可", If(IsBlank(txtGid.Text), "数字7桁 または 英字1桁+数字6桁", If(IsMatch(Upper(txtGid.Text), "^([0-9]{7}|[A-Z][0-9]{6})$"), "OK", "形式が違います")))
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =180
+          X: =52
+          Y: =244
+    - uNameCap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: ="氏名"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =200
+          X: =248
+          Y: =190
+    - txtName:
+        Control: ModernTextInput@1.1.1
+        Properties:
+          Default: =gblU.FullName
+          Height: =34
+          Placeholder: ="山田 太郎"
+          Width: =220
+          X: =248
+          Y: =208
+    - uMailCap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: ="メールアドレス"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =200
+          X: =484
+          Y: =190
+    - txtMail:
+        Control: ModernTextInput@1.1.1
+        Properties:
+          Default: =gblU.Mail
+          Height: =34
+          Placeholder: ="taro.yamada@example.com"
+          Width: =300
+          X: =484
+          Y: =208
+    - uDeptCap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: ="部署名"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =200
+          X: =800
+          Y: =190
+    - txtDept:
+        Control: ModernTextInput@1.1.1
+        Properties:
+          Default: =gblU.Department
+          Height: =34
+          Placeholder: ="営業企画部"
+          Width: =220
+          X: =800
+          Y: =208
+    - uAdBtn:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(255, 255, 255, 1)
+          Fill: =RGBA(122, 138, 120, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =34
+          OnSelect: '=Notify("Entra ID からの取得は次フェーズで実装します。", NotificationType.Information)
+
+            '
+          RadiusTopLeft: =5
+          RadiusTopRight: =5
+          RadiusBottomLeft: =5
+          RadiusBottomRight: =5
+          Size: =12
+          Text: ="ADから取得"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =130
+          X: =1036
+          Y: =208
+    - uCard2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(250, 250, 247, 1)
+          Height: =Parent.Height - 400
+          RadiusTopLeft: =8
+          RadiusTopRight: =8
+          RadiusBottomLeft: =8
+          RadiusBottomRight: =8
+          Size: =13
+          Text: =""
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width - 56
+          X: =28
+          Y: =306
+    - uGrantHead:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =28
+          Size: =15
+          Text: ="所属組織区分1 と権限"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =400
+          X: =52
+          Y: =320
+    - galOrgTab:
+        Control: Gallery@2.15.0
+        Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+        Properties:
+          Height: =40
+          Items: '=Filter(colOrg1, Title in Filter(colMemberAll, GlobalId = gblUserGid, IsActive = true).Org1Code)
+
+            '
+          ShowScrollbar: =false
+          TemplatePadding: =0
+          TemplateSize: =180
+          Width: =Parent.Width - 120
+          WrapCount: =6
+          X: =52
+          Y: =356
+        Children:
+        - otName:
+            Control: ModernText@1.0.0
+            Properties:
+              Align: ='TextCanvas.Align'.Center
+              Color: =If(ThisItem.Title = gblUserOrg1, RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+              Fill: =If(ThisItem.Title = gblUserOrg1, RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+              FontWeight: =If(ThisItem.Title = gblUserOrg1, 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+              Height: =40
+              OnSelect: '=Set(gblUserOrg1, ThisItem.Title)
+
+                '
+              RadiusTopLeft: =5
+              RadiusTopRight: =5
+              RadiusBottomLeft: =5
+              RadiusBottomRight: =5
+              Size: =12
+              Text: =ThisItem.NameJa
+              VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+              Width: =172
+              X: =0
+              Y: =0
+    - uRoleRule:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(42, 42, 38, 0.12)
+          Height: =1
+          Size: =13
+          Text: =""
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width - 104
+          X: =52
+          Y: =404
+    - rlSECMGR:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =If(gblUserRole = "SECMGR", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Fill: =If(gblUserRole = "SECMGR", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          FontWeight: =If(gblUserRole = "SECMGR", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          Height: =36
+          OnSelect: '=Set(gblUserRole, "SECMGR")
+
+            '
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: =If(!IsBlank(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "SECMGR").GlobalId), "☑  ", "☐  ") & "事業場ITセキュリティ責任者"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =300
+          X: =52
+          Y: =418
+    - rsSECMGR:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Right
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =36
+          Size: =10
+          Text: '=With({g: LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "SECMGR")}, If(IsBlank(g.GlobalId), "", If(g.ScopeType.Value = "ALL", "全体", "個別 " & CountRows(Split(Substitute(g.Org2Codes, ";;", ";"), ";")) - 2 & "件")))
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =90
+          X: =356
+          Y: =418
+    - rlCONFORM:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =If(gblUserRole = "CONFORM", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Fill: =If(gblUserRole = "CONFORM", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          FontWeight: =If(gblUserRole = "CONFORM", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          Height: =36
+          OnSelect: '=Set(gblUserRole, "CONFORM")
+
+            '
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: =If(!IsBlank(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "CONFORM").GlobalId), "☑  ", "☐  ") & "適合化担当"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =300
+          X: =52
+          Y: =458
+    - rsCONFORM:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Right
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =36
+          Size: =10
+          Text: '=With({g: LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "CONFORM")}, If(IsBlank(g.GlobalId), "", If(g.ScopeType.Value = "ALL", "全体", "個別 " & CountRows(Split(Substitute(g.Org2Codes, ";;", ";"), ";")) - 2 & "件")))
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =90
+          X: =356
+          Y: =458
+    - rlEXTCONN:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =If(gblUserRole = "EXTCONN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Fill: =If(gblUserRole = "EXTCONN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          FontWeight: =If(gblUserRole = "EXTCONN", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          Height: =36
+          OnSelect: '=Set(gblUserRole, "EXTCONN")
+
+            '
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: =If(!IsBlank(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "EXTCONN").GlobalId), "☑  ", "☐  ") & "外部接続申請担当"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =300
+          X: =52
+          Y: =498
+    - rsEXTCONN:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Right
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =36
+          Size: =10
+          Text: '=With({g: LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "EXTCONN")}, If(IsBlank(g.GlobalId), "", If(g.ScopeType.Value = "ALL", "全体", "個別 " & CountRows(Split(Substitute(g.Org2Codes, ";;", ";"), ";")) - 2 & "件")))
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =90
+          X: =356
+          Y: =498
+    - rlWLAN:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =If(gblUserRole = "WLAN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Fill: =If(gblUserRole = "WLAN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          FontWeight: =If(gblUserRole = "WLAN", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          Height: =36
+          OnSelect: '=Set(gblUserRole, "WLAN")
+
+            '
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: =If(!IsBlank(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "WLAN").GlobalId), "☑  ", "☐  ") & "無線LAN申請担当"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =300
+          X: =52
+          Y: =538
+    - rsWLAN:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Right
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =36
+          Size: =10
+          Text: '=With({g: LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "WLAN")}, If(IsBlank(g.GlobalId), "", If(g.ScopeType.Value = "ALL", "全体", "個別 " & CountRows(Split(Substitute(g.Org2Codes, ";;", ";"), ";")) - 2 & "件")))
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =90
+          X: =356
+          Y: =538
+    - rlCLOUD:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =If(gblUserRole = "CLOUD", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Fill: =If(gblUserRole = "CLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          FontWeight: =If(gblUserRole = "CLOUD", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          Height: =36
+          OnSelect: '=Set(gblUserRole, "CLOUD")
+
+            '
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: =If(!IsBlank(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "CLOUD").GlobalId), "☑  ", "☐  ") & "クラウド申請担当"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =300
+          X: =52
+          Y: =578
+    - rsCLOUD:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Right
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =36
+          Size: =10
+          Text: '=With({g: LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "CLOUD")}, If(IsBlank(g.GlobalId), "", If(g.ScopeType.Value = "ALL", "全体", "個別 " & CountRows(Split(Substitute(g.Org2Codes, ";;", ";"), ";")) - 2 & "件")))
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =90
+          X: =356
+          Y: =578
+    - rlINFOSEC:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =If(gblUserRole = "INFOSEC", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Fill: =If(gblUserRole = "INFOSEC", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          FontWeight: =If(gblUserRole = "INFOSEC", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          Height: =36
+          OnSelect: '=Set(gblUserRole, "INFOSEC")
+
+            '
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: =If(!IsBlank(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "INFOSEC").GlobalId), "☑  ", "☐  ") & "情報セキュリティ担当"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =300
+          X: =52
+          Y: =618
+    - rsINFOSEC:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Right
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =36
+          Size: =10
+          Text: '=With({g: LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = "INFOSEC")}, If(IsBlank(g.GlobalId), "", If(g.ScopeType.Value = "ALL", "全体", "個別 " & CountRows(Split(Substitute(g.Org2Codes, ";;", ";"), ";")) - 2 & "件")))
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =90
+          X: =356
+          Y: =618
+    - uDetailBg:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(243, 241, 234, 1)
+          Height: =240
+          RadiusTopLeft: =6
+          RadiusTopRight: =6
+          RadiusBottomLeft: =6
+          RadiusBottomRight: =6
+          Size: =13
+          Text: =""
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =Parent.Width - 540
+          X: =464
+          Y: =418
+    - uDetailHead:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =26
+          Size: =14
+          Text: =LookUp(Table({c:"SECMGR",n:"事業場ITセキュリティ責任者"},{c:"CONFORM",n:"適合化担当"},{c:"EXTCONN",n:"外部接続申請担当"},{c:"WLAN",n:"無線LAN申請担当"},{c:"CLOUD",n:"クラウド申請担当"},{c:"INFOSEC",n:"情報セキュリティ担当"}), c = gblUserRole).n
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =400
+          X: =480
+          Y: =430
+    - uScopeCap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: ="範囲"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =100
+          X: =480
+          Y: =466
+    - uScopeAll:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "ALL", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
+          Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "ALL", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =32
+          OnSelect: '=Notify("範囲の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
+
+            '
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="全体"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =80
+          X: =480
+          Y: =486
+    - uScopePick:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "PICK", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
+          Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "PICK", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =32
+          OnSelect: '=Notify("範囲の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
+
+            '
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="個別"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =80
+          X: =566
+          Y: =486
+    - uCrCap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: ="権限種別"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: =gblUserRole = "EXTCONN" || gblUserRole = "WLAN" || gblUserRole = "CLOUD"
+          Width: =120
+          X: =680
+          Y: =466
+    - uCrP:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "PRIMARY", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
+          Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =32
+          OnSelect: '=Notify("権限種別の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
+
+            '
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =11
+          Text: ="事業会社(正)"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: =gblUserRole = "EXTCONN" || gblUserRole = "WLAN" || gblUserRole = "CLOUD"
+          Width: =110
+          X: =680
+          Y: =486
+    - uCrD:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "DEPUTY", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
+          Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "DEPUTY", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =32
+          OnSelect: '=Notify("権限種別の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
+
+            '
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =11
+          Text: ="事業会社(副)"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: =gblUserRole = "EXTCONN" || gblUserRole = "WLAN" || gblUserRole = "CLOUD"
+          Width: =110
+          X: =796
+          Y: =486
+    - uO2Cap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: ="組織区分2（多段階承認が有効なもののみ）"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: =LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "PICK"
+          Width: =400
+          X: =480
+          Y: =530
+    - galUO2:
+        Control: Gallery@2.15.0
+        Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+        Properties:
+          Height: =96
+          Items: '=With({p: LookUp(colOrg1, Title = gblUserOrg1)}, Filter(colOrg2All, Org1Code = gblUserOrg1, If(gblUserRole = "EXTCONN", p.MsExt && ApExt, If(gblUserRole = "WLAN", p.MsWlan && ApWlan, If(gblUserRole = "CLOUD", p.MsCloud && ApCloud, (p.MsExt && ApExt) || (p.MsWlan && ApWlan) || (p.MsCloud && ApCloud))))))
+
+            '
+          ShowScrollbar: =true
+          TemplatePadding: =0
+          TemplateSize: =30
+          Visible: =LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "PICK"
+          Width: =Parent.Width - 560
+          WrapCount: =2
+          X: =480
+          Y: =550
+        Children:
+        - uo2Name:
+            Control: ModernText@1.0.0
+            Properties:
+              Align: ='TextCanvas.Align'.Left
+              Color: =RGBA(74, 71, 64, 1)
+              Height: =30
+              OnSelect: '=Notify("組織区分2 の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
+
+                '
+              Size: =11
+              Text: =If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).Org2Codes, "☑  ", "☐  ") & ThisItem.NameJa
+              VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+              Width: =250
+              X: =0
+              Y: =0
+    - uO2All:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =40
+          Size: =11
+          Text: ="配下すべての組織区分2 に権限を持ちます。"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: =LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "ALL"
+          Width: =400
+          X: =480
+          Y: =550
+    - uNoGrant:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(168, 163, 154, 1)
+          Height: =40
+          Size: =11
+          Text: ="この組織区分1 ではこの権限が付与されていません。"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: =IsBlank(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).GlobalId)
+          Width: =400
+          X: =480
+          Y: =550
+    - uErr:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(184, 83, 74, 1)
+          Height: =34
+          Size: =12
+          Text: =gblErr
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =500
+          X: =52
+          Y: =Parent.Height - 76
+    - uCancel:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(74, 71, 64, 1)
+          Fill: =RGBA(232, 228, 216, 1)
+          Height: =36
+          OnSelect: '=Navigate(ScrHome)
+
+            '
+          RadiusTopLeft: =5
+          RadiusTopRight: =5
+          RadiusBottomLeft: =5
+          RadiusBottomRight: =5
+          Size: =13
+          Text: ="キャンセル"
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =130
+          X: =Parent.Width - 340
+          Y: =Parent.Height - 76
+    - uSubmit:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(255, 255, 255, 1)
+          Fill: =RGBA(122, 138, 120, 1)
+          FontWeight: ='TextCanvas.FontWeight'.Bold
+          Height: =36
+          OnSelect: '=Set(gblErr, ""); If(IsBlank(gblUserGid), Set(gblErr, "利用者が選択されていません。")); If(IsBlank(gblErr), Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr), Set(gblU2, LookUp(colUsersAll, Title = gblUserGid))); If(IsBlank(gblErr), Set(gblG2, LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole))); If(IsBlank(gblErr), Set(gblRoleName, LookUp(Table({c: "SECMGR", n: "事業場ITセキュリティ責任者"}, {c: "CONFORM", n: "適合化担当"}, {c: "EXTCONN", n: "外部接続申請担当"}, {c: "WLAN", n: "無線LAN申請担当"}, {c: "CLOUD", n: "クラウド申請担当"}, {c: "INFOSEC", n: "情報セキュリティ担当"}), c = gblUserRole).n)); If(IsBlank(gblErr), Patch(PRM_Requests, Defaults(PRM_Requests), { Title: gblReqNo, ReqType: { Value: "GRANT" }, TargetKey: gblUserGid, TargetName: gblU2.FullName & "（" & gblUserGid & "）", Summary: gblRoleName & " ／ " & LookUp(colOrg1, Title = gblUserOrg1).NameJa, ApplicantId: gblMeGid, ApplicantName: gblMe.FullName, SubmittedAt: Now(), Status: { Value: "SUBMITTED" }, ItemCount: 1, Org1Code: gblUserOrg1 })); If(IsBlank(gblErr), Patch(PRM_RequestItems, Defaults(PRM_RequestItems), { Title: gblReqNo & "-001", ReqNo: gblReqNo, Seq: 1, Operation: { Value: If(IsBlank(gblG2.GlobalId), "ADD", "UPDATE") }, EntityKind: { Value: "GRANT" }, EntityKey: gblUserGid & "#" & gblUserOrg1 & "#" & gblUserRole, BeforeJson: If(IsBlank(gblG2.GlobalId), "", "{""ScopeType"":""" & gblG2.ScopeType.Value & """,""Org2Codes"":""" & gblG2.Org2Codes & """,""CompanyRole"":""" & gblG2.CompanyRole.Value & """}"), AfterJson: "{""ScopeType"":""" & gblG2.ScopeType.Value & """,""Org2Codes"":""" & gblG2.Org2Codes & """,""CompanyRole"":""" & gblG2.CompanyRole.Value & """}", ChangeText: gblRoleName & "（" & LookUp(colOrg1, Title = gblUserOrg1).NameJa & "）" })); If(IsBlank(gblErr), Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), { Status: { Value: "APPLIED" } })); If(IsBlank(gblErr), ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true))); If(IsBlank(gblErr), Notify("申請しました（" & gblReqNo & "）", NotificationType.Success)); If(IsBlank(gblErr), Set(gblTab, "hist")); If(IsBlank(gblErr), Navigate(ScrHome))'
+          RadiusTopLeft: =5
+          RadiusTopRight: =5
+          RadiusBottomLeft: =5
+          RadiusBottomRight: =5
+          Size: =13
+          Text: =If(gblUserMode = "New", "この内容で申請", "変更を申請")
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Width: =168
+          X: =Parent.Width - 196
+          Y: =Parent.Height - 76
