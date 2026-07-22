@@ -115,3 +115,84 @@ mxC3.Text =
 2. `WrapCount` で平坦化 → セルが描画されない
 3. `AddColumns` で結合 → 派生列が子で解決しない
 4. **固定列 → 成功**
+
+## ギャラリーの列は「横方向 AutoLayout」で並べる（絶対 X を使わない）
+
+**ギャラリー テンプレート内の子の `X` は、貼り付け時に切り詰められる。**
+テンプレート幅に収まらない `X` が黙って別の値に書き換えられる。
+しかも閾値が貼り付けのたびに変わる（`X=624` が `542` になった回もあれば、`X=936` が `0` になった回もある）。
+**エラーにならず、見た目だけが壊れる**ので気づきにくい。
+
+実際にこれで、マトリックスの 5〜8 列目が 1 か所に重なり、
+**別人の権限が隣の人の列に表示されていた**（保存も貼り直しも成功していたので長く気づけなかった）。
+
+対策は **行を横方向 AutoLayout のコンテナーにして、子に X を持たせない**こと。
+
+```yaml
+galMx:
+  Control: Gallery@2.15.0
+  Children:
+    - mxRow:
+        Control: GroupContainer@1.5.0
+        Variant: AutoLayout
+        Properties:
+          X: =0                    # 0 なので切り詰められない
+          Y: =0
+          Width: =Parent.TemplateWidth
+          Height: =46
+          LayoutDirection: =LayoutDirection.Horizontal
+          LayoutAlignItems: =LayoutAlignItems.Stretch
+          PaddingLeft: =0          # 4 辺とも 0（既定だと列がずれる）
+        Children:                  # 記述順 = 左からの並び順
+          - mxRowName:  FillPortions: =0 / Width: =150
+          - mxRowCode:  FillPortions: =0 / Width: =58
+          - mxC1..mxC8: FillPortions: =0 / Width: =130
+    - mxRowRule:                   # X=0 の全幅コントロールは行外に置いてよい
+        Properties: { X: =0, Y: =45, Width: =Parent.TemplateWidth }
+```
+
+- **列幅は固定値にする。** `FillPortions: =1` で等分すると、行の幅が貼り付けのたびに揺れて
+  画面レベルの見出しとずれる。固定値なら見出し X も `252 + n*130` で決め打ちできる
+- 見出しはギャラリーの外（画面レベル）なので、`X` は切り詰められない
+
+### `X` に `Parent.TemplateWidth` は使えない
+
+`Width` では使えるが、**`X` に書くと式が失敗して `X=1` に落ちる**。
+
+```
+Width: =(Parent.TemplateWidth - 208) / 8            OK
+X:     =208 + (Parent.TemplateWidth - 208) / 8 * 4  NG（X が 1 になる）
+```
+
+### ギャラリーに `Width` を明示しても防げない
+
+貼り付け前に `galMx.Width: =1278` を入れても切り詰めは起きた。**AutoLayout 化以外に回避策はない。**
+
+## `ModernText` のスクロールバー
+
+高さより内容が高いと**縦スクロールバーが出る**。既定の上下パディング 5px + 5px が効くので、
+`Height: =28` / `Size: =15` のような普通のラベルでも出る。画面が細いバーだらけになる。
+
+```
+Wrap: =false          # 1 行ラベルは折り返さない
+PaddingTop: =0
+PaddingBottom: =0
+```
+
+## `ModernDropdown@1.0.2` の既定値
+
+`DefaultSelectedItems` は**無い**（`PA2108` になる）。既定値は **`Default`**。
+
+ただし `Default` は**コントロール初期化時にしか評価されない**。
+`App.OnStart` で入れたグローバル変数を初期選択にしたい場合、Studio のプレビューでは反映されず検証しづらい。
+**選択状態を変数から常に描き直したいなら、ドロップダウンではなく
+「ギャラリー + `ModernText`」のタブ型**にする方が確実（`Fill` / `Color` を `ThisItem.Title = gblXxx` で出し分ける）。
+
+## 貼り付け時の注意
+
+- 数式バー左の**プロパティ名コンボにフォーカスが残っていると `Cmd+V` がそこに入る**。
+  ツリー ビューの画面行をクリックしてから貼る
+- 画面を差し替えるときは **先に旧画面を削除**してから貼ると、同じ画面名で入る
+  （残したまま貼ると `ScrHome_1` になる）
+- 貼り付けが失敗すると**画面が消えたまま**になる。エラーダイアログの「表示数を増やす」で
+  `PA2108` 等の詳細が読めるので、直してから貼り直す

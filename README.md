@@ -79,7 +79,13 @@ Power Apps キャンバスアプリ + SharePoint リスト。**Premium ライセ
 - **ギャラリーの子で `AddColumns` / `ForAll` の派生列が解決しないことがある。**
   行データは `Title` / `SubTitle` のような単純な文字列に畳んでから渡すのが確実
 - **ネストしたギャラリーは動かない。** マトリックスは「行=ギャラリー / 列=固定コントロール」で実現した
+- **ギャラリー テンプレート内の絶対 `X` は貼り付け時に書き換えられる。** エラーは出ず表示だけ壊れる。
+  列は**横方向 AutoLayout のコンテナー**に入れて `X` を持たせない
 - **ギャラリーはレイアウトコンテナーに入れる。** 入れないと貼り付けのたびに `Y` がずれる
+- **`ModernText` は上下パディング 5px の分だけスクロールバーが出る。** `Wrap: =false` と
+  `PaddingTop|Bottom: =0` を全ラベルに入れる
+- `ModernDropdown` に `DefaultSelectedItems` は無い（`Default`）。ただし初期化時にしか
+  評価されないので、変数で選択状態を出したいならタブ型（ギャラリー + `ModernText`）にする
 - `Appearance` は文字列プロパティ。`ButtonCanvas.FontWeight` は存在しない
 
 ## 未確定事項

@@ -294,57 +294,53 @@ Power Apps では複数ギャラリーのスクロール位置を同期できな
 
 ### マトリックスは「行=ギャラリー / 列=固定コントロール」で作る（実機検証済み）
 
-**ネストギャラリー方式は動かない。実機で確認した。**
-
-試したのは次の形。`Items` の数式は**赤い波線なしで通る**（外側の `ThisItem.r` も解決できている）。
+**ネストギャラリーも `WrapCount` 平坦化も動かなかった。** 通ったのは次の形だけ。
 
 ```
-galInner.Items = With({o: ThisItem.r}, AddColumns(Table({c:"1"},{c:"2"}), "Mark", o & c))
+galMx.Items = Sort(Filter(colOrg2All, Org1Code = gblOrg1), SortOrder)   ← 実在のリストレコード
+  mxRow（横方向 AutoLayout コンテナー）
+    mxRowName / mxRowCode / mxC1 .. mxC8   ← 列ぶんの固定セル
 ```
 
-にもかかわらず、**内側ギャラリーの子で `ThisItem.Mark` が解決しない**（`Mark` に赤い波線）。
-`AddColumns` で足した列がテンプレートのスキーマに伝わらず、セルが 1 つも描画されない。
-
-> `With` で外側を捕まえる回避策も効かない。**`AddColumns` を経由した時点で内側の子には届かない。**
-
-#### 通った形
-
-**セルを 1 次元に平坦化し、`WrapCount` でグリッドに折り返す。** ギャラリーは 3 つ、ネストなし。
+行は組織区分2 の**実レコード**なので `ThisItem.NameJa` / `ThisItem.Title` が普通に解決する。
+可変なのは「どのメンバーがその列か」だけなので、それはセルの数式側で解く。
 
 ```
-galColHead : Items = 表示中のメンバー        WrapCount = 8  ← 列見出し
-galRowHead : Items = colOrg2                                ← 行見出し（左に固定）
-galCells   : Items = colCells（org2 × member を平坦化）  WrapCount = 8  ← セル
+mxC3.Text =
+  If(IsBlank(Index(<ページ内メンバー>, 3).GlobalId), "",
+  If(!(<この行が対象かの判定>), "―",
+  If(IsBlank(<その人の権限>.GlobalId), "",
+  If(<その人の権限>.ScopeType.Value = "ALL", "◎",
+  If(";" & ThisItem.Title & ";" in <その人の権限>.Org2Codes, "○", "")))))
 ```
 
-`colCells` は起動時／ビュー切替時に `ForAll` で作る。**1 レコード = 1 セル**で、
-そのセルが必要とする値（印・組織区分2 コード・グローバルID）を全部持たせる。
+#### 試して駄目だった順
 
-```
-ClearCollect(colCells,
-  ForAll(colOrg2 As o2,
-    ForAll(colPageMembers As m,
-      { Mark: MarkOf(m.GlobalId, o2.Title), O2: o2.Title, Gid: m.GlobalId })))
-```
+1. ネストギャラリー → 内側の子が `ThisItem.Mark` を解決しない
+2. `WrapCount` で平坦化 → セルが描画されない
+3. `AddColumns` で結合 → 派生列が子で解決しない
+4. **固定列 → 成功**
 
-セル側は `ThisItem.Mark` を見るだけ。**外側参照が存在しないので原理的に壊れない。**
+原因は一貫して「**`AddColumns` / `ForAll` で作った派生列がギャラリーの子で解決しない**」。
+行を実レコードにすればこの制約に触れない。
+
+#### セルは AutoLayout で並べる（絶対 X は使わない）
+
+ギャラリー テンプレート内の子の `X` は**貼り付け時に黙って書き換えられる**。
+これで一度、5〜8 列目が重なって**別人の権限が隣の列に表示されていた**。
+行を横方向 AutoLayout のコンテナーにして、子に `X` を持たせないこと。
+詳細と再現条件は [powerapps-controls.md](powerapps-controls.md)。
 
 #### 位置合わせ
 
-3 つのギャラリーは**同じ `TemplateSize` と同じ列幅**にする。
-
-- `galRowHead` と `galCells` … `TemplateSize` を揃える（行の高さ）
-- `galColHead` と `galCells` … `WrapCount` と `Width` を揃える（列の幅）
-
-`WrapCount` はギャラリー幅を等分するので、**幅と件数が一致していれば自動で揃う。**
-ずれるときはどちらかの `Width` が違う。
+列見出し（`mhN1..8` / `mhR1..8` / `mhOpen1..8`）は**画面レベルの固定コントロール**。
+セル幅を固定値（130px）にしてあるので、見出しの `X` も `252 + n * 130` で決め打ちにする。
+**セル幅を `FillPortions` の等分にすると行幅の揺れで見出しとずれる**ので、固定値にする。
 
 #### 残る制約
 
-- **縦スクロールが同期しない。** `galRowHead` と `galCells` は別ギャラリーなので、
-  組織区分2 が表示領域に収まらないと行見出しとセルがずれる。
-  組織区分2 が多い環境では**行側もページングか絞り込みが要る**（未確定 §10-6）
-- 平坦化のコストは `組織区分2数 × 8`。数百件なら問題ない
+- **列は 8 固定。** `◀ ▶` で 8 人ずつページングする。列を増やすにはコントロールを足す
+- 組織区分2 が表示領域に収まらない場合は行側もページングか絞り込みが要る（未確定 §10-6）
 
 ---
 

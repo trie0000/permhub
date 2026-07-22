@@ -17,6 +17,9 @@ Screens:
           Width: =Parent.Width
           X: =0
           Y: =0
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblAppTitle:
         Control: ModernText@1.0.0
         Properties:
@@ -30,6 +33,9 @@ Screens:
           Width: =320
           X: =28
           Y: =0
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblMe:
         Control: ModernText@1.0.0
         Properties:
@@ -42,6 +48,9 @@ Screens:
           Width: =320
           X: =Parent.Width - 348
           Y: =0
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - subBg:
         Control: ModernText@1.0.0
         Properties:
@@ -55,6 +64,9 @@ Screens:
           Width: =Parent.Width
           X: =0
           Y: =52
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblOrg1Cap:
         Control: ModernText@1.0.0
         Properties:
@@ -67,19 +79,46 @@ Screens:
           Width: =160
           X: =28
           Y: =56
-    - drpOrg1:
-        Control: ModernDropdown@1.0.2
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
+    - galOrg1Tab:
+        Control: Gallery@2.15.0
+        Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
         Properties:
-          Height: =34
-          ItemDisplayText: =ThisItem.NameJa
           Items: =colMyOrg1
-          OnChange: '=Set(gblOrg1, drpOrg1.Selected.Title); Set(gblPage, 0); Set(gblP1, LookUp(colOrg1, Title = gblOrg1)); ClearCollect(colMxOrg2, Filter(colOrg2All, Org1Code = gblOrg1)); ClearCollect(colG, Filter(colGrantsAll, Org1Code = gblOrg1, RoleCode.Value = gblView)); Clear(colRows); ForAll(Filter(colMemberAll, Org1Code = gblOrg1) As m, Collect(colRows, { Title: LookUp(colUsersAll, Title = m.GlobalId).FullName & "　　" & LookUp(colUsersAll, Title = m.GlobalId).Department, SubTitle: If(IsBlank(LookUp(colG, GlobalId = m.GlobalId).GlobalId), "（この権限なし）", If(LookUp(colG, GlobalId = m.GlobalId).ScopeType.Value = "ALL", "全体権限", "個別指定") & If(LookUp(colG, GlobalId = m.GlobalId).CompanyRole.Value = "PRIMARY", " ／ 事業会社(正)", If(LookUp(colG, GlobalId = m.GlobalId).CompanyRole.Value = "DEPUTY", " ／ 事業会社(副)", "")) & " ／ " & If(LookUp(colG, GlobalId = m.GlobalId).ScopeType.Value = "ALL", "配下すべて（" & Text(CountRows(colMxOrg2)) & "件）", Concat(Filter(colMxOrg2, ";" & Title & ";" in LookUp(colG, GlobalId = m.GlobalId).Org2Codes), NameJa, "、"))), Gid: m.GlobalId, HasAny: !IsBlank(LookUp(colG, GlobalId = m.GlobalId).GlobalId) })); If(gblOnly, ClearCollect(colRows, Filter(colRows, HasAny)))
-
-            '
-          Visible: =CountRows(colMyOrg1) > 1
-          Width: =280
           X: =28
           Y: =74
+          Height: =40
+          Width: =Parent.Width - 120
+          TemplateSize: =180
+          TemplatePadding: =0
+          WrapCount: =6
+          ShowScrollbar: =false
+          Visible: =CountRows(colMyOrg1) > 1
+        Children:
+        - otHomeName:
+            Control: ModernText@1.0.0
+            Properties:
+              X: =0
+              Y: =0
+              Width: =172
+              Height: =40
+              Text: =ThisItem.NameJa
+              Align: ='TextCanvas.Align'.Center
+              VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+              Size: =12
+              Color: =If(ThisItem.Title = gblOrg1, RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+              Fill: =If(ThisItem.Title = gblOrg1, RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+              FontWeight: =If(ThisItem.Title = gblOrg1, 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+              RadiusTopLeft: =5
+              RadiusTopRight: =5
+              RadiusBottomLeft: =5
+              RadiusBottomRight: =5
+              OnSelect: =Set(gblOrg1, ThisItem.Title); Set(gblPage, 0); Set(gblP1, LookUp(colOrg1, Title = ThisItem.Title))
+              Wrap: =false
+              PaddingTop: =0
+              PaddingBottom: =0
     - lblOrg1Only:
         Control: ModernText@1.0.0
         Properties:
@@ -94,6 +133,9 @@ Screens:
           Width: =280
           X: =28
           Y: =74
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - subRule:
         Control: ModernText@1.0.0
         Properties:
@@ -107,6 +149,9 @@ Screens:
           Width: =Parent.Width
           X: =0
           Y: =113
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblTabOrg:
         Control: ModernText@1.0.0
         Properties:
@@ -126,6 +171,9 @@ Screens:
           Width: =150
           X: =28
           Y: =118
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - tabULOrg:
         Control: ModernText@1.0.0
         Properties:
@@ -139,6 +187,9 @@ Screens:
           Width: =150
           X: =28
           Y: =156
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblTabUser:
         Control: ModernText@1.0.0
         Properties:
@@ -158,6 +209,9 @@ Screens:
           Width: =150
           X: =186
           Y: =118
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - tabULUser:
         Control: ModernText@1.0.0
         Properties:
@@ -171,6 +225,9 @@ Screens:
           Width: =150
           X: =186
           Y: =156
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblTabHist:
         Control: ModernText@1.0.0
         Properties:
@@ -190,6 +247,9 @@ Screens:
           Width: =150
           X: =344
           Y: =118
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - tabULHist:
         Control: ModernText@1.0.0
         Properties:
@@ -203,6 +263,9 @@ Screens:
           Width: =150
           X: =344
           Y: =156
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - tabRule:
         Control: ModernText@1.0.0
         Properties:
@@ -216,6 +279,9 @@ Screens:
           Width: =Parent.Width
           X: =0
           Y: =157
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - cardO1:
         Control: ModernText@1.0.0
         Properties:
@@ -234,6 +300,9 @@ Screens:
           Width: =Parent.Width - 56
           X: =28
           Y: =182
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1Head:
         Control: ModernText@1.0.0
         Properties:
@@ -248,6 +317,9 @@ Screens:
           Width: =400
           X: =52
           Y: =198
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1CodeCap:
         Control: ModernText@1.0.0
         Properties:
@@ -261,6 +333,9 @@ Screens:
           Width: =120
           X: =52
           Y: =236
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1Code:
         Control: ModernText@1.0.0
         Properties:
@@ -279,6 +354,9 @@ Screens:
           Width: =120
           X: =52
           Y: =254
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1JaCap:
         Control: ModernText@1.0.0
         Properties:
@@ -292,6 +370,9 @@ Screens:
           Width: =200
           X: =192
           Y: =236
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1Ja:
         Control: ModernText@1.0.0
         Properties:
@@ -310,6 +391,9 @@ Screens:
           Width: =240
           X: =192
           Y: =254
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1EnCap:
         Control: ModernText@1.0.0
         Properties:
@@ -323,6 +407,9 @@ Screens:
           Width: =200
           X: =452
           Y: =236
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1En:
         Control: ModernText@1.0.0
         Properties:
@@ -341,6 +428,9 @@ Screens:
           Width: =240
           X: =452
           Y: =254
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1MsCap:
         Control: ModernText@1.0.0
         Properties:
@@ -355,6 +445,9 @@ Screens:
           Width: =300
           X: =52
           Y: =302
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1ExtCap:
         Control: ModernText@1.0.0
         Properties:
@@ -368,6 +461,9 @@ Screens:
           Width: =200
           X: =52
           Y: =326
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1Ext:
         Control: ModernText@1.0.0
         Properties:
@@ -387,6 +483,9 @@ Screens:
           Width: =90
           X: =52
           Y: =344
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1WlanCap:
         Control: ModernText@1.0.0
         Properties:
@@ -400,6 +499,9 @@ Screens:
           Width: =200
           X: =262
           Y: =326
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1Wlan:
         Control: ModernText@1.0.0
         Properties:
@@ -419,6 +521,9 @@ Screens:
           Width: =90
           X: =262
           Y: =344
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1CloudCap:
         Control: ModernText@1.0.0
         Properties:
@@ -432,6 +537,9 @@ Screens:
           Width: =200
           X: =472
           Y: =326
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO1Cloud:
         Control: ModernText@1.0.0
         Properties:
@@ -451,6 +559,9 @@ Screens:
           Width: =90
           X: =472
           Y: =344
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - cardO2:
         Control: ModernText@1.0.0
         Properties:
@@ -469,6 +580,9 @@ Screens:
           Width: =Parent.Width - 56
           X: =28
           Y: =404
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO2Head:
         Control: ModernText@1.0.0
         Properties:
@@ -483,6 +597,9 @@ Screens:
           Width: =400
           X: =52
           Y: =420
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - btnO2New:
         Control: ModernText@1.0.0
         Properties:
@@ -505,6 +622,9 @@ Screens:
           Width: =148
           X: =Parent.Width - 200
           Y: =420
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO2H0:
         Control: ModernText@1.0.0
         Properties:
@@ -518,6 +638,9 @@ Screens:
           Width: =90
           X: =52
           Y: =462
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO2H1:
         Control: ModernText@1.0.0
         Properties:
@@ -531,6 +654,9 @@ Screens:
           Width: =180
           X: =150
           Y: =462
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO2H2:
         Control: ModernText@1.0.0
         Properties:
@@ -544,6 +670,9 @@ Screens:
           Width: =150
           X: =336
           Y: =462
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO2H3:
         Control: ModernText@1.0.0
         Properties:
@@ -557,6 +686,9 @@ Screens:
           Width: =60
           X: =492
           Y: =462
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO2H4:
         Control: ModernText@1.0.0
         Properties:
@@ -570,6 +702,9 @@ Screens:
           Width: =90
           X: =562
           Y: =462
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO2H5:
         Control: ModernText@1.0.0
         Properties:
@@ -583,6 +718,9 @@ Screens:
           Width: =90
           X: =658
           Y: =462
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblO2H6:
         Control: ModernText@1.0.0
         Properties:
@@ -596,6 +734,9 @@ Screens:
           Width: =90
           X: =754
           Y: =462
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - o2HRule:
         Control: ModernText@1.0.0
         Properties:
@@ -610,6 +751,9 @@ Screens:
           Width: =Parent.Width - 104
           X: =52
           Y: =486
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - cntO2:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
@@ -636,108 +780,130 @@ Screens:
               TemplatePadding: =0
               TemplateSize: =44
             Children:
-            - o2Code:
-                Control: ModernText@1.0.0
+            - o2Row:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
                 Properties:
-                  Align: ='TextCanvas.Align'.Left
-                  Color: =RGBA(122, 118, 108, 1)
-                  Height: =44
-                  Size: =12
-                  Text: =ThisItem.Title
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =90
                   X: =0
                   Y: =0
-            - o2Ja:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Left
-                  Color: =RGBA(42, 42, 38, 1)
+                  Width: =Parent.TemplateWidth
                   Height: =44
-                  Size: =13
-                  Text: =ThisItem.NameJa
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =180
-                  X: =98
-                  Y: =0
-            - o2En:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Left
-                  Color: =RGBA(122, 118, 108, 1)
-                  Height: =44
-                  Size: =12
-                  Text: =ThisItem.NameEn
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =150
-                  X: =284
-                  Y: =0
-            - o2Sort:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =RGBA(122, 118, 108, 1)
-                  Height: =44
-                  Size: =12
-                  Text: =ThisItem.SortOrder
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =60
-                  X: =440
-                  Y: =0
-            - o2Ext:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(!LookUp(colOrg1, Title = gblOrg1).MsExt, RGBA(168, 163, 154, 1), If(ThisItem.ApExt, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
-                  Fill: =If(!LookUp(colOrg1, Title = gblOrg1).MsExt, RGBA(0, 0, 0, 0), If(ThisItem.ApExt, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1)))
-                  FontWeight: ='TextCanvas.FontWeight'.Bold
-                  Height: =30
-                  RadiusTopLeft: =4
-                  RadiusTopRight: =4
-                  RadiusBottomLeft: =4
-                  RadiusBottomRight: =4
-                  Size: =11
-                  Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsExt, "― 設定不可", If(ThisItem.ApExt, "要", "不要"))
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =90
-                  X: =510
-                  Y: =7
-            - o2Wlan:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(!LookUp(colOrg1, Title = gblOrg1).MsWlan, RGBA(168, 163, 154, 1), If(ThisItem.ApWlan, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
-                  Fill: =If(!LookUp(colOrg1, Title = gblOrg1).MsWlan, RGBA(0, 0, 0, 0), If(ThisItem.ApWlan, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1)))
-                  FontWeight: ='TextCanvas.FontWeight'.Bold
-                  Height: =30
-                  RadiusTopLeft: =4
-                  RadiusTopRight: =4
-                  RadiusBottomLeft: =4
-                  RadiusBottomRight: =4
-                  Size: =11
-                  Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsWlan, "― 設定不可", If(ThisItem.ApWlan, "要", "不要"))
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =90
-                  X: =606
-                  Y: =7
-            - o2Cloud:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(!LookUp(colOrg1, Title = gblOrg1).MsCloud, RGBA(168, 163, 154, 1), If(ThisItem.ApCloud, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
-                  Fill: =If(!LookUp(colOrg1, Title = gblOrg1).MsCloud, RGBA(0, 0, 0, 0), If(ThisItem.ApCloud, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1)))
-                  FontWeight: ='TextCanvas.FontWeight'.Bold
-                  Height: =30
-                  RadiusTopLeft: =4
-                  RadiusTopRight: =4
-                  RadiusBottomLeft: =4
-                  RadiusBottomRight: =4
-                  Size: =11
-                  Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsCloud, "― 設定不可", If(ThisItem.ApCloud, "要", "不要"))
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =90
-                  X: =702
-                  Y: =7
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  PaddingBottom: =0
+                Children:
+                - o2Code:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Left
+                      Color: =RGBA(122, 118, 108, 1)
+                      Size: =12
+                      Text: =ThisItem.Title
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =98
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - o2Ja:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Left
+                      Color: =RGBA(42, 42, 38, 1)
+                      Size: =13
+                      Text: =ThisItem.NameJa
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =186
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - o2En:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Left
+                      Color: =RGBA(122, 118, 108, 1)
+                      Size: =12
+                      Text: =ThisItem.NameEn
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =156
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - o2Sort:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =RGBA(122, 118, 108, 1)
+                      Size: =12
+                      Text: =ThisItem.SortOrder
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =70
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - o2Ext:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(!LookUp(colOrg1, Title = gblOrg1).MsExt, RGBA(168, 163, 154, 1), If(ThisItem.ApExt, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
+                      Fill: =If(!LookUp(colOrg1, Title = gblOrg1).MsExt, RGBA(0, 0, 0, 0), If(ThisItem.ApExt, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1)))
+                      FontWeight: ='TextCanvas.FontWeight'.Bold
+                      RadiusTopLeft: =4
+                      RadiusTopRight: =4
+                      RadiusBottomLeft: =4
+                      RadiusBottomRight: =4
+                      Size: =11
+                      Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsExt, "― 設定不可", If(ThisItem.ApExt, "要", "不要"))
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =96
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - o2Wlan:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(!LookUp(colOrg1, Title = gblOrg1).MsWlan, RGBA(168, 163, 154, 1), If(ThisItem.ApWlan, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
+                      Fill: =If(!LookUp(colOrg1, Title = gblOrg1).MsWlan, RGBA(0, 0, 0, 0), If(ThisItem.ApWlan, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1)))
+                      FontWeight: ='TextCanvas.FontWeight'.Bold
+                      RadiusTopLeft: =4
+                      RadiusTopRight: =4
+                      RadiusBottomLeft: =4
+                      RadiusBottomRight: =4
+                      Size: =11
+                      Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsWlan, "― 設定不可", If(ThisItem.ApWlan, "要", "不要"))
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =96
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - o2Cloud:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(!LookUp(colOrg1, Title = gblOrg1).MsCloud, RGBA(168, 163, 154, 1), If(ThisItem.ApCloud, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
+                      Fill: =If(!LookUp(colOrg1, Title = gblOrg1).MsCloud, RGBA(0, 0, 0, 0), If(ThisItem.ApCloud, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1)))
+                      FontWeight: ='TextCanvas.FontWeight'.Bold
+                      RadiusTopLeft: =4
+                      RadiusTopRight: =4
+                      RadiusBottomLeft: =4
+                      RadiusBottomRight: =4
+                      Size: =11
+                      Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsCloud, "― 設定不可", If(ThisItem.ApCloud, "要", "不要"))
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =90
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
             - o2Rule:
                 Control: ModernText@1.0.0
                 Properties:
@@ -751,6 +917,9 @@ Screens:
                   Width: =Parent.TemplateWidth
                   X: =0
                   Y: =43
+                  Wrap: =false
+                  PaddingTop: =0
+                  PaddingBottom: =0
     - lblO2Warn:
         Control: ModernText@1.0.0
         Properties:
@@ -769,6 +938,9 @@ Screens:
           Width: =Parent.Width - 320
           X: =52
           Y: =Parent.Height - 106
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - btnO2Submit:
         Control: ModernText@1.0.0
         Properties:
@@ -791,6 +963,9 @@ Screens:
           Width: =188
           X: =Parent.Width - 240
           Y: =Parent.Height - 106
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblVCap:
         Control: ModernText@1.0.0
         Properties:
@@ -804,6 +979,9 @@ Screens:
           Width: =200
           X: =28
           Y: =182
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - vwSECMGR:
         Control: ModernText@1.0.0
         Properties:
@@ -824,6 +1002,9 @@ Screens:
           Width: =150
           X: =28
           Y: =202
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - vwCONFORM:
         Control: ModernText@1.0.0
         Properties:
@@ -844,6 +1025,9 @@ Screens:
           Width: =118
           X: =184
           Y: =202
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - vwEXTCONN:
         Control: ModernText@1.0.0
         Properties:
@@ -864,6 +1048,9 @@ Screens:
           Width: =118
           X: =308
           Y: =202
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - vwWLAN:
         Control: ModernText@1.0.0
         Properties:
@@ -884,6 +1071,9 @@ Screens:
           Width: =118
           X: =432
           Y: =202
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - vwCLOUD:
         Control: ModernText@1.0.0
         Properties:
@@ -904,6 +1094,9 @@ Screens:
           Width: =118
           X: =556
           Y: =202
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - vwINFOSEC:
         Control: ModernText@1.0.0
         Properties:
@@ -924,6 +1117,9 @@ Screens:
           Width: =150
           X: =680
           Y: =202
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - chkOnly:
         Control: ModernText@1.0.0
         Properties:
@@ -942,6 +1138,9 @@ Screens:
           Width: =220
           X: =28
           Y: =244
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - btnPrev:
         Control: ModernText@1.0.0
         Properties:
@@ -961,6 +1160,9 @@ Screens:
           Width: =40
           X: =Parent.Width - 260
           Y: =244
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblPage:
         Control: ModernText@1.0.0
         Properties:
@@ -974,6 +1176,9 @@ Screens:
           Width: =140
           X: =Parent.Width - 214
           Y: =244
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - btnNext:
         Control: ModernText@1.0.0
         Properties:
@@ -995,6 +1200,9 @@ Screens:
           Width: =40
           X: =Parent.Width - 68
           Y: =244
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - btnUserNew:
         Control: ModernText@1.0.0
         Properties:
@@ -1017,6 +1225,9 @@ Screens:
           Width: =148
           X: =Parent.Width - 200
           Y: =202
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblHCap:
         Control: ModernText@1.0.0
         Properties:
@@ -1030,6 +1241,9 @@ Screens:
           Width: =200
           X: =28
           Y: =182
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - hfall:
         Control: ModernText@1.0.0
         Properties:
@@ -1052,6 +1266,9 @@ Screens:
           Width: =100
           X: =28
           Y: =202
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - hfmaster:
         Control: ModernText@1.0.0
         Properties:
@@ -1074,6 +1291,9 @@ Screens:
           Width: =170
           X: =134
           Y: =202
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - hfgrant:
         Control: ModernText@1.0.0
         Properties:
@@ -1096,6 +1316,9 @@ Screens:
           Width: =170
           X: =310
           Y: =202
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblHCount:
         Control: ModernText@1.0.0
         Properties:
@@ -1109,6 +1332,9 @@ Screens:
           Width: =120
           X: =Parent.Width - 148
           Y: =202
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - cardH:
         Control: ModernText@1.0.0
         Properties:
@@ -1127,6 +1353,9 @@ Screens:
           Width: =Parent.Width - 56
           X: =28
           Y: =250
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblHH0:
         Control: ModernText@1.0.0
         Properties:
@@ -1140,6 +1369,9 @@ Screens:
           Width: =140
           X: =44
           Y: =264
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblHH1:
         Control: ModernText@1.0.0
         Properties:
@@ -1153,6 +1385,9 @@ Screens:
           Width: =170
           X: =190
           Y: =264
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblHH2:
         Control: ModernText@1.0.0
         Properties:
@@ -1166,6 +1401,9 @@ Screens:
           Width: =140
           X: =366
           Y: =264
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblHH3:
         Control: ModernText@1.0.0
         Properties:
@@ -1179,6 +1417,9 @@ Screens:
           Width: =240
           X: =512
           Y: =264
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblHH4:
         Control: ModernText@1.0.0
         Properties:
@@ -1192,6 +1433,9 @@ Screens:
           Width: =120
           X: =760
           Y: =264
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblHH5:
         Control: ModernText@1.0.0
         Properties:
@@ -1205,6 +1449,9 @@ Screens:
           Width: =60
           X: =886
           Y: =264
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblHH6:
         Control: ModernText@1.0.0
         Properties:
@@ -1218,6 +1465,9 @@ Screens:
           Width: =80
           X: =952
           Y: =264
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - hHRule:
         Control: ModernText@1.0.0
         Properties:
@@ -1232,6 +1482,9 @@ Screens:
           Width: =Parent.Width - 88
           X: =44
           Y: =290
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - cntHist:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
@@ -1258,95 +1511,117 @@ Screens:
               TemplatePadding: =0
               TemplateSize: =48
             Children:
-            - hWhen:
-                Control: ModernText@1.0.0
+            - hRow:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
                 Properties:
-                  Align: ='TextCanvas.Align'.Left
-                  Color: =RGBA(122, 118, 108, 1)
-                  Height: =48
-                  Size: =11
-                  Text: =Text(ThisItem.SubmittedAt, "yyyy/mm/dd hh:mm")
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =140
                   X: =0
                   Y: =0
-            - hNo:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Left
-                  Color: =RGBA(122, 118, 108, 1)
+                  Width: =Parent.TemplateWidth
                   Height: =48
-                  Size: =11
-                  Text: =ThisItem.Title
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =170
-                  X: =146
-                  Y: =0
-            - hType:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =RGBA(74, 71, 64, 1)
-                  Fill: =If(ThisItem.ReqType.Value = "ORG1" || ThisItem.ReqType.Value = "ORG2", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1))
-                  Height: =30
-                  RadiusTopLeft: =3
-                  RadiusTopRight: =3
-                  RadiusBottomLeft: =3
-                  RadiusBottomRight: =3
-                  Size: =11
-                  Text: =Switch(ThisItem.ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", ThisItem.ReqType.Value)
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =130
-                  X: =322
-                  Y: =9
-            - hTarget:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Left
-                  Color: =RGBA(42, 42, 38, 1)
-                  Height: =48
-                  Size: =12
-                  Text: =ThisItem.TargetName
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =240
-                  X: =468
-                  Y: =0
-            - hBy:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Left
-                  Color: =RGBA(74, 71, 64, 1)
-                  Height: =48
-                  Size: =12
-                  Text: =ThisItem.ApplicantName
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =120
-                  X: =716
-                  Y: =0
-            - hCount:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =RGBA(122, 118, 108, 1)
-                  Height: =48
-                  Size: =11
-                  Text: =ThisItem.ItemCount
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =60
-                  X: =842
-                  Y: =0
-            - hStatus:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(ThisItem.Status.Value = "APPLIED", RGBA(47, 111, 94, 1), RGBA(196, 127, 28, 1))
-                  Height: =48
-                  Size: =11
-                  Text: =Switch(ThisItem.Status.Value, "APPLIED", "反映済", "SUBMITTED", "処理中", "ERROR", "エラー", ThisItem.Status.Value)
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =80
-                  X: =908
-                  Y: =0
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  PaddingBottom: =0
+                Children:
+                - hWhen:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Left
+                      Color: =RGBA(122, 118, 108, 1)
+                      Size: =11
+                      Text: =Text(ThisItem.SubmittedAt, "yyyy/mm/dd hh:mm")
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =146
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - hNo:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Left
+                      Color: =RGBA(122, 118, 108, 1)
+                      Size: =11
+                      Text: =ThisItem.Title
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =176
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - hType:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =RGBA(74, 71, 64, 1)
+                      Fill: =If(ThisItem.ReqType.Value = "ORG1" || ThisItem.ReqType.Value = "ORG2", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1))
+                      RadiusTopLeft: =3
+                      RadiusTopRight: =3
+                      RadiusBottomLeft: =3
+                      RadiusBottomRight: =3
+                      Size: =11
+                      Text: =Switch(ThisItem.ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", ThisItem.ReqType.Value)
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =146
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - hTarget:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Left
+                      Color: =RGBA(42, 42, 38, 1)
+                      Size: =12
+                      Text: =ThisItem.TargetName
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =248
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - hBy:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Left
+                      Color: =RGBA(74, 71, 64, 1)
+                      Size: =12
+                      Text: =ThisItem.ApplicantName
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =126
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - hCount:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =RGBA(122, 118, 108, 1)
+                      Size: =11
+                      Text: =ThisItem.ItemCount
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =66
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - hStatus:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(ThisItem.Status.Value = "APPLIED", RGBA(47, 111, 94, 1), RGBA(196, 127, 28, 1))
+                      Size: =11
+                      Text: =Switch(ThisItem.Status.Value, "APPLIED", "反映済", "SUBMITTED", "処理中", "ERROR", "エラー", ThisItem.Status.Value)
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =80
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
             - hOpen:
                 Control: ModernText@1.0.0
                 Properties:
@@ -1362,6 +1637,9 @@ Screens:
                   Width: =Parent.TemplateWidth
                   X: =0
                   Y: =0
+                  Wrap: =false
+                  PaddingTop: =0
+                  PaddingBottom: =0
             - hRule:
                 Control: ModernText@1.0.0
                 Properties:
@@ -1375,6 +1653,9 @@ Screens:
                   Width: =Parent.TemplateWidth
                   X: =0
                   Y: =47
+                  Wrap: =false
+                  PaddingTop: =0
+                  PaddingBottom: =0
     - lblHEmpty:
         Control: ModernText@1.0.0
         Properties:
@@ -1388,6 +1669,9 @@ Screens:
           Width: =Parent.Width - 88
           X: =44
           Y: =340
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - cardMx:
         Control: ModernText@1.0.0
         Properties:
@@ -1412,6 +1696,9 @@ Screens:
           Width: =Parent.Width - 56
           X: =28
           Y: =284
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - lblMxRowCap:
         Control: ModernText@1.0.0
         Properties:
@@ -1429,6 +1716,9 @@ Screens:
           Width: =160
           X: =44
           Y: =296
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhN1:
         Control: ModernText@1.0.0
         Properties:
@@ -1446,9 +1736,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
+          Width: =130
           X: =252
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhR1:
         Control: ModernText@1.0.0
         Properties:
@@ -1474,8 +1767,11 @@ Screens:
 
             '
           Width: =30
-          X: =286.0
+          X: =302
           Y: =314
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhOpen1:
         Control: ModernText@1.0.0
         Properties:
@@ -1493,9 +1789,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
+          Width: =130
           X: =252
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhN2:
         Control: ModernText@1.0.0
         Properties:
@@ -1513,9 +1812,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =356
+          Width: =130
+          X: =382
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhR2:
         Control: ModernText@1.0.0
         Properties:
@@ -1541,8 +1843,11 @@ Screens:
 
             '
           Width: =30
-          X: =390.0
+          X: =432
           Y: =314
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhOpen2:
         Control: ModernText@1.0.0
         Properties:
@@ -1560,9 +1865,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =356
+          Width: =130
+          X: =382
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhN3:
         Control: ModernText@1.0.0
         Properties:
@@ -1580,9 +1888,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =460
+          Width: =130
+          X: =512
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhR3:
         Control: ModernText@1.0.0
         Properties:
@@ -1608,8 +1919,11 @@ Screens:
 
             '
           Width: =30
-          X: =494.0
+          X: =562
           Y: =314
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhOpen3:
         Control: ModernText@1.0.0
         Properties:
@@ -1627,9 +1941,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =460
+          Width: =130
+          X: =512
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhN4:
         Control: ModernText@1.0.0
         Properties:
@@ -1647,9 +1964,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =564
+          Width: =130
+          X: =642
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhR4:
         Control: ModernText@1.0.0
         Properties:
@@ -1675,8 +1995,11 @@ Screens:
 
             '
           Width: =30
-          X: =598.0
+          X: =692
           Y: =314
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhOpen4:
         Control: ModernText@1.0.0
         Properties:
@@ -1694,9 +2017,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =564
+          Width: =130
+          X: =642
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhN5:
         Control: ModernText@1.0.0
         Properties:
@@ -1714,9 +2040,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =668
+          Width: =130
+          X: =772
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhR5:
         Control: ModernText@1.0.0
         Properties:
@@ -1742,8 +2071,11 @@ Screens:
 
             '
           Width: =30
-          X: =702.0
+          X: =822
           Y: =314
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhOpen5:
         Control: ModernText@1.0.0
         Properties:
@@ -1761,9 +2093,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =668
+          Width: =130
+          X: =772
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhN6:
         Control: ModernText@1.0.0
         Properties:
@@ -1781,9 +2116,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =772
+          Width: =130
+          X: =902
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhR6:
         Control: ModernText@1.0.0
         Properties:
@@ -1809,8 +2147,11 @@ Screens:
 
             '
           Width: =30
-          X: =806.0
+          X: =952
           Y: =314
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhOpen6:
         Control: ModernText@1.0.0
         Properties:
@@ -1828,9 +2169,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =772
+          Width: =130
+          X: =902
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhN7:
         Control: ModernText@1.0.0
         Properties:
@@ -1848,9 +2192,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =876
+          Width: =130
+          X: =1032
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhR7:
         Control: ModernText@1.0.0
         Properties:
@@ -1876,8 +2223,11 @@ Screens:
 
             '
           Width: =30
-          X: =910.0
+          X: =1082
           Y: =314
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhOpen7:
         Control: ModernText@1.0.0
         Properties:
@@ -1895,9 +2245,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =876
+          Width: =130
+          X: =1032
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhN8:
         Control: ModernText@1.0.0
         Properties:
@@ -1915,9 +2268,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =980
+          Width: =130
+          X: =1162
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhR8:
         Control: ModernText@1.0.0
         Properties:
@@ -1943,8 +2299,11 @@ Screens:
 
             '
           Width: =30
-          X: =1014.0
+          X: =1212
           Y: =314
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mhOpen8:
         Control: ModernText@1.0.0
         Properties:
@@ -1962,9 +2321,12 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =98
-          X: =980
+          Width: =130
+          X: =1162
           Y: =292
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - mxHRule:
         Control: ModernText@1.0.0
         Properties:
@@ -1985,6 +2347,9 @@ Screens:
           Width: =Parent.Width - 88
           X: =44
           Y: =338
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
     - cntMx:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
@@ -2013,170 +2378,195 @@ Screens:
               TemplatePadding: =0
               TemplateSize: =46
             Children:
-            - mxRowName:
-                Control: ModernText@1.0.0
+            - mxRow:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
                 Properties:
-                  Align: ='TextCanvas.Align'.Left
-                  Color: =RGBA(42, 42, 38, 1)
-                  Height: =46
-                  Size: =12
-                  Text: '=ThisItem.NameJa
-
-                    '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =150
                   X: =0
                   Y: =0
-            - mxRowCode:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Left
-                  Color: =RGBA(168, 163, 154, 1)
+                  Width: =Parent.TemplateWidth
                   Height: =46
-                  Size: =10
-                  Text: '=ThisItem.Title
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  PaddingBottom: =0
+                Children:
+                - mxRowName:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Left
+                      Color: =RGBA(42, 42, 38, 1)
+                      Size: =12
+                      Text: '=ThisItem.NameJa
 
-                    '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =54
-                  X: =152
-                  Y: =0
-            - mxC1:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
-                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+                        '
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =150
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - mxRowCode:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Left
+                      Color: =RGBA(168, 163, 154, 1)
+                      Size: =10
+                      Text: '=ThisItem.Title
 
-                    '
-                  Height: =46
-                  Size: =16
-                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+                        '
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Width: =58
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                - mxC1:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                      FontWeight: '=''TextCanvas.FontWeight''.Bold
 
-                    '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =98
-                  X: =208
-                  Y: =0
-            - mxC2:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
-                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+                        '
+                      Size: =16
+                      Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
 
-                    '
-                  Height: =46
-                  Size: =16
-                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+                        '
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                      Width: =130
+                - mxC2:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                      FontWeight: '=''TextCanvas.FontWeight''.Bold
 
-                    '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =98
-                  X: =312
-                  Y: =0
-            - mxC3:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
-                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+                        '
+                      Size: =16
+                      Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
 
-                    '
-                  Height: =46
-                  Size: =16
-                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+                        '
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                      Width: =130
+                - mxC3:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                      FontWeight: '=''TextCanvas.FontWeight''.Bold
 
-                    '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =98
-                  X: =416
-                  Y: =0
-            - mxC4:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
-                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+                        '
+                      Size: =16
+                      Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
 
-                    '
-                  Height: =46
-                  Size: =16
-                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+                        '
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                      Width: =130
+                - mxC4:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                      FontWeight: '=''TextCanvas.FontWeight''.Bold
 
-                    '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =98
-                  X: =520
-                  Y: =0
-            - mxC5:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
-                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+                        '
+                      Size: =16
+                      Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
 
-                    '
-                  Height: =46
-                  Size: =16
-                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+                        '
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                      Width: =130
+                - mxC5:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                      FontWeight: '=''TextCanvas.FontWeight''.Bold
 
-                    '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =98
-                  X: =624
-                  Y: =0
-            - mxC6:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
-                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+                        '
+                      Size: =16
+                      Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
 
-                    '
-                  Height: =46
-                  Size: =16
-                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+                        '
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                      Width: =130
+                - mxC6:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                      FontWeight: '=''TextCanvas.FontWeight''.Bold
 
-                    '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =98
-                  X: =728
-                  Y: =0
-            - mxC7:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
-                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+                        '
+                      Size: =16
+                      Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
 
-                    '
-                  Height: =46
-                  Size: =16
-                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+                        '
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                      Width: =130
+                - mxC7:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                      FontWeight: '=''TextCanvas.FontWeight''.Bold
 
-                    '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =98
-                  X: =832
-                  Y: =0
-            - mxC8:
-                Control: ModernText@1.0.0
-                Properties:
-                  Align: ='TextCanvas.Align'.Center
-                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
-                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+                        '
+                      Size: =16
+                      Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
 
-                    '
-                  Height: =46
-                  Size: =16
-                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+                        '
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                      Width: =130
+                - mxC8:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                      FontWeight: '=''TextCanvas.FontWeight''.Bold
 
-                    '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =98
-                  X: =936
-                  Y: =0
+                        '
+                      Size: =16
+                      Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+
+                        '
+                      VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                      Wrap: =false
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      FillPortions: =0
+                      Width: =130
             - mxRowRule:
                 Control: ModernText@1.0.0
                 Properties:
@@ -2194,6 +2584,9 @@ Screens:
                   Width: =Parent.TemplateWidth
                   X: =0
                   Y: =45
+                  Wrap: =false
+                  PaddingTop: =0
+                  PaddingBottom: =0
     - lblLegend:
         Control: ModernText@1.0.0
         Properties:
@@ -2211,3 +2604,6 @@ Screens:
           Width: =Parent.Width - 88
           X: =44
           Y: =Parent.Height - 44
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
