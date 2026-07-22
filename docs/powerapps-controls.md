@@ -82,3 +82,36 @@ Appearance: ="Transparent"   （Outline / Primary / Secondary / Subtle / Transpa
 **`ButtonCanvas.FontWeight` は存在しない。** `If()` の中で使うと式全体が失敗し、
 `Appearance` まで既定に戻る（ボタンが青くなる）。
 太字の出し分けが要るタブ等は **`ModernText` + `OnSelect`** で作る方が確実。
+
+## マトリックス表示は「固定列」で作る
+
+**ネストギャラリーは動かない。`AddColumns` / `ForAll` の派生列もギャラリーの子で解決しない。**
+両方を回避する唯一の形が「行はギャラリー、列は固定コントロール」。
+
+```
+galMx.Items = Sort(Filter(colOrg2All, Org1Code = gblOrg1), SortOrder)   ← 実在のリストレコード
+  子: mxRowName = ThisItem.NameJa      ← 実在フィールドは解決する
+      mxC1 .. mxC8                     ← 列ぶんの固定セル（内側ギャラリーを作らない）
+```
+
+セルの式は **`ThisItem.<実在フィールド>`** と **画面レベルの式** だけで組む。
+
+```
+mxC3.Text =
+  If(IsBlank(Index(<ページ内メンバー>, 3).GlobalId), "",
+  If(!(<この行が対象かの判定>), "―",
+  If(IsBlank(<その人の権限>.GlobalId), "",
+  If(<その人の権限>.ScopeType.Value = "ALL", "◎",
+  If(";" & ThisItem.Title & ";" in <その人の権限>.Org2Codes, "○", "")))))
+```
+
+- `ThisItem.Title` を複雑な式の中で使うのは問題ない（解決する）
+- 列見出しも同じ数の固定コントロールにして X 座標を揃える
+- **列数は固定**になる。可変にしたければページングで割り切る
+
+### 失敗した順序（同じ轍を踏まないために）
+
+1. ネストギャラリー → 内側の子が `ThisItem.Mark` を解決しない
+2. `WrapCount` で平坦化 → セルが描画されない
+3. `AddColumns` で結合 → 派生列が子で解決しない
+4. **固定列 → 成功**

@@ -995,19 +995,6 @@ Screens:
           Width: =40
           X: =Parent.Width - 68
           Y: =244
-    - lblLegend:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Left
-          Color: =RGBA(122, 118, 108, 1)
-          Height: =24
-          Size: =11
-          Text: ="◎ 全体権限　　○ 個別指定　　― 対象外（多段階承認が無効）　　空欄 = 権限なし"
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-          Visible: =gblTab = "user"
-          Width: =Parent.Width - 300
-          X: =44
-          Y: =Parent.Height - 44
     - btnUserNew:
         Control: ModernText@1.0.0
         Properties:
@@ -1406,103 +1393,603 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Left
           Color: =RGBA(42, 42, 38, 1)
-          Fill: =RGBA(250, 250, 247, 1)
+          Fill: '=RGBA(250, 250, 247, 1)
+
+            '
           Height: =Parent.Height - 320
           RadiusTopLeft: =8
           RadiusTopRight: =8
           RadiusBottomLeft: =8
           RadiusBottomRight: =8
           Size: =13
-          Text: =""
+          Text: '=""
+
+            '
           VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-          Visible: =gblTab = "user"
+          Visible: '=gblTab = "user"
+
+            '
           Width: =Parent.Width - 56
           X: =28
           Y: =284
-    - lblMH0:
+    - lblMxRowCap:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Left
           Color: =RGBA(122, 118, 108, 1)
-          Height: =24
+          Height: =40
           Size: =11
-          Text: ="氏名 ／ 部署名"
+          Text: '="組織区分2"
+
+            '
           VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-          Visible: =gblTab = "user"
-          Width: =220
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =160
           X: =44
-          Y: =300
-    - lblMH1:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Left
-          Color: =RGBA(122, 118, 108, 1)
-          Height: =24
-          Size: =11
-          Text: ="部署名"
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-          Visible: =gblTab = "user"
-          Width: =150
-          X: =270
-          Y: =300
-    - lblMH2:
+          Y: =296
+    - mhN1:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =RGBA(122, 118, 108, 1)
-          Height: =24
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =22
           Size: =11
-          Text: ="範囲"
+          Text: '=LookUp(colUsersAll, Title = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId).FullName
+
+            '
           VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-          Visible: =gblTab = "user"
-          Width: =90
-          X: =426
-          Y: =300
-    - lblMH3:
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =252
+          Y: =292
+    - mhR1:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =RGBA(122, 118, 108, 1)
-          Height: =24
-          Size: =11
-          Text: ="権限種別"
+          Color: =If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
+          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
+
+            '
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =18
+          RadiusTopLeft: =9
+          RadiusTopRight: =9
+          RadiusBottomLeft: =9
+          RadiusBottomRight: =9
+          Size: =10
+          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
+
+            '
           VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-          Visible: =gblTab = "user"
-          Width: =90
-          X: =522
-          Y: =300
-    - lblMH4:
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =30
+          X: =286.0
+          Y: =314
+    - mhOpen1:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Left
-          Color: =RGBA(122, 118, 108, 1)
-          Height: =24
-          Size: =11
-          Text: ="対象の組織区分2"
+          Color: =RGBA(42, 42, 38, 1)
+          Height: =44
+          OnSelect: '=Set(gblUserMode, "Edit"); Set(gblUserGid, Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
+
+            '
+          Size: =13
+          Text: '=""
+
+            '
           VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-          Visible: =gblTab = "user"
-          Width: =460
-          X: =618
-          Y: =300
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =252
+          Y: =292
+    - mhN2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =22
+          Size: =11
+          Text: '=LookUp(colUsersAll, Title = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId).FullName
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =356
+          Y: =292
+    - mhR2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
+          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
+
+            '
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =18
+          RadiusTopLeft: =9
+          RadiusTopRight: =9
+          RadiusBottomLeft: =9
+          RadiusBottomRight: =9
+          Size: =10
+          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =30
+          X: =390.0
+          Y: =314
+    - mhOpen2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Height: =44
+          OnSelect: '=Set(gblUserMode, "Edit"); Set(gblUserGid, Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
+
+            '
+          Size: =13
+          Text: '=""
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =356
+          Y: =292
+    - mhN3:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =22
+          Size: =11
+          Text: '=LookUp(colUsersAll, Title = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId).FullName
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =460
+          Y: =292
+    - mhR3:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
+          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
+
+            '
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =18
+          RadiusTopLeft: =9
+          RadiusTopRight: =9
+          RadiusBottomLeft: =9
+          RadiusBottomRight: =9
+          Size: =10
+          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =30
+          X: =494.0
+          Y: =314
+    - mhOpen3:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Height: =44
+          OnSelect: '=Set(gblUserMode, "Edit"); Set(gblUserGid, Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
+
+            '
+          Size: =13
+          Text: '=""
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =460
+          Y: =292
+    - mhN4:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =22
+          Size: =11
+          Text: '=LookUp(colUsersAll, Title = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId).FullName
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =564
+          Y: =292
+    - mhR4:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
+          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
+
+            '
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =18
+          RadiusTopLeft: =9
+          RadiusTopRight: =9
+          RadiusBottomLeft: =9
+          RadiusBottomRight: =9
+          Size: =10
+          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =30
+          X: =598.0
+          Y: =314
+    - mhOpen4:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Height: =44
+          OnSelect: '=Set(gblUserMode, "Edit"); Set(gblUserGid, Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
+
+            '
+          Size: =13
+          Text: '=""
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =564
+          Y: =292
+    - mhN5:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =22
+          Size: =11
+          Text: '=LookUp(colUsersAll, Title = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId).FullName
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =668
+          Y: =292
+    - mhR5:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
+          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
+
+            '
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =18
+          RadiusTopLeft: =9
+          RadiusTopRight: =9
+          RadiusBottomLeft: =9
+          RadiusBottomRight: =9
+          Size: =10
+          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =30
+          X: =702.0
+          Y: =314
+    - mhOpen5:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Height: =44
+          OnSelect: '=Set(gblUserMode, "Edit"); Set(gblUserGid, Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
+
+            '
+          Size: =13
+          Text: '=""
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =668
+          Y: =292
+    - mhN6:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =22
+          Size: =11
+          Text: '=LookUp(colUsersAll, Title = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId).FullName
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =772
+          Y: =292
+    - mhR6:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
+          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
+
+            '
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =18
+          RadiusTopLeft: =9
+          RadiusTopRight: =9
+          RadiusBottomLeft: =9
+          RadiusBottomRight: =9
+          Size: =10
+          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =30
+          X: =806.0
+          Y: =314
+    - mhOpen6:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Height: =44
+          OnSelect: '=Set(gblUserMode, "Edit"); Set(gblUserGid, Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
+
+            '
+          Size: =13
+          Text: '=""
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =772
+          Y: =292
+    - mhN7:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =22
+          Size: =11
+          Text: '=LookUp(colUsersAll, Title = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId).FullName
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =876
+          Y: =292
+    - mhR7:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
+          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
+
+            '
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =18
+          RadiusTopLeft: =9
+          RadiusTopRight: =9
+          RadiusBottomLeft: =9
+          RadiusBottomRight: =9
+          Size: =10
+          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =30
+          X: =910.0
+          Y: =314
+    - mhOpen7:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Height: =44
+          OnSelect: '=Set(gblUserMode, "Edit"); Set(gblUserGid, Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
+
+            '
+          Size: =13
+          Text: '=""
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =876
+          Y: =292
+    - mhN8:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(42, 42, 38, 1)
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =22
+          Size: =11
+          Text: '=LookUp(colUsersAll, Title = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId).FullName
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =980
+          Y: =292
+    - mhR8:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
+          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
+
+            '
+          FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+            '
+          Height: =18
+          RadiusTopLeft: =9
+          RadiusTopRight: =9
+          RadiusBottomLeft: =9
+          RadiusBottomRight: =9
+          Size: =10
+          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =30
+          X: =1014.0
+          Y: =314
+    - mhOpen8:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(42, 42, 38, 1)
+          Height: =44
+          OnSelect: '=Set(gblUserMode, "Edit"); Set(gblUserGid, Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
+
+            '
+          Size: =13
+          Text: '=""
+
+            '
+          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =98
+          X: =980
+          Y: =292
     - mxHRule:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Left
           Color: =RGBA(42, 42, 38, 1)
-          Fill: =RGBA(42, 42, 38, 0.12)
+          Fill: '=RGBA(42, 42, 38, 0.12)
+
+            '
           Height: =1
           Size: =13
-          Text: =""
+          Text: '=""
+
+            '
           VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-          Visible: =gblTab = "user"
+          Visible: '=gblTab = "user"
+
+            '
           Width: =Parent.Width - 88
           X: =44
-          Y: =326
+          Y: =338
     - cntMx:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
         Properties:
-          Height: =Parent.Height - 376
+          Height: =Parent.Height - 390
           LayoutAlignItems: =LayoutAlignItems.Stretch
           LayoutDirection: =LayoutDirection.Vertical
           PaddingBottom: =0
@@ -1512,67 +1999,215 @@ Screens:
           Visible: =gblTab = "user"
           Width: =Parent.Width - 88
           X: =44
-          Y: =328
+          Y: =342
         Children:
         - galMx:
             Control: Gallery@2.15.0
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
               FillPortions: =1
-              Items: '=ForAll(Filter(colMemberAll, Org1Code = gblOrg1) As m, { Title: LookUp(colUsersAll, Title = m.GlobalId).FullName & "　　" & LookUp(colUsersAll, Title = m.GlobalId).Department, SubTitle: If(IsBlank(LookUp(colGrantsAll, GlobalId = m.GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "（この権限なし）", If(LookUp(colGrantsAll, GlobalId = m.GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "全体権限", "個別指定") & If(LookUp(colGrantsAll, GlobalId = m.GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", " ／ 事業会社(正)", If(LookUp(colGrantsAll, GlobalId = m.GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", " ／ 事業会社(副)", "")) & " ／ " & If(LookUp(colGrantsAll, GlobalId = m.GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "配下すべて（" & Text(CountRows(Filter(colOrg2All, Org1Code = gblOrg1))) & "件）", Concat(Filter(colOrg2All, Org1Code = gblOrg1, ";" & Title & ";" in LookUp(colGrantsAll, GlobalId = m.GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes), NameJa, "、"))), Gid: m.GlobalId, HasAny: !IsBlank(LookUp(colGrantsAll, GlobalId = m.GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId) })'
+              Items: '=Sort(Filter(colOrg2All, Org1Code = gblOrg1), SortOrder)
+
+                '
               ShowScrollbar: =true
               TemplatePadding: =0
-              TemplateSize: =52
+              TemplateSize: =46
             Children:
-            - mxTitle:
+            - mxRowName:
                 Control: ModernText@1.0.0
                 Properties:
                   Align: ='TextCanvas.Align'.Left
                   Color: =RGBA(42, 42, 38, 1)
-                  FontWeight: ='TextCanvas.FontWeight'.Bold
-                  Height: =24
-                  Size: =13
-                  Text: =ThisItem.Title
+                  Height: =46
+                  Size: =12
+                  Text: '=ThisItem.NameJa
+
+                    '
                   VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =Parent.TemplateWidth - 20
-                  X: =8
-                  Y: =4
-                  OnSelect: =Set(gblUserMode, "Edit"); Set(gblUserGid, ThisItem.Gid); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
-            - mxSub:
+                  Width: =150
+                  X: =0
+                  Y: =0
+            - mxRowCode:
                 Control: ModernText@1.0.0
                 Properties:
                   Align: ='TextCanvas.Align'.Left
-                  Color: =RGBA(122, 118, 108, 1)
-                  Height: =22
-                  Size: =11
-                  Text: =ThisItem.SubTitle
+                  Color: =RGBA(168, 163, 154, 1)
+                  Height: =46
+                  Size: =10
+                  Text: '=ThisItem.Title
+
+                    '
                   VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-                  Width: =Parent.TemplateWidth - 20
-                  X: =8
-                  Y: =26
-            - mxRule:
+                  Width: =54
+                  X: =152
+                  Y: =0
+            - mxC1:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Center
+                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+                    '
+                  Height: =46
+                  Size: =16
+                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 1).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =98
+                  X: =208
+                  Y: =0
+            - mxC2:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Center
+                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+                    '
+                  Height: =46
+                  Size: =16
+                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 2).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =98
+                  X: =312
+                  Y: =0
+            - mxC3:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Center
+                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+                    '
+                  Height: =46
+                  Size: =16
+                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 3).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =98
+                  X: =416
+                  Y: =0
+            - mxC4:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Center
+                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+                    '
+                  Height: =46
+                  Size: =16
+                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 4).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =98
+                  X: =520
+                  Y: =0
+            - mxC5:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Center
+                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+                    '
+                  Height: =46
+                  Size: =16
+                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 5).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =98
+                  X: =624
+                  Y: =0
+            - mxC6:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Center
+                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+                    '
+                  Height: =46
+                  Size: =16
+                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 6).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =98
+                  X: =728
+                  Y: =0
+            - mxC7:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Center
+                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+                    '
+                  Height: =46
+                  Size: =16
+                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 7).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =98
+                  X: =832
+                  Y: =0
+            - mxC8:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Center
+                  Color: =If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", RGBA(94, 111, 92, 1), RGBA(122, 138, 120, 1)))
+                  FontWeight: '=''TextCanvas.FontWeight''.Bold
+
+                    '
+                  Height: =46
+                  Size: =16
+                  Text: '=If(IsBlank(Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId), "", If(!(If(gblView = "EXTCONN", gblP1.MsExt && ThisItem.ApExt, If(gblView = "WLAN", gblP1.MsWlan && ThisItem.ApWlan, If(gblView = "CLOUD", gblP1.MsCloud && ThisItem.ApCloud, (gblP1.MsExt && ThisItem.ApExt) || (gblP1.MsWlan && ThisItem.ApWlan) || (gblP1.MsCloud && ThisItem.ApCloud))))), "―", If(IsBlank(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).GlobalId), "", If(LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).ScopeType.Value = "ALL", "◎", If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = Index(FirstN(LastN(Filter(colMemberAll, Org1Code = gblOrg1), CountRows(Filter(colMemberAll, Org1Code = gblOrg1)) - gblPage * 8), 8), 8).GlobalId && Org1Code = gblOrg1 && RoleCode.Value = gblView).Org2Codes, "○", "")))))
+
+                    '
+                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
+                  Width: =98
+                  X: =936
+                  Y: =0
+            - mxRowRule:
                 Control: ModernText@1.0.0
                 Properties:
                   Align: ='TextCanvas.Align'.Left
                   Color: =RGBA(42, 42, 38, 1)
-                  Fill: =RGBA(42, 42, 38, 0.12)
+                  Fill: '=RGBA(42, 42, 38, 0.12)
+
+                    '
                   Height: =1
                   Size: =13
-                  Text: =""
+                  Text: '=""
+
+                    '
                   VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
                   Width: =Parent.TemplateWidth
                   X: =0
-                  Y: =51
-    - lblMxEmpty:
+                  Y: =45
+    - lblLegend:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =RGBA(168, 163, 154, 1)
-          Height: =40
-          Size: =12
-          Text: ="この権限を持つ利用者はいません"
+          Align: ='TextCanvas.Align'.Left
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: '="◎ 全体権限　　○ 個別指定　　― 対象外（多段階承認が無効）　　空欄 = 権限なし　　氏名クリックで詳細へ"
+
+            '
           VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
-          Visible: =gblTab = "user" && CountRows(colRows) = 0
+          Visible: '=gblTab = "user"
+
+            '
           Width: =Parent.Width - 88
           X: =44
-          Y: =360
+          Y: =Parent.Height - 44
