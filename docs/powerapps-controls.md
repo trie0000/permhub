@@ -168,25 +168,42 @@ X:     =208 + (Parent.TemplateWidth - 208) / 8 * 4  NG（X が 1 になる）
 
 貼り付け前に `galMx.Width: =1278` を入れても切り詰めは起きた。**AutoLayout 化以外に回避策はない。**
 
-## `ModernText` のスクロールバー
+## `ModernText` のスクロールバーと縦位置
 
 高さより内容が高いと**縦スクロールバーが出る**。既定の上下パディング 5px + 5px が効くので、
 `Height: =28` / `Size: =15` のような普通のラベルでも出る。画面が細いバーだらけになる。
+対策は**上下パディングを 0 にする**こと（`Wrap` は変えない）。
 
 ```
-Wrap: =false          # 1 行ラベルは折り返さない
 PaddingTop: =0
 PaddingBottom: =0
 ```
 
-## `ModernDropdown@1.0.2` の既定値
+> **`Wrap: =false` にしてはいけない（重要）。**
+> 単一行の折り返しオフにすると、**`VerticalAlign: =Middle` が無効化されてテキストが上詰めになる**。
+> ピルやタブの文字が箱の上に寄る。実機で確認済み（`全体`/`個別` ボタンで再現→`Wrap` を戻して中央に復帰）。
+> スクロールバーはパディング 0 だけで消えるので、`Wrap` は既定（true）のままにする。
+> 逆に言うと、**縦中央にしたいテキストは `Wrap` を false にしない**。
 
-`DefaultSelectedItems` は**無い**（`PA2108` になる）。既定値は **`Default`**。
+## `ModernDropdown@1.0.2` の初期選択
 
-ただし `Default` は**コントロール初期化時にしか評価されない**。
-`App.OnStart` で入れたグローバル変数を初期選択にしたい場合、Studio のプレビューでは反映されず検証しづらい。
-**選択状態を変数から常に描き直したいなら、ドロップダウンではなく
-「ギャラリー + `ModernText`」のタブ型**にする方が確実（`Fill` / `Color` を `ThisItem.Title = gblXxx` で出し分ける）。
+`DefaultSelectedItems` は**無い**（`PA2108` になる）。初期選択は **`Default`** で行う。
+
+**`Default` には表示テキストの文字列ではなく、`Items` の中の「レコード」を渡す。** ここを間違えると空表示になる。
+
+```
+Items:   =colMyOrg1
+Default: =LookUp(colMyOrg1, Title = gblOrg1)          ← レコード。これで初期選択が出る
+                                                        （データ型: レコード）
+OnChange:=Set(gblOrg1, Self.Selected.Title)
+```
+
+`Default: =LookUp(colMyOrg1, Title = gblOrg1).NameJa`（**表示文字列**）だと、
+`Items` に一致テキストがあっても**選択されず空欄のまま**になる。実機で確認済み。
+
+> **検証の注意:** Studio のプレビューは前回のセッション状態を再開し、`App.OnStart` を毎回は再実行しない。
+> `Default` は `OnStart` で入れた変数に依存するので、確認前に **App の「OnStart を実行」→ ▷ プレビュー**の順で
+> 起動し直す（画面が `OnStart` 既定のタブで開けば新規実行できている）。
 
 ## 貼り付け時の注意
 

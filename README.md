@@ -82,10 +82,10 @@ Power Apps キャンバスアプリ + SharePoint リスト。**Premium ライセ
 - **ギャラリー テンプレート内の絶対 `X` は貼り付け時に書き換えられる。** エラーは出ず表示だけ壊れる。
   列は**横方向 AutoLayout のコンテナー**に入れて `X` を持たせない
 - **ギャラリーはレイアウトコンテナーに入れる。** 入れないと貼り付けのたびに `Y` がずれる
-- **`ModernText` は上下パディング 5px の分だけスクロールバーが出る。** `Wrap: =false` と
-  `PaddingTop|Bottom: =0` を全ラベルに入れる
-- `ModernDropdown` に `DefaultSelectedItems` は無い（`Default`）。ただし初期化時にしか
-  評価されないので、変数で選択状態を出したいならタブ型（ギャラリー + `ModernText`）にする
+- **`ModernText` は上下パディング 5px の分だけスクロールバーが出る。** `PaddingTop|Bottom: =0`
+  で消す。**`Wrap: =false` は使わない**（`VerticalAlign: Middle` が無効化されて文字が上詰めになる）
+- `ModernDropdown` に `DefaultSelectedItems` は無い。初期選択は `Default` に**レコード**を渡す
+  （`LookUp(col, ...)`。`.NameJa` のような表示文字列を渡すと空表示になる）
 - `Appearance` は文字列プロパティ。`ButtonCanvas.FontWeight` は存在しない
 
 ## 未確定事項

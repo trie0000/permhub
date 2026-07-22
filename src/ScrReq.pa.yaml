@@ -18,7 +18,7 @@ Screens:
           Width: =Parent.Width
           X: =0
           Y: =0
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qAppTitle:
@@ -36,7 +36,7 @@ Screens:
           Width: =320
           X: =28
           Y: =0
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qBack:
@@ -56,7 +56,7 @@ Screens:
           Width: =192
           X: =Parent.Width - 220
           Y: =0
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qCard1:
@@ -78,7 +78,7 @@ Screens:
           Width: =Parent.Width - 56
           X: =28
           Y: =72
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qTitle:
@@ -96,7 +96,7 @@ Screens:
           Width: =Parent.Width - 104
           X: =52
           Y: =86
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qmC0:
@@ -113,7 +113,7 @@ Screens:
           Width: =220
           X: =52
           Y: =126
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qmV0:
@@ -131,7 +131,7 @@ Screens:
           Width: =220
           X: =52
           Y: =144
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qmC1:
@@ -148,7 +148,7 @@ Screens:
           Width: =220
           X: =292
           Y: =126
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qmV1:
@@ -166,7 +166,7 @@ Screens:
           Width: =220
           X: =292
           Y: =144
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qmC2:
@@ -183,7 +183,7 @@ Screens:
           Width: =220
           X: =532
           Y: =126
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qmV2:
@@ -201,7 +201,7 @@ Screens:
           Width: =220
           X: =532
           Y: =144
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qmC3:
@@ -218,7 +218,7 @@ Screens:
           Width: =220
           X: =772
           Y: =126
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qmV3:
@@ -236,7 +236,7 @@ Screens:
           Width: =220
           X: =772
           Y: =144
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qnC0:
@@ -253,7 +253,7 @@ Screens:
           Width: =220
           X: =52
           Y: =180
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qnV0:
@@ -271,7 +271,7 @@ Screens:
           Width: =220
           X: =52
           Y: =198
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qnC1:
@@ -288,7 +288,7 @@ Screens:
           Width: =220
           X: =292
           Y: =180
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qnV1:
@@ -306,7 +306,7 @@ Screens:
           Width: =220
           X: =292
           Y: =198
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qnC2:
@@ -323,7 +323,7 @@ Screens:
           Width: =220
           X: =532
           Y: =180
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qnV2:
@@ -341,7 +341,7 @@ Screens:
           Width: =220
           X: =532
           Y: =198
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qnC3:
@@ -358,7 +358,7 @@ Screens:
           Width: =220
           X: =772
           Y: =180
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qnV3:
@@ -376,7 +376,7 @@ Screens:
           Width: =220
           X: =772
           Y: =198
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qCard2:
@@ -398,7 +398,7 @@ Screens:
           Width: =Parent.Width - 56
           X: =28
           Y: =248
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qItemHead:
@@ -416,7 +416,7 @@ Screens:
           Width: =300
           X: =52
           Y: =262
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qH0:
@@ -433,7 +433,7 @@ Screens:
           Width: =40
           X: =52
           Y: =298
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qH1:
@@ -450,7 +450,7 @@ Screens:
           Width: =70
           X: =100
           Y: =298
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qH2:
@@ -467,7 +467,7 @@ Screens:
           Width: =90
           X: =178
           Y: =298
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qH3:
@@ -484,7 +484,7 @@ Screens:
           Width: =260
           X: =276
           Y: =298
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qH4:
@@ -501,7 +501,7 @@ Screens:
           Width: =600
           X: =544
           Y: =298
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qHRule:
@@ -519,7 +519,7 @@ Screens:
           Width: =Parent.Width - 104
           X: =52
           Y: =324
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - cntQItems:
@@ -563,7 +563,7 @@ Screens:
                   Width: =40
                   X: =0
                   Y: =0
-                  Wrap: =false
+                  Wrap: =true
                   PaddingTop: =0
                   PaddingBottom: =0
             - qiOp:
@@ -586,7 +586,7 @@ Screens:
                   Width: =60
                   X: =46
                   Y: =17
-                  Wrap: =false
+                  Wrap: =true
                   PaddingTop: =0
                   PaddingBottom: =0
             - qiKind:
@@ -603,7 +603,7 @@ Screens:
                   Width: =90
                   X: =126
                   Y: =0
-                  Wrap: =false
+                  Wrap: =true
                   PaddingTop: =0
                   PaddingBottom: =0
             - qiKey:
@@ -620,7 +620,7 @@ Screens:
                   Width: =260
                   X: =224
                   Y: =0
-                  Wrap: =false
+                  Wrap: =true
                   PaddingTop: =0
                   PaddingBottom: =0
             - qiChange:
@@ -637,7 +637,7 @@ Screens:
                   Width: =Parent.TemplateWidth - 500
                   X: =492
                   Y: =0
-                  Wrap: =false
+                  Wrap: =true
                   PaddingTop: =0
                   PaddingBottom: =0
             - qiRule:
@@ -655,7 +655,7 @@ Screens:
                   Width: =Parent.TemplateWidth
                   X: =0
                   Y: =63
-                  Wrap: =false
+                  Wrap: =true
                   PaddingTop: =0
                   PaddingBottom: =0
     - qEmpty:
@@ -673,7 +673,7 @@ Screens:
           Width: =Parent.Width - 104
           X: =52
           Y: =360
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
     - qNote:
@@ -695,6 +695,6 @@ Screens:
           Width: =Parent.Width - 104
           X: =52
           Y: =Parent.Height - 74
-          Wrap: =false
+          Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
