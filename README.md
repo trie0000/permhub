@@ -87,6 +87,9 @@ Power Apps キャンバスアプリ + SharePoint リスト。**Premium ライセ
   中央寄せは `PaddingTop = (Height - 行高)/2` / `PaddingBottom = 0`。行高 = `Size` × 18/13
   （実測）。この式ならスクロールバーも出ない
 - **高さが違うコントロールを同じ行に並べるときは `Y + Height/2`（中心）を揃える**
+- **AutoLayout の子は既定で行の高さいっぱいに伸びる。** 塗りのあるセルは帯に見えるので、
+  `AlignInContainer: =AlignInContainer.Center` + `Height` + `LayoutMinHeight: =0` でチップにする
+  （列幅を保ったまま細くするには前後に空のスペーサーを挟む）
 - `ModernDropdown` に `DefaultSelectedItems` は無い。初期選択は `Default` に**レコード**を渡す
   （`LookUp(col, ...)`。`.NameJa` のような表示文字列を渡すと空表示になる）
 - `Appearance` は文字列プロパティ。`ButtonCanvas.FontWeight` は存在しない

@@ -393,7 +393,7 @@ Screens:
           Color: =If(LookUp(colOrg1, Title = gblOrg1).MsExt, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
           Fill: =If(LookUp(colOrg1, Title = gblOrg1).MsExt, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1))
           FontWeight: ='TextCanvas.FontWeight'.Bold
-          Height: =30
+          Height: =26
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -401,11 +401,11 @@ Screens:
           Size: =13
           Text: =If(LookUp(colOrg1, Title = gblOrg1).MsExt, "要", "不要")
           Visible: =gblTab = "org"
-          Width: =90
+          Width: =56
           X: =52
-          Y: =344
+          Y: =346
           Wrap: =true
-          PaddingTop: =6
+          PaddingTop: =4
           PaddingBottom: =0
     - lblO1WlanCap:
         Control: ModernText@1.0.0
@@ -429,7 +429,7 @@ Screens:
           Color: =If(LookUp(colOrg1, Title = gblOrg1).MsWlan, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
           Fill: =If(LookUp(colOrg1, Title = gblOrg1).MsWlan, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1))
           FontWeight: ='TextCanvas.FontWeight'.Bold
-          Height: =30
+          Height: =26
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -437,11 +437,11 @@ Screens:
           Size: =13
           Text: =If(LookUp(colOrg1, Title = gblOrg1).MsWlan, "要", "不要")
           Visible: =gblTab = "org"
-          Width: =90
+          Width: =56
           X: =262
-          Y: =344
+          Y: =346
           Wrap: =true
-          PaddingTop: =6
+          PaddingTop: =4
           PaddingBottom: =0
     - lblO1CloudCap:
         Control: ModernText@1.0.0
@@ -465,7 +465,7 @@ Screens:
           Color: =If(LookUp(colOrg1, Title = gblOrg1).MsCloud, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
           Fill: =If(LookUp(colOrg1, Title = gblOrg1).MsCloud, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1))
           FontWeight: ='TextCanvas.FontWeight'.Bold
-          Height: =30
+          Height: =26
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -473,11 +473,11 @@ Screens:
           Size: =13
           Text: =If(LookUp(colOrg1, Title = gblOrg1).MsCloud, "要", "不要")
           Visible: =gblTab = "org"
-          Width: =90
+          Width: =56
           X: =472
-          Y: =344
+          Y: =346
           Wrap: =true
-          PaddingTop: =6
+          PaddingTop: =4
           PaddingBottom: =0
     - cardO2:
         Control: ModernText@1.0.0
@@ -608,7 +608,7 @@ Screens:
           Size: =11
           Text: ="外部接続"
           Visible: =gblTab = "org"
-          Width: =90
+          Width: =96
           X: =562
           Y: =462
           Wrap: =true
@@ -623,7 +623,7 @@ Screens:
           Size: =11
           Text: ="無線LAN"
           Visible: =gblTab = "org"
-          Width: =90
+          Width: =96
           X: =658
           Y: =462
           Wrap: =true
@@ -749,6 +749,14 @@ Screens:
                       PaddingTop: =13
                       PaddingBottom: =0
                       FillPortions: =0
+                - o2ExtSpL:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =""
+                      Width: =20
+                      FillPortions: =0
+                      PaddingLeft: =0
+                      PaddingRight: =0
                 - o2Ext:
                     Control: ModernText@1.0.0
                     Properties:
@@ -761,12 +769,31 @@ Screens:
                       RadiusBottomLeft: =4
                       RadiusBottomRight: =4
                       Size: =11
-                      Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsExt, "― 設定不可", If(ThisItem.ApExt, "要", "不要"))
-                      Width: =96
+                      Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsExt, "―", If(ThisItem.ApExt, "要", "不要"))
+                      Width: =56
                       Wrap: =true
-                      PaddingTop: =14
+                      PaddingTop: =5
                       PaddingBottom: =0
                       FillPortions: =0
+                      Height: =26
+                      AlignInContainer: =AlignInContainer.Center
+                      LayoutMinHeight: =0
+                - o2ExtSpR:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =""
+                      Width: =20
+                      FillPortions: =0
+                      PaddingLeft: =0
+                      PaddingRight: =0
+                - o2WlanSpL:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =""
+                      Width: =20
+                      FillPortions: =0
+                      PaddingLeft: =0
+                      PaddingRight: =0
                 - o2Wlan:
                     Control: ModernText@1.0.0
                     Properties:
@@ -779,12 +806,31 @@ Screens:
                       RadiusBottomLeft: =4
                       RadiusBottomRight: =4
                       Size: =11
-                      Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsWlan, "― 設定不可", If(ThisItem.ApWlan, "要", "不要"))
-                      Width: =96
+                      Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsWlan, "―", If(ThisItem.ApWlan, "要", "不要"))
+                      Width: =56
                       Wrap: =true
-                      PaddingTop: =14
+                      PaddingTop: =5
                       PaddingBottom: =0
                       FillPortions: =0
+                      Height: =26
+                      AlignInContainer: =AlignInContainer.Center
+                      LayoutMinHeight: =0
+                - o2WlanSpR:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =""
+                      Width: =20
+                      FillPortions: =0
+                      PaddingLeft: =0
+                      PaddingRight: =0
+                - o2CloudSpL:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =""
+                      Width: =17
+                      FillPortions: =0
+                      PaddingLeft: =0
+                      PaddingRight: =0
                 - o2Cloud:
                     Control: ModernText@1.0.0
                     Properties:
@@ -797,12 +843,23 @@ Screens:
                       RadiusBottomLeft: =4
                       RadiusBottomRight: =4
                       Size: =11
-                      Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsCloud, "― 設定不可", If(ThisItem.ApCloud, "要", "不要"))
-                      Width: =90
+                      Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsCloud, "―", If(ThisItem.ApCloud, "要", "不要"))
+                      Width: =56
                       Wrap: =true
-                      PaddingTop: =14
+                      PaddingTop: =5
                       PaddingBottom: =0
                       FillPortions: =0
+                      Height: =26
+                      AlignInContainer: =AlignInContainer.Center
+                      LayoutMinHeight: =0
+                - o2CloudSpR:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =""
+                      Width: =17
+                      FillPortions: =0
+                      PaddingLeft: =0
+                      PaddingRight: =0
             - o2Rule:
                 Control: ModernText@1.0.0
                 Properties:
@@ -1426,17 +1483,20 @@ Screens:
                       Align: ='TextCanvas.Align'.Center
                       Color: =RGBA(74, 71, 64, 1)
                       Fill: =If(ThisItem.ReqType.Value = "ORG1" || ThisItem.ReqType.Value = "ORG2", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1))
-                      RadiusTopLeft: =3
-                      RadiusTopRight: =3
-                      RadiusBottomLeft: =3
-                      RadiusBottomRight: =3
+                      RadiusTopLeft: =4
+                      RadiusTopRight: =4
+                      RadiusBottomLeft: =4
+                      RadiusBottomRight: =4
                       Size: =11
                       Text: =Switch(ThisItem.ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", ThisItem.ReqType.Value)
                       Width: =146
                       Wrap: =true
-                      PaddingTop: =16
+                      PaddingTop: =5
                       PaddingBottom: =0
                       FillPortions: =0
+                      Height: =26
+                      AlignInContainer: =AlignInContainer.Center
+                      LayoutMinHeight: =0
                 - hTarget:
                     Control: ModernText@1.0.0
                     Properties:
