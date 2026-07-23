@@ -303,7 +303,7 @@ Screens:
     - lblO1Ja:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Center
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(243, 241, 234, 1)
           Height: =34
@@ -338,7 +338,7 @@ Screens:
     - lblO1En:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Center
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(243, 241, 234, 1)
           Height: =34
