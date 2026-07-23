@@ -35,7 +35,7 @@ Screens:
           X: =28
           Y: =0
           Wrap: =true
-          PaddingTop: =15
+          PaddingTop: =11
           PaddingBottom: =0
     - qBack:
         Control: ModernText@1.0.0
@@ -54,7 +54,7 @@ Screens:
           X: =Parent.Width - 220
           Y: =0
           Wrap: =true
-          PaddingTop: =17
+          PaddingTop: =14
           PaddingBottom: =0
     - qCard1:
         Control: ModernText@1.0.0
@@ -92,7 +92,7 @@ Screens:
           X: =52
           Y: =86
           Wrap: =true
-          PaddingTop: =5
+          PaddingTop: =1
           PaddingBottom: =0
     - qmC0:
         Control: ModernText@1.0.0
@@ -125,7 +125,7 @@ Screens:
           X: =52
           Y: =144
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - qmC1:
         Control: ModernText@1.0.0
@@ -158,7 +158,7 @@ Screens:
           X: =292
           Y: =144
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - qmC2:
         Control: ModernText@1.0.0
@@ -191,7 +191,7 @@ Screens:
           X: =532
           Y: =144
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - qmC3:
         Control: ModernText@1.0.0
@@ -224,7 +224,7 @@ Screens:
           X: =772
           Y: =144
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - qnC0:
         Control: ModernText@1.0.0
@@ -257,7 +257,7 @@ Screens:
           X: =52
           Y: =198
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - qnC1:
         Control: ModernText@1.0.0
@@ -290,7 +290,7 @@ Screens:
           X: =292
           Y: =198
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - qnC2:
         Control: ModernText@1.0.0
@@ -323,7 +323,7 @@ Screens:
           X: =532
           Y: =198
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - qnC3:
         Control: ModernText@1.0.0
@@ -356,7 +356,7 @@ Screens:
           X: =772
           Y: =198
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - qCard2:
         Control: ModernText@1.0.0
@@ -394,7 +394,7 @@ Screens:
           X: =52
           Y: =262
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - qH0:
         Control: ModernText@1.0.0
@@ -410,7 +410,7 @@ Screens:
           X: =52
           Y: =298
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - qH1:
         Control: ModernText@1.0.0
@@ -426,7 +426,7 @@ Screens:
           X: =100
           Y: =298
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - qH2:
         Control: ModernText@1.0.0
@@ -442,7 +442,7 @@ Screens:
           X: =178
           Y: =298
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - qH3:
         Control: ModernText@1.0.0
@@ -458,7 +458,7 @@ Screens:
           X: =276
           Y: =298
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - qH4:
         Control: ModernText@1.0.0
@@ -474,7 +474,7 @@ Screens:
           X: =544
           Y: =298
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - qHRule:
         Control: ModernText@1.0.0
@@ -534,7 +534,7 @@ Screens:
                   X: =0
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =23
+                  PaddingTop: =21
                   PaddingBottom: =0
             - qiOp:
                 Control: ModernText@1.0.0
@@ -556,7 +556,7 @@ Screens:
                   X: =46
                   Y: =17
                   Wrap: =true
-                  PaddingTop: =6
+                  PaddingTop: =4
                   PaddingBottom: =0
             - qiKind:
                 Control: ModernText@1.0.0
@@ -572,7 +572,7 @@ Screens:
                   X: =126
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =23
+                  PaddingTop: =21
                   PaddingBottom: =0
             - qiKey:
                 Control: ModernText@1.0.0
@@ -588,7 +588,7 @@ Screens:
                   X: =224
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =23
+                  PaddingTop: =21
                   PaddingBottom: =0
             - qiChange:
                 Control: ModernText@1.0.0
@@ -604,7 +604,7 @@ Screens:
                   X: =492
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =23
+                  PaddingTop: =21
                   PaddingBottom: =0
             - qiRule:
                 Control: ModernText@1.0.0
@@ -638,7 +638,7 @@ Screens:
           X: =52
           Y: =360
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =9
           PaddingBottom: =0
     - qNote:
         Control: ModernText@1.0.0
@@ -659,5 +659,5 @@ Screens:
           X: =52
           Y: =Parent.Height - 74
           Wrap: =true
-          PaddingTop: =10
+          PaddingTop: =8
           PaddingBottom: =0

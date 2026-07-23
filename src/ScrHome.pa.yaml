@@ -32,7 +32,7 @@ Screens:
           X: =28
           Y: =0
           Wrap: =true
-          PaddingTop: =15
+          PaddingTop: =11
           PaddingBottom: =0
     - lblMe:
         Control: ModernText@1.0.0
@@ -46,7 +46,7 @@ Screens:
           X: =Parent.Width - 348
           Y: =0
           Wrap: =true
-          PaddingTop: =17
+          PaddingTop: =15
           PaddingBottom: =0
     - lblOrg1Cap:
         Control: ModernText@1.0.0
@@ -89,7 +89,7 @@ Screens:
           X: =28
           Y: =130
           Wrap: =true
-          PaddingTop: =6
+          PaddingTop: =3
           PaddingBottom: =0
     - lblTabOrg:
         Control: ModernText@1.0.0
@@ -110,7 +110,7 @@ Screens:
           X: =28
           Y: =62
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =8
           PaddingBottom: =0
     - tabULOrg:
         Control: ModernText@1.0.0
@@ -146,7 +146,7 @@ Screens:
           X: =186
           Y: =62
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =8
           PaddingBottom: =0
     - tabULUser:
         Control: ModernText@1.0.0
@@ -182,7 +182,7 @@ Screens:
           X: =344
           Y: =62
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =8
           PaddingBottom: =0
     - tabULHist:
         Control: ModernText@1.0.0
@@ -248,7 +248,7 @@ Screens:
           X: =52
           Y: =198
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - lblO1CodeCap:
         Control: ModernText@1.0.0
@@ -283,7 +283,7 @@ Screens:
           X: =52
           Y: =254
           Wrap: =true
-          PaddingTop: =8
+          PaddingTop: =5
           PaddingBottom: =0
     - lblO1JaCap:
         Control: ModernText@1.0.0
@@ -318,7 +318,7 @@ Screens:
           X: =192
           Y: =254
           Wrap: =true
-          PaddingTop: =8
+          PaddingTop: =5
           PaddingBottom: =0
     - lblO1EnCap:
         Control: ModernText@1.0.0
@@ -353,7 +353,7 @@ Screens:
           X: =452
           Y: =254
           Wrap: =true
-          PaddingTop: =8
+          PaddingTop: =5
           PaddingBottom: =0
     - lblO1MsCap:
         Control: ModernText@1.0.0
@@ -369,7 +369,7 @@ Screens:
           X: =52
           Y: =302
           Wrap: =true
-          PaddingTop: =1
+          PaddingTop: =0
           PaddingBottom: =0
     - lblO1ExtCap:
         Control: ModernText@1.0.0
@@ -405,7 +405,7 @@ Screens:
           X: =52
           Y: =346
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =1
           PaddingBottom: =0
     - lblO1WlanCap:
         Control: ModernText@1.0.0
@@ -441,7 +441,7 @@ Screens:
           X: =262
           Y: =346
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =1
           PaddingBottom: =0
     - lblO1CloudCap:
         Control: ModernText@1.0.0
@@ -477,7 +477,7 @@ Screens:
           X: =472
           Y: =346
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =1
           PaddingBottom: =0
     - cardO2:
         Control: ModernText@1.0.0
@@ -513,7 +513,7 @@ Screens:
           X: =52
           Y: =420
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - btnO2New:
         Control: ModernText@1.0.0
@@ -537,7 +537,7 @@ Screens:
           X: =Parent.Width - 200
           Y: =420
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =4
           PaddingBottom: =0
     - lblO2H0:
         Control: ModernText@1.0.0
@@ -552,7 +552,7 @@ Screens:
           X: =52
           Y: =462
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblO2H1:
         Control: ModernText@1.0.0
@@ -567,7 +567,7 @@ Screens:
           X: =150
           Y: =462
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblO2H2:
         Control: ModernText@1.0.0
@@ -582,7 +582,7 @@ Screens:
           X: =336
           Y: =462
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblO2H3:
         Control: ModernText@1.0.0
@@ -597,7 +597,7 @@ Screens:
           X: =492
           Y: =462
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblO2H4:
         Control: ModernText@1.0.0
@@ -612,7 +612,7 @@ Screens:
           X: =562
           Y: =462
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblO2H5:
         Control: ModernText@1.0.0
@@ -627,7 +627,7 @@ Screens:
           X: =658
           Y: =462
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblO2H6:
         Control: ModernText@1.0.0
@@ -642,7 +642,7 @@ Screens:
           X: =754
           Y: =462
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - o2HRule:
         Control: ModernText@1.0.0
@@ -710,7 +710,7 @@ Screens:
                       Text: =ThisItem.Title
                       Width: =98
                       Wrap: =true
-                      PaddingTop: =13
+                      PaddingTop: =11
                       PaddingBottom: =0
                       FillPortions: =0
                 - o2Ja:
@@ -722,7 +722,7 @@ Screens:
                       Text: =ThisItem.NameJa
                       Width: =186
                       Wrap: =true
-                      PaddingTop: =13
+                      PaddingTop: =10
                       PaddingBottom: =0
                       FillPortions: =0
                 - o2En:
@@ -734,7 +734,7 @@ Screens:
                       Text: =ThisItem.NameEn
                       Width: =156
                       Wrap: =true
-                      PaddingTop: =13
+                      PaddingTop: =11
                       PaddingBottom: =0
                       FillPortions: =0
                 - o2Sort:
@@ -746,7 +746,7 @@ Screens:
                       Text: =ThisItem.SortOrder
                       Width: =70
                       Wrap: =true
-                      PaddingTop: =13
+                      PaddingTop: =11
                       PaddingBottom: =0
                       FillPortions: =0
                 - o2ExtSpL:
@@ -772,7 +772,7 @@ Screens:
                       Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsExt, "―", If(ThisItem.ApExt, "要", "不要"))
                       Width: =56
                       Wrap: =true
-                      PaddingTop: =5
+                      PaddingTop: =3
                       PaddingBottom: =0
                       FillPortions: =0
                       Height: =26
@@ -809,7 +809,7 @@ Screens:
                       Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsWlan, "―", If(ThisItem.ApWlan, "要", "不要"))
                       Width: =56
                       Wrap: =true
-                      PaddingTop: =5
+                      PaddingTop: =3
                       PaddingBottom: =0
                       FillPortions: =0
                       Height: =26
@@ -846,7 +846,7 @@ Screens:
                       Text: =If(!LookUp(colOrg1, Title = gblOrg1).MsCloud, "―", If(ThisItem.ApCloud, "要", "不要"))
                       Width: =56
                       Wrap: =true
-                      PaddingTop: =5
+                      PaddingTop: =3
                       PaddingBottom: =0
                       FillPortions: =0
                       Height: =26
@@ -893,7 +893,7 @@ Screens:
           X: =52
           Y: =Parent.Height - 106
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - btnO2Submit:
         Control: ModernText@1.0.0
@@ -917,7 +917,7 @@ Screens:
           X: =Parent.Width - 240
           Y: =Parent.Height - 106
           Wrap: =true
-          PaddingTop: =8
+          PaddingTop: =5
           PaddingBottom: =0
     - lblVCap:
         Control: ModernText@1.0.0
@@ -954,7 +954,7 @@ Screens:
           X: =28
           Y: =202
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - vwCONFORM:
         Control: ModernText@1.0.0
@@ -976,7 +976,7 @@ Screens:
           X: =184
           Y: =202
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - vwEXTCONN:
         Control: ModernText@1.0.0
@@ -998,7 +998,7 @@ Screens:
           X: =308
           Y: =202
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - vwWLAN:
         Control: ModernText@1.0.0
@@ -1020,7 +1020,7 @@ Screens:
           X: =432
           Y: =202
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - vwCLOUD:
         Control: ModernText@1.0.0
@@ -1042,7 +1042,7 @@ Screens:
           X: =556
           Y: =202
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - vwINFOSEC:
         Control: ModernText@1.0.0
@@ -1064,7 +1064,7 @@ Screens:
           X: =680
           Y: =202
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - chkOnly:
         Control: ModernText@1.0.0
@@ -1084,7 +1084,7 @@ Screens:
           X: =28
           Y: =244
           Wrap: =true
-          PaddingTop: =5
+          PaddingTop: =3
           PaddingBottom: =0
     - btnPrev:
         Control: ModernText@1.0.0
@@ -1105,7 +1105,7 @@ Screens:
           X: =Parent.Width - 260
           Y: =244
           Wrap: =true
-          PaddingTop: =5
+          PaddingTop: =2
           PaddingBottom: =0
     - lblPage:
         Control: ModernText@1.0.0
@@ -1120,7 +1120,7 @@ Screens:
           X: =Parent.Width - 214
           Y: =244
           Wrap: =true
-          PaddingTop: =6
+          PaddingTop: =4
           PaddingBottom: =0
     - btnNext:
         Control: ModernText@1.0.0
@@ -1143,7 +1143,7 @@ Screens:
           X: =Parent.Width - 68
           Y: =244
           Wrap: =true
-          PaddingTop: =5
+          PaddingTop: =2
           PaddingBottom: =0
     - btnUserNew:
         Control: ModernText@1.0.0
@@ -1167,7 +1167,7 @@ Screens:
           X: =Parent.Width - 200
           Y: =202
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =4
           PaddingBottom: =0
     - lblHCap:
         Control: ModernText@1.0.0
@@ -1206,7 +1206,7 @@ Screens:
           X: =28
           Y: =146
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - hfmaster:
         Control: ModernText@1.0.0
@@ -1230,7 +1230,7 @@ Screens:
           X: =134
           Y: =146
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - hfgrant:
         Control: ModernText@1.0.0
@@ -1254,7 +1254,7 @@ Screens:
           X: =310
           Y: =146
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - lblHCount:
         Control: ModernText@1.0.0
@@ -1269,7 +1269,7 @@ Screens:
           X: =Parent.Width - 148
           Y: =146
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - cardH:
         Control: ModernText@1.0.0
@@ -1304,7 +1304,7 @@ Screens:
           X: =44
           Y: =208
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblHH1:
         Control: ModernText@1.0.0
@@ -1319,7 +1319,7 @@ Screens:
           X: =190
           Y: =208
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblHH2:
         Control: ModernText@1.0.0
@@ -1334,7 +1334,7 @@ Screens:
           X: =366
           Y: =208
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblHH3:
         Control: ModernText@1.0.0
@@ -1349,7 +1349,7 @@ Screens:
           X: =512
           Y: =208
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblHH4:
         Control: ModernText@1.0.0
@@ -1364,7 +1364,7 @@ Screens:
           X: =760
           Y: =208
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblHH5:
         Control: ModernText@1.0.0
@@ -1379,7 +1379,7 @@ Screens:
           X: =886
           Y: =208
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - lblHH6:
         Control: ModernText@1.0.0
@@ -1394,7 +1394,7 @@ Screens:
           X: =952
           Y: =208
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0
     - hHRule:
         Control: ModernText@1.0.0
@@ -1462,7 +1462,7 @@ Screens:
                       Text: =Text(ThisItem.SubmittedAt, "yyyy/mm/dd hh:mm")
                       Width: =146
                       Wrap: =true
-                      PaddingTop: =16
+                      PaddingTop: =14
                       PaddingBottom: =0
                       FillPortions: =0
                 - hNo:
@@ -1474,7 +1474,7 @@ Screens:
                       Text: =ThisItem.Title
                       Width: =176
                       Wrap: =true
-                      PaddingTop: =16
+                      PaddingTop: =14
                       PaddingBottom: =0
                       FillPortions: =0
                 - hType:
@@ -1491,7 +1491,7 @@ Screens:
                       Text: =Switch(ThisItem.ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", ThisItem.ReqType.Value)
                       Width: =146
                       Wrap: =true
-                      PaddingTop: =5
+                      PaddingTop: =3
                       PaddingBottom: =0
                       FillPortions: =0
                       Height: =26
@@ -1506,7 +1506,7 @@ Screens:
                       Text: =ThisItem.TargetName
                       Width: =248
                       Wrap: =true
-                      PaddingTop: =15
+                      PaddingTop: =13
                       PaddingBottom: =0
                       FillPortions: =0
                 - hBy:
@@ -1518,7 +1518,7 @@ Screens:
                       Text: =ThisItem.ApplicantName
                       Width: =126
                       Wrap: =true
-                      PaddingTop: =15
+                      PaddingTop: =13
                       PaddingBottom: =0
                       FillPortions: =0
                 - hCount:
@@ -1530,7 +1530,7 @@ Screens:
                       Text: =ThisItem.ItemCount
                       Width: =66
                       Wrap: =true
-                      PaddingTop: =16
+                      PaddingTop: =14
                       PaddingBottom: =0
                       FillPortions: =0
                 - hStatus:
@@ -1542,7 +1542,7 @@ Screens:
                       Text: =Switch(ThisItem.Status.Value, "APPLIED", "反映済", "SUBMITTED", "処理中", "ERROR", "エラー", ThisItem.Status.Value)
                       Width: =80
                       Wrap: =true
-                      PaddingTop: =16
+                      PaddingTop: =14
                       PaddingBottom: =0
                       FillPortions: =0
             - hOpen:
@@ -1590,7 +1590,7 @@ Screens:
           X: =44
           Y: =284
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =9
           PaddingBottom: =0
     - cardMx:
         Control: ModernText@1.0.0
@@ -1635,7 +1635,7 @@ Screens:
           X: =44
           Y: =292
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =1
           PaddingBottom: =0
     - mhN1:
         Control: ModernText@1.0.0
@@ -1657,7 +1657,7 @@ Screens:
           X: =252
           Y: =292
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =1
           PaddingBottom: =0
     - mhR1:
         Control: ModernText@1.0.0
@@ -1686,7 +1686,7 @@ Screens:
           X: =302
           Y: =314
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
     - mhOpen1:
         Control: ModernText@1.0.0
@@ -1730,7 +1730,7 @@ Screens:
           X: =382
           Y: =292
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =1
           PaddingBottom: =0
     - mhR2:
         Control: ModernText@1.0.0
@@ -1759,7 +1759,7 @@ Screens:
           X: =432
           Y: =314
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
     - mhOpen2:
         Control: ModernText@1.0.0
@@ -1803,7 +1803,7 @@ Screens:
           X: =512
           Y: =292
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =1
           PaddingBottom: =0
     - mhR3:
         Control: ModernText@1.0.0
@@ -1832,7 +1832,7 @@ Screens:
           X: =562
           Y: =314
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
     - mhOpen3:
         Control: ModernText@1.0.0
@@ -1876,7 +1876,7 @@ Screens:
           X: =642
           Y: =292
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =1
           PaddingBottom: =0
     - mhR4:
         Control: ModernText@1.0.0
@@ -1905,7 +1905,7 @@ Screens:
           X: =692
           Y: =314
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
     - mhOpen4:
         Control: ModernText@1.0.0
@@ -1949,7 +1949,7 @@ Screens:
           X: =772
           Y: =292
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =1
           PaddingBottom: =0
     - mhR5:
         Control: ModernText@1.0.0
@@ -1978,7 +1978,7 @@ Screens:
           X: =822
           Y: =314
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
     - mhOpen5:
         Control: ModernText@1.0.0
@@ -2022,7 +2022,7 @@ Screens:
           X: =902
           Y: =292
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =1
           PaddingBottom: =0
     - mhR6:
         Control: ModernText@1.0.0
@@ -2051,7 +2051,7 @@ Screens:
           X: =952
           Y: =314
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
     - mhOpen6:
         Control: ModernText@1.0.0
@@ -2095,7 +2095,7 @@ Screens:
           X: =1032
           Y: =292
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =1
           PaddingBottom: =0
     - mhR7:
         Control: ModernText@1.0.0
@@ -2124,7 +2124,7 @@ Screens:
           X: =1082
           Y: =314
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
     - mhOpen7:
         Control: ModernText@1.0.0
@@ -2168,7 +2168,7 @@ Screens:
           X: =1162
           Y: =292
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =1
           PaddingBottom: =0
     - mhR8:
         Control: ModernText@1.0.0
@@ -2197,7 +2197,7 @@ Screens:
           X: =1212
           Y: =314
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
     - mhOpen8:
         Control: ModernText@1.0.0
@@ -2297,7 +2297,7 @@ Screens:
                         '
                       Width: =150
                       Wrap: =true
-                      PaddingTop: =14
+                      PaddingTop: =12
                       PaddingBottom: =0
                       FillPortions: =0
                 - mxRowCode:
@@ -2311,7 +2311,7 @@ Screens:
                         '
                       Width: =58
                       Wrap: =true
-                      PaddingTop: =16
+                      PaddingTop: =14
                       PaddingBottom: =0
                       FillPortions: =0
                 - mxC1:
@@ -2327,7 +2327,7 @@ Screens:
 
                         '
                       Wrap: =true
-                      PaddingTop: =12
+                      PaddingTop: =8
                       PaddingBottom: =0
                       FillPortions: =0
                       Width: =130
@@ -2344,7 +2344,7 @@ Screens:
 
                         '
                       Wrap: =true
-                      PaddingTop: =12
+                      PaddingTop: =8
                       PaddingBottom: =0
                       FillPortions: =0
                       Width: =130
@@ -2361,7 +2361,7 @@ Screens:
 
                         '
                       Wrap: =true
-                      PaddingTop: =12
+                      PaddingTop: =8
                       PaddingBottom: =0
                       FillPortions: =0
                       Width: =130
@@ -2378,7 +2378,7 @@ Screens:
 
                         '
                       Wrap: =true
-                      PaddingTop: =12
+                      PaddingTop: =8
                       PaddingBottom: =0
                       FillPortions: =0
                       Width: =130
@@ -2395,7 +2395,7 @@ Screens:
 
                         '
                       Wrap: =true
-                      PaddingTop: =12
+                      PaddingTop: =8
                       PaddingBottom: =0
                       FillPortions: =0
                       Width: =130
@@ -2412,7 +2412,7 @@ Screens:
 
                         '
                       Wrap: =true
-                      PaddingTop: =12
+                      PaddingTop: =8
                       PaddingBottom: =0
                       FillPortions: =0
                       Width: =130
@@ -2429,7 +2429,7 @@ Screens:
 
                         '
                       Wrap: =true
-                      PaddingTop: =12
+                      PaddingTop: =8
                       PaddingBottom: =0
                       FillPortions: =0
                       Width: =130
@@ -2446,7 +2446,7 @@ Screens:
 
                         '
                       Wrap: =true
-                      PaddingTop: =12
+                      PaddingTop: =8
                       PaddingBottom: =0
                       FillPortions: =0
                       Width: =130
@@ -2486,5 +2486,5 @@ Screens:
           X: =44
           Y: =Parent.Height - 44
           Wrap: =true
-          PaddingTop: =4
+          PaddingTop: =2
           PaddingBottom: =0

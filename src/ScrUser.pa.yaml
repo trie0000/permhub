@@ -34,7 +34,7 @@ Screens:
           X: =28
           Y: =0
           Wrap: =true
-          PaddingTop: =15
+          PaddingTop: =11
           PaddingBottom: =0
     - uBack:
         Control: ModernText@1.0.0
@@ -51,7 +51,7 @@ Screens:
           X: =Parent.Width - 200
           Y: =0
           Wrap: =true
-          PaddingTop: =17
+          PaddingTop: =14
           PaddingBottom: =0
     - uModeBg:
         Control: ModernText@1.0.0
@@ -100,7 +100,7 @@ Screens:
           X: =52
           Y: =72
           Wrap: =true
-          PaddingTop: =16
+          PaddingTop: =13
           PaddingBottom: =0
     - uModeNote:
         Control: ModernText@1.0.0
@@ -114,7 +114,7 @@ Screens:
           X: =180
           Y: =72
           Wrap: =true
-          PaddingTop: =17
+          PaddingTop: =15
           PaddingBottom: =0
     - uCard1:
         Control: ModernText@1.0.0
@@ -148,7 +148,7 @@ Screens:
           X: =52
           Y: =154
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - uGidCap:
         Control: ModernText@1.0.0
@@ -185,7 +185,7 @@ Screens:
           X: =52
           Y: =244
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
     - uNameCap:
         Control: ModernText@1.0.0
@@ -277,7 +277,7 @@ Screens:
           X: =1036
           Y: =208
           Wrap: =true
-          PaddingTop: =8
+          PaddingTop: =6
           PaddingBottom: =0
     - uCard2:
         Control: ModernText@1.0.0
@@ -311,7 +311,7 @@ Screens:
           X: =52
           Y: =320
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - galOrgTab:
         Control: Gallery@2.15.0
@@ -350,7 +350,7 @@ Screens:
               X: =0
               Y: =0
               Wrap: =true
-              PaddingTop: =11
+              PaddingTop: =9
               PaddingBottom: =0
     - uRoleRule:
         Control: ModernText@1.0.0
@@ -388,7 +388,7 @@ Screens:
           X: =52
           Y: =418
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =7
           PaddingBottom: =0
     - rsSECMGR:
         Control: ModernText@1.0.0
@@ -404,7 +404,7 @@ Screens:
           X: =356
           Y: =418
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =9
           PaddingBottom: =0
     - rlCONFORM:
         Control: ModernText@1.0.0
@@ -427,7 +427,7 @@ Screens:
           X: =52
           Y: =458
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =7
           PaddingBottom: =0
     - rsCONFORM:
         Control: ModernText@1.0.0
@@ -443,7 +443,7 @@ Screens:
           X: =356
           Y: =458
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =9
           PaddingBottom: =0
     - rlEXTCONN:
         Control: ModernText@1.0.0
@@ -466,7 +466,7 @@ Screens:
           X: =52
           Y: =498
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =7
           PaddingBottom: =0
     - rsEXTCONN:
         Control: ModernText@1.0.0
@@ -482,7 +482,7 @@ Screens:
           X: =356
           Y: =498
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =9
           PaddingBottom: =0
     - rlWLAN:
         Control: ModernText@1.0.0
@@ -505,7 +505,7 @@ Screens:
           X: =52
           Y: =538
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =7
           PaddingBottom: =0
     - rsWLAN:
         Control: ModernText@1.0.0
@@ -521,7 +521,7 @@ Screens:
           X: =356
           Y: =538
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =9
           PaddingBottom: =0
     - rlCLOUD:
         Control: ModernText@1.0.0
@@ -544,7 +544,7 @@ Screens:
           X: =52
           Y: =578
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =7
           PaddingBottom: =0
     - rsCLOUD:
         Control: ModernText@1.0.0
@@ -560,7 +560,7 @@ Screens:
           X: =356
           Y: =578
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =9
           PaddingBottom: =0
     - rlINFOSEC:
         Control: ModernText@1.0.0
@@ -583,7 +583,7 @@ Screens:
           X: =52
           Y: =618
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =7
           PaddingBottom: =0
     - rsINFOSEC:
         Control: ModernText@1.0.0
@@ -599,7 +599,7 @@ Screens:
           X: =356
           Y: =618
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =9
           PaddingBottom: =0
     - uDetailBg:
         Control: ModernText@1.0.0
@@ -633,7 +633,7 @@ Screens:
           X: =480
           Y: =430
           Wrap: =true
-          PaddingTop: =3
+          PaddingTop: =0
           PaddingBottom: =0
     - uScopeCap:
         Control: ModernText@1.0.0
@@ -670,7 +670,7 @@ Screens:
           X: =480
           Y: =486
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - uScopePick:
         Control: ModernText@1.0.0
@@ -693,7 +693,7 @@ Screens:
           X: =566
           Y: =486
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =5
           PaddingBottom: =0
     - uCrCap:
         Control: ModernText@1.0.0
@@ -732,7 +732,7 @@ Screens:
           X: =680
           Y: =486
           Wrap: =true
-          PaddingTop: =8
+          PaddingTop: =6
           PaddingBottom: =0
     - uCrD:
         Control: ModernText@1.0.0
@@ -756,7 +756,7 @@ Screens:
           X: =796
           Y: =486
           Wrap: =true
-          PaddingTop: =8
+          PaddingTop: =6
           PaddingBottom: =0
     - uO2Cap:
         Control: ModernText@1.0.0
@@ -805,7 +805,7 @@ Screens:
               X: =0
               Y: =0
               Wrap: =true
-              PaddingTop: =7
+              PaddingTop: =5
               PaddingBottom: =0
     - uO2All:
         Control: ModernText@1.0.0
@@ -820,7 +820,7 @@ Screens:
           X: =480
           Y: =550
           Wrap: =true
-          PaddingTop: =12
+          PaddingTop: =10
           PaddingBottom: =0
     - uNoGrant:
         Control: ModernText@1.0.0
@@ -835,7 +835,7 @@ Screens:
           X: =480
           Y: =550
           Wrap: =true
-          PaddingTop: =12
+          PaddingTop: =10
           PaddingBottom: =0
     - uErr:
         Control: ModernText@1.0.0
@@ -849,7 +849,7 @@ Screens:
           X: =52
           Y: =Parent.Height - 76
           Wrap: =true
-          PaddingTop: =8
+          PaddingTop: =6
           PaddingBottom: =0
     - uCancel:
         Control: ModernText@1.0.0
@@ -871,7 +871,7 @@ Screens:
           X: =Parent.Width - 340
           Y: =Parent.Height - 76
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =6
           PaddingBottom: =0
     - uSubmit:
         Control: ModernText@1.0.0
@@ -892,5 +892,5 @@ Screens:
           X: =Parent.Width - 196
           Y: =Parent.Height - 76
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =6
           PaddingBottom: =0
