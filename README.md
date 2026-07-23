@@ -84,6 +84,8 @@ Power Apps キャンバスアプリ + SharePoint リスト。**Premium ライセ
   列は**横方向 AutoLayout のコンテナー**に入れて `X` を持たせない
 - **ギャラリーはレイアウトコンテナーに入れる。** 入れないと貼り付けのたびに `Y` がずれる
 - **`ModernText` の `VerticalAlign` は効かない（no-op）。** 縦位置はパディングだけで決まる。
+  `PaddingTop = (Height − Size×24/13)/2`（24/13 は実測校正値。`AutoHeight` の 18/13 だと 3px 下がる）。
+  枠の高さと `Size` は全て固定なので画面サイズが変わってもズレない
   中央寄せは `PaddingTop = (Height - 行高)/2` / `PaddingBottom = 0`。行高 = `Size` × 18/13
   （実測）。この式ならスクロールバーも出ない
 - **高さが違うコントロールを同じ行に並べるときは `Y + Height/2`（中心）を揃える**
