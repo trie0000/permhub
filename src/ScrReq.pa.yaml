@@ -14,7 +14,6 @@ Screens:
           Text: '=""
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =Parent.Width
           X: =0
           Y: =0
@@ -32,12 +31,11 @@ Screens:
           Text: '="権限申請"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =320
           X: =28
           Y: =0
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =15
           PaddingBottom: =0
     - qBack:
         Control: ModernText@1.0.0
@@ -52,12 +50,11 @@ Screens:
           Text: '="申請履歴へ戻る"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =192
           X: =Parent.Width - 220
           Y: =0
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =17
           PaddingBottom: =0
     - qCard1:
         Control: ModernText@1.0.0
@@ -74,7 +71,6 @@ Screens:
           Text: '=""
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =Parent.Width - 56
           X: =28
           Y: =72
@@ -92,12 +88,11 @@ Screens:
           Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value) & "　" + "" & LookUp(PRM_Requests, Title = gblReqNo).TargetName
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =Parent.Width - 104
           X: =52
           Y: =86
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =5
           PaddingBottom: =0
     - qmC0:
         Control: ModernText@1.0.0
@@ -109,7 +104,6 @@ Screens:
           Text: '="申請番号"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =52
           Y: =126
@@ -127,12 +121,11 @@ Screens:
           Text: '=LookUp(PRM_Requests, Title = gblReqNo).Title
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =52
           Y: =144
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =3
           PaddingBottom: =0
     - qmC1:
         Control: ModernText@1.0.0
@@ -144,7 +137,6 @@ Screens:
           Text: '="申請種別"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =292
           Y: =126
@@ -162,12 +154,11 @@ Screens:
           Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value)
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =292
           Y: =144
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =3
           PaddingBottom: =0
     - qmC2:
         Control: ModernText@1.0.0
@@ -179,7 +170,6 @@ Screens:
           Text: '="対象"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =532
           Y: =126
@@ -197,12 +187,11 @@ Screens:
           Text: '=LookUp(PRM_Requests, Title = gblReqNo).TargetName
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =532
           Y: =144
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =3
           PaddingBottom: =0
     - qmC3:
         Control: ModernText@1.0.0
@@ -214,7 +203,6 @@ Screens:
           Text: '="申請者"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =772
           Y: =126
@@ -232,12 +220,11 @@ Screens:
           Text: '=LookUp(PRM_Requests, Title = gblReqNo).ApplicantName
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =772
           Y: =144
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =3
           PaddingBottom: =0
     - qnC0:
         Control: ModernText@1.0.0
@@ -249,7 +236,6 @@ Screens:
           Text: '="申請日時"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =52
           Y: =180
@@ -267,12 +253,11 @@ Screens:
           Text: '=Text(LookUp(PRM_Requests, Title = gblReqNo).SubmittedAt, "yyyy/mm/dd hh:mm")
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =52
           Y: =198
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =3
           PaddingBottom: =0
     - qnC1:
         Control: ModernText@1.0.0
@@ -284,7 +269,6 @@ Screens:
           Text: '="状態"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =292
           Y: =180
@@ -302,12 +286,11 @@ Screens:
           Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).Status.Value, "APPLIED", "反映済", "SUBMITTED", "処理中", "ERROR", "エラー", LookUp(PRM_Requests, Title = gblReqNo).Status.Value)
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =292
           Y: =198
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =3
           PaddingBottom: =0
     - qnC2:
         Control: ModernText@1.0.0
@@ -319,7 +302,6 @@ Screens:
           Text: '="明細件数"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =532
           Y: =180
@@ -337,12 +319,11 @@ Screens:
           Text: '=Text(LookUp(PRM_Requests, Title = gblReqNo).ItemCount) & "件"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =532
           Y: =198
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =3
           PaddingBottom: =0
     - qnC3:
         Control: ModernText@1.0.0
@@ -354,7 +335,6 @@ Screens:
           Text: '="組織区分1"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =772
           Y: =180
@@ -372,12 +352,11 @@ Screens:
           Text: '=LookUp(colOrg1, Title = LookUp(PRM_Requests, Title = gblReqNo).Org1Code).NameJa
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =220
           X: =772
           Y: =198
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =3
           PaddingBottom: =0
     - qCard2:
         Control: ModernText@1.0.0
@@ -394,7 +373,6 @@ Screens:
           Text: '=""
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =Parent.Width - 56
           X: =28
           Y: =248
@@ -412,12 +390,11 @@ Screens:
           Text: '="申請内容"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =300
           X: =52
           Y: =262
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =3
           PaddingBottom: =0
     - qH0:
         Control: ModernText@1.0.0
@@ -429,12 +406,11 @@ Screens:
           Text: '="#"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =40
           X: =52
           Y: =298
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =4
           PaddingBottom: =0
     - qH1:
         Control: ModernText@1.0.0
@@ -446,12 +422,11 @@ Screens:
           Text: '="操作"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =70
           X: =100
           Y: =298
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =4
           PaddingBottom: =0
     - qH2:
         Control: ModernText@1.0.0
@@ -463,12 +438,11 @@ Screens:
           Text: '="対象種別"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =90
           X: =178
           Y: =298
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =4
           PaddingBottom: =0
     - qH3:
         Control: ModernText@1.0.0
@@ -480,12 +454,11 @@ Screens:
           Text: '="対象"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =260
           X: =276
           Y: =298
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =4
           PaddingBottom: =0
     - qH4:
         Control: ModernText@1.0.0
@@ -497,12 +470,11 @@ Screens:
           Text: '="変更内容"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =600
           X: =544
           Y: =298
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =4
           PaddingBottom: =0
     - qHRule:
         Control: ModernText@1.0.0
@@ -515,7 +487,6 @@ Screens:
           Text: '=""
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =Parent.Width - 104
           X: =52
           Y: =324
@@ -559,12 +530,11 @@ Screens:
                   Text: '=ThisItem.Seq
 
                     '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
                   Width: =40
                   X: =0
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =0
+                  PaddingTop: =23
                   PaddingBottom: =0
             - qiOp:
                 Control: ModernText@1.0.0
@@ -582,12 +552,11 @@ Screens:
                   Text: '=Switch(ThisItem.Operation.Value, "ADD", "追加", "UPDATE", "変更", "DELETE", "削除", ThisItem.Operation.Value)
 
                     '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
                   Width: =60
                   X: =46
                   Y: =17
                   Wrap: =true
-                  PaddingTop: =0
+                  PaddingTop: =6
                   PaddingBottom: =0
             - qiKind:
                 Control: ModernText@1.0.0
@@ -599,12 +568,11 @@ Screens:
                   Text: '=Switch(ThisItem.EntityKind.Value, "ORG1", "組織区分1", "ORG2", "組織区分2", "USER", "利用者", "USERORG1", "所属", "GRANT", "権限", ThisItem.EntityKind.Value)
 
                     '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
                   Width: =90
                   X: =126
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =0
+                  PaddingTop: =23
                   PaddingBottom: =0
             - qiKey:
                 Control: ModernText@1.0.0
@@ -616,12 +584,11 @@ Screens:
                   Text: '=ThisItem.EntityKey
 
                     '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
                   Width: =260
                   X: =224
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =0
+                  PaddingTop: =23
                   PaddingBottom: =0
             - qiChange:
                 Control: ModernText@1.0.0
@@ -633,12 +600,11 @@ Screens:
                   Text: '=ThisItem.ChangeText
 
                     '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
                   Width: =Parent.TemplateWidth - 500
                   X: =492
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =0
+                  PaddingTop: =23
                   PaddingBottom: =0
             - qiRule:
                 Control: ModernText@1.0.0
@@ -651,7 +617,6 @@ Screens:
                   Text: '=""
 
                     '
-                  VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
                   Width: =Parent.TemplateWidth
                   X: =0
                   Y: =63
@@ -668,13 +633,12 @@ Screens:
           Text: '="この申請の明細がありません。"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Visible: =CountRows(Filter(PRM_RequestItems, ReqNo = gblReqNo)) = 0
           Width: =Parent.Width - 104
           X: =52
           Y: =360
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =11
           PaddingBottom: =0
     - qNote:
         Control: ModernText@1.0.0
@@ -691,10 +655,9 @@ Screens:
           Text: '="変更前・変更後は申請した時点の値を保存している。マスタが後で改名されても、この申請書は当時の名称のまま読める。"
 
             '
-          VerticalAlign: ='TextCanvas.VerticalAlign'.Middle
           Width: =Parent.Width - 104
           X: =52
           Y: =Parent.Height - 74
           Wrap: =true
-          PaddingTop: =0
+          PaddingTop: =10
           PaddingBottom: =0
