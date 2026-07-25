@@ -1727,7 +1727,7 @@ Screens:
               PaddingTop: =0
               PaddingBottom: =0
               VerticalAlign: =VerticalAlign.Middle
-              Width: =238
+              Width: =264
               FillPortions: =0
     - hHRule:
         Control: ModernText@1.0.0
@@ -1903,7 +1903,7 @@ Screens:
                     Control: GroupContainer@1.5.0
                     Variant: AutoLayout
                     Properties:
-                      Width: =238
+                      Width: =264
                       Height: =48
                       FillPortions: =0
                       AlignInContainer: =AlignInContainer.Center
@@ -1915,6 +1915,19 @@ Screens:
                       PaddingTop: =0
                       PaddingBottom: =0
                     Children:
+                        - hSp0:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: ='TextCanvas.Align'.Start
+                              Color: =RGBA(42, 42, 38, 1)
+                              Size: =8
+                              Text: =""
+                              Width: =8
+                              Wrap: =true
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                              VerticalAlign: =VerticalAlign.Middle
+                              FillPortions: =0
                         - hA1:
                             Control: ModernText@1.0.0
                             Properties:
@@ -1936,6 +1949,19 @@ Screens:
                               VerticalAlign: =VerticalAlign.Middle
                               FillPortions: =0
                               Height: =26
+                        - hSp1:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: ='TextCanvas.Align'.Start
+                              Color: =RGBA(42, 42, 38, 1)
+                              Size: =8
+                              Text: =""
+                              Width: =6
+                              Wrap: =true
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                              VerticalAlign: =VerticalAlign.Middle
+                              FillPortions: =0
                         - hA2:
                             Control: ModernText@1.0.0
                             Properties:
@@ -1957,6 +1983,19 @@ Screens:
                               VerticalAlign: =VerticalAlign.Middle
                               FillPortions: =0
                               Height: =26
+                        - hSp2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: ='TextCanvas.Align'.Start
+                              Color: =RGBA(42, 42, 38, 1)
+                              Size: =8
+                              Text: =""
+                              Width: =6
+                              Wrap: =true
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                              VerticalAlign: =VerticalAlign.Middle
+                              FillPortions: =0
                         - hA3:
                             Control: ModernText@1.0.0
                             Properties:
@@ -1978,6 +2017,19 @@ Screens:
                               VerticalAlign: =VerticalAlign.Middle
                               FillPortions: =0
                               Height: =26
+                        - hSp3:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: ='TextCanvas.Align'.Start
+                              Color: =RGBA(42, 42, 38, 1)
+                              Size: =8
+                              Text: =""
+                              Width: =6
+                              Wrap: =true
+                              PaddingTop: =0
+                              PaddingBottom: =0
+                              VerticalAlign: =VerticalAlign.Middle
+                              FillPortions: =0
                         - hA4:
                             Control: ModernText@1.0.0
                             Properties:
@@ -2008,7 +2060,7 @@ Screens:
                   OnSelect: =Set(gblReqNo, ThisItem.No); Navigate(ScrReq)
                   Size: =13
                   Text: =""
-                  Width: =Parent.TemplateWidth - 238
+                  Width: =Parent.TemplateWidth - 264
                   X: =0
                   Y: =0
                   Wrap: =true
@@ -3448,7 +3500,7 @@ Screens:
           Text: ="やめる"
           Visible: =gblModal = "hact"
           Width: =120
-          X: =(Parent.Width - 560) / 2 + 280
+          X: =(Parent.Width - 560) / 2 + 248
           Y: =(Parent.Height - 248) / 2 + 194
           Wrap: =true
           PaddingTop: =0
@@ -3470,7 +3522,7 @@ Screens:
           Text: =Switch(gblHAct, "done", "反映する", "rej", "差し戻す", "取り下げる")
           Visible: =gblModal = "hact"
           Width: =150
-          X: =(Parent.Width - 560) / 2 + 410
+          X: =(Parent.Width - 560) / 2 + 380
           Y: =(Parent.Height - 248) / 2 + 194
           Wrap: =true
           PaddingTop: =0

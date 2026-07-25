@@ -982,7 +982,7 @@ Screens:
           Text: ="やめる"
           Visible: =gblModal = "rdone"
           Width: =120
-          X: =(Parent.Width - 560) / 2 + 280
+          X: =(Parent.Width - 560) / 2 + 248
           Y: =(Parent.Height - 216) / 2 + 158
           Wrap: =true
           PaddingTop: =0
@@ -1004,7 +1004,7 @@ Screens:
           Text: ="反映する"
           Visible: =gblModal = "rdone"
           Width: =150
-          X: =(Parent.Width - 560) / 2 + 410
+          X: =(Parent.Width - 560) / 2 + 380
           Y: =(Parent.Height - 216) / 2 + 158
           Wrap: =true
           PaddingTop: =0
