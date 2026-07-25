@@ -2,7 +2,7 @@ Screens:
   ScrHome:
     Properties:
       Fill: =RGBA(243, 241, 234, 1)
-      OnVisible: =Set(gblP1, LookUp(colOrg1, Title = gblOrg1))
+      OnVisible: =Set(gblP1, LookUp(colOrg1, Title = gblOrg1)); If(IsEmpty(colO2Edit), ClearCollect(colO2Edit, colOrg2All))
     Children:
     - hdrBg:
         Control: ModernText@1.0.0
@@ -599,6 +599,21 @@ Screens:
           Wrap: =true
           PaddingTop: =2
           PaddingBottom: =0
+    - lblO2MsCap2:
+        Control: ModernText@1.0.0
+        Properties:
+          Text: ="多段階承認要否"
+          X: =562
+          Y: =438
+          Width: =282
+          Height: =18
+          Size: =11
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(150, 145, 136, 1)
+          Visible: =gblTab = "org"
+          PaddingTop: =0
+          PaddingBottom: =0
+          Wrap: =true
     - lblO2H4:
         Control: ModernText@1.0.0
         Properties:
@@ -664,7 +679,7 @@ Screens:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
         Properties:
-          Height: =Parent.Height - 560
+          Height: =Parent.Height - 606
           LayoutAlignItems: =LayoutAlignItems.Stretch
           LayoutDirection: =LayoutDirection.Vertical
           PaddingBottom: =0
@@ -681,7 +696,7 @@ Screens:
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
               FillPortions: =1
-              Items: =Filter(colOrg2All, Org1Code = gblOrg1)
+              Items: =Sort(Filter(colO2Edit, Org1Code = gblOrg1), SortOrder)
               ShowScrollbar: =true
               TemplatePadding: =0
               TemplateSize: =44
@@ -778,6 +793,9 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
+                      OnSelect: =If(LookUp(colOrg1, Title = gblOrg1).MsExt, Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApExt:!ThisItem.ApExt}))
+                      BorderThickness: =If(LookUp(colOrg1, Title = gblOrg1).MsExt && ThisItem.ApExt <> LookUp(colOrg2All, Title = ThisItem.Title).ApExt, 2, 0)
+                      BorderColor: =RGBA(198, 122, 58, 1)
                 - o2ExtSpR:
                     Control: ModernText@1.0.0
                     Properties:
@@ -815,6 +833,9 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
+                      OnSelect: =If(LookUp(colOrg1, Title = gblOrg1).MsWlan, Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApWlan:!ThisItem.ApWlan}))
+                      BorderThickness: =If(LookUp(colOrg1, Title = gblOrg1).MsWlan && ThisItem.ApWlan <> LookUp(colOrg2All, Title = ThisItem.Title).ApWlan, 2, 0)
+                      BorderColor: =RGBA(198, 122, 58, 1)
                 - o2WlanSpR:
                     Control: ModernText@1.0.0
                     Properties:
@@ -852,6 +873,9 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
+                      OnSelect: =If(LookUp(colOrg1, Title = gblOrg1).MsCloud, Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApCloud:!ThisItem.ApCloud}))
+                      BorderThickness: =If(LookUp(colOrg1, Title = gblOrg1).MsCloud && ThisItem.ApCloud <> LookUp(colOrg2All, Title = ThisItem.Title).ApCloud, 2, 0)
+                      BorderColor: =RGBA(198, 122, 58, 1)
                 - o2CloudSpR:
                     Control: ModernText@1.0.0
                     Properties:
@@ -860,6 +884,21 @@ Screens:
                       FillPortions: =0
                       PaddingLeft: =0
                       PaddingRight: =0
+                - o2Chg:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =If((ThisItem.ApExt <> LookUp(colOrg2All, Title = ThisItem.Title).ApExt) || (ThisItem.ApWlan <> LookUp(colOrg2All, Title = ThisItem.Title).ApWlan) || (ThisItem.ApCloud <> LookUp(colOrg2All, Title = ThisItem.Title).ApCloud), "● 未申請", "")
+                      Width: =96
+                      Height: =26
+                      FillPortions: =0
+                      LayoutMinHeight: =0
+                      AlignInContainer: =AlignInContainer.Center
+                      Align: ='TextCanvas.Align'.Left
+                      Size: =11
+                      Color: =RGBA(198, 122, 58, 1)
+                      PaddingTop: =3
+                      PaddingBottom: =0
+                      Wrap: =true
             - o2Rule:
                 Control: ModernText@1.0.0
                 Properties:
@@ -887,9 +926,9 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =11
-          Text: ="組織区分1 側が「不要」の申請種別は、組織区分2 で「要」にしても有効になりません。"
-          Visible: =gblTab = "org" && (Not(LookUp(colOrg1, Title = gblOrg1).MsExt) || Not(LookUp(colOrg1, Title = gblOrg1).MsWlan) || Not(LookUp(colOrg1, Title = gblOrg1).MsCloud))
-          Width: =Parent.Width - 320
+          Text: ="要否のセルをクリックすると 要／不要 が切り替わります。" & If(Not(LookUp(colOrg1, Title = gblOrg1).MsExt) || Not(LookUp(colOrg1, Title = gblOrg1).MsWlan) || Not(LookUp(colOrg1, Title = gblOrg1).MsCloud), "組織区分1 側が「不要」の種別（―）は変更できません。", "")
+          Visible: =gblTab = "org"
+          Width: =Parent.Width - 372
           X: =52
           Y: =Parent.Height - 106
           Wrap: =true
@@ -900,21 +939,19 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Center
           Color: =RGBA(255, 255, 255, 1)
-          Fill: =RGBA(122, 138, 120, 1)
+          Fill: =If(CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, {Chg:(e.ApExt <> LookUp(colOrg2All, Title = e.Title).ApExt) || (e.ApWlan <> LookUp(colOrg2All, Title = e.Title).ApWlan) || (e.ApCloud <> LookUp(colOrg2All, Title = e.Title).ApCloud)}), Chg)) = 0, RGBA(206, 202, 192, 1), RGBA(122, 138, 120, 1))
           FontWeight: ='TextCanvas.FontWeight'.Bold
           Height: =34
-          OnSelect: '=Notify("申請の書き込みは次フェーズで実装します。", NotificationType.Information)
-
-            '
+          OnSelect: =Set(gblErr, ""); ClearCollect(colO2Chg, Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, With({o:LookUp(colOrg2All, Title = e.Title)}, {Code:e.Title, NameJa:e.NameJa, BExt:o.ApExt, BWlan:o.ApWlan, BCloud:o.ApCloud, AExt:e.ApExt, AWlan:e.ApWlan, ACloud:e.ApCloud, Chg:(e.ApExt <> o.ApExt) || (e.ApWlan <> o.ApWlan) || (e.ApCloud <> o.ApCloud)})), Chg)); If(CountRows(colO2Chg) = 0, Set(gblErr, "変更がありません。要否のセルをクリックして変更してください。")); If(IsBlank(gblErr), Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr), Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"ORG2"}, TargetKey:gblOrg1, TargetName:LookUp(colOrg1, Title = gblOrg1).NameJa, Summary:"多段階承認要否の変更 " & CountRows(colO2Chg) & "件", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:CountRows(colO2Chg), Org1Code:gblOrg1})); If(IsBlank(gblErr), ForAll(Sequence(CountRows(colO2Chg)) As i, With({c:Index(colO2Chg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(i.Value, "000"), ReqNo:gblReqNo, Seq:i.Value, Operation:{Value:"UPDATE"}, EntityKind:{Value:"ORG2"}, EntityKey:c.Code, BeforeJson:"{""ApExt"":" & If(c.BExt, "true", "false") & ",""ApWlan"":" & If(c.BWlan, "true", "false") & ",""ApCloud"":" & If(c.BCloud, "true", "false") & "}", AfterJson:"{""ApExt"":" & If(c.AExt, "true", "false") & ",""ApWlan"":" & If(c.AWlan, "true", "false") & ",""ApCloud"":" & If(c.ACloud, "true", "false") & "}", ChangeText:c.NameJa & "（" & c.Code & "）：" & Concat(Filter(Table({n:"外部接続",b:c.BExt,a:c.AExt},{n:"無線LAN",b:c.BWlan,a:c.AWlan},{n:"クラウド",b:c.BCloud,a:c.ACloud}), b <> a), n & " " & If(b, "要", "不要") & "→" & If(a, "要", "不要"), "、")})))); If(IsBlank(gblErr), ForAll(colO2Chg As c, Patch(PRM_Org2, LookUp(PRM_Org2, Title = c.Code), {ApExt:c.AExt, ApWlan:c.AWlan, ApCloud:c.ACloud}))); If(IsBlank(gblErr), Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {Status:{Value:"APPLIED"}})); If(IsBlank(gblErr), ClearCollect(colOrg2All, Sort(Filter(PRM_Org2, IsActive = true), SortOrder))); If(IsBlank(gblErr), ClearCollect(colO2Edit, colOrg2All)); If(IsBlank(gblErr), Notify("申請しました（" & gblReqNo & "）", NotificationType.Success)); If(!IsBlank(gblErr), Notify(gblErr, NotificationType.Warning))
           RadiusTopLeft: =5
           RadiusTopRight: =5
           RadiusBottomLeft: =5
           RadiusBottomRight: =5
           Size: =13
-          Text: ="組織区分2 の変更を申請"
+          Text: =If(CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, {Chg:(e.ApExt <> LookUp(colOrg2All, Title = e.Title).ApExt) || (e.ApWlan <> LookUp(colOrg2All, Title = e.Title).ApWlan) || (e.ApCloud <> LookUp(colOrg2All, Title = e.Title).ApCloud)}), Chg)) = 0, "組織区分2 の変更を申請", "組織区分2 の変更を申請（" & CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, {Chg:(e.ApExt <> LookUp(colOrg2All, Title = e.Title).ApExt) || (e.ApWlan <> LookUp(colOrg2All, Title = e.Title).ApWlan) || (e.ApCloud <> LookUp(colOrg2All, Title = e.Title).ApCloud)}), Chg)) & "件）")
           Visible: =gblTab = "org"
-          Width: =188
-          X: =Parent.Width - 240
+          Width: =240
+          X: =Parent.Width - 292
           Y: =Parent.Height - 106
           Wrap: =true
           PaddingTop: =5
