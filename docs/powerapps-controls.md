@@ -437,6 +437,42 @@ ForAll(Sequence(N) As i, With({c: Index(colGChg, i.Value)},
   「選択中の画面」から始まるので気づきにくい）。貼り直したら `StartScreen` を設定し直す
 - 貼り付けが失敗すると**画面が消えたまま**になる。エラーダイアログの「表示数を増やす」で
   `PA2108` 等の詳細が読めるので、直してから貼り直す
+- **コントロール名はアプリ全体で一意。** 別の画面に同じ名前のコントロールが居ると
+  貼り付け時に**黙って `mdlOk_1` のように改名される**（エラーにはならない）。
+  YAML と実機の名前がずれるので、画面をまたぐ部品は接頭辞で分ける（`mdlOk` / `umdlOk`）
+
+## モーダルは「画面の子の一番最後」に置く
+
+Power Apps の Z オーダーは**子の並び順そのまま**（後にあるものが手前）。
+オーバーレイ（`Fill` に半透明色を入れた `ModernText`）を途中に置くと、
+それより後ろに定義したボタンが**オーバーレイの上に残り、暗くならないうえに押せてしまう**。
+
+- ツリー ビューは**逆順**（一番上の行が最前面）に見えるので、YAML の末尾＝ツリーの先頭
+- モーダルを閉じずに元のボタンを押せてしまうと、`gblGateOk` を使ったゲートが二重に走る
+
+## 確認モーダルは `Select(コントロール)` で本体を呼び直す
+
+「押す → 確認 → もう一度押したことにする」は、申請の本体を 2 か所に書かずに済む。
+
+```
+btnSubmit.OnSelect: If(危ない && !gblGateOk, Set(gblStop, true));
+                    If(gblStop, Set(gblModal, "grant")); Set(gblGateOk, false);
+                    If(!gblStop, ...本体...)
+mdlOk.OnSelect:     Set(gblGateOk, true); Set(gblModal, ""); Select(btnSubmit)
+```
+
+- **入口で必ず `Set(gblGateOk, false)` に戻す。** 戻さないと次回から確認が出ない
+- 本体側は `If(... && !gblStop, ...)` を**全部の文に付ける**。`;` 連結の途中で止められない
+- 1 つのモーダルを 2 用途で使うなら `gblModal` の値（`"grant"` / `"del"`）で
+  文言と OK のラベルを切り替える。`mdlOk` 側では
+  `Set(gblModalWas, gblModal)` に退避してから `Set(gblModal, "")` する
+  （`Select` の前に消すので、分岐に使う値が消えてしまう）
+
+## `Concat` の区切りは第3引数
+
+`Concat(テーブル, 式 & "、")` と書くと**末尾に余分な区切りが残る**。
+`Concat(テーブル, 式, "、")` の第3引数を使う。空文字を返す行が混じると
+そこにも区切りが入るので、`Concat(Filter(t, n > 0), s, "、")` のように**先に落とす**。
 
 ## AutoLayout の子だけ縦に縮める（`AlignInContainer`）
 
