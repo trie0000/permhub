@@ -408,28 +408,6 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
-    - btnO1Submit:
-        Control: ModernText@1.0.0
-        Properties:
-          X: =Parent.Width - 292
-          Y: =344
-          Width: =240
-          Height: =34
-          Text: =If(CountRows(fBad) > 0, "影響を承知して申請", If((If(fO1E.MsExt <> fP1.MsExt, 1, 0) + If(fO1E.MsWlan <> fP1.MsWlan, 1, 0) + If(fO1E.MsCloud <> fP1.MsCloud, 1, 0)) = 0, "組織区分1 の変更を申請", "組織区分1 の変更を申請（" & (If(fO1E.MsExt <> fP1.MsExt, 1, 0) + If(fO1E.MsWlan <> fP1.MsWlan, 1, 0) + If(fO1E.MsCloud <> fP1.MsCloud, 1, 0)) & "件）"))
-          Fill: =If(CountRows(fBad) > 0, RGBA(180, 95, 40, 1), If((If(fO1E.MsExt <> fP1.MsExt, 1, 0) + If(fO1E.MsWlan <> fP1.MsWlan, 1, 0) + If(fO1E.MsCloud <> fP1.MsCloud, 1, 0)) = 0, RGBA(206, 202, 192, 1), RGBA(122, 138, 120, 1)))
-          Color: =RGBA(255, 255, 255, 1)
-          Size: =12
-          Align: ='TextCanvas.Align'.Center
-          RadiusTopLeft: =4
-          RadiusTopRight: =4
-          RadiusBottomLeft: =4
-          RadiusBottomRight: =4
-          Visible: =gblTab = "org"
-          OnSelect: =Set(gblErr, ""); Set(gblO1B, fP1); Set(gblO1A, fO1E); If((gblO1A.MsExt = gblO1B.MsExt) && (gblO1A.MsWlan = gblO1B.MsWlan) && (gblO1A.MsCloud = gblO1B.MsCloud), Set(gblErr, "変更がありません。")); If(IsBlank(gblErr), Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr), Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"ORG1"}, TargetKey:gblOrg1, TargetName:gblO1B.NameJa, Summary:"多段階設定要否の変更", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:1, Org1Code:gblOrg1})); If(IsBlank(gblErr), Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001", ReqNo:gblReqNo, Seq:1, Operation:{Value:"UPDATE"}, EntityKind:{Value:"ORG1"}, EntityKey:gblOrg1, BeforeJson:"{""MsExt"":" & If(gblO1B.MsExt, "true", "false") & ",""MsWlan"":" & If(gblO1B.MsWlan, "true", "false") & ",""MsCloud"":" & If(gblO1B.MsCloud, "true", "false") & "}", AfterJson:"{""MsExt"":" & If(gblO1A.MsExt, "true", "false") & ",""MsWlan"":" & If(gblO1A.MsWlan, "true", "false") & ",""MsCloud"":" & If(gblO1A.MsCloud, "true", "false") & "}", ChangeText:gblO1B.NameJa & "：" & Concat(Filter(Table({n:"外部接続",b:gblO1B.MsExt,a:gblO1A.MsExt},{n:"無線LAN",b:gblO1B.MsWlan,a:gblO1A.MsWlan},{n:"クラウド",b:gblO1B.MsCloud,a:gblO1A.MsCloud}), b <> a), n & " " & If(b, "要", "不要") & "→" & If(a, "要", "不要"), "、")})); If(IsBlank(gblErr), Patch(PRM_Org1, LookUp(PRM_Org1, Title = gblOrg1), {MsExt:gblO1A.MsExt, MsWlan:gblO1A.MsWlan, MsCloud:gblO1A.MsCloud})); If(IsBlank(gblErr), Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {Status:{Value:"APPLIED"}})); If(IsBlank(gblErr), ClearCollect(colOrg1, Sort(Filter(PRM_Org1, IsActive = true), SortOrder))); If(IsBlank(gblErr), ClearCollect(colO1Edit, colOrg1)); If(IsBlank(gblErr), ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))); If(IsBlank(gblErr), Notify("申請しました（" & gblReqNo & "）", NotificationType.Success)); If(!IsBlank(gblErr), Notify(gblErr, NotificationType.Warning))
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-          Wrap: =true
     - lblO1Ext:
         Control: ModernText@1.0.0
         Properties:
@@ -1072,29 +1050,6 @@ Screens:
           Visible: =gblTab = "org"
           Width: =Parent.Width - 372
           X: =52
-          Y: =Parent.Height - 106
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - btnO2Submit:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =RGBA(255, 255, 255, 1)
-          Fill: =If(CountRows(fBad) > 0, RGBA(180, 95, 40, 1), If(fO2ChgN = 0, RGBA(206, 202, 192, 1), RGBA(122, 138, 120, 1)))
-          FontWeight: ='TextCanvas.Weight'.Bold
-          Height: =34
-          OnSelect: =Set(gblErr, ""); ClearCollect(colO2Chg, Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, With({o:LookUp(colOrg2All, Title = e.Title)}, {Code:e.Title, NameJa:e.NameJa, BExt:o.ApExt, BWlan:o.ApWlan, BCloud:o.ApCloud, BSort:o.SortOrder, AExt:e.ApExt, AWlan:e.ApWlan, ACloud:e.ApCloud, ASort:e.SortOrder, Chg:(e.ApExt <> o.ApExt) || (e.ApWlan <> o.ApWlan) || (e.ApCloud <> o.ApCloud) || (e.SortOrder <> o.SortOrder)})), Chg)); If(CountRows(colO2Chg) = 0, Set(gblErr, "変更がありません。要否のセルまたは ▲▼ で変更してください。")); If(IsBlank(gblErr), Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr), Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"ORG2"}, TargetKey:gblOrg1, TargetName:fP1.NameJa, Summary:"組織区分2 の変更 " & CountRows(colO2Chg) & "件", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:CountRows(colO2Chg), Org1Code:gblOrg1})); If(IsBlank(gblErr), ForAll(Sequence(CountRows(colO2Chg)) As i, With({c:Index(colO2Chg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(i.Value, "000"), ReqNo:gblReqNo, Seq:i.Value, Operation:{Value:"UPDATE"}, EntityKind:{Value:"ORG2"}, EntityKey:c.Code, BeforeJson:"{""ApExt"":" & If(c.BExt, "true", "false") & ",""ApWlan"":" & If(c.BWlan, "true", "false") & ",""ApCloud"":" & If(c.BCloud, "true", "false") & ",""SortOrder"":" & c.BSort & "}", AfterJson:"{""ApExt"":" & If(c.AExt, "true", "false") & ",""ApWlan"":" & If(c.AWlan, "true", "false") & ",""ApCloud"":" & If(c.ACloud, "true", "false") & ",""SortOrder"":" & c.ASort & "}", ChangeText:c.NameJa & "（" & c.Code & "）：" & Concat(Filter(Table({n:"外部接続",b:c.BExt,a:c.AExt},{n:"無線LAN",b:c.BWlan,a:c.AWlan},{n:"クラウド",b:c.BCloud,a:c.ACloud}), b <> a), n & " " & If(b, "要", "不要") & "→" & If(a, "要", "不要"), "、") & If(c.BSort = c.ASort, "", If(c.BExt = c.AExt && c.BWlan = c.AWlan && c.BCloud = c.ACloud, "", "、") & "表示順 " & c.BSort & "→" & c.ASort)})))); If(IsBlank(gblErr), ForAll(colO2Chg As c, Patch(PRM_Org2, LookUp(PRM_Org2, Title = c.Code), {ApExt:c.AExt, ApWlan:c.AWlan, ApCloud:c.ACloud, SortOrder:c.ASort}))); If(IsBlank(gblErr), Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {Status:{Value:"APPLIED"}})); If(IsBlank(gblErr), ClearCollect(colOrg2All, Sort(Filter(PRM_Org2, IsActive = true), SortOrder))); If(IsBlank(gblErr), ClearCollect(colO2Edit, colOrg2All)); If(IsBlank(gblErr), ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))); If(IsBlank(gblErr), Notify("申請しました（" & gblReqNo & "）", NotificationType.Success)); If(!IsBlank(gblErr), Notify(gblErr, NotificationType.Warning))
-          RadiusTopLeft: =5
-          RadiusTopRight: =5
-          RadiusBottomLeft: =5
-          RadiusBottomRight: =5
-          Size: =13
-          Text: =If(CountRows(fBad) > 0, "影響を承知して申請", If(fO2ChgN = 0, "組織区分2 の変更を申請", "組織区分2 の変更を申請（" & fO2ChgN & "件）"))
-          Visible: =gblTab = "org"
-          Width: =240
-          X: =Parent.Width - 292
           Y: =Parent.Height - 106
           Wrap: =true
           PaddingTop: =0
@@ -2790,15 +2745,15 @@ Screens:
                   PaddingTop: =0
                   PaddingBottom: =0
                   VerticalAlign: =VerticalAlign.Middle
-    - btnGrantSubmit:
+    - btnSubmitAll:
         Control: ModernText@1.0.0
         Properties:
           X: =Parent.Width - 292
-          Y: =Parent.Height - 86
+          Y: =If(gblTab = "org", Parent.Height - 106, Parent.Height - 86)
           Width: =240
           Height: =34
-          Text: =If(CountRows(fChg) = 0, "権限の変更を申請", "権限の変更を申請（" & CountRows(fChg) & "件）")
-          Fill: =If(CountRows(fChg) = 0, RGBA(206, 202, 192, 1), RGBA(122, 138, 120, 1))
+          Text: =If(fChgAllN = 0, "申請", If(fBadN > 0, "影響を承知して申請（" & fChgAllN & "件）", "申請（" & fChgAllN & "件）"))
+          Fill: =If(fChgAllN = 0, RGBA(206, 202, 192, 1), If(fBadN > 0, RGBA(180, 95, 40, 1), RGBA(122, 138, 120, 1)))
           Color: =RGBA(255, 255, 255, 1)
           Size: =12
           Align: ='TextCanvas.Align'.Center
@@ -2806,8 +2761,8 @@ Screens:
           RadiusTopRight: =4
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
-          Visible: =gblTab = "user"
-          OnSelect: =Set(gblErr, ""); Set(gblStop, false); ClearCollect(colGChg, fChg); If(CountRows(colGChg) = 0, Set(gblErr, "変更がありません。マトリックスのセルをクリックして変更してください。")); If(IsBlank(gblErr) && fInvN > 0, Set(gblErr, "多段階承認が無効になった組織区分2 に権限が " & fInvN & " 件残っています。赤いセルをクリックして外してから申請してください。")); If(IsBlank(gblErr) && fNoAppN > 0 && !gblGateOk, Set(gblStop, true)); If(gblStop, Set(gblModal, "grant")); Set(gblGateOk, false); If(IsBlank(gblErr) && !gblStop, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr) && !gblStop, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"GRANT"}, TargetKey:gblOrg1, TargetName:If(CountRows(colGChg) = 1, LookUp(colUsersAll, Title = First(colGChg).Gid).FullName & "（" & First(colGChg).Gid & "）", Text(CountRows(colGChg)) & " 件の権限変更"), Summary:"権限マトリックスからの変更 " & CountRows(colGChg) & "件", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:CountRows(colGChg), Org1Code:gblOrg1})); If(IsBlank(gblErr) && !gblStop, ForAll(Sequence(CountRows(colGChg)) As i, With({c:Index(colGChg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(i.Value, "000"), ReqNo:gblReqNo, Seq:i.Value, Operation:{Value:If(c.BS = "NONE", "ADD", If(c.NS = "NONE", "DELETE", "UPDATE"))}, EntityKind:{Value:"GRANT"}, EntityKey:c.Gid & "#" & c.O1 & "#" & c.Role, BeforeJson:"{""ScopeType"":""" & c.BS & """,""Org2Codes"":""" & c.BC & """}", AfterJson:"{""ScopeType"":""" & c.NS & """,""Org2Codes"":""" & c.NC & """}", ChangeText:LookUp(colUsersAll, Title = c.Gid).FullName & "（" & LookUp(Table({rc:"SECMGR",rn:"事業場ITセキュリティ責任者"},{rc:"CONFORM",rn:"適合化担当"},{rc:"EXTCONN",rn:"外部接続申請担当"},{rc:"WLAN",rn:"無線LAN申請担当"},{rc:"CLOUD",rn:"クラウド申請担当"},{rc:"INFOSEC",rn:"情報セキュリティ担当"}), rc = c.Role).rn & "）：" & If(c.BS = "NONE", "権限なし", If(c.BS = "ALL", "全体", "個別（" & Concat(Filter(colOrg2All, Org1Code = c.O1 && (";" & Title & ";") in c.BC), NameJa, "、") & "）")) & "→" & If(c.NS = "NONE", "権限なし", If(c.NS = "ALL", "全体", "個別（" & Concat(Filter(colOrg2All, Org1Code = c.O1 && (";" & Title & ";") in c.NC), NameJa, "、") & "）"))})))); If(IsBlank(gblErr) && !gblStop, ForAll(colGChg As c, If(c.NS = "NONE", Patch(PRM_Grants, LookUp(PRM_Grants, Title = c.Gid & "#" & c.O1 & "#" & c.Role), {IsActive:false, LastReqNo:gblReqNo}), If(IsBlank(LookUp(PRM_Grants, Title = c.Gid & "#" & c.O1 & "#" & c.Role).Title), Patch(PRM_Grants, Defaults(PRM_Grants), {Title:c.Gid & "#" & c.O1 & "#" & c.Role, GlobalId:c.Gid, Org1Code:c.O1, RoleCode:{Value:c.Role}, ScopeType:{Value:c.NS}, Org2Codes:c.NC, IsActive:true, LastReqNo:gblReqNo}), Patch(PRM_Grants, LookUp(PRM_Grants, Title = c.Gid & "#" & c.O1 & "#" & c.Role), {ScopeType:{Value:c.NS}, Org2Codes:c.NC, IsActive:true, LastReqNo:gblReqNo}))))); If(IsBlank(gblErr) && !gblStop, Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {Status:{Value:"APPLIED"}})); If(IsBlank(gblErr) && !gblStop, ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true))); If(IsBlank(gblErr) && !gblStop, ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(IsBlank(gblErr) && !gblStop, ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))); If(IsBlank(gblErr) && !gblStop, Notify("申請しました（" & gblReqNo & "）", NotificationType.Success)); If(!IsBlank(gblErr), Notify(gblErr, NotificationType.Warning))
+          Visible: =gblTab = "org" || gblTab = "user"
+          OnSelect: =Set(gblErr, ""); Set(gblStop, false); Set(gblReqList, ""); Set(gblO1B, fP1); Set(gblO1A, fO1E); Set(gblGo1, (gblO1A.MsExt <> gblO1B.MsExt) || (gblO1A.MsWlan <> gblO1B.MsWlan) || (gblO1A.MsCloud <> gblO1B.MsCloud)); ClearCollect(colO2Chg, Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, With({o:LookUp(colOrg2All, Title = e.Title)}, {Code:e.Title, NameJa:e.NameJa, BExt:o.ApExt, BWlan:o.ApWlan, BCloud:o.ApCloud, BSort:o.SortOrder, AExt:e.ApExt, AWlan:e.ApWlan, ACloud:e.ApCloud, ASort:e.SortOrder, Chg:(e.ApExt <> o.ApExt) || (e.ApWlan <> o.ApWlan) || (e.ApCloud <> o.ApCloud) || (e.SortOrder <> o.SortOrder)})), Chg)); Set(gblGo2, CountRows(colO2Chg) > 0); ClearCollect(colGChg, fChg); Set(gblGo3, CountRows(colGChg) > 0); If(!gblGo1 && !gblGo2 && !gblGo3, Set(gblErr, "変更がありません。組織マスタの要否・表示順、またはマトリックスのセルを変更してください。")); If(IsBlank(gblErr) && gblGo3 && fInvN > 0, Set(gblErr, "多段階承認が無効になった組織区分2 に権限が " & fInvN & " 件残っています。ユーザマスタの赤いセルをクリックして外してから申請してください。")); If(IsBlank(gblErr) && gblGo3 && fNoAppN > 0 && !gblGateOk, Set(gblStop, true)); If(gblStop, Set(gblModal, "grant")); Set(gblGateOk, false); If(IsBlank(gblErr) && !gblStop && gblGo1, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr) && !gblStop && gblGo1, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"ORG1"}, TargetKey:gblOrg1, TargetName:gblO1B.NameJa, Summary:"多段階設定要否の変更", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:1, Org1Code:gblOrg1})); If(IsBlank(gblErr) && !gblStop && gblGo1, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001", ReqNo:gblReqNo, Seq:1, Operation:{Value:"UPDATE"}, EntityKind:{Value:"ORG1"}, EntityKey:gblOrg1, BeforeJson:"{""MsExt"":" & If(gblO1B.MsExt, "true", "false") & ",""MsWlan"":" & If(gblO1B.MsWlan, "true", "false") & ",""MsCloud"":" & If(gblO1B.MsCloud, "true", "false") & "}", AfterJson:"{""MsExt"":" & If(gblO1A.MsExt, "true", "false") & ",""MsWlan"":" & If(gblO1A.MsWlan, "true", "false") & ",""MsCloud"":" & If(gblO1A.MsCloud, "true", "false") & "}", ChangeText:gblO1B.NameJa & "：" & Concat(Filter(Table({n:"外部接続",b:gblO1B.MsExt,a:gblO1A.MsExt},{n:"無線LAN",b:gblO1B.MsWlan,a:gblO1A.MsWlan},{n:"クラウド",b:gblO1B.MsCloud,a:gblO1A.MsCloud}), b <> a), n & " " & If(b, "要", "不要") & "→" & If(a, "要", "不要"), "、")})); If(IsBlank(gblErr) && !gblStop && gblGo1, Patch(PRM_Org1, LookUp(PRM_Org1, Title = gblOrg1), {MsExt:gblO1A.MsExt, MsWlan:gblO1A.MsWlan, MsCloud:gblO1A.MsCloud})); If(IsBlank(gblErr) && !gblStop && gblGo1, Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {Status:{Value:"APPLIED"}})); If(IsBlank(gblErr) && !gblStop && gblGo1, ClearCollect(colOrg1, Sort(Filter(PRM_Org1, IsActive = true), SortOrder))); If(IsBlank(gblErr) && !gblStop && gblGo1, ClearCollect(colO1Edit, colOrg1)); If(IsBlank(gblErr) && !gblStop && gblGo1, ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))); If(IsBlank(gblErr) && !gblStop && gblGo1, Set(gblReqList, gblReqList & If(IsBlank(gblReqList), "", "、") & gblReqNo)); If(IsBlank(gblErr) && !gblStop && gblGo2, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr) && !gblStop && gblGo2, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"ORG2"}, TargetKey:gblOrg1, TargetName:fP1.NameJa, Summary:"組織区分2 の変更 " & CountRows(colO2Chg) & "件", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:CountRows(colO2Chg), Org1Code:gblOrg1})); If(IsBlank(gblErr) && !gblStop && gblGo2, ForAll(Sequence(CountRows(colO2Chg)) As i, With({c:Index(colO2Chg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(i.Value, "000"), ReqNo:gblReqNo, Seq:i.Value, Operation:{Value:"UPDATE"}, EntityKind:{Value:"ORG2"}, EntityKey:c.Code, BeforeJson:"{""ApExt"":" & If(c.BExt, "true", "false") & ",""ApWlan"":" & If(c.BWlan, "true", "false") & ",""ApCloud"":" & If(c.BCloud, "true", "false") & ",""SortOrder"":" & c.BSort & "}", AfterJson:"{""ApExt"":" & If(c.AExt, "true", "false") & ",""ApWlan"":" & If(c.AWlan, "true", "false") & ",""ApCloud"":" & If(c.ACloud, "true", "false") & ",""SortOrder"":" & c.ASort & "}", ChangeText:c.NameJa & "（" & c.Code & "）：" & Concat(Filter(Table({n:"外部接続",b:c.BExt,a:c.AExt},{n:"無線LAN",b:c.BWlan,a:c.AWlan},{n:"クラウド",b:c.BCloud,a:c.ACloud}), b <> a), n & " " & If(b, "要", "不要") & "→" & If(a, "要", "不要"), "、") & If(c.BSort = c.ASort, "", If(c.BExt = c.AExt && c.BWlan = c.AWlan && c.BCloud = c.ACloud, "", "、") & "表示順 " & c.BSort & "→" & c.ASort)})))); If(IsBlank(gblErr) && !gblStop && gblGo2, ForAll(colO2Chg As c, Patch(PRM_Org2, LookUp(PRM_Org2, Title = c.Code), {ApExt:c.AExt, ApWlan:c.AWlan, ApCloud:c.ACloud, SortOrder:c.ASort}))); If(IsBlank(gblErr) && !gblStop && gblGo2, Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {Status:{Value:"APPLIED"}})); If(IsBlank(gblErr) && !gblStop && gblGo2, ClearCollect(colOrg2All, Sort(Filter(PRM_Org2, IsActive = true), SortOrder))); If(IsBlank(gblErr) && !gblStop && gblGo2, ClearCollect(colO2Edit, colOrg2All)); If(IsBlank(gblErr) && !gblStop && gblGo2, ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))); If(IsBlank(gblErr) && !gblStop && gblGo2, Set(gblReqList, gblReqList & If(IsBlank(gblReqList), "", "、") & gblReqNo)); If(IsBlank(gblErr) && !gblStop && gblGo3, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr) && !gblStop && gblGo3, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"GRANT"}, TargetKey:gblOrg1, TargetName:If(CountRows(colGChg) = 1, LookUp(colUsersAll, Title = First(colGChg).Gid).FullName & "（" & First(colGChg).Gid & "）", Text(CountRows(colGChg)) & " 件の権限変更"), Summary:"権限マトリックスからの変更 " & CountRows(colGChg) & "件", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:CountRows(colGChg), Org1Code:gblOrg1})); If(IsBlank(gblErr) && !gblStop && gblGo3, ForAll(Sequence(CountRows(colGChg)) As i, With({c:Index(colGChg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(i.Value, "000"), ReqNo:gblReqNo, Seq:i.Value, Operation:{Value:If(c.BS = "NONE", "ADD", If(c.NS = "NONE", "DELETE", "UPDATE"))}, EntityKind:{Value:"GRANT"}, EntityKey:c.Gid & "#" & c.O1 & "#" & c.Role, BeforeJson:"{""ScopeType"":""" & c.BS & """,""Org2Codes"":""" & c.BC & """}", AfterJson:"{""ScopeType"":""" & c.NS & """,""Org2Codes"":""" & c.NC & """}", ChangeText:LookUp(colUsersAll, Title = c.Gid).FullName & "（" & LookUp(Table({rc:"SECMGR",rn:"事業場ITセキュリティ責任者"},{rc:"CONFORM",rn:"適合化担当"},{rc:"EXTCONN",rn:"外部接続申請担当"},{rc:"WLAN",rn:"無線LAN申請担当"},{rc:"CLOUD",rn:"クラウド申請担当"},{rc:"INFOSEC",rn:"情報セキュリティ担当"}), rc = c.Role).rn & "）：" & If(c.BS = "NONE", "権限なし", If(c.BS = "ALL", "全体", "個別（" & Concat(Filter(colOrg2All, Org1Code = c.O1 && (";" & Title & ";") in c.BC), NameJa, "、") & "）")) & "→" & If(c.NS = "NONE", "権限なし", If(c.NS = "ALL", "全体", "個別（" & Concat(Filter(colOrg2All, Org1Code = c.O1 && (";" & Title & ";") in c.NC), NameJa, "、") & "）"))})))); If(IsBlank(gblErr) && !gblStop && gblGo3, ForAll(colGChg As c, If(c.NS = "NONE", Patch(PRM_Grants, LookUp(PRM_Grants, Title = c.Gid & "#" & c.O1 & "#" & c.Role), {IsActive:false, LastReqNo:gblReqNo}), If(IsBlank(LookUp(PRM_Grants, Title = c.Gid & "#" & c.O1 & "#" & c.Role).Title), Patch(PRM_Grants, Defaults(PRM_Grants), {Title:c.Gid & "#" & c.O1 & "#" & c.Role, GlobalId:c.Gid, Org1Code:c.O1, RoleCode:{Value:c.Role}, ScopeType:{Value:c.NS}, Org2Codes:c.NC, IsActive:true, LastReqNo:gblReqNo}), Patch(PRM_Grants, LookUp(PRM_Grants, Title = c.Gid & "#" & c.O1 & "#" & c.Role), {ScopeType:{Value:c.NS}, Org2Codes:c.NC, IsActive:true, LastReqNo:gblReqNo}))))); If(IsBlank(gblErr) && !gblStop && gblGo3, Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {Status:{Value:"APPLIED"}})); If(IsBlank(gblErr) && !gblStop && gblGo3, ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true))); If(IsBlank(gblErr) && !gblStop && gblGo3, ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(IsBlank(gblErr) && !gblStop && gblGo3, ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))); If(IsBlank(gblErr) && !gblStop && gblGo3, Set(gblReqList, gblReqList & If(IsBlank(gblReqList), "", "、") & gblReqNo)); If(IsBlank(gblErr) && !gblStop && !IsBlank(gblReqList), Notify("申請しました（" & gblReqList & "）", NotificationType.Success)); If(!IsBlank(gblErr), Notify(gblErr, NotificationType.Warning))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2821,7 +2776,7 @@ Screens:
           Size: =11
           X: =44
           Y: =Parent.Height - 112
-          Width: =Parent.Width - 320
+          Width: =Parent.Width - 350
           Height: =24
           Visible: =gblTab = "user" && fInvN > 0
           Wrap: =false
@@ -2837,7 +2792,7 @@ Screens:
           Size: =11
           X: =44
           Y: =Parent.Height - 86
-          Width: =Parent.Width - 320
+          Width: =Parent.Width - 350
           Height: =34
           Visible: =gblTab = "user" && fNoAppN > 0
           Wrap: =true
@@ -2981,7 +2936,7 @@ Screens:
           RadiusTopRight: =5
           RadiusBottomLeft: =5
           RadiusBottomRight: =5
-          OnSelect: =Set(gblGateOk, true); Set(gblModal, ""); Select(btnGrantSubmit)
+          OnSelect: =Set(gblGateOk, true); Set(gblModal, ""); Select(btnSubmitAll)
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
