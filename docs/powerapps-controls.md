@@ -304,6 +304,43 @@ fChg  = Filter(ForAll(Filter(colGEdit, O1 = gblOrg1) As e, …), Chg);
   マトリックスが全部 `―` になる不具合が出ていた）
 - **画面より先に `App.Formulas` を設定する。** 画面が参照する名前が無いと貼り付け時にエラーになる
 
+### 名前付き数式に「データソースへの問い合わせ」を入れてはいけない
+
+コレクションと違い、**データソースを直接叩く式は名前付き数式にできない**。
+
+```
+# NG: 「ネットワークからのデータ取得でエラーが発生しました: クエリが無効です。」
+fHist = Sort(Filter(PRM_Requests, Org1Code = gblOrg1), SubmittedAt, SortOrder.Descending);
+```
+
+名前付き数式は `OnStart` より先に評価されるため、`gblOrg1` がまだ空のまま
+OData クエリが組み立てられて失敗する（デザイン時にも評価されるので設計画面でも赤くなる）。
+
+**データソースは `ClearCollect` でコレクションに読み、名前付き数式はそのコレクションを見る。**
+
+```
+App.OnStart:  … ; ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))
+App.Formulas: fHist = Sort(Filter(colReq, <種別条件>), SubmittedAt, SortOrder.Descending);
+```
+
+コレクションなので**更新点を自分で押さえる**必要がある（このアプリでは
+`OnStart` / `OnVisible`（空のとき）/ 組織区分1 の変更 / 3 つの申請ボタンの計 5 箇所）。
+
+### 絞り込み条件をデータソースの `Filter` に混ぜない
+
+絞り込みのトグルを `Filter(データソース, …, <トグルの条件>)` の中に書くと、
+**トグルを押すたびに SharePoint に問い合わせ直す**（スピナーが出る）。
+しかもトグルの条件は委任できないので、結果が正しくないこともある。
+
+```
+# NG: 種別トグルを押すたびに再クエリ
+Filter(PRM_Requests, Org1Code = gblOrg1, gblHFilter = "all" || …)
+
+# OK: 取得はコレクションに 1 回、絞り込みはメモリ上で
+ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))
+fHist = Filter(colReq, gblHFilter = "all" || …)
+```
+
 同じ理屈で、データソースへの `LookUp` を画面に散らすとその回数だけ通信が起きる
 （`ScrReq` は `LookUp(PRM_Requests, Title = gblReqNo)` を 13 箇所に書いていた）。
 
