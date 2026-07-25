@@ -64,12 +64,14 @@ Power Apps キャンバスアプリ + SharePoint リスト。**Premium ライセ
 3. **設定 → 表示 → アプリ レイアウトを「レスポンシブ」**
 4. データの追加で `PRM_*` 7 本と「Office 365 ユーザー」を接続
 5. `App.OnStart` に [src/App.OnStart.txt](src/App.OnStart.txt) を貼る
-6. ツリービューで画面を右クリック →「貼り付け」で
+6. `App.Formulas` に [src/App.Formulas.txt](src/App.Formulas.txt) を貼る（**画面より先に**。
+   画面はここで定義した名前付き数式を参照している）
+7. ツリービューで画面を右クリック →「貼り付け」で
    [src/ScrHome.pa.yaml](src/ScrHome.pa.yaml) →
    [src/ScrUser.pa.yaml](src/ScrUser.pa.yaml) →
    [src/ScrReq.pa.yaml](src/ScrReq.pa.yaml) の順に流し込む
-7. `App.StartScreen` に `ScrHome` を設定
-8. 空の `Screen1` を削除して保存
+8. `App.StartScreen` に `ScrHome` を設定
+9. 空の `Screen1` を削除して保存
 
 ## ドキュメント
 
@@ -92,6 +94,10 @@ Power Apps キャンバスアプリ + SharePoint リスト。**Premium ライセ
   効いていなかった。**アプリのチェック → 数式 → エラー を 0 にしてから**見た目を調整する
 - **数式エラーのあるプロパティは実行されない。** `OnSelect` がエラーだとボタンは
   無反応になるが、通知もエラー表示も出ない（`Text` や `Fill` は正常に評価される）
+- **同じ式をコントロールに書き写すと、その回数だけ再計算される。**
+  マトリックスは 1 セルにつき 20 回ほどコレクションを走査していて操作不能に重かった。
+  **`App.Formulas`（名前付き数式）に括り出すと結果がキャッシュされ、依存が変わったときだけ再計算される**。
+  ギャラリーやマトリックスのように同じ式が何百回も現れる画面では、これが最も効く
 - **ギャラリーの子で `AddColumns` / `ForAll` の派生列が解決しないことがある。**
   行データは `Title` / `SubTitle` のような単純な文字列に畳んでから渡すのが確実
 - **ネストしたギャラリーは動かない。** マトリックスは「行=ギャラリー / 列=固定コントロール」で実現した

@@ -89,7 +89,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
           Size: =16
-          Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value) & "　" & LookUp(PRM_Requests, Title = gblReqNo).TargetName
+          Text: '=Switch(fReq.ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", fReq.ReqType.Value) & "　" & fReq.TargetName
 
             '
           Width: =Parent.Width - 104
@@ -124,7 +124,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
-          Text: '=LookUp(PRM_Requests, Title = gblReqNo).Title
+          Text: '=fReq.Title
 
             '
           Width: =220
@@ -159,7 +159,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
-          Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value)
+          Text: '=Switch(fReq.ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", fReq.ReqType.Value)
 
             '
           Width: =220
@@ -194,7 +194,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
-          Text: '=LookUp(PRM_Requests, Title = gblReqNo).TargetName
+          Text: '=fReq.TargetName
 
             '
           Width: =220
@@ -229,7 +229,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
-          Text: '=LookUp(PRM_Requests, Title = gblReqNo).ApplicantName
+          Text: '=fReq.ApplicantName
 
             '
           Width: =220
@@ -264,7 +264,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
-          Text: '=Text(LookUp(PRM_Requests, Title = gblReqNo).SubmittedAt, "yyyy/mm/dd hh:mm")
+          Text: '=Text(fReq.SubmittedAt, "yyyy/mm/dd hh:mm")
 
             '
           Width: =220
@@ -299,7 +299,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
-          Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).Status.Value, "APPLIED", "反映済", "SUBMITTED", "処理中", "ERROR", "エラー", LookUp(PRM_Requests, Title = gblReqNo).Status.Value)
+          Text: '=Switch(fReq.Status.Value, "APPLIED", "反映済", "SUBMITTED", "処理中", "ERROR", "エラー", fReq.Status.Value)
 
             '
           Width: =220
@@ -334,7 +334,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
-          Text: '=Text(LookUp(PRM_Requests, Title = gblReqNo).ItemCount) & "件"
+          Text: '=Text(fReq.ItemCount) & "件"
 
             '
           Width: =220
@@ -369,7 +369,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
-          Text: '=LookUp(colOrg1, Title = LookUp(PRM_Requests, Title = gblReqNo).Org1Code).NameJa
+          Text: '=LookUp(colOrg1, Title = fReq.Org1Code).NameJa
 
             '
           Width: =220

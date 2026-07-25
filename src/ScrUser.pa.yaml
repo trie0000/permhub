@@ -687,8 +687,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "ALL", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
-          Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "ALL", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
+          Color: =If(fGrant.ScopeType.Value = "ALL", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
+          Fill: =If(fGrant.ScopeType.Value = "ALL", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
           OnSelect: '=Notify("範囲の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
@@ -711,8 +711,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "PICK", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
-          Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "PICK", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
+          Color: =If(fGrant.ScopeType.Value = "PICK", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
+          Fill: =If(fGrant.ScopeType.Value = "PICK", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
           OnSelect: '=Notify("範囲の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
@@ -751,8 +751,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "PRIMARY", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
-          Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
+          Color: =If(fGrant.CompanyRole.Value = "PRIMARY", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
+          Fill: =If(fGrant.CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
           OnSelect: '=Notify("権限種別の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
@@ -776,8 +776,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "DEPUTY", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
-          Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "DEPUTY", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
+          Color: =If(fGrant.CompanyRole.Value = "DEPUTY", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
+          Fill: =If(fGrant.CompanyRole.Value = "DEPUTY", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
           OnSelect: '=Notify("権限種別の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
@@ -805,7 +805,7 @@ Screens:
           Height: =16
           Size: =11
           Text: ="組織区分2（多段階承認が有効なもののみ）"
-          Visible: =LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "PICK"
+          Visible: =fGrant.ScopeType.Value = "PICK"
           Width: =400
           X: =480
           Y: =530
@@ -824,7 +824,7 @@ Screens:
           ShowScrollbar: =true
           TemplatePadding: =0
           TemplateSize: =30
-          Visible: =LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "PICK"
+          Visible: =fGrant.ScopeType.Value = "PICK"
           Width: =Parent.Width - 560
           WrapCount: =2
           X: =480
@@ -840,7 +840,7 @@ Screens:
 
                 '
               Size: =11
-              Text: =If(";" & ThisItem.Title & ";" in LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).Org2Codes, "☑  ", "☐  ") & ThisItem.NameJa
+              Text: =If(";" & ThisItem.Title & ";" in fGrant.Org2Codes, "☑  ", "☐  ") & ThisItem.NameJa
               Width: =250
               X: =0
               Y: =0
@@ -856,7 +856,7 @@ Screens:
           Height: =40
           Size: =11
           Text: ="配下すべての組織区分2 に権限を持ちます。"
-          Visible: =LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "ALL"
+          Visible: =fGrant.ScopeType.Value = "ALL"
           Width: =400
           X: =480
           Y: =550
@@ -872,7 +872,7 @@ Screens:
           Height: =40
           Size: =11
           Text: ="この組織区分1 ではこの権限が付与されていません。"
-          Visible: =IsBlank(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).GlobalId)
+          Visible: =IsBlank(fGrant.GlobalId)
           Width: =400
           X: =480
           Y: =550
@@ -926,7 +926,7 @@ Screens:
           Fill: =RGBA(122, 138, 120, 1)
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =36
-          OnSelect: '=Set(gblErr, ""); If(IsBlank(gblUserGid), Set(gblErr, "利用者が選択されていません。")); If(IsBlank(gblErr), Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr), Set(gblU2, LookUp(colUsersAll, Title = gblUserGid))); If(IsBlank(gblErr), Set(gblG2, LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole))); If(IsBlank(gblErr), Set(gblRoleName, LookUp(Table({c: "SECMGR", n: "事業場ITセキュリティ責任者"}, {c: "CONFORM", n: "適合化担当"}, {c: "EXTCONN", n: "外部接続申請担当"}, {c: "WLAN", n: "無線LAN申請担当"}, {c: "CLOUD", n: "クラウド申請担当"}, {c: "INFOSEC", n: "情報セキュリティ担当"}), c = gblUserRole).n)); If(IsBlank(gblErr), Patch(PRM_Requests, Defaults(PRM_Requests), { Title: gblReqNo, ReqType: { Value: "GRANT" }, TargetKey: gblUserGid, TargetName: gblU2.FullName & "（" & gblUserGid & "）", Summary: gblRoleName & " ／ " & LookUp(colOrg1, Title = gblUserOrg1).NameJa, ApplicantId: gblMeGid, ApplicantName: gblMe.FullName, SubmittedAt: Now(), Status: { Value: "SUBMITTED" }, ItemCount: 1, Org1Code: gblUserOrg1 })); If(IsBlank(gblErr), Patch(PRM_RequestItems, Defaults(PRM_RequestItems), { Title: gblReqNo & "-001", ReqNo: gblReqNo, Seq: 1, Operation: { Value: If(IsBlank(gblG2.GlobalId), "ADD", "UPDATE") }, EntityKind: { Value: "GRANT" }, EntityKey: gblUserGid & "#" & gblUserOrg1 & "#" & gblUserRole, BeforeJson: If(IsBlank(gblG2.GlobalId), "", "{""ScopeType"":""" & gblG2.ScopeType.Value & """,""Org2Codes"":""" & gblG2.Org2Codes & """,""CompanyRole"":""" & gblG2.CompanyRole.Value & """}"), AfterJson: "{""ScopeType"":""" & gblG2.ScopeType.Value & """,""Org2Codes"":""" & gblG2.Org2Codes & """,""CompanyRole"":""" & gblG2.CompanyRole.Value & """}", ChangeText: gblRoleName & "（" & LookUp(colOrg1, Title = gblUserOrg1).NameJa & "）" })); If(IsBlank(gblErr), Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), { Status: { Value: "APPLIED" } })); If(IsBlank(gblErr), ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true))); If(IsBlank(gblErr), Notify("申請しました（" & gblReqNo & "）", NotificationType.Success)); If(IsBlank(gblErr), Set(gblTab, "hist")); If(IsBlank(gblErr), Navigate(ScrHome))'
+          OnSelect: '=Set(gblErr, ""); If(IsBlank(gblUserGid), Set(gblErr, "利用者が選択されていません。")); If(IsBlank(gblErr), Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr), Set(gblU2, LookUp(colUsersAll, Title = gblUserGid))); If(IsBlank(gblErr), Set(gblG2, fGrant)); If(IsBlank(gblErr), Set(gblRoleName, LookUp(Table({c: "SECMGR", n: "事業場ITセキュリティ責任者"}, {c: "CONFORM", n: "適合化担当"}, {c: "EXTCONN", n: "外部接続申請担当"}, {c: "WLAN", n: "無線LAN申請担当"}, {c: "CLOUD", n: "クラウド申請担当"}, {c: "INFOSEC", n: "情報セキュリティ担当"}), c = gblUserRole).n)); If(IsBlank(gblErr), Patch(PRM_Requests, Defaults(PRM_Requests), { Title: gblReqNo, ReqType: { Value: "GRANT" }, TargetKey: gblUserGid, TargetName: gblU2.FullName & "（" & gblUserGid & "）", Summary: gblRoleName & " ／ " & LookUp(colOrg1, Title = gblUserOrg1).NameJa, ApplicantId: gblMeGid, ApplicantName: gblMe.FullName, SubmittedAt: Now(), Status: { Value: "SUBMITTED" }, ItemCount: 1, Org1Code: gblUserOrg1 })); If(IsBlank(gblErr), Patch(PRM_RequestItems, Defaults(PRM_RequestItems), { Title: gblReqNo & "-001", ReqNo: gblReqNo, Seq: 1, Operation: { Value: If(IsBlank(gblG2.GlobalId), "ADD", "UPDATE") }, EntityKind: { Value: "GRANT" }, EntityKey: gblUserGid & "#" & gblUserOrg1 & "#" & gblUserRole, BeforeJson: If(IsBlank(gblG2.GlobalId), "", "{""ScopeType"":""" & gblG2.ScopeType.Value & """,""Org2Codes"":""" & gblG2.Org2Codes & """,""CompanyRole"":""" & gblG2.CompanyRole.Value & """}"), AfterJson: "{""ScopeType"":""" & gblG2.ScopeType.Value & """,""Org2Codes"":""" & gblG2.Org2Codes & """,""CompanyRole"":""" & gblG2.CompanyRole.Value & """}", ChangeText: gblRoleName & "（" & LookUp(colOrg1, Title = gblUserOrg1).NameJa & "）" })); If(IsBlank(gblErr), Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), { Status: { Value: "APPLIED" } })); If(IsBlank(gblErr), ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true))); If(IsBlank(gblErr), Notify("申請しました（" & gblReqNo & "）", NotificationType.Success)); If(IsBlank(gblErr), Set(gblTab, "hist")); If(IsBlank(gblErr), Navigate(ScrHome))'
           RadiusTopLeft: =5
           RadiusTopRight: =5
           RadiusBottomLeft: =5

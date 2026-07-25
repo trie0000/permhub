@@ -267,6 +267,46 @@ OnChange:=Set(gblOrg1, Self.Selected.Title)
 > `Default` は `OnStart` で入れた変数に依存するので、確認前に **App の「OnStart を実行」→ ▷ プレビュー**の順で
 > 起動し直す（画面が `OnStart` 既定のタブで開けば新規実行できている）。
 
+## 重い式は `App.Formulas`（名前付き数式）に括り出す（性能の要）
+
+Power Apps はコントロールのプロパティを**書いてある回数だけ**評価する。同じ式を
+コピーして並べると、そのぶん丸ごと再計算される。マトリックスはこれで操作不能に重かった。
+
+```
+# 1 セルの Text/Color がそれぞれ実行していたもの
+Filter(colMemberAll, ...) × 9      ← ページ内 8 人の GlobalId を出すためのチェーン
+LookUp(colOrg1, ...)      × 6      ← 多段階設定の要否
+LookUp(colGEdit, ...)     × 1
+```
+
+セル 56 個 + ヘッダ 24 個ぶんが**毎レンダリング**走る。名前付き数式に括り出すと
+**結果がキャッシュされ、依存（`gblOrg1` / `gblPage` / コレクション）が変わったときだけ再計算**される。
+
+```
+# App.Formulas
+fMem  = Filter(colMemberAll, Org1Code = gblOrg1);
+fPage = FirstN(LastN(fMem, CountRows(fMem) - gblPage * 8), 8);
+fG1   = If(CountRows(fPage) >= 1, Index(fPage, 1).GlobalId, "");   … fG8 まで
+fP1   = LookUp(colOrg1, Title = gblOrg1);
+fChg  = Filter(ForAll(Filter(colGEdit, O1 = gblOrg1) As e, …), Chg);
+```
+
+実測: `ScrHome` は 219KB → 146KB、`Filter(colMemberAll, …)` の出現が **740 → 0**。
+権限種別の切り替えもページ送りも、クリック直後のスクリーンショットで既に再描画が終わっている。
+
+**要点**
+- 名前付き数式は**グローバル変数もコレクションも依存にできる**（どちらも変更を検知して再計算される）
+- **副作用は書けない**（`Set` / `Collect` / `Patch` は不可）。純粋な式だけ
+- 順番に依存してよい（`fPage` が `fMem` を参照するなど）。定義順は問わない
+- 変数と違って**初期化のタイミングを気にしなくてよい**。`OnStart` の非同期読み込みが
+  終わっていなくても、コレクションが埋まった時点で自動的に再計算される
+  （`Set(gblP1, LookUp(...))` を `OnVisible` でやっていたときは、この初期化レースで
+  マトリックスが全部 `―` になる不具合が出ていた）
+- **画面より先に `App.Formulas` を設定する。** 画面が参照する名前が無いと貼り付け時にエラーになる
+
+同じ理屈で、データソースへの `LookUp` を画面に散らすとその回数だけ通信が起きる
+（`ScrReq` は `LookUp(PRM_Requests, Title = gblReqNo)` を 13 箇所に書いていた）。
+
 ## 数式エラーのあるプロパティは「実行されない」
 
 `OnSelect` に数式エラーがあると、**そのボタンはクリックしても何も起きない**。
