@@ -210,6 +210,46 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
+    - lblTabAdm:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(gblTab = "adm", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          Fill: =If(gblTab = "adm", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          FontWeight: =If(gblTab = "adm", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
+          Height: =40
+          OnSelect: =Set(gblTab, "adm"); Set(gblPage, 0)
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =13
+          Text: =If(fAdmOpenN > 0, "管理（" & fAdmOpenN & "）", "管理")
+          Visible: =gblIsAdmin
+          Width: =150
+          X: =502
+          Y: =62
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - tabULAdm:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =If(gblTab = "adm", RGBA(122, 138, 120, 1), RGBA(0, 0, 0, 0))
+          Height: =2
+          Size: =13
+          Text: =""
+          Visible: =gblIsAdmin
+          Width: =150
+          X: =502
+          Y: =100
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - tabRule:
         Control: ModernText@1.0.0
         Properties:
@@ -1640,7 +1680,7 @@ Screens:
                       RadiusBottomLeft: =4
                       RadiusBottomRight: =4
                       Size: =11
-                      Text: =Switch(ThisItem.ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", ThisItem.ReqType.Value)
+                      Text: =Switch(ThisItem.ReqType.Value, "ORG1", "組織区分1", "ORG2", "組織区分2", "USER", "利用者", "GRANT", "権限変更", "MIXED", "組織＋ユーザ", ThisItem.ReqType.Value)
                       Width: =146
                       Wrap: =true
                       PaddingTop: =0
@@ -1693,9 +1733,9 @@ Screens:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
-                      Color: =If(ThisItem.Status.Value = "APPLIED", RGBA(47, 111, 94, 1), RGBA(196, 127, 28, 1))
+                      Color: =Switch(ThisItem.Status.Value, "APPLIED", RGBA(47, 111, 94, 1), "REJECTED", RGBA(184, 83, 74, 1), "INPROGRESS", RGBA(70, 110, 160, 1), "PARTIAL", RGBA(70, 110, 160, 1), RGBA(196, 127, 28, 1))
                       Size: =11
-                      Text: =Switch(ThisItem.Status.Value, "APPLIED", "反映済", "SUBMITTED", "処理中", "ERROR", "エラー", ThisItem.Status.Value)
+                      Text: =Switch(ThisItem.Status.Value, "SUBMITTED", "未対応", "INPROGRESS", "作業待ち", "PARTIAL", "一部完了", "APPLIED", "完了", "REJECTED", "差し戻し", "CANCELED", "取消", "ERROR", "エラー", ThisItem.Status.Value)
                       Width: =80
                       Wrap: =true
                       PaddingTop: =0
@@ -1708,7 +1748,7 @@ Screens:
                   Align: ='TextCanvas.Align'.Start
                   Color: =RGBA(42, 42, 38, 1)
                   Height: =48
-                  OnSelect: '=Set(gblReqNo, ThisItem.Title); Navigate(ScrReq)
+                  OnSelect: '=Set(gblReqNo, ThisItem.Title); Set(gblFrom, "hist"); Navigate(ScrReq)
 
                     '
                   Size: =13
@@ -2771,7 +2811,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Visible: =gblTab = "org" || gblTab = "user"
-          OnSelect: =Set(gblErr, ""); Set(gblStop, false); Set(gblReqList, ""); Set(gblO1B, fP1); Set(gblO1A, fO1E); Set(gblGo1, (gblO1A.MsExt <> gblO1B.MsExt) || (gblO1A.MsWlan <> gblO1B.MsWlan) || (gblO1A.MsCloud <> gblO1B.MsCloud)); ClearCollect(colO2Chg, Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, With({o:LookUp(colOrg2All, Title = e.Title)}, {Code:e.Title, NameJa:e.NameJa, NameEn:e.NameEn, Op:If(e.IsNew, "ADD", If(e.IsDel, "DELETE", "UPDATE")), BJa:o.NameJa, BEn:o.NameEn, BExt:o.ApExt, BWlan:o.ApWlan, BCloud:o.ApCloud, BSort:o.SortOrder, AExt:e.ApExt, AWlan:e.ApWlan, ACloud:e.ApCloud, ASort:e.SortOrder, Chg:e.IsNew || e.IsDel || (e.NameJa <> o.NameJa) || (e.NameEn <> o.NameEn) || (e.ApExt <> o.ApExt) || (e.ApWlan <> o.ApWlan) || (e.ApCloud <> o.ApCloud) || (e.SortOrder <> o.SortOrder)})), Chg)); Set(gblGo2, CountRows(colO2Chg) > 0); ClearCollect(colGChg, fChg); Set(gblGo3, CountRows(colGChg) > 0); If(!gblGo1 && !gblGo2 && !gblGo3, Set(gblErr, "変更がありません。組織マスタの要否・表示順、またはマトリックスのセルを変更してください。")); If(IsBlank(gblErr) && fInvN > 0, Set(gblErr, "多段階承認が無効になった組織区分2 に権限が " & fInvN & " 件残っています。ユーザマスタの赤いセルをクリックして外してから申請してください。")); If(IsBlank(gblErr) && gblGo3 && fNoAppN > 0 && !gblGateOk, Set(gblStop, true)); If(gblStop, Set(gblModal, "grant")); Set(gblGateOk, false); If(IsBlank(gblErr) && !gblStop && gblGo1, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr) && !gblStop && gblGo1, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"ORG1"}, TargetKey:gblOrg1, TargetName:gblO1B.NameJa, Summary:"多段階設定要否の変更", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:1, Org1Code:gblOrg1})); If(IsBlank(gblErr) && !gblStop && gblGo1, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001", ReqNo:gblReqNo, Seq:1, Operation:{Value:"UPDATE"}, EntityKind:{Value:"ORG1"}, EntityKey:gblOrg1, BeforeJson:"{""MsExt"":" & If(gblO1B.MsExt, "true", "false") & ",""MsWlan"":" & If(gblO1B.MsWlan, "true", "false") & ",""MsCloud"":" & If(gblO1B.MsCloud, "true", "false") & "}", AfterJson:"{""MsExt"":" & If(gblO1A.MsExt, "true", "false") & ",""MsWlan"":" & If(gblO1A.MsWlan, "true", "false") & ",""MsCloud"":" & If(gblO1A.MsCloud, "true", "false") & "}", ChangeText:gblO1B.NameJa & "：" & Concat(Filter(Table({n:"外部接続",b:gblO1B.MsExt,a:gblO1A.MsExt},{n:"無線LAN",b:gblO1B.MsWlan,a:gblO1A.MsWlan},{n:"クラウド",b:gblO1B.MsCloud,a:gblO1A.MsCloud}), b <> a), n & " " & If(b, "要", "不要") & "→" & If(a, "要", "不要"), "、")})); If(IsBlank(gblErr) && !gblStop && gblGo1, Patch(PRM_Org1, LookUp(PRM_Org1, Title = gblOrg1), {MsExt:gblO1A.MsExt, MsWlan:gblO1A.MsWlan, MsCloud:gblO1A.MsCloud})); If(IsBlank(gblErr) && !gblStop && gblGo1, Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {Status:{Value:"APPLIED"}})); If(IsBlank(gblErr) && !gblStop && gblGo1, ClearCollect(colOrg1, Sort(Filter(PRM_Org1, IsActive = true), SortOrder))); If(IsBlank(gblErr) && !gblStop && gblGo1, ClearCollect(colO1Edit, colOrg1)); If(IsBlank(gblErr) && !gblStop && gblGo1, ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))); If(IsBlank(gblErr) && !gblStop && gblGo1, Set(gblReqList, gblReqList & If(IsBlank(gblReqList), "", "、") & gblReqNo)); If(IsBlank(gblErr) && !gblStop && gblGo2, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr) && !gblStop && gblGo2, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"ORG2"}, TargetKey:gblOrg1, TargetName:fP1.NameJa, Summary:"組織区分2 の変更 " & CountRows(colO2Chg) & "件", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:CountRows(colO2Chg), Org1Code:gblOrg1})); If(IsBlank(gblErr) && !gblStop && gblGo2, ForAll(Sequence(CountRows(colO2Chg)) As i, With({c:Index(colO2Chg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(i.Value, "000"), ReqNo:gblReqNo, Seq:i.Value, Operation:{Value:c.Op}, EntityKind:{Value:"ORG2"}, EntityKey:c.Code, BeforeJson:If(c.Op = "ADD", "{}", "{""NameJa"":""" & c.BJa & """,""ApExt"":" & If(c.BExt, "true", "false") & ",""ApWlan"":" & If(c.BWlan, "true", "false") & ",""ApCloud"":" & If(c.BCloud, "true", "false") & ",""SortOrder"":" & c.BSort & "}"), AfterJson:If(c.Op = "DELETE", "{""IsActive"":false}", "{""NameJa"":""" & c.NameJa & """,""ApExt"":" & If(c.AExt, "true", "false") & ",""ApWlan"":" & If(c.AWlan, "true", "false") & ",""ApCloud"":" & If(c.ACloud, "true", "false") & ",""SortOrder"":" & c.ASort & "}"), ChangeText:c.NameJa & "（" & c.Code & "）：" & If(c.Op = "ADD", "新規登録（表示順 " & c.ASort & "）", If(c.Op = "DELETE", "削除", Concat(Filter(Table({n:"日本語名称",b:Coalesce(c.BJa, ""),a:Coalesce(c.NameJa, "")},{n:"英語名称",b:Coalesce(c.BEn, ""),a:Coalesce(c.NameEn, "")},{n:"外部接続",b:If(c.BExt, "要", "不要"),a:If(c.AExt, "要", "不要")},{n:"無線LAN",b:If(c.BWlan, "要", "不要"),a:If(c.AWlan, "要", "不要")},{n:"クラウド",b:If(c.BCloud, "要", "不要"),a:If(c.ACloud, "要", "不要")},{n:"表示順",b:Text(c.BSort),a:Text(c.ASort)}), b <> a), n & " " & b & "→" & a, "、")))})))); If(IsBlank(gblErr) && !gblStop && gblGo2, ForAll(Filter(colO2Chg, Op = "ADD") As c, Patch(PRM_Org2, Defaults(PRM_Org2), {Title:c.Code, Org1Code:gblOrg1, NameJa:c.NameJa, NameEn:c.NameEn, SortOrder:c.ASort, ApExt:c.AExt, ApWlan:c.AWlan, ApCloud:c.ACloud, IsActive:true}))); If(IsBlank(gblErr) && !gblStop && gblGo2, ForAll(Filter(colO2Chg, Op = "DELETE") As c, Patch(PRM_Org2, LookUp(PRM_Org2, Title = c.Code), {IsActive:false}))); If(IsBlank(gblErr) && !gblStop && gblGo2, ForAll(Filter(colO2Chg, Op = "UPDATE") As c, Patch(PRM_Org2, LookUp(PRM_Org2, Title = c.Code), {NameJa:c.NameJa, NameEn:c.NameEn, ApExt:c.AExt, ApWlan:c.AWlan, ApCloud:c.ACloud, SortOrder:c.ASort}))); If(IsBlank(gblErr) && !gblStop && gblGo2, Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {Status:{Value:"APPLIED"}})); If(IsBlank(gblErr) && !gblStop && gblGo2, ClearCollect(colOrg2All, Sort(Filter(PRM_Org2, IsActive = true), SortOrder))); If(IsBlank(gblErr) && !gblStop && gblGo2, ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false}))); If(IsBlank(gblErr) && !gblStop && gblGo2, ClearCollect(colO2Any, ForAll(PRM_Org2 As o2, {Title:o2.Title, Org1Code:o2.Org1Code}))); If(IsBlank(gblErr) && !gblStop && gblGo2, ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))); If(IsBlank(gblErr) && !gblStop && gblGo2, Set(gblReqList, gblReqList & If(IsBlank(gblReqList), "", "、") & gblReqNo)); If(IsBlank(gblErr) && !gblStop && gblGo3, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr) && !gblStop && gblGo3, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"GRANT"}, TargetKey:gblOrg1, TargetName:If(CountRows(colGChg) = 1, LookUp(colUsersAll, Title = First(colGChg).Gid).FullName & "（" & First(colGChg).Gid & "）", Text(CountRows(colGChg)) & " 件の権限変更"), Summary:"権限マトリックスからの変更 " & CountRows(colGChg) & "件", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:CountRows(colGChg), Org1Code:gblOrg1})); If(IsBlank(gblErr) && !gblStop && gblGo3, ForAll(Sequence(CountRows(colGChg)) As i, With({c:Index(colGChg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(i.Value, "000"), ReqNo:gblReqNo, Seq:i.Value, Operation:{Value:If(c.BS = "NONE", "ADD", If(c.NS = "NONE", "DELETE", "UPDATE"))}, EntityKind:{Value:"GRANT"}, EntityKey:c.Gid & "#" & c.O1 & "#" & c.Role, BeforeJson:"{""ScopeType"":""" & c.BS & """,""Org2Codes"":""" & c.BC & """}", AfterJson:"{""ScopeType"":""" & c.NS & """,""Org2Codes"":""" & c.NC & """}", ChangeText:LookUp(colUsersAll, Title = c.Gid).FullName & "（" & LookUp(Table({rc:"SECMGR",rn:"事業場ITセキュリティ責任者"},{rc:"CONFORM",rn:"適合化担当"},{rc:"EXTCONN",rn:"外部接続申請担当"},{rc:"WLAN",rn:"無線LAN申請担当"},{rc:"CLOUD",rn:"クラウド申請担当"},{rc:"INFOSEC",rn:"情報セキュリティ担当"}), rc = c.Role).rn & "）：" & If(c.BS = "NONE", "権限なし", If(c.BS = "ALL", "全体", "個別（" & Concat(Filter(colOrg2All, Org1Code = c.O1 && (";" & Title & ";") in c.BC), NameJa, "、") & "）")) & "→" & If(c.NS = "NONE", "権限なし", If(c.NS = "ALL", "全体", "個別（" & Concat(Filter(colOrg2All, Org1Code = c.O1 && (";" & Title & ";") in c.NC), NameJa, "、") & "）"))})))); If(IsBlank(gblErr) && !gblStop && gblGo3, ForAll(colGChg As c, If(c.NS = "NONE", Patch(PRM_Grants, LookUp(PRM_Grants, Title = c.Gid & "#" & c.O1 & "#" & c.Role), {IsActive:false, LastReqNo:gblReqNo}), If(IsBlank(LookUp(PRM_Grants, Title = c.Gid & "#" & c.O1 & "#" & c.Role).Title), Patch(PRM_Grants, Defaults(PRM_Grants), {Title:c.Gid & "#" & c.O1 & "#" & c.Role, GlobalId:c.Gid, Org1Code:c.O1, RoleCode:{Value:c.Role}, ScopeType:{Value:c.NS}, Org2Codes:c.NC, IsActive:true, LastReqNo:gblReqNo}), Patch(PRM_Grants, LookUp(PRM_Grants, Title = c.Gid & "#" & c.O1 & "#" & c.Role), {ScopeType:{Value:c.NS}, Org2Codes:c.NC, IsActive:true, LastReqNo:gblReqNo}))))); If(IsBlank(gblErr) && !gblStop && gblGo3, Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {Status:{Value:"APPLIED"}})); If(IsBlank(gblErr) && !gblStop && gblGo3, ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true))); If(IsBlank(gblErr) && !gblStop && gblGo3, ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(IsBlank(gblErr) && !gblStop && gblGo3, ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))); If(IsBlank(gblErr) && !gblStop && gblGo3, Set(gblReqList, gblReqList & If(IsBlank(gblReqList), "", "、") & gblReqNo)); If(IsBlank(gblErr) && !gblStop && !IsBlank(gblReqList), Notify("申請しました（" & gblReqList & "）", NotificationType.Success)); If(!IsBlank(gblErr), Notify(gblErr, NotificationType.Warning))
+          OnSelect: =Set(gblErr, ""); Set(gblStop, false); Set(gblO1B, fP1); Set(gblO1A, fO1E); Set(gblGo1, (gblO1A.MsExt <> gblO1B.MsExt) || (gblO1A.MsWlan <> gblO1B.MsWlan) || (gblO1A.MsCloud <> gblO1B.MsCloud)); ClearCollect(colO2Chg, Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, With({o:LookUp(colOrg2All, Title = e.Title)}, {Code:e.Title, NameJa:e.NameJa, NameEn:e.NameEn, Op:If(e.IsNew, "ADD", If(e.IsDel, "DELETE", "UPDATE")), BJa:o.NameJa, BEn:o.NameEn, BExt:o.ApExt, BWlan:o.ApWlan, BCloud:o.ApCloud, BSort:o.SortOrder, AExt:e.ApExt, AWlan:e.ApWlan, ACloud:e.ApCloud, ASort:e.SortOrder, Chg:e.IsNew || e.IsDel || (e.NameJa <> o.NameJa) || (e.NameEn <> o.NameEn) || (e.ApExt <> o.ApExt) || (e.ApWlan <> o.ApWlan) || (e.ApCloud <> o.ApCloud) || (e.SortOrder <> o.SortOrder)})), Chg)); Set(gblGo2, CountRows(colO2Chg) > 0); ClearCollect(colGChg, fChg); Set(gblGo3, CountRows(colGChg) > 0); If(!gblGo1 && !gblGo2 && !gblGo3, Set(gblErr, "変更がありません。組織マスタの要否・表示順、またはマトリックスのセルを変更してください。")); If(IsBlank(gblErr) && fInvN > 0, Set(gblErr, "多段階承認が無効になった組織区分2 に権限が " & fInvN & " 件残っています。ユーザマスタの赤いセルをクリックして外してから申請してください。")); If(IsBlank(gblErr) && gblGo3 && fNoAppN > 0 && !gblGateOk, Set(gblStop, true)); If(gblStop, Set(gblModal, "grant")); Set(gblGateOk, false); Set(gblSeqO1, If(gblGo1, 1, 0)); Set(gblSeqO2, gblSeqO1 + CountRows(colO2Chg)); Set(gblItemN, gblSeqO2 + CountRows(colGChg)); If(IsBlank(gblErr) && !gblStop, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd-hhmmss") & "-" & Text(RandBetween(100, 999)))); If(IsBlank(gblErr) && !gblStop && !IsBlank(LookUp(PRM_Requests, Title = gblReqNo).Title), Set(gblReqNo, gblReqNo & "-2")); If(IsBlank(gblErr) && !gblStop, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"MIXED"}, TargetKey:gblOrg1, TargetName:fP1.NameJa, Summary:Concat(Filter(Table({n:"組織区分1 の要否 1件",c:gblSeqO1},{n:"組織区分2 の変更 " & CountRows(colO2Chg) & "件",c:CountRows(colO2Chg)},{n:"権限の変更 " & CountRows(colGChg) & "件",c:CountRows(colGChg)}), c > 0), n, "、"), ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:gblItemN, Org1Code:gblOrg1})); If(IsBlank(gblErr) && !gblStop && gblGo1, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001", ReqNo:gblReqNo, Seq:1, Operation:{Value:"UPDATE"}, EntityKind:{Value:"ORG1"}, EntityKey:gblOrg1, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""MsExt"":" & If(gblO1B.MsExt, "true", "false") & ",""MsWlan"":" & If(gblO1B.MsWlan, "true", "false") & ",""MsCloud"":" & If(gblO1B.MsCloud, "true", "false") & "}", AfterJson:"{""MsExt"":" & If(gblO1A.MsExt, "true", "false") & ",""MsWlan"":" & If(gblO1A.MsWlan, "true", "false") & ",""MsCloud"":" & If(gblO1A.MsCloud, "true", "false") & "}", ChangeText:gblO1B.NameJa & "：" & Concat(Filter(Table({n:"外部接続",b:gblO1B.MsExt,a:gblO1A.MsExt},{n:"無線LAN",b:gblO1B.MsWlan,a:gblO1A.MsWlan},{n:"クラウド",b:gblO1B.MsCloud,a:gblO1A.MsCloud}), b <> a), n & " " & If(b, "要", "不要") & "→" & If(a, "要", "不要"), "、")})); If(IsBlank(gblErr) && !gblStop && gblGo2, ForAll(Sequence(CountRows(colO2Chg)) As i, With({c:Index(colO2Chg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(gblSeqO1 + i.Value, "000"), ReqNo:gblReqNo, Seq:gblSeqO1 + i.Value, Operation:{Value:c.Op}, EntityKind:{Value:"ORG2"}, EntityKey:c.Code, ItemStatus:{Value:"PENDING"}, BeforeJson:If(c.Op = "ADD", "{}", "{""NameJa"":""" & Substitute(Coalesce(c.BJa, ""), """", "\""") & """,""NameEn"":""" & Substitute(Coalesce(c.BEn, ""), """", "\""") & """,""ApExt"":" & If(c.BExt, "true", "false") & ",""ApWlan"":" & If(c.BWlan, "true", "false") & ",""ApCloud"":" & If(c.BCloud, "true", "false") & ",""SortOrder"":" & c.BSort & "}"), AfterJson:If(c.Op = "DELETE", "{""IsActive"":false}", "{""Org1Code"":""" & gblOrg1 & """,""NameJa"":""" & Substitute(Coalesce(c.NameJa, ""), """", "\""") & """,""NameEn"":""" & Substitute(Coalesce(c.NameEn, ""), """", "\""") & """,""ApExt"":" & If(c.AExt, "true", "false") & ",""ApWlan"":" & If(c.AWlan, "true", "false") & ",""ApCloud"":" & If(c.ACloud, "true", "false") & ",""SortOrder"":" & c.ASort & "}"), ChangeText:c.NameJa & "（" & c.Code & "）：" & If(c.Op = "ADD", "新規登録（表示順 " & c.ASort & "）", If(c.Op = "DELETE", "削除", Concat(Filter(Table({n:"日本語名称",b:Coalesce(c.BJa, ""),a:Coalesce(c.NameJa, "")},{n:"英語名称",b:Coalesce(c.BEn, ""),a:Coalesce(c.NameEn, "")},{n:"外部接続",b:If(c.BExt, "要", "不要"),a:If(c.AExt, "要", "不要")},{n:"無線LAN",b:If(c.BWlan, "要", "不要"),a:If(c.AWlan, "要", "不要")},{n:"クラウド",b:If(c.BCloud, "要", "不要"),a:If(c.ACloud, "要", "不要")},{n:"表示順",b:Text(c.BSort),a:Text(c.ASort)}), b <> a), n & " " & b & "→" & a, "、")))})))); If(IsBlank(gblErr) && !gblStop && gblGo3, ForAll(Sequence(CountRows(colGChg)) As i, With({c:Index(colGChg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(gblSeqO2 + i.Value, "000"), ReqNo:gblReqNo, Seq:gblSeqO2 + i.Value, Operation:{Value:If(c.BS = "NONE", "ADD", If(c.NS = "NONE", "DELETE", "UPDATE"))}, EntityKind:{Value:"GRANT"}, EntityKey:c.Gid & "#" & c.O1 & "#" & c.Role, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""ScopeType"":""" & c.BS & """,""Org2Codes"":""" & c.BC & """}", AfterJson:If(c.NS = "NONE", "{""IsActive"":false}", "{""GlobalId"":""" & c.Gid & """,""Org1Code"":""" & c.O1 & """,""RoleCode"":""" & c.Role & """,""ScopeType"":""" & c.NS & """,""Org2Codes"":""" & c.NC & """}"), ChangeText:LookUp(colUsersAll, Title = c.Gid).FullName & "（" & LookUp(fRoles, rc = c.Role).rn & "）：" & If(c.BS = "NONE", "権限なし", If(c.BS = "ALL", "全体", "個別（" & Concat(Filter(colOrg2All, Org1Code = c.O1 && (";" & Title & ";") in c.BC), NameJa, "、") & "）")) & "→" & If(c.NS = "NONE", "権限なし", If(c.NS = "ALL", "全体", "個別（" & Concat(Filter(colO2Edit, Org1Code = c.O1 && (";" & Title & ";") in c.NC), NameJa, "、") & "）"))})))); If(IsBlank(gblErr) && !gblStop, ClearCollect(colO1Edit, colOrg1)); If(IsBlank(gblErr) && !gblStop, ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false}))); If(IsBlank(gblErr) && !gblStop, ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(IsBlank(gblErr) && !gblStop, ClearCollect(colPendO2, ForAll(Filter(PRM_RequestItems, EntityKind.Value = "ORG2", Operation.Value = "ADD") As i, {C:i.EntityKey}))); If(IsBlank(gblErr) && !gblStop, ClearCollect(colReq, Filter(PRM_Requests, Org1Code = gblOrg1))); If(IsBlank(gblErr) && !gblStop && gblIsAdmin, ClearCollect(colAdmReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -180, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")}))); If(IsBlank(gblErr) && !gblStop, Notify("申請しました（" & gblReqNo & "／" & gblItemN & "件）。管理者が内容を確認して作業します。", NotificationType.Success)); If(!IsBlank(gblErr), Notify(gblErr, NotificationType.Warning))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2822,6 +2862,494 @@ Screens:
           Width: =Parent.Width - 380
           X: =44
           Y: =Parent.Height - 44
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblACap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: ="表示する申請"
+          Visible: =gblTab = "adm"
+          Width: =200
+          X: =28
+          Y: =126
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - afopen:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(gblAFilter = "open", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          Fill: =If(gblAFilter = "open", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          FontWeight: =If(gblAFilter = "open", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
+          Height: =32
+          OnSelect: =Set(gblAFilter, "open")
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="未完了のみ"
+          Visible: =gblTab = "adm"
+          Width: =130
+          X: =28
+          Y: =146
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - afall:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(gblAFilter = "all", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          Fill: =If(gblAFilter = "all", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          FontWeight: =If(gblAFilter = "all", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
+          Height: =32
+          OnSelect: =Set(gblAFilter, "all")
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="すべて"
+          Visible: =gblTab = "adm"
+          Width: =100
+          X: =166
+          Y: =146
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - btnARefresh:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(74, 71, 64, 1)
+          Fill: =RGBA(232, 228, 216, 1)
+          Height: =32
+          OnSelect: =ClearCollect(colAdmReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -180, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})); Notify("申請一覧を読み直しました（" & CountRows(colAdmReq) & "件）", NotificationType.Success)
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="読み直す"
+          Visible: =gblTab = "adm"
+          Width: =110
+          X: =Parent.Width - 288
+          Y: =146
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblACount:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.End
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =32
+          Size: =12
+          Text: =Text(fAdmN) & "件（未完了 " & fAdmOpenN & "）"
+          Visible: =gblTab = "adm"
+          Width: =160
+          X: =Parent.Width - 168
+          Y: =146
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - cardA:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(250, 250, 247, 1)
+          Height: =Parent.Height - 230
+          RadiusTopLeft: =8
+          RadiusTopRight: =8
+          RadiusBottomLeft: =8
+          RadiusBottomRight: =8
+          Size: =13
+          Text: =""
+          Visible: =gblTab = "adm"
+          Width: =Parent.Width - 56
+          X: =28
+          Y: =194
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblAH0:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: ="申請日時"
+          Visible: =gblTab = "adm"
+          Width: =146
+          X: =44
+          Y: =208
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblAH1:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: ="申請番号"
+          Visible: =gblTab = "adm"
+          Width: =186
+          X: =190
+          Y: =208
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblAH2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: ="種別"
+          Visible: =gblTab = "adm"
+          Width: =120
+          X: =376
+          Y: =208
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblAH3:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: ="対象"
+          Visible: =gblTab = "adm"
+          Width: =210
+          X: =496
+          Y: =208
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblAH4:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: ="申請者"
+          Visible: =gblTab = "adm"
+          Width: =110
+          X: =706
+          Y: =208
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblAH5:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: ="明細"
+          Visible: =gblTab = "adm"
+          Width: =56
+          X: =816
+          Y: =208
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblAH6:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: ="状態"
+          Visible: =gblTab = "adm"
+          Width: =90
+          X: =872
+          Y: =208
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblAH7:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =24
+          Size: =11
+          Text: ="内容"
+          Visible: =gblTab = "adm"
+          Width: =300
+          X: =962
+          Y: =208
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - aHRule:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(42, 42, 38, 0.12)
+          Height: =1
+          Size: =13
+          Text: =""
+          Visible: =gblTab = "adm"
+          Width: =Parent.Width - 88
+          X: =44
+          Y: =234
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - cntAdm:
+        Control: GroupContainer@1.5.0
+        Variant: AutoLayout
+        Properties:
+          Height: =Parent.Height - 280
+          LayoutAlignItems: =LayoutAlignItems.Stretch
+          LayoutDirection: =LayoutDirection.Vertical
+          PaddingBottom: =0
+          PaddingLeft: =0
+          PaddingRight: =0
+          PaddingTop: =0
+          Visible: =gblTab = "adm"
+          Width: =Parent.Width - 88
+          X: =44
+          Y: =236
+        Children:
+        - galAdm:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              FillPortions: =1
+              Items: =fAdm
+              ShowScrollbar: =true
+              TemplatePadding: =0
+              TemplateSize: =48
+            Children:
+            - aRow:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  X: =0
+                  Y: =0
+                  Width: =Parent.TemplateWidth
+                  Height: =48
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  PaddingBottom: =0
+                Children:
+                - aWhen:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Start
+                      Color: =RGBA(122, 118, 108, 1)
+                      Size: =11
+                      Text: =Text(ThisItem.W, "yyyy/mm/dd hh:mm")
+                      Width: =146
+                      Wrap: =true
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      VerticalAlign: =VerticalAlign.Middle
+                      FillPortions: =0
+                - aNo:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Start
+                      Color: =RGBA(122, 118, 108, 1)
+                      Size: =11
+                      Text: =ThisItem.No
+                      Width: =186
+                      Wrap: =true
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      VerticalAlign: =VerticalAlign.Middle
+                      FillPortions: =0
+                - aType:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =RGBA(74, 71, 64, 1)
+                      Fill: =RGBA(232, 228, 216, 1)
+                      RadiusTopLeft: =4
+                      RadiusTopRight: =4
+                      RadiusBottomLeft: =4
+                      RadiusBottomRight: =4
+                      Size: =11
+                      Text: =Switch(ThisItem.RT, "ORG1", "組織区分1", "ORG2", "組織区分2", "USER", "利用者", "GRANT", "権限変更", "MIXED", "組織＋ユーザ", ThisItem.RT)
+                      Width: =112
+                      Wrap: =true
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      VerticalAlign: =VerticalAlign.Middle
+                      FillPortions: =0
+                      Height: =26
+                      AlignInContainer: =AlignInContainer.Center
+                      LayoutMinHeight: =0
+                - aTarget:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Start
+                      Color: =RGBA(42, 42, 38, 1)
+                      Size: =12
+                      Text: =ThisItem.T
+                      Width: =218
+                      Wrap: =true
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      VerticalAlign: =VerticalAlign.Middle
+                      FillPortions: =0
+                - aBy:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Start
+                      Color: =RGBA(74, 71, 64, 1)
+                      Size: =12
+                      Text: =ThisItem.By
+                      Width: =110
+                      Wrap: =true
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      VerticalAlign: =VerticalAlign.Middle
+                      FillPortions: =0
+                - aCount:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =RGBA(122, 118, 108, 1)
+                      Size: =11
+                      Text: =ThisItem.N
+                      Width: =56
+                      Wrap: =true
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      VerticalAlign: =VerticalAlign.Middle
+                      FillPortions: =0
+                - aStat:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =Switch(ThisItem.S, "APPLIED", RGBA(47, 111, 94, 1), "REJECTED", RGBA(184, 83, 74, 1), "INPROGRESS", RGBA(70, 110, 160, 1), "PARTIAL", RGBA(70, 110, 160, 1), RGBA(196, 127, 28, 1))
+                      FontWeight: ='TextCanvas.Weight'.Bold
+                      Size: =11
+                      Text: =Switch(ThisItem.S, "SUBMITTED", "未対応", "INPROGRESS", "作業待ち", "PARTIAL", "一部完了", "APPLIED", "完了", "REJECTED", "差し戻し", "CANCELED", "取消", "ERROR", "エラー", ThisItem.S)
+                      Width: =90
+                      Wrap: =true
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      VerticalAlign: =VerticalAlign.Middle
+                      FillPortions: =0
+                - aSum:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Start
+                      Color: =RGBA(122, 118, 108, 1)
+                      Size: =11
+                      Text: =ThisItem.Sm
+                      Wrap: =true
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      VerticalAlign: =VerticalAlign.Middle
+                      FillPortions: =1
+            - aOpen:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Start
+                  Color: =RGBA(42, 42, 38, 1)
+                  Height: =48
+                  OnSelect: =Set(gblReqNo, ThisItem.No); Set(gblFrom, "adm"); Navigate(ScrReq)
+                  Size: =13
+                  Text: =""
+                  Width: =Parent.TemplateWidth
+                  X: =0
+                  Y: =0
+                  Wrap: =true
+                  PaddingTop: =0
+                  PaddingBottom: =0
+                  VerticalAlign: =VerticalAlign.Middle
+            - aRule:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: ='TextCanvas.Align'.Start
+                  Color: =RGBA(42, 42, 38, 1)
+                  Fill: =RGBA(42, 42, 38, 0.12)
+                  Height: =1
+                  Size: =13
+                  Text: =""
+                  Width: =Parent.TemplateWidth
+                  X: =0
+                  Y: =47
+                  Wrap: =true
+                  PaddingTop: =0
+                  PaddingBottom: =0
+                  VerticalAlign: =VerticalAlign.Middle
+    - lblAEmpty:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(168, 163, 154, 1)
+          Height: =40
+          Size: =12
+          Text: ="この条件の申請はありません"
+          Visible: =gblTab = "adm" && fAdmN = 0
+          Width: =Parent.Width - 88
+          X: =44
+          Y: =284
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblANote:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(74, 71, 64, 1)
+          Fill: =RGBA(122, 138, 120, 0.18)
+          Height: =28
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =11
+          Text: ="行をクリックすると申請詳細が開く。作業は明細ごとに 作業待ち／完了／差し戻し を設定する。"
+          Visible: =gblTab = "adm"
+          Width: =Parent.Width - 56
+          X: =28
+          Y: =Parent.Height - 30
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0

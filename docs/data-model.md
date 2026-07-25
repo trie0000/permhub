@@ -40,6 +40,7 @@ SharePoint にトランザクションは無いので、§6 の手順で担保�
 | `PRM_Grants` | 権限（現行値） | **いちばん伸びる** |
 | `PRM_Requests` | 申請ヘッダ | 申請のたびに 1 行 |
 | `PRM_RequestItems` | 申請明細 | 申請 1 件につき数行〜数十行 |
+| `PRM_Config` | 設定（1 行 = 1 キー）。テナント固有の値をここに置く | 増えない |
 
 ---
 
@@ -163,14 +164,14 @@ SharePoint にトランザクションは無いので、§6 の手順で担保�
 | 内部名 | 型 | 表示名 | 制約 |
 |---|---|---|---|
 | `Title` | Text | 申請番号 | **一意 + 索引**。`REQ-20260720-0001` |
-| `ReqType` | Choice | 申請種別 | `ORG1` `ORG2` `USER` `GRANT` |
+| `ReqType` | Choice | 申請種別 | `ORG1` `ORG2` `USER` `GRANT` `MIXED`（1 申請に複数種別が混ざるとき） |
 | `TargetKey` | Text | 対象キー | **索引**。権限変更ならグローバルID、マスタならコード |
 | `TargetName` | Text | 対象名称 | 一覧表示用のスナップショット |
 | `Summary` | Note | 申請内容の要約 | 一覧に出す 1 行 |
 | `ApplicantId` | Text | 申請者グローバルID | 索引 |
 | `ApplicantName` | Text | 申請者氏名 | |
 | `SubmittedAt` | DateTime | 申請日時 | **索引**（期間検索用） |
-| `Status` | Choice | 状態 | `SUBMITTED` `APPLIED` `REJECTED` `CANCELED` `ERROR` |
+| `Status` | Choice | 状態 | **索引**。`SUBMITTED` `INPROGRESS` `PARTIAL` `APPLIED` `REJECTED` `CANCELED` `ERROR` |
 | `ItemCount` | Number | 明細件数 | 突合用 |
 
 `TargetName` は**申請時点の名称を焼き込む**。マスタが後で改名されても、
@@ -189,6 +190,10 @@ SharePoint にトランザクションは無いので、§6 の手順で担保�
 | `BeforeJson` | Note | 変更前 | `ADD` のときは空 |
 | `AfterJson` | Note | 変更後 | `DELETE` のときは空 |
 | `ChangeText` | Note | 変更内容（人が読む） | |
+| `ItemStatus` | Choice | 明細の状態 | **索引**。`PENDING` `READY` `DONE` `REJECTED`（既定 `PENDING`） |
+| `ItemNote` | Note | 差し戻し理由・作業メモ | 差し戻したときに記録する |
+| `HandledAt` | DateTime | 状態変更日時 | |
+| `HandledBy` | Text | 状態変更者 | グローバルID |
 
 ### なぜ JSON スナップショットか
 
@@ -212,6 +217,25 @@ ChangeText: 外部接続申請担当（東日本ブロック）
 
 ---
 
+## 4.5 `PRM_Config` 設定
+
+テナント固有の値をコードに書かないための逃がし先。1 行 1 キー。
+
+| 内部名 | 型 | 表示名 | 制約 |
+|---|---|---|---|
+| `Title` | Text | 設定キー | **一意 + 索引** |
+| `Value` | Text | 値 | |
+| `Descr` | Text | 説明 | |
+
+| キー | 用途 |
+|---|---|
+| `AdminGroupId` | 管理者にする Teams（Microsoft 365 グループ）の ID。空なら管理タブは誰にも出ない |
+
+グループ ID は、そのチームの SharePoint サイトで `/_api/site?$select=GroupId` を開けば分かる。
+**ID をアプリの数式に直書きしない**（テナントを移すたびに作り直しになる）。
+
+---
+
 ## 5. 履歴の引き方
 
 | 知りたいこと | 引き方 |
@@ -226,19 +250,83 @@ ChangeText: 外部接続申請担当（東日本ブロック）
 
 ---
 
-## 6. 申請確定の手順（トランザクションが無い前提）
+## 6. 申請と反映（トランザクションが無い前提）
 
-SharePoint はロールバックできない。**順番と再実行可能性で担保する。**
+**申請はマスタに触らない。** 申請ボタンは記録だけ行い、マスタへの書き込みは
+管理者が明細を「完了」にした時点で行う。
 
-1. `PRM_Requests` に `Status = SUBMITTED` で**先にヘッダを作る** → 申請番号が確定
-2. `PRM_RequestItems` を `$batch` で一括投入（変更前後を含む）
-3. 現行値テーブル（`PRM_Grants` 等）を `$batch` で更新
-4. `PRM_Requests.Status = APPLIED` に更新
+### 申請（申請者）
 
-**途中で落ちたら `SUBMITTED` のまま残る。** これが検知点になる。
-再実行は「明細を読んで現行値に当て直す」だけで済む（明細が正、現行値が従）。
+1. `PRM_Requests` に `Status = SUBMITTED` でヘッダを 1 本作る → 申請番号が確定
+2. 変更 1 件 = 明細 1 行として `PRM_RequestItems` に投入（`ItemStatus = PENDING`）
+3. **マスタは書かない**
 
-逆順（現行値を先に更新）にすると、**履歴の無い変更**が残って原因が追えなくなる。
+1 回の申請で組織マスタと利用者マスタの変更が混ざってよい。混ざったヘッダは
+`ReqType = MIXED` になる。
+
+### 反映（管理者）
+
+明細の状態を動かす。マスタに書くのは `DONE` にした瞬間だけ。
+
+| 明細の状態 | 意味 | マスタ |
+|---|---|---|
+| `PENDING` | 未対応 | 触らない |
+| `READY` | 作業待ち（内容 OK、作業前） | 触らない |
+| `DONE` | 完了 | **このとき `AfterJson` を当てる** |
+| `REJECTED` | 差し戻し | 触らない（`ItemNote` に理由） |
+
+`DONE` にする処理は「`AfterJson` を `ParseJSON` して対象マスタに `Patch`」。
+明細が正・マスタが従なので、**同じ明細を当て直しても同じ結果**になる（べき等）。
+
+### ヘッダ状態のロールアップ
+
+明細をまとめて 1 つの申請者向け状態に畳む。
+
+```
+未決（PENDING/READY）が 0 件:
+  すべて DONE      → APPLIED   （完了）
+  すべて REJECTED  → REJECTED  （差し戻し）
+  混在             → PARTIAL   （一部完了）
+未決あり:
+  DONE/REJECTED/READY が 1 件以上 → INPROGRESS（作業待ち）
+  それ以外                        → SUBMITTED （未対応）
+```
+
+### `AfterJson` は反映の契約
+
+`AfterJson` は表示用ではなく**反映処理の入力**になる。対象種別ごとに次の形で書く。
+足りない項目があると反映時に blank で上書きされるので、増やすときは
+書き込み側（申請）と読み込み側（反映）を同時に直す。
+
+| 種別 / 操作 | `EntityKey` | `AfterJson` |
+|---|---|---|
+| ORG1 / UPDATE | 組織区分1コード | `{"MsExt":b,"MsWlan":b,"MsCloud":b}` |
+| ORG2 / ADD | 新コード | `{"Org1Code":"…","NameJa":"…","NameEn":"…","SortOrder":n,"ApExt":b,"ApWlan":b,"ApCloud":b}` |
+| ORG2 / UPDATE | コード | 同上（`Org1Code` は無くてよい） |
+| USER / ADD・UPDATE | グローバルID | `{"FullName":"…","Mail":"…","Department":"…"}` |
+| USERORG1 / ADD | `<gid>#<org1>` | `{"GlobalId":"…","Org1Code":"…"}` |
+| GRANT / ADD・UPDATE | `<gid>#<org1>#<role>` | `{"GlobalId":"…","Org1Code":"…","RoleCode":"…","ScopeType":"…","Org2Codes":";A0101;"}` |
+| すべて / DELETE | 同上 | `{"IsActive":false}` |
+
+名称のような自由入力は、JSON に埋める前に二重引用符をバックスラッシュ付きに置換する
+（Power Fx なら `Substitute(<値>, 二重引用符, バックスラッシュ+二重引用符)`）。
+壊れた JSON は表示崩れではなく**反映の失敗**になる。
+
+### 組織区分2 を追加する申請のコード
+
+コードは**申請時に採番して明細に載せる**（画面には「未割当」と出す）。
+反映時に採番すると、同じ申請に含まれる権限明細が参照しているコードとずれる。
+
+採番の元は「`PRM_Org2` の全件（無効も含む）＋ 画面の編集中 ＋ **未反映の申請明細**」の最大値 + 1。
+未反映分を含めないと、2 つの申請が同じコードを取ってしまう。
+
+それでも衝突したときは、反映時に「そのコードが既にある」と検知して
+**その明細を完了にしない**（管理者が差し戻して、申請者に取り直してもらう）。
+
+### 落ちたときの状態
+
+各明細は独立している。途中で落ちても、落ちた明細は `PENDING`/`READY` のまま残る。
+ヘッダが `APPLIED` にならないので検知できる。再実行は同じ明細を「完了」にするだけ。
 
 `$batch` の各サブリクエストの `Content-Length` は **UTF-8 バイト長**で計算する。
 JS の `.length`（UTF-16 コード単位）だと日本語を含む body で SharePoint が途中で切って 400 になる。

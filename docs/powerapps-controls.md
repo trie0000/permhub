@@ -424,6 +424,95 @@ ForAll(Sequence(N) As i, With({c: Index(colGChg, i.Value)},
 **クリックしても無反応なコントロールを見つけたら、Z オーダーや当たり判定を疑う前に
 そのコントロールの赤い ⊗ バッジ →「数式バーで編集」で当該プロパティを開く。**
 
+## `IfError` は両方の引数の型を揃える
+
+`IfError(<テーブルを返す式>, Set(...))` は **`無効な引数の型です (Boolean)`** になる。
+`ForAll` はテーブルを返し、`Set` は Boolean を返すので型が合わない。
+
+```
+# NG: ForAll をまとめて IfError で包む
+IfError(ForAll(colTgt As t, Patch(...)), Set(gblErr, "失敗"))
+
+# OK: 実行してから Errors() で確認する
+ForAll(colTgt As t, Patch(...));
+If(CountRows(Errors(PRM_Org2)) + CountRows(Errors(PRM_Grants)) > 0, Set(gblErr, "失敗"))
+```
+
+スカラーを返す式なら `IfError` が使える（`IfError(CountRows(...) > 0, false)` は Boolean 同士で OK）。
+
+---
+
+## `ModernTextInput` のプレースホルダは `Placeholder`
+
+`HintText` は**存在しない**。貼り付け時に
+`PA2108 Unknown property 'HintText' for control type 'ModernTextInput@1.1.1'` で弾かれる。
+
+```
+- inpRej:
+    Control: ModernTextInput@1.1.1
+    Properties:
+      Placeholder: ="例）権限の範囲が申請書と合っていない"
+```
+
+---
+
+## コネクタ名は環境の表示言語になる
+
+日本語環境では `Office365Users` ではなく **`Office365ユーザー`**、
+`Office365Groups` ではなく **`Office365グループ`**。
+
+数式バーに `Office365Groups.` と打っても「提案はありません。」で終わる。
+**データ ペインに出ている名前がそのまま識別子**なので、そこを見る。
+
+日本語の識別子は自動化ツールから打ちにくい。`pbcopy` でクリップボード経由に流すと確実。
+
+---
+
+## SharePoint に列を足したら「最新の情報に更新」する
+
+アプリはリストのスキーマをキャッシュしている。後から列を足しても、
+データ ペインで **データソース → `…` → 最新の情報に更新** をしないと
+
+```
+名前が無効です: 'ItemStatus' は認識されません
+演算子 '.' は、Error の値で使用できません
+```
+
+になる。選択肢（Choice）に値を足したときも同じ。
+
+---
+
+## `Value` という名前の列は使える
+
+`LookUp(PRM_Config, Title = "AdminGroupId").Value` は動く。
+`Value()` 関数と名前が衝突しそうに見えるが、レコードのフィールド参照として解決される。
+
+---
+
+## `App.OnStart` は貼り替えても勝手に走らない
+
+Studio の実行中セッションは古い `OnStart` の結果を持ち続ける。プレビュー（▷）でも再実行されない。
+**ツリービューで App を右クリック → 「OnStart を実行します」** を明示的に叩く。
+
+変数ペインで `ブール値: 空白` のように「型はあるが値が無い」状態が見えたら、まずこれを疑う。
+
+---
+
+## `ParseJSON` は使える（欠損フィールドは blank）
+
+```
+With({j: ParseJSON("{""NameJa"":""検証"",""SortOrder"":7,""ApExt"":true}")},
+     Text(j.NameJa) & Value(j.SortOrder) & Boolean(j.ApExt) & Text(j.NoSuch))
+→ 検証7true（最後は空文字）
+```
+
+- 型変換は `Text()` / `Value()` / `Boolean()` で明示する
+- 無い項目はエラーではなく blank。**blank で `Patch` すると既存値を消す**ので、
+  JSON 側に必要な項目が全部入っているかは書き込み側で担保する
+- `ParseJSON("")` はエラーになるので `Coalesce(<列>, "{}")` で受ける
+
+---
+
 ## 貼り付け時の注意
 
 - 数式バー左の**プロパティ名コンボにフォーカスが残っていると `Cmd+V` がそこに入る**。

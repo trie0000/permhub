@@ -14,14 +14,14 @@ fP1 = LookUp(colOrg1, Title = gblOrg1);
 fOrg2 = Sort(Filter(colOrg2All, Org1Code = gblOrg1), SortOrder);
 fO2E = Sort(Filter(colO2Edit, Org1Code = gblOrg1), SortOrder);
 fO2Live = fO2E;
-fO2NextCode = "A" & Right(gblOrg1, 2) & Text(Max(Coalesce(Max(Filter(colO2Any, Org1Code = gblOrg1), Value(Right(Title, 2))), 0), Coalesce(Max(Filter(colO2Edit, Org1Code = gblOrg1), Value(Right(Title, 2))), 0)) + 1, "00");
+fO2NextCode = "A" & Right(gblOrg1, 2) & Text(Max(Coalesce(Max(Filter(colO2Any, Org1Code = gblOrg1), Value(Right(Title, 2))), 0), Coalesce(Max(Filter(colO2Edit, Org1Code = gblOrg1), Value(Right(Title, 2))), 0), Coalesce(Max(Filter(colPendO2, Left(C, 3) = "A" & Right(gblOrg1, 2)), Value(Right(C, 2))), 0)) + 1, "00");
 fChg = Filter(ForAll(Filter(colGEdit, O1 = gblOrg1) As e, With({s:LookUp(colGrantsAll, GlobalId = e.Gid && Org1Code = e.O1 && RoleCode.Value = e.Role)}, {Gid:e.Gid, O1:e.O1, Role:e.Role, NS:e.Scope, NC:Coalesce(e.Codes, ""), BS:If(IsBlank(s.GlobalId), "NONE", s.ScopeType.Value), BC:Coalesce(s.Org2Codes, ""), Chg:(If(IsBlank(s.GlobalId), "NONE", s.ScopeType.Value) <> e.Scope) || (Coalesce(s.Org2Codes, "") <> Coalesce(e.Codes, ""))})), Chg);
 fReq = LookUp(PRM_Requests, Title = gblReqNo);
 fGrant = LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole);
 fO1E = LookUp(colO1Edit, Title = gblOrg1);
 fBad = Filter(ForAll(Filter(colGrantsAll, Org1Code = gblOrg1 && ScopeType.Value = "PICK") As g, {Nm:LookUp(colUsersAll, Title = g.GlobalId).FullName & "（" & LookUp(Table({c:"SECMGR",n:"事業場ITセキュリティ責任者"},{c:"CONFORM",n:"適合化担当"},{c:"EXTCONN",n:"外部接続申請担当"},{c:"WLAN",n:"無線LAN申請担当"},{c:"CLOUD",n:"クラウド申請担当"},{c:"INFOSEC",n:"情報セキュリティ担当"}), c = g.RoleCode.Value).n & "）", Bad:CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As o, {C:o.Title, A:If(g.RoleCode.Value = "EXTCONN", fO1E.MsExt && o.ApExt, If(g.RoleCode.Value = "WLAN", fO1E.MsWlan && o.ApWlan, If(g.RoleCode.Value = "CLOUD", fO1E.MsCloud && o.ApCloud, (fO1E.MsExt && o.ApExt) || (fO1E.MsWlan && o.ApWlan) || (fO1E.MsCloud && o.ApCloud)))), B:If(g.RoleCode.Value = "EXTCONN", fP1.MsExt && LookUp(colOrg2All, Title = o.Title).ApExt, If(g.RoleCode.Value = "WLAN", fP1.MsWlan && LookUp(colOrg2All, Title = o.Title).ApWlan, If(g.RoleCode.Value = "CLOUD", fP1.MsCloud && LookUp(colOrg2All, Title = o.Title).ApCloud, (fP1.MsExt && LookUp(colOrg2All, Title = o.Title).ApExt) || (fP1.MsWlan && LookUp(colOrg2All, Title = o.Title).ApWlan) || (fP1.MsCloud && LookUp(colOrg2All, Title = o.Title).ApCloud))))}), (";" & C & ";") in g.Org2Codes && B && Not(A))) > 0}), Bad);
 fBadN = CountRows(fBad);
-fHist = Sort(Filter(colReq, gblHFilter = "all" || (gblHFilter = "master" && (ReqType.Value = "ORG1" || ReqType.Value = "ORG2")) || (gblHFilter = "grant" && (ReqType.Value = "USER" || ReqType.Value = "GRANT"))), SubmittedAt, SortOrder.Descending);
+fHist = Sort(Filter(colReq, gblHFilter = "all" || (gblHFilter = "master" && (ReqType.Value = "ORG1" || ReqType.Value = "ORG2" || ReqType.Value = "MIXED")) || (gblHFilter = "grant" && (ReqType.Value = "USER" || ReqType.Value = "GRANT" || ReqType.Value = "MIXED"))), SubmittedAt, SortOrder.Descending);
 fHistN = CountRows(fHist);
 fO2ChgN = CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, With({o:LookUp(colOrg2All, Title = e.Title)}, {Chg:e.IsNew || e.IsDel || (e.NameJa <> o.NameJa) || (e.NameEn <> o.NameEn) || (e.ApExt <> o.ApExt) || (e.ApWlan <> o.ApWlan) || (e.ApCloud <> o.ApCloud) || (e.SortOrder <> o.SortOrder)})), Chg));
 fP1U = LookUp(colOrg1, Title = gblUserOrg1);
@@ -51,4 +51,19 @@ fInvU = Filter(ForAll(Filter(colGEdit, Gid = gblUserGid && Scope = "PICK") As e,
 fInvUN = Coalesce(Sum(fInvU, Bad), 0);
 fEligUC = Concat(fEligU, ";" & Title, "") & ";";
 fO1ChgN = If(fO1E.MsExt <> fP1.MsExt, 1, 0) + If(fO1E.MsWlan <> fP1.MsWlan, 1, 0) + If(fO1E.MsCloud <> fP1.MsCloud, 1, 0);
-fChgAllN = fO1ChgN + fO2ChgN + CountRows(fChg)
+fChgAllN = fO1ChgN + fO2ChgN + CountRows(fChg);
+fAdm = Sort(Filter(colAdmReq, gblAFilter = "all" || (S <> "APPLIED" && S <> "REJECTED" && S <> "CANCELED")), W, SortOrder.Descending);
+fAdmN = CountRows(fAdm);
+fAdmOpenN = CountRows(Filter(colAdmReq, S <> "APPLIED" && S <> "REJECTED" && S <> "CANCELED"));
+fQIOrg = Filter(colQI, K = "ORG1" || K = "ORG2");
+fQIUser = Filter(colQI, K = "USER" || K = "USERORG1" || K = "GRANT");
+fQI = Sort(If(gblRTab = "org", fQIOrg, fQIUser), Seq);
+fQIN = CountRows(fQI);
+fQITodoN = CountRows(Filter(fQI, St = "PENDING" || St = "READY"));
+fQIPendN = CountRows(Filter(fQI, St = "PENDING"));
+fItPendN = CountRows(Filter(colQI, St = "PENDING"));
+fItReadyN = CountRows(Filter(colQI, St = "READY"));
+fItDoneN = CountRows(Filter(colQI, St = "DONE"));
+fItRejN = CountRows(Filter(colQI, St = "REJECTED"));
+fQIAllN = CountRows(colQI);
+fReqStat = If(fQIAllN = 0, "未対応", If(fItDoneN + fItRejN = fQIAllN, If(fItDoneN = fQIAllN, "完了", If(fItRejN = fQIAllN, "差し戻し", "一部完了")), If(fItDoneN + fItRejN + fItReadyN > 0, "作業待ち", "未対応")))
