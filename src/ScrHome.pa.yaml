@@ -1283,7 +1283,7 @@ Screens:
           Color: =RGBA(122, 118, 108, 1)
           Height: =28
           Size: =11
-          Text: =Text(Min(gblPage * 8 + 1, CountRows(fMem))) & "-" & Text(Min((gblPage + 1) * 8, CountRows(fMem))) & " / " & Text(CountRows(fMem)) & "人"
+          Text: =Text(Min(gblPage * 10 + 1, CountRows(fMem))) & "-" & Text(Min((gblPage + 1) * 10, CountRows(fMem))) & " / " & Text(CountRows(fMem)) & "人"
           Visible: =gblTab = "user"
           Width: =140
           X: =Parent.Width - 214
@@ -1299,7 +1299,7 @@ Screens:
           Color: =RGBA(74, 71, 64, 1)
           Fill: =RGBA(243, 241, 234, 1)
           Height: =28
-          OnSelect: =Set(gblPage, If((gblPage + 1) * 8 < CountRows(fMem), gblPage + 1, gblPage))
+          OnSelect: =Set(gblPage, If((gblPage + 1) * 10 < CountRows(fMem), gblPage + 1, gblPage))
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -1849,7 +1849,7 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
+          Width: =105
           X: =252
           Y: =292
           Wrap: =true
@@ -1872,7 +1872,7 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
+          Width: =105
           X: =252
           Y: =292
           Wrap: =true
@@ -1895,8 +1895,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =382
+          Width: =105
+          X: =357
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -1918,8 +1918,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =382
+          Width: =105
+          X: =357
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -1941,8 +1941,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =512
+          Width: =105
+          X: =462
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -1964,8 +1964,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =512
+          Width: =105
+          X: =462
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -1987,8 +1987,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =642
+          Width: =105
+          X: =567
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -2010,8 +2010,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =642
+          Width: =105
+          X: =567
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -2033,8 +2033,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =772
+          Width: =105
+          X: =672
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -2056,8 +2056,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =772
+          Width: =105
+          X: =672
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -2079,8 +2079,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =902
+          Width: =105
+          X: =777
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -2102,8 +2102,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =902
+          Width: =105
+          X: =777
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -2125,8 +2125,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =1032
+          Width: =105
+          X: =882
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -2148,8 +2148,8 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =1032
+          Width: =105
+          X: =882
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -2171,8 +2171,54 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =1162
+          Width: =105
+          X: =987
+          Y: =292
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - mhN9:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(CountRows(Filter(fChg, Gid = fG9 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          FontWeight: '=''TextCanvas.Weight''.Bold
+
+            '
+          Height: =22
+          Size: =11
+          Text: '=If(CountRows(Filter(fChg, Gid = fG9 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG9).FullName
+
+            '
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =105
+          X: =1092
+          Y: =292
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - mhN10:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(CountRows(Filter(fChg, Gid = fG10 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          FontWeight: '=''TextCanvas.Weight''.Bold
+
+            '
+          Height: =22
+          Size: =11
+          Text: '=If(CountRows(Filter(fChg, Gid = fG10 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG10).FullName
+
+            '
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =105
+          X: =1197
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -2194,8 +2240,54 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =130
-          X: =1162
+          Width: =105
+          X: =987
+          Y: =292
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - mhOpen9:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(42, 42, 38, 1)
+          Height: =44
+          OnSelect: '=Set(gblUserMode, "Edit"); Set(gblUserGid, fG9); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
+
+            '
+          Size: =13
+          Text: '=""
+
+            '
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =105
+          X: =1092
+          Y: =292
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - mhOpen10:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(42, 42, 38, 1)
+          Height: =44
+          OnSelect: '=Set(gblUserMode, "Edit"); Set(gblUserGid, fG10); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
+
+            '
+          Size: =13
+          Text: '=""
+
+            '
+          Visible: '=gblTab = "user"
+
+            '
+          Width: =105
+          X: =1197
           Y: =292
           Wrap: =true
           PaddingTop: =0
@@ -2244,7 +2336,7 @@ Screens:
         Properties:
           X: =252
           Y: =344
-          Width: =130
+          Width: =105
           Height: =40
           Text: =If(IsBlank(fG1), "", If(LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
           Color: =If(LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
@@ -2259,9 +2351,9 @@ Screens:
     - mxA2:
         Control: ModernText@1.0.0
         Properties:
-          X: =382
+          X: =357
           Y: =344
-          Width: =130
+          Width: =105
           Height: =40
           Text: =If(IsBlank(fG2), "", If(LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
           Color: =If(LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
@@ -2276,9 +2368,9 @@ Screens:
     - mxA3:
         Control: ModernText@1.0.0
         Properties:
-          X: =512
+          X: =462
           Y: =344
-          Width: =130
+          Width: =105
           Height: =40
           Text: =If(IsBlank(fG3), "", If(LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
           Color: =If(LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
@@ -2293,9 +2385,9 @@ Screens:
     - mxA4:
         Control: ModernText@1.0.0
         Properties:
-          X: =642
+          X: =567
           Y: =344
-          Width: =130
+          Width: =105
           Height: =40
           Text: =If(IsBlank(fG4), "", If(LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
           Color: =If(LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
@@ -2310,9 +2402,9 @@ Screens:
     - mxA5:
         Control: ModernText@1.0.0
         Properties:
-          X: =772
+          X: =672
           Y: =344
-          Width: =130
+          Width: =105
           Height: =40
           Text: =If(IsBlank(fG5), "", If(LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
           Color: =If(LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
@@ -2327,9 +2419,9 @@ Screens:
     - mxA6:
         Control: ModernText@1.0.0
         Properties:
-          X: =902
+          X: =777
           Y: =344
-          Width: =130
+          Width: =105
           Height: =40
           Text: =If(IsBlank(fG6), "", If(LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
           Color: =If(LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
@@ -2344,9 +2436,9 @@ Screens:
     - mxA7:
         Control: ModernText@1.0.0
         Properties:
-          X: =1032
+          X: =882
           Y: =344
-          Width: =130
+          Width: =105
           Height: =40
           Text: =If(IsBlank(fG7), "", If(LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
           Color: =If(LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
@@ -2361,9 +2453,9 @@ Screens:
     - mxA8:
         Control: ModernText@1.0.0
         Properties:
-          X: =1162
+          X: =987
           Y: =344
-          Width: =130
+          Width: =105
           Height: =40
           Text: =If(IsBlank(fG8), "", If(LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
           Color: =If(LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
@@ -2371,6 +2463,40 @@ Screens:
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
           OnSelect: =If(If(IsBlank(fG8), false, true), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+          Wrap: =true
+    - mxA9:
+        Control: ModernText@1.0.0
+        Properties:
+          X: =1092
+          Y: =344
+          Width: =105
+          Height: =40
+          Text: =If(IsBlank(fG9), "", If(LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
+          Color: =If(LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Size: =16
+          Align: ='TextCanvas.Align'.Center
+          Visible: =gblTab = "user"
+          OnSelect: =If(If(IsBlank(fG9), false, true), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+          Wrap: =true
+    - mxA10:
+        Control: ModernText@1.0.0
+        Properties:
+          X: =1197
+          Y: =344
+          Width: =105
+          Height: =40
+          Text: =If(IsBlank(fG10), "", If(LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
+          Color: =If(LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Size: =16
+          Align: ='TextCanvas.Align'.Center
+          Visible: =gblTab = "user"
+          OnSelect: =If(If(IsBlank(fG10), false, true), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2480,7 +2606,7 @@ Screens:
                       PaddingBottom: =0
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
-                      Width: =130
+                      Width: =105
                       OnSelect: =If(If(IsBlank(fG1), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG1, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
                 - mxC2:
                     Control: ModernText@1.0.0
@@ -2498,7 +2624,7 @@ Screens:
                       PaddingBottom: =0
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
-                      Width: =130
+                      Width: =105
                       OnSelect: =If(If(IsBlank(fG2), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG2, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
                 - mxC3:
                     Control: ModernText@1.0.0
@@ -2516,7 +2642,7 @@ Screens:
                       PaddingBottom: =0
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
-                      Width: =130
+                      Width: =105
                       OnSelect: =If(If(IsBlank(fG3), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG3, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
                 - mxC4:
                     Control: ModernText@1.0.0
@@ -2534,7 +2660,7 @@ Screens:
                       PaddingBottom: =0
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
-                      Width: =130
+                      Width: =105
                       OnSelect: =If(If(IsBlank(fG4), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG4, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
                 - mxC5:
                     Control: ModernText@1.0.0
@@ -2552,7 +2678,7 @@ Screens:
                       PaddingBottom: =0
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
-                      Width: =130
+                      Width: =105
                       OnSelect: =If(If(IsBlank(fG5), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG5, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
                 - mxC6:
                     Control: ModernText@1.0.0
@@ -2570,7 +2696,7 @@ Screens:
                       PaddingBottom: =0
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
-                      Width: =130
+                      Width: =105
                       OnSelect: =If(If(IsBlank(fG6), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG6, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
                 - mxC7:
                     Control: ModernText@1.0.0
@@ -2588,7 +2714,7 @@ Screens:
                       PaddingBottom: =0
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
-                      Width: =130
+                      Width: =105
                       OnSelect: =If(If(IsBlank(fG7), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG7, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
                 - mxC8:
                     Control: ModernText@1.0.0
@@ -2606,8 +2732,44 @@ Screens:
                       PaddingBottom: =0
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
-                      Width: =130
+                      Width: =105
                       OnSelect: =If(If(IsBlank(fG8), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                - mxC9:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Fill: =If(!IsBlank(fG9) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      FontWeight: '=''TextCanvas.Weight''.Bold
+
+                        '
+                      Size: =16
+                      Text: =If(IsBlank(fG9), "", With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), "☑", "☐"), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), "☑", "―"))))
+                      Wrap: =true
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      VerticalAlign: =VerticalAlign.Middle
+                      FillPortions: =0
+                      Width: =105
+                      OnSelect: =If(If(IsBlank(fG9), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                - mxC10:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Fill: =If(!IsBlank(fG10) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      FontWeight: '=''TextCanvas.Weight''.Bold
+
+                        '
+                      Size: =16
+                      Text: =If(IsBlank(fG10), "", With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), "☑", "☐"), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), "☑", "―"))))
+                      Wrap: =true
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      VerticalAlign: =VerticalAlign.Middle
+                      FillPortions: =0
+                      Width: =105
+                      OnSelect: =If(If(IsBlank(fG10), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
             - mxRowRule:
                 Control: ModernText@1.0.0
                 Properties:

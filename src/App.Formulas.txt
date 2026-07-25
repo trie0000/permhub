@@ -1,5 +1,5 @@
 fMem = Filter(colMemberAll, Org1Code = gblOrg1);
-fPage = FirstN(LastN(fMem, CountRows(fMem) - gblPage * 8), 8);
+fPage = FirstN(LastN(fMem, CountRows(fMem) - gblPage * 10), 10);
 fG1 = If(CountRows(fPage) >= 1, Index(fPage, 1).GlobalId, "");
 fG2 = If(CountRows(fPage) >= 2, Index(fPage, 2).GlobalId, "");
 fG3 = If(CountRows(fPage) >= 3, Index(fPage, 3).GlobalId, "");
@@ -8,6 +8,8 @@ fG5 = If(CountRows(fPage) >= 5, Index(fPage, 5).GlobalId, "");
 fG6 = If(CountRows(fPage) >= 6, Index(fPage, 6).GlobalId, "");
 fG7 = If(CountRows(fPage) >= 7, Index(fPage, 7).GlobalId, "");
 fG8 = If(CountRows(fPage) >= 8, Index(fPage, 8).GlobalId, "");
+fG9 = If(CountRows(fPage) >= 9, Index(fPage, 9).GlobalId, "");
+fG10 = If(CountRows(fPage) >= 10, Index(fPage, 10).GlobalId, "");
 fP1 = LookUp(colOrg1, Title = gblOrg1);
 fOrg2 = Sort(Filter(colOrg2All, Org1Code = gblOrg1), SortOrder);
 fO2E = Sort(Filter(colO2Edit, Org1Code = gblOrg1), SortOrder);
