@@ -382,6 +382,28 @@ Set(gblOn, <上と同じ式>);
 Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, <上と同じ式(Title 版)>)), ";" & Title, "") & ";")
 ```
 
+## ギャラリーの行を並べ替える（ドラッグは無い）
+
+キャンバスアプリのギャラリーに**行のドラッグ＆ドロップ並べ替えは無い**。PCF が要るので、
+PCF を有効にできないテナントでは **▲▼ で隣と並び順の値を交換する**しかない。
+
+```
+Set(gblSwapA, ThisItem.Title);
+Set(gblSwapB, Coalesce(Last(Filter(fItems, SortOrder < ThisItem.SortOrder)).Title, ThisItem.Title));
+Set(gblSwapN, ThisItem.SortOrder);
+Set(gblSwapM, LookUp(colEdit, Title = gblSwapB).SortOrder);
+Patch(colEdit, LookUp(colEdit, Title = gblSwapA), {SortOrder:gblSwapM});
+Patch(colEdit, LookUp(colEdit, Title = gblSwapB), {SortOrder:gblSwapN})
+```
+
+- `Items` を並び順でソートしておけば、交換した瞬間に並び替わる
+- **隣が無いときは自分自身を相手にする**（`Coalesce(..., ThisItem.Title)`）。
+  同じ値を入れ直すだけの空振りになるので `If` の分岐が要らず、
+  **存在しないレコードを `Patch` の第2引数に渡す形を作らずに済む**
+- 先頭の ▲ / 末尾の ▼ は **`Visible` で消さない**。AutoLayout では非表示の子が
+  フローから外れて**桁が詰まり、画面レベルの見出しとずれる**。`Color` と `Fill` で落とす
+- 行に列を足したら、**画面レベルに置いた見出しの `X` を同じ幅だけずらす**
+
 ## 数式エラーのあるプロパティは「実行されない」
 
 `OnSelect` に数式エラーがあると、**そのボタンはクリックしても何も起きない**。

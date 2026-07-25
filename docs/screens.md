@@ -566,7 +566,36 @@ n = 対象すべて   → Scope = "ALL" （Codes は空にする）
 押せるだけ**だったので削除した。値（`PRM_Grants.CompanyRole`）はデータとしては残っており、
 マトリックスの列ヘッダには引き続き 正/副 のチップとして表示される。
 
-## 15. 表示順はドラッグでは変えられない
+## 15. 表示順は ▲▼ で入れ替える（実装済み）
 
-キャンバスアプリのギャラリーに**行のドラッグ＆ドロップ並べ替えは無い**（PCF が要る）。
-`表示順` を編集可能にするか、▲▼ ボタンで入れ替える形にするかは未着手（§10 に追加）。
+キャンバスアプリのギャラリーに**行のドラッグ＆ドロップ並べ替えは無い**（PCF が要るが、
+このテナントでは PCF を有効にできない）。代わりに各行の `表示順` の右に **▲▼** を置き、
+**隣の行と `SortOrder` を交換**する。
+
+```
+Set(gblSwapA, ThisItem.Title);
+Set(gblSwapB, Coalesce(Last(Filter(fO2E, SortOrder < ThisItem.SortOrder)).Title, ThisItem.Title));
+Set(gblSwapN, ThisItem.SortOrder);
+Set(gblSwapM, LookUp(colO2Edit, Title = gblSwapB).SortOrder);
+Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapA), {SortOrder:gblSwapM});
+Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapB), {SortOrder:gblSwapN})
+```
+
+- **隣が無いときは自分自身を相手にする**（`Coalesce(..., ThisItem.Title)`）。
+  こうすると同じ値を入れ直すだけの空振りになり、`If` で分岐せずに済む。
+  存在しないレコードを `Patch` の第2引数に渡す形を作らないための書き方
+- 先頭行の ▲ / 末尾行の ▼ はグレーにする。**AutoLayout では非表示にすると桁が詰まる**ので
+  `Visible` は使わず `Color` と `Fill` で落とす
+- ギャラリーの `Items` は `fO2E`（`SortOrder` で並べ替え済み）なので、交換した瞬間に並び替わる
+
+### 並べ替えも申請の対象
+
+`SortOrder` の変更は要否の変更と同じ 1 つの `ORG2` 申請にまとまる。
+
+- `● 未申請` マーカーと申請ボタンの件数は**要否と表示順の両方**を見る
+- `BeforeJson` / `AfterJson` に `SortOrder` を含める
+- `ChangeText` は両方あるとき「クラウド 不要→要、表示順 2→1」のように連結する
+
+> 実機で確認: 表示順のみ（2件）、要否＋表示順の同一行（`「北海道支店（A0101）：クラウド
+> 不要→要、表示順 2→1」`）のいずれも `PRM_Requests` / `PRM_RequestItems` / `PRM_Org2`
+> に正しく書かれ、一覧が即座に並び替わることを確認した。

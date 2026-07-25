@@ -19,3 +19,4 @@ fBad = Filter(ForAll(Filter(colGrantsAll, Org1Code = gblOrg1 && ScopeType.Value 
 fBadN = CountRows(fBad);
 fHist = Sort(Filter(colReq, gblHFilter = "all" || (gblHFilter = "master" && (ReqType.Value = "ORG1" || ReqType.Value = "ORG2")) || (gblHFilter = "grant" && (ReqType.Value = "USER" || ReqType.Value = "GRANT"))), SubmittedAt, SortOrder.Descending);
 fHistN = CountRows(fHist);
+fO2ChgN = CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, {Chg:(e.ApExt <> LookUp(colOrg2All, Title = e.Title).ApExt) || (e.ApWlan <> LookUp(colOrg2All, Title = e.Title).ApWlan) || (e.ApCloud <> LookUp(colOrg2All, Title = e.Title).ApCloud) || (e.SortOrder <> LookUp(colOrg2All, Title = e.Title).SortOrder)}), Chg))
