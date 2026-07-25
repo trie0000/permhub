@@ -771,7 +771,7 @@ Screens:
                       Align: ='TextCanvas.Align'.Start
                       Color: =RGBA(122, 118, 108, 1)
                       Size: =12
-                      Text: =ThisItem.Title
+                      Text: =If(ThisItem.IsNew, "未割当", ThisItem.Title)
                       Width: =98
                       Wrap: =true
                       PaddingTop: =0
@@ -1290,9 +1290,7 @@ Screens:
           Fill: =RGBA(122, 138, 120, 1)
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
-          OnSelect: '=Set(gblUserMode, "New"); Set(gblUserGid, ""); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); Navigate(ScrUser)
-
-            '
+          OnSelect: =Set(gblUserMode, "New"); Set(gblUserGid, ""); Set(gblUserOrg1, gblOrg1); Set(gblUserRole, gblView); RemoveIf(colGEdit, Gid = ""); Navigate(ScrUser)
           RadiusTopLeft: =5
           RadiusTopRight: =5
           RadiusBottomLeft: =5
@@ -2549,9 +2547,7 @@ Screens:
                       Align: ='TextCanvas.Align'.Start
                       Color: =RGBA(168, 163, 154, 1)
                       Size: =10
-                      Text: '=ThisItem.Title
-
-                        '
+                      Text: =If(ThisItem.IsNew, "未割当", ThisItem.Title)
                       Width: =58
                       Wrap: =true
                       PaddingTop: =0
@@ -2882,7 +2878,7 @@ Screens:
     - mdlBody:
         Control: ModernText@1.0.0
         Properties:
-          Text: =If(gblModal = "new", "コードは自動で採番されます（" & fO2NextCode & "）。追加した組織区分2 は申請前でもユーザマスタに出るので、そのまま権限を付けられます。", "この申請を反映すると、次の " & fNoAppN & " 件で承認できる人がいなくなります。" & Char(10) & fNoAppTxt)
+          Text: =If(gblModal = "new", "コードは申請するまで「未割当」です（登録時に自動で割り当てます）。追加した組織区分2 は申請前でもユーザマスタに出るので、そのまま権限を付けられます。", "この申請を反映すると、次の " & fNoAppN & " 件で承認できる人がいなくなります。" & Char(10) & fNoAppTxt)
           Color: =RGBA(42, 42, 38, 1)
           Size: =12
           Align: ='TextCanvas.Align'.Start
