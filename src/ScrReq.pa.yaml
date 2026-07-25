@@ -6,7 +6,7 @@ Screens:
     - qHdrBg:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(94, 111, 92, 1)
           Height: =52
@@ -20,12 +20,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qAppTitle:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(255, 255, 255, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =52
           Size: =16
           Text: '="権限申請"
@@ -35,12 +36,13 @@ Screens:
           X: =28
           Y: =0
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qBack:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Right
+          Align: ='TextCanvas.Align'.End
           Color: =RGBA(255, 255, 255, 1)
           Height: =52
           OnSelect: '=Set(gblTab, "hist"); Navigate(ScrHome)
@@ -54,12 +56,13 @@ Screens:
           X: =Parent.Width - 220
           Y: =0
           Wrap: =true
-          PaddingTop: =14
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qCard1:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
           Height: =160
@@ -77,27 +80,29 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qTitle:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
           Size: =16
-          Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value) & "　" + "" & LookUp(PRM_Requests, Title = gblReqNo).TargetName
+          Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value) & "　" & LookUp(PRM_Requests, Title = gblReqNo).TargetName
 
             '
           Width: =Parent.Width - 104
           X: =52
           Y: =86
           Wrap: =true
-          PaddingTop: =1
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qmC0:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -110,12 +115,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qmV0:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
           Text: '=LookUp(PRM_Requests, Title = gblReqNo).Title
@@ -127,10 +133,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qmC1:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -143,12 +150,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qmV1:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
           Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者登録", "GRANT", "権限変更", LookUp(PRM_Requests, Title = gblReqNo).ReqType.Value)
@@ -160,10 +168,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qmC2:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -176,12 +185,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qmV2:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
           Text: '=LookUp(PRM_Requests, Title = gblReqNo).TargetName
@@ -193,10 +203,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qmC3:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -209,12 +220,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qmV3:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
           Text: '=LookUp(PRM_Requests, Title = gblReqNo).ApplicantName
@@ -226,10 +238,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qnC0:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -242,12 +255,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qnV0:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
           Text: '=Text(LookUp(PRM_Requests, Title = gblReqNo).SubmittedAt, "yyyy/mm/dd hh:mm")
@@ -259,10 +273,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qnC1:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -275,12 +290,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qnV1:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(47, 111, 94, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
           Text: '=Switch(LookUp(PRM_Requests, Title = gblReqNo).Status.Value, "APPLIED", "反映済", "SUBMITTED", "処理中", "ERROR", "エラー", LookUp(PRM_Requests, Title = gblReqNo).Status.Value)
@@ -292,10 +308,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qnC2:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -308,12 +325,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qnV2:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
           Text: '=Text(LookUp(PRM_Requests, Title = gblReqNo).ItemCount) & "件"
@@ -325,10 +343,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qnC3:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -341,12 +360,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qnV3:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
           Text: '=LookUp(colOrg1, Title = LookUp(PRM_Requests, Title = gblReqNo).Org1Code).NameJa
@@ -358,10 +378,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qCard2:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
           Height: =Parent.Height - 336
@@ -379,12 +400,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qItemHead:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =28
           Size: =15
           Text: '="申請内容"
@@ -396,10 +418,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qH0:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =24
           Size: =11
@@ -410,12 +433,13 @@ Screens:
           X: =52
           Y: =298
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qH1:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =24
           Size: =11
@@ -426,12 +450,13 @@ Screens:
           X: =100
           Y: =298
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qH2:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =24
           Size: =11
@@ -442,12 +467,13 @@ Screens:
           X: =178
           Y: =298
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qH3:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =24
           Size: =11
@@ -458,12 +484,13 @@ Screens:
           X: =276
           Y: =298
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qH4:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =24
           Size: =11
@@ -474,12 +501,13 @@ Screens:
           X: =544
           Y: =298
           Wrap: =true
-          PaddingTop: =2
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qHRule:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(42, 42, 38, 0.12)
           Height: =1
@@ -493,6 +521,7 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - cntQItems:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
@@ -523,7 +552,7 @@ Screens:
             - qiSeq:
                 Control: ModernText@1.0.0
                 Properties:
-                  Align: ='TextCanvas.Align'.Left
+                  Align: ='TextCanvas.Align'.Start
                   Color: =RGBA(122, 118, 108, 1)
                   Height: =64
                   Size: =12
@@ -534,15 +563,16 @@ Screens:
                   X: =0
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =21
+                  PaddingTop: =0
                   PaddingBottom: =0
+                  VerticalAlign: =VerticalAlign.Middle
             - qiOp:
                 Control: ModernText@1.0.0
                 Properties:
                   Align: ='TextCanvas.Align'.Center
                   Color: =RGBA(74, 71, 64, 1)
                   Fill: =RGBA(232, 228, 216, 1)
-                  FontWeight: ='TextCanvas.FontWeight'.Bold
+                  FontWeight: ='TextCanvas.Weight'.Bold
                   Height: =28
                   RadiusTopLeft: =3
                   RadiusTopRight: =3
@@ -556,12 +586,13 @@ Screens:
                   X: =46
                   Y: =17
                   Wrap: =true
-                  PaddingTop: =4
+                  PaddingTop: =0
                   PaddingBottom: =0
+                  VerticalAlign: =VerticalAlign.Middle
             - qiKind:
                 Control: ModernText@1.0.0
                 Properties:
-                  Align: ='TextCanvas.Align'.Left
+                  Align: ='TextCanvas.Align'.Start
                   Color: =RGBA(74, 71, 64, 1)
                   Height: =64
                   Size: =12
@@ -572,12 +603,13 @@ Screens:
                   X: =126
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =21
+                  PaddingTop: =0
                   PaddingBottom: =0
+                  VerticalAlign: =VerticalAlign.Middle
             - qiKey:
                 Control: ModernText@1.0.0
                 Properties:
-                  Align: ='TextCanvas.Align'.Left
+                  Align: ='TextCanvas.Align'.Start
                   Color: =RGBA(42, 42, 38, 1)
                   Height: =64
                   Size: =12
@@ -588,12 +620,13 @@ Screens:
                   X: =224
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =21
+                  PaddingTop: =0
                   PaddingBottom: =0
+                  VerticalAlign: =VerticalAlign.Middle
             - qiChange:
                 Control: ModernText@1.0.0
                 Properties:
-                  Align: ='TextCanvas.Align'.Left
+                  Align: ='TextCanvas.Align'.Start
                   Color: =RGBA(74, 71, 64, 1)
                   Height: =64
                   Size: =12
@@ -604,12 +637,13 @@ Screens:
                   X: =492
                   Y: =0
                   Wrap: =true
-                  PaddingTop: =21
+                  PaddingTop: =0
                   PaddingBottom: =0
+                  VerticalAlign: =VerticalAlign.Middle
             - qiRule:
                 Control: ModernText@1.0.0
                 Properties:
-                  Align: ='TextCanvas.Align'.Left
+                  Align: ='TextCanvas.Align'.Start
                   Color: =RGBA(42, 42, 38, 1)
                   Fill: =RGBA(42, 42, 38, 0.12)
                   Height: =1
@@ -623,6 +657,7 @@ Screens:
                   Wrap: =true
                   PaddingTop: =0
                   PaddingBottom: =0
+                  VerticalAlign: =VerticalAlign.Middle
     - qEmpty:
         Control: ModernText@1.0.0
         Properties:
@@ -638,12 +673,13 @@ Screens:
           X: =52
           Y: =360
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - qNote:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(74, 71, 64, 1)
           Fill: =RGBA(122, 138, 120, 0.18)
           Height: =36
@@ -659,5 +695,6 @@ Screens:
           X: =52
           Y: =Parent.Height - 74
           Wrap: =true
-          PaddingTop: =8
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle

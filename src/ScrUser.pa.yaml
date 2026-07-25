@@ -9,7 +9,7 @@ Screens:
     - uHdrBg:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(94, 111, 92, 1)
           Height: =52
@@ -21,12 +21,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uAppTitle:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(255, 255, 255, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =52
           Size: =16
           Text: ="権限申請"
@@ -34,12 +35,13 @@ Screens:
           X: =28
           Y: =0
           Wrap: =true
-          PaddingTop: =11
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uBack:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Right
+          Align: ='TextCanvas.Align'.End
           Color: =RGBA(255, 255, 255, 1)
           Height: =52
           OnSelect: '=Navigate(ScrHome)
@@ -51,12 +53,13 @@ Screens:
           X: =Parent.Width - 200
           Y: =0
           Wrap: =true
-          PaddingTop: =14
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uModeBg:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
           Height: =52
@@ -72,10 +75,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uModeBar:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =If(gblUserMode = "New", RGBA(122, 138, 120, 1), RGBA(196, 127, 28, 1))
           Height: =52
@@ -87,12 +91,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uMode:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserMode = "New", RGBA(94, 111, 92, 1), RGBA(196, 127, 28, 1))
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =52
           Size: =14
           Text: =If(gblUserMode = "New", "新規申請", "変更申請")
@@ -100,12 +105,13 @@ Screens:
           X: =52
           Y: =72
           Wrap: =true
-          PaddingTop: =13
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uModeNote:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =52
           Size: =12
@@ -114,12 +120,13 @@ Screens:
           X: =180
           Y: =72
           Wrap: =true
-          PaddingTop: =15
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uCard1:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
           Height: =150
@@ -135,12 +142,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uBasicHead:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =28
           Size: =15
           Text: ="基本情報"
@@ -150,10 +158,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uGidCap:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -164,6 +173,7 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - txtGid:
         Control: ModernTextInput@1.1.1
         Properties:
@@ -176,7 +186,7 @@ Screens:
     - uGidHint:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserMode <> "New" || IsBlank(txtGid.Text), RGBA(168, 163, 154, 1), If(IsMatch(Upper(txtGid.Text), "^([0-9]{7}|[A-Z][0-9]{6})$"), RGBA(94, 111, 92, 1), RGBA(184, 83, 74, 1)))
           Height: =18
           Size: =10
@@ -187,10 +197,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uNameCap:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -201,6 +212,7 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - txtName:
         Control: ModernTextInput@1.1.1
         Properties:
@@ -213,7 +225,7 @@ Screens:
     - uMailCap:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -224,6 +236,7 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - txtMail:
         Control: ModernTextInput@1.1.1
         Properties:
@@ -236,7 +249,7 @@ Screens:
     - uDeptCap:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -247,6 +260,7 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - txtDept:
         Control: ModernTextInput@1.1.1
         Properties:
@@ -262,7 +276,7 @@ Screens:
           Align: ='TextCanvas.Align'.Center
           Color: =RGBA(255, 255, 255, 1)
           Fill: =RGBA(122, 138, 120, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =34
           OnSelect: '=Notify("Entra ID からの取得は次フェーズで実装します。", NotificationType.Information)
 
@@ -277,12 +291,13 @@ Screens:
           X: =1036
           Y: =208
           Wrap: =true
-          PaddingTop: =6
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uCard2:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
           Height: =Parent.Height - 400
@@ -298,12 +313,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uGrantHead:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =28
           Size: =15
           Text: ="所属組織区分1 と権限"
@@ -313,6 +329,7 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - galOrgTab:
         Control: Gallery@2.15.0
         Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
@@ -335,7 +352,7 @@ Screens:
               Align: ='TextCanvas.Align'.Center
               Color: =If(ThisItem.Title = gblUserOrg1, RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
               Fill: =If(ThisItem.Title = gblUserOrg1, RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
-              FontWeight: =If(ThisItem.Title = gblUserOrg1, 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+              FontWeight: =If(ThisItem.Title = gblUserOrg1, 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
               Height: =40
               OnSelect: '=Set(gblUserOrg1, ThisItem.Title)
 
@@ -350,12 +367,13 @@ Screens:
               X: =0
               Y: =0
               Wrap: =true
-              PaddingTop: =9
+              PaddingTop: =0
               PaddingBottom: =0
+              VerticalAlign: =VerticalAlign.Middle
     - uRoleRule:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(42, 42, 38, 0.12)
           Height: =1
@@ -367,13 +385,14 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rlSECMGR:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "SECMGR", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
           Fill: =If(gblUserRole = "SECMGR", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
-          FontWeight: =If(gblUserRole = "SECMGR", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          FontWeight: =If(gblUserRole = "SECMGR", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "SECMGR")
 
@@ -388,12 +407,13 @@ Screens:
           X: =52
           Y: =418
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rsSECMGR:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Right
+          Align: ='TextCanvas.Align'.End
           Color: =RGBA(122, 118, 108, 1)
           Height: =36
           Size: =10
@@ -404,15 +424,16 @@ Screens:
           X: =356
           Y: =418
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rlCONFORM:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "CONFORM", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
           Fill: =If(gblUserRole = "CONFORM", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
-          FontWeight: =If(gblUserRole = "CONFORM", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          FontWeight: =If(gblUserRole = "CONFORM", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "CONFORM")
 
@@ -427,12 +448,13 @@ Screens:
           X: =52
           Y: =458
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rsCONFORM:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Right
+          Align: ='TextCanvas.Align'.End
           Color: =RGBA(122, 118, 108, 1)
           Height: =36
           Size: =10
@@ -443,15 +465,16 @@ Screens:
           X: =356
           Y: =458
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rlEXTCONN:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "EXTCONN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
           Fill: =If(gblUserRole = "EXTCONN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
-          FontWeight: =If(gblUserRole = "EXTCONN", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          FontWeight: =If(gblUserRole = "EXTCONN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "EXTCONN")
 
@@ -466,12 +489,13 @@ Screens:
           X: =52
           Y: =498
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rsEXTCONN:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Right
+          Align: ='TextCanvas.Align'.End
           Color: =RGBA(122, 118, 108, 1)
           Height: =36
           Size: =10
@@ -482,15 +506,16 @@ Screens:
           X: =356
           Y: =498
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rlWLAN:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "WLAN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
           Fill: =If(gblUserRole = "WLAN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
-          FontWeight: =If(gblUserRole = "WLAN", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          FontWeight: =If(gblUserRole = "WLAN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "WLAN")
 
@@ -505,12 +530,13 @@ Screens:
           X: =52
           Y: =538
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rsWLAN:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Right
+          Align: ='TextCanvas.Align'.End
           Color: =RGBA(122, 118, 108, 1)
           Height: =36
           Size: =10
@@ -521,15 +547,16 @@ Screens:
           X: =356
           Y: =538
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rlCLOUD:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "CLOUD", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
           Fill: =If(gblUserRole = "CLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
-          FontWeight: =If(gblUserRole = "CLOUD", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          FontWeight: =If(gblUserRole = "CLOUD", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "CLOUD")
 
@@ -544,12 +571,13 @@ Screens:
           X: =52
           Y: =578
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rsCLOUD:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Right
+          Align: ='TextCanvas.Align'.End
           Color: =RGBA(122, 118, 108, 1)
           Height: =36
           Size: =10
@@ -560,15 +588,16 @@ Screens:
           X: =356
           Y: =578
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rlINFOSEC:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "INFOSEC", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
           Fill: =If(gblUserRole = "INFOSEC", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
-          FontWeight: =If(gblUserRole = "INFOSEC", 'TextCanvas.FontWeight'.Bold, 'TextCanvas.FontWeight'.Normal)
+          FontWeight: =If(gblUserRole = "INFOSEC", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "INFOSEC")
 
@@ -583,12 +612,13 @@ Screens:
           X: =52
           Y: =618
           Wrap: =true
-          PaddingTop: =7
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rsINFOSEC:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Right
+          Align: ='TextCanvas.Align'.End
           Color: =RGBA(122, 118, 108, 1)
           Height: =36
           Size: =10
@@ -599,12 +629,13 @@ Screens:
           X: =356
           Y: =618
           Wrap: =true
-          PaddingTop: =9
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uDetailBg:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(243, 241, 234, 1)
           Height: =240
@@ -620,12 +651,13 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uDetailHead:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =26
           Size: =14
           Text: =LookUp(Table({c:"SECMGR",n:"事業場ITセキュリティ責任者"},{c:"CONFORM",n:"適合化担当"},{c:"EXTCONN",n:"外部接続申請担当"},{c:"WLAN",n:"無線LAN申請担当"},{c:"CLOUD",n:"クラウド申請担当"},{c:"INFOSEC",n:"情報セキュリティ担当"}), c = gblUserRole).n
@@ -635,10 +667,11 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uScopeCap:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -649,13 +682,14 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uScopeAll:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
           Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "ALL", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
           Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "ALL", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
           OnSelect: '=Notify("範囲の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
 
@@ -670,15 +704,16 @@ Screens:
           X: =480
           Y: =486
           Wrap: =true
-          PaddingTop: =5
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uScopePick:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
           Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "PICK", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
           Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).ScopeType.Value = "PICK", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
           OnSelect: '=Notify("範囲の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
 
@@ -693,12 +728,13 @@ Screens:
           X: =566
           Y: =486
           Wrap: =true
-          PaddingTop: =5
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uCrCap:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -710,13 +746,14 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uCrP:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
           Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "PRIMARY", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
           Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
           OnSelect: '=Notify("権限種別の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
 
@@ -732,15 +769,16 @@ Screens:
           X: =680
           Y: =486
           Wrap: =true
-          PaddingTop: =6
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uCrD:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
           Color: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "DEPUTY", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
           Fill: =If(LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole).CompanyRole.Value = "DEPUTY", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
           OnSelect: '=Notify("権限種別の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
 
@@ -756,12 +794,13 @@ Screens:
           X: =796
           Y: =486
           Wrap: =true
-          PaddingTop: =6
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uO2Cap:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
@@ -773,6 +812,7 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - galUO2:
         Control: Gallery@2.15.0
         Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
@@ -793,7 +833,7 @@ Screens:
         - uo2Name:
             Control: ModernText@1.0.0
             Properties:
-              Align: ='TextCanvas.Align'.Left
+              Align: ='TextCanvas.Align'.Start
               Color: =RGBA(74, 71, 64, 1)
               Height: =30
               OnSelect: '=Notify("組織区分2 の変更は申請の書き込みと合わせて実装します。", NotificationType.Information)
@@ -805,12 +845,13 @@ Screens:
               X: =0
               Y: =0
               Wrap: =true
-              PaddingTop: =5
+              PaddingTop: =0
               PaddingBottom: =0
+              VerticalAlign: =VerticalAlign.Middle
     - uO2All:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
           Height: =40
           Size: =11
@@ -820,12 +861,13 @@ Screens:
           X: =480
           Y: =550
           Wrap: =true
-          PaddingTop: =10
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uNoGrant:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(168, 163, 154, 1)
           Height: =40
           Size: =11
@@ -835,12 +877,13 @@ Screens:
           X: =480
           Y: =550
           Wrap: =true
-          PaddingTop: =10
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uErr:
         Control: ModernText@1.0.0
         Properties:
-          Align: ='TextCanvas.Align'.Left
+          Align: ='TextCanvas.Align'.Start
           Color: =RGBA(184, 83, 74, 1)
           Height: =34
           Size: =12
@@ -849,8 +892,9 @@ Screens:
           X: =52
           Y: =Parent.Height - 76
           Wrap: =true
-          PaddingTop: =6
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uCancel:
         Control: ModernText@1.0.0
         Properties:
@@ -871,15 +915,16 @@ Screens:
           X: =Parent.Width - 340
           Y: =Parent.Height - 76
           Wrap: =true
-          PaddingTop: =6
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - uSubmit:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
           Color: =RGBA(255, 255, 255, 1)
           Fill: =RGBA(122, 138, 120, 1)
-          FontWeight: ='TextCanvas.FontWeight'.Bold
+          FontWeight: ='TextCanvas.Weight'.Bold
           Height: =36
           OnSelect: '=Set(gblErr, ""); If(IsBlank(gblUserGid), Set(gblErr, "利用者が選択されていません。")); If(IsBlank(gblErr), Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd") & "-" & Text(RandBetween(1000, 9999)))); If(IsBlank(gblErr), Set(gblU2, LookUp(colUsersAll, Title = gblUserGid))); If(IsBlank(gblErr), Set(gblG2, LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole))); If(IsBlank(gblErr), Set(gblRoleName, LookUp(Table({c: "SECMGR", n: "事業場ITセキュリティ責任者"}, {c: "CONFORM", n: "適合化担当"}, {c: "EXTCONN", n: "外部接続申請担当"}, {c: "WLAN", n: "無線LAN申請担当"}, {c: "CLOUD", n: "クラウド申請担当"}, {c: "INFOSEC", n: "情報セキュリティ担当"}), c = gblUserRole).n)); If(IsBlank(gblErr), Patch(PRM_Requests, Defaults(PRM_Requests), { Title: gblReqNo, ReqType: { Value: "GRANT" }, TargetKey: gblUserGid, TargetName: gblU2.FullName & "（" & gblUserGid & "）", Summary: gblRoleName & " ／ " & LookUp(colOrg1, Title = gblUserOrg1).NameJa, ApplicantId: gblMeGid, ApplicantName: gblMe.FullName, SubmittedAt: Now(), Status: { Value: "SUBMITTED" }, ItemCount: 1, Org1Code: gblUserOrg1 })); If(IsBlank(gblErr), Patch(PRM_RequestItems, Defaults(PRM_RequestItems), { Title: gblReqNo & "-001", ReqNo: gblReqNo, Seq: 1, Operation: { Value: If(IsBlank(gblG2.GlobalId), "ADD", "UPDATE") }, EntityKind: { Value: "GRANT" }, EntityKey: gblUserGid & "#" & gblUserOrg1 & "#" & gblUserRole, BeforeJson: If(IsBlank(gblG2.GlobalId), "", "{""ScopeType"":""" & gblG2.ScopeType.Value & """,""Org2Codes"":""" & gblG2.Org2Codes & """,""CompanyRole"":""" & gblG2.CompanyRole.Value & """}"), AfterJson: "{""ScopeType"":""" & gblG2.ScopeType.Value & """,""Org2Codes"":""" & gblG2.Org2Codes & """,""CompanyRole"":""" & gblG2.CompanyRole.Value & """}", ChangeText: gblRoleName & "（" & LookUp(colOrg1, Title = gblUserOrg1).NameJa & "）" })); If(IsBlank(gblErr), Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), { Status: { Value: "APPLIED" } })); If(IsBlank(gblErr), ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true))); If(IsBlank(gblErr), Notify("申請しました（" & gblReqNo & "）", NotificationType.Success)); If(IsBlank(gblErr), Set(gblTab, "hist")); If(IsBlank(gblErr), Navigate(ScrHome))'
           RadiusTopLeft: =5
@@ -892,5 +937,6 @@ Screens:
           X: =Parent.Width - 196
           Y: =Parent.Height - 76
           Wrap: =true
-          PaddingTop: =6
+          PaddingTop: =0
           PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
