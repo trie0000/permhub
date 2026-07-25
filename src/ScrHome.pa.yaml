@@ -1856,36 +1856,6 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
-    - mhR1:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = fG1 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
-          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = fG1 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = fG1 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
-
-            '
-          FontWeight: '=''TextCanvas.Weight''.Bold
-
-            '
-          Height: =18
-          RadiusTopLeft: =9
-          RadiusTopRight: =9
-          RadiusBottomLeft: =9
-          RadiusBottomRight: =9
-          Size: =10
-          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = fG1 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = fG1 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
-
-            '
-          Visible: '=gblTab = "user"
-
-            '
-          Width: =30
-          X: =302
-          Y: =314
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
     - mhOpen1:
         Control: ModernText@1.0.0
         Properties:
@@ -1928,36 +1898,6 @@ Screens:
           Width: =130
           X: =382
           Y: =292
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - mhR2:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = fG2 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
-          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = fG2 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = fG2 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
-
-            '
-          FontWeight: '=''TextCanvas.Weight''.Bold
-
-            '
-          Height: =18
-          RadiusTopLeft: =9
-          RadiusTopRight: =9
-          RadiusBottomLeft: =9
-          RadiusBottomRight: =9
-          Size: =10
-          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = fG2 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = fG2 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
-
-            '
-          Visible: '=gblTab = "user"
-
-            '
-          Width: =30
-          X: =432
-          Y: =314
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -2008,36 +1948,6 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
-    - mhR3:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = fG3 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
-          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = fG3 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = fG3 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
-
-            '
-          FontWeight: '=''TextCanvas.Weight''.Bold
-
-            '
-          Height: =18
-          RadiusTopLeft: =9
-          RadiusTopRight: =9
-          RadiusBottomLeft: =9
-          RadiusBottomRight: =9
-          Size: =10
-          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = fG3 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = fG3 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
-
-            '
-          Visible: '=gblTab = "user"
-
-            '
-          Width: =30
-          X: =562
-          Y: =314
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
     - mhOpen3:
         Control: ModernText@1.0.0
         Properties:
@@ -2080,36 +1990,6 @@ Screens:
           Width: =130
           X: =642
           Y: =292
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - mhR4:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = fG4 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
-          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = fG4 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = fG4 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
-
-            '
-          FontWeight: '=''TextCanvas.Weight''.Bold
-
-            '
-          Height: =18
-          RadiusTopLeft: =9
-          RadiusTopRight: =9
-          RadiusBottomLeft: =9
-          RadiusBottomRight: =9
-          Size: =10
-          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = fG4 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = fG4 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
-
-            '
-          Visible: '=gblTab = "user"
-
-            '
-          Width: =30
-          X: =692
-          Y: =314
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -2160,36 +2040,6 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
-    - mhR5:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = fG5 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
-          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = fG5 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = fG5 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
-
-            '
-          FontWeight: '=''TextCanvas.Weight''.Bold
-
-            '
-          Height: =18
-          RadiusTopLeft: =9
-          RadiusTopRight: =9
-          RadiusBottomLeft: =9
-          RadiusBottomRight: =9
-          Size: =10
-          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = fG5 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = fG5 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
-
-            '
-          Visible: '=gblTab = "user"
-
-            '
-          Width: =30
-          X: =822
-          Y: =314
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
     - mhOpen5:
         Control: ModernText@1.0.0
         Properties:
@@ -2232,36 +2082,6 @@ Screens:
           Width: =130
           X: =902
           Y: =292
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - mhR6:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = fG6 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
-          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = fG6 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = fG6 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
-
-            '
-          FontWeight: '=''TextCanvas.Weight''.Bold
-
-            '
-          Height: =18
-          RadiusTopLeft: =9
-          RadiusTopRight: =9
-          RadiusBottomLeft: =9
-          RadiusBottomRight: =9
-          Size: =10
-          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = fG6 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = fG6 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
-
-            '
-          Visible: '=gblTab = "user"
-
-            '
-          Width: =30
-          X: =952
-          Y: =314
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -2312,36 +2132,6 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
-    - mhR7:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = fG7 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
-          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = fG7 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = fG7 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
-
-            '
-          FontWeight: '=''TextCanvas.Weight''.Bold
-
-            '
-          Height: =18
-          RadiusTopLeft: =9
-          RadiusTopRight: =9
-          RadiusBottomLeft: =9
-          RadiusBottomRight: =9
-          Size: =10
-          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = fG7 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = fG7 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
-
-            '
-          Visible: '=gblTab = "user"
-
-            '
-          Width: =30
-          X: =1082
-          Y: =314
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
     - mhOpen7:
         Control: ModernText@1.0.0
         Properties:
@@ -2384,36 +2174,6 @@ Screens:
           Width: =130
           X: =1162
           Y: =292
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - mhR8:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =If(LookUp(colGrantsAll, GlobalId = fG8 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(94, 111, 92, 1), RGBA(74, 71, 64, 1))
-          Fill: '=If(IsBlank(LookUp(colGrantsAll, GlobalId = fG8 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value), RGBA(0, 0, 0, 0), If(LookUp(colGrantsAll, GlobalId = fG8 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", RGBA(122, 138, 120, 0.18), RGBA(232, 228, 216, 1)))
-
-            '
-          FontWeight: '=''TextCanvas.Weight''.Bold
-
-            '
-          Height: =18
-          RadiusTopLeft: =9
-          RadiusTopRight: =9
-          RadiusBottomLeft: =9
-          RadiusBottomRight: =9
-          Size: =10
-          Text: '=If(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD", If(LookUp(colGrantsAll, GlobalId = fG8 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "PRIMARY", "正", If(LookUp(colGrantsAll, GlobalId = fG8 && Org1Code = gblOrg1 && RoleCode.Value = gblView).CompanyRole.Value = "DEPUTY", "副", "")), "")
-
-            '
-          Visible: '=gblTab = "user"
-
-            '
-          Width: =30
-          X: =1212
-          Y: =314
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
