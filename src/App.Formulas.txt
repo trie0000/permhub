@@ -21,8 +21,9 @@ fGrant = LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 &&
 fO1E = LookUp(colO1Edit, Title = gblOrg1);
 fBad = Filter(ForAll(Filter(colGrantsAll, Org1Code = gblOrg1 && ScopeType.Value = "PICK") As g, {Nm:LookUp(colUsersAll, Title = g.GlobalId).FullName & "（" & LookUp(Table({c:"SECMGR",n:"事業場ITセキュリティ責任者"},{c:"CONFORM",n:"適合化担当"},{c:"EXTCONN",n:"外部接続申請担当"},{c:"WLAN",n:"無線LAN申請担当"},{c:"CLOUD",n:"クラウド申請担当"},{c:"INFOSEC",n:"情報セキュリティ担当"}), c = g.RoleCode.Value).n & "）", Bad:CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As o, {C:o.Title, A:If(g.RoleCode.Value = "EXTCONN", fO1E.MsExt && o.ApExt, If(g.RoleCode.Value = "WLAN", fO1E.MsWlan && o.ApWlan, If(g.RoleCode.Value = "CLOUD", fO1E.MsCloud && o.ApCloud, (fO1E.MsExt && o.ApExt) || (fO1E.MsWlan && o.ApWlan) || (fO1E.MsCloud && o.ApCloud)))), B:If(g.RoleCode.Value = "EXTCONN", fP1.MsExt && LookUp(colOrg2All, Title = o.Title).ApExt, If(g.RoleCode.Value = "WLAN", fP1.MsWlan && LookUp(colOrg2All, Title = o.Title).ApWlan, If(g.RoleCode.Value = "CLOUD", fP1.MsCloud && LookUp(colOrg2All, Title = o.Title).ApCloud, (fP1.MsExt && LookUp(colOrg2All, Title = o.Title).ApExt) || (fP1.MsWlan && LookUp(colOrg2All, Title = o.Title).ApWlan) || (fP1.MsCloud && LookUp(colOrg2All, Title = o.Title).ApCloud))))}), (";" & C & ";") in g.Org2Codes && B && Not(A))) > 0}), Bad);
 fBadN = CountRows(fBad);
-fHist = Sort(Filter(colReq, gblHFilter = "all" || (gblHFilter = "master" && (ReqType.Value = "ORG1" || ReqType.Value = "ORG2" || ReqType.Value = "MIXED")) || (gblHFilter = "grant" && (ReqType.Value = "USER" || ReqType.Value = "GRANT" || ReqType.Value = "MIXED"))), SubmittedAt, SortOrder.Descending);
+fHist = Sort(Filter(colReq, (gblHFilter = "all" || (gblHFilter = "master" && (RT = "ORG1" || RT = "ORG2" || RT = "MIXED")) || (gblHFilter = "grant" && (RT = "USER" || RT = "GRANT" || RT = "MIXED"))) && (gblSFilter = "all" || (gblSFilter = "sub" && S = "SUBMITTED") || (gblSFilter = "chk" && (S = "INPROGRESS" || S = "PARTIAL")) || (gblSFilter = "done" && S = "APPLIED") || (gblSFilter = "rej" && S = "REJECTED") || (gblSFilter = "cxl" && S = "CANCELED"))), W, SortOrder.Descending);
 fHistN = CountRows(fHist);
+fHistOpenN = CountRows(Filter(colReq, S = "SUBMITTED" || S = "INPROGRESS" || S = "PARTIAL"));
 fO2ChgN = CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, With({o:LookUp(colOrg2All, Title = e.Title)}, {Chg:e.IsNew || e.IsDel || (e.NameJa <> o.NameJa) || (e.NameEn <> o.NameEn) || (e.ApExt <> o.ApExt) || (e.ApWlan <> o.ApWlan) || (e.ApCloud <> o.ApCloud) || (e.SortOrder <> o.SortOrder)})), Chg));
 fP1U = LookUp(colOrg1, Title = gblUserOrg1);
 fGU = LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole);
@@ -52,9 +53,6 @@ fInvUN = Coalesce(Sum(fInvU, Bad), 0);
 fEligUC = Concat(fEligU, ";" & Title, "") & ";";
 fO1ChgN = If(fO1E.MsExt <> fP1.MsExt, 1, 0) + If(fO1E.MsWlan <> fP1.MsWlan, 1, 0) + If(fO1E.MsCloud <> fP1.MsCloud, 1, 0);
 fChgAllN = fO1ChgN + fO2ChgN + CountRows(fChg);
-fAdm = Sort(Filter(colAdmReq, gblAFilter = "all" || (S <> "APPLIED" && S <> "REJECTED" && S <> "CANCELED")), W, SortOrder.Descending);
-fAdmN = CountRows(fAdm);
-fAdmOpenN = CountRows(Filter(colAdmReq, S <> "APPLIED" && S <> "REJECTED" && S <> "CANCELED"));
 fQIOrg = Filter(colQI, K = "ORG1" || K = "ORG2");
 fQIUser = Filter(colQI, K = "USER" || K = "USERORG1" || K = "GRANT");
 fQI = Sort(If(gblRTab = "org", fQIOrg, fQIUser), Seq);
@@ -65,5 +63,6 @@ fItPendN = CountRows(Filter(colQI, St = "PENDING"));
 fItReadyN = CountRows(Filter(colQI, St = "READY"));
 fItDoneN = CountRows(Filter(colQI, St = "DONE"));
 fItRejN = CountRows(Filter(colQI, St = "REJECTED"));
+fItCxlN = CountRows(Filter(colQI, St = "CANCELED"));
 fQIAllN = CountRows(colQI);
-fReqStat = If(fQIAllN = 0, "未対応", If(fItDoneN + fItRejN = fQIAllN, If(fItDoneN = fQIAllN, "完了", If(fItRejN = fQIAllN, "差し戻し", "一部完了")), If(fItDoneN + fItRejN + fItReadyN > 0, "作業待ち", "未対応")))
+fReqStat = If(fQIAllN = 0, "申請済み", If(fItDoneN + fItRejN + fItCxlN = fQIAllN, If(fItDoneN = fQIAllN, "完了", If(fItRejN = fQIAllN, "差し戻し", If(fItCxlN = fQIAllN, "取り下げ", "一部完了"))), If(fItDoneN + fItRejN + fItCxlN + fItReadyN > 0, "確認中", "申請済み")))

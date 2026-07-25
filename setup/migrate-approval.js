@@ -7,6 +7,7 @@
  *   PRM_Requests.Status    選択肢に INPROGRESS / PARTIAL を追加
  *   PRM_Requests.ReqType   選択肢に MIXED を追加（1 申請に複数種別が混ざるため）
  *   PRM_RequestItems       ItemStatus / ItemNote / HandledAt / HandledBy を追加
+ *                          （ItemStatus の選択肢に CANCELED = 取り下げ を含む）
  *   PRM_Config             新規（設定値を 1 行 1 キーで持つ）
  *
  * 使い方:
@@ -68,13 +69,16 @@ const SITE_URL = "https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE";
     log(`${list}.${internal} に ${add.join(",")} を追加`);
   };
 
-  // SUBMITTED  未対応（申請されたまま）
-  // INPROGRESS 作業待ち（管理者が受理した明細がある）
+  // SUBMITTED  申請済み（手が付いていない）
+  // INPROGRESS 確認中（管理者が受理した明細がある）
   // PARTIAL    一部完了（完了と差し戻しが混ざった）
   // APPLIED    完了（全明細が完了）
   // REJECTED   差し戻し（全明細が差し戻し）
   await addChoices("PRM_Requests", "Status", ["INPROGRESS", "PARTIAL"]);
   await addChoices("PRM_Requests", "ReqType", ["MIXED"]);
+  // 既に ItemStatus がある環境向け（列の作り直しはせず選択肢だけ足す）
+  const hasItemStatus = (await fieldsOf("PRM_RequestItems")).includes("ItemStatus");
+  if (hasItemStatus) await addChoices("PRM_RequestItems", "ItemStatus", ["CANCELED"]);
 
   // ---- 2. PRM_RequestItems の列追加 --------------------------------------
   const OPT = 25;
@@ -99,11 +103,12 @@ const SITE_URL = "https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE";
 
   // 明細 1 件 = 変更 1 件。状態は明細ごとに持つ
   //   PENDING  未対応
-  //   READY    作業待ち（内容 OK、作業前）
+  //   READY    確認中（内容 OK、作業前）
   //   DONE     完了（この時点でマスタに反映される）
   //   REJECTED 差し戻し（何も反映しない）
+  //   CANCELED 取り下げ（申請者が引っ込めた）
   await addFields("PRM_RequestItems", [
-    ["ItemStatus", C("ItemStatus", "明細の状態", ["PENDING", "READY", "DONE", "REJECTED"], "PENDING")],
+    ["ItemStatus", C("ItemStatus", "明細の状態", ["PENDING", "READY", "DONE", "REJECTED", "CANCELED"], "PENDING")],
     ["ItemNote", NO("ItemNote", "差し戻し理由・作業メモ")],
     ["HandledAt", DT("HandledAt", "状態変更日時")],
     ["HandledBy", T("HandledBy", "状態変更者", 100)],
@@ -153,7 +158,7 @@ const SITE_URL = "https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE";
     "/_api/web/lists/getbytitle('PRM_Config')/items?$select=Title&$top=500"
   )).value.map((i) => i.Title);
   const seed = [
-    ["AdminGroupId", "", "管理者の Teams(Microsoft 365 グループ) の ID。ここが空なら管理タブは誰にも出ない"],
+    ["AdminGroupId", "", "管理者の Teams(Microsoft 365 グループ) の ID。ここが空なら申請履歴に管理者向けの操作が出ない"],
   ];
   for (const [k, v, d] of seed) {
     if (cfgHave.includes(k)) { log(`PRM_Config.${k} は既にある`); continue; }

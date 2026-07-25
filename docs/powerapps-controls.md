@@ -424,6 +424,77 @@ ForAll(Sequence(N) As i, With({c: Index(colGChg, i.Value)},
 **クリックしても無反応なコントロールを見つけたら、Z オーダーや当たり判定を疑う前に
 そのコントロールの赤い ⊗ バッジ →「数式バーで編集」で当該プロパティを開く。**
 
+## AutoLayout は `Visible = false` の子を「詰める」
+
+横方向 AutoLayout の行で、ボタンの出し分けを `Visible` でやると
+**行ごとに列の位置がずれる**。非表示の子は場所を空けずに詰められるため。
+
+```
+行A: [日時][番号][対象] … [状態][確認中][完了][差し戻し]
+行B: [日時][番号][対象] … [状態]              ← 状態が右にずれる
+```
+
+ヘッダを絶対座標で置いていると、この差がそのまま「ヘッダと中身がずれた表」になる。
+
+**出し分けたいボタンは固定幅のコンテナで包む。**
+
+```
+- hActs:
+    Control: GroupContainer@1.5.0
+    Variant: AutoLayout
+    Properties:
+      Width: =238            # 何本表示されてもこの幅を占める
+      Height: =48
+      FillPortions: =0
+      AlignInContainer: =AlignInContainer.Center
+      LayoutMinHeight: =0
+      LayoutAlignItems: =LayoutAlignItems.Center
+```
+
+- コンテナ側は `Height` を**明示する**。無いと中の子が潰れて数ピクセルの帯になる
+- コンテナの `LayoutAlignItems` は `Center`。`Stretch` + 子の `LayoutMinHeight: =0` だと
+  子が高さ 0 まで縮む
+- 子には `AlignInContainer` / `LayoutMinHeight` を**書かない**（親の Center に任せる）
+
+**ヘッダも同じ幅の AutoLayout で組む。** 絶対座標での位置合わせは、
+ギャラリーのスクロールバー分（約 16px）でも狂う。行とヘッダの両方に
+`PaddingRight: =16` を入れて、同じ有効幅にそろえる。
+
+---
+
+## モーダルの表示条件に `<> ""` を使わない
+
+`Visible: =gblModal <> ""` にしていると、あとから別のモーダルを足したときに
+**両方が同時に出る**（新しい値も `<> ""` を満たすため）。
+
+```
+# NG
+Visible: =gblModal <> ""
+
+# OK: 自分が担当するモードだけを列挙する
+Visible: =gblModal = "grant" || gblModal = "new"
+```
+
+---
+
+## 同じ処理を 2 画面から呼ぶときは変数で渡す
+
+画面をまたいだ `Select()` はできない。同じ書き込み処理を別画面からも使いたいときは、
+**隠しボタンを画面ごとに 1 つ置き、OnSelect には同一のテキストを入れる**
+（生成スクリプトで 1 か所から出力する）。
+
+このとき、処理の中で**他画面のコントロールを直接参照しない**。
+
+```
+# NG: ScrReq の入力欄を ScrHome から呼ぶ処理が参照している
+ItemNote: If(gblNewStat = "REJECTED", Trim(inpRej.Text), "")
+
+# OK: 呼ぶ側が変数に入れてから Select する
+ItemNote: If(gblNewStat = "REJECTED", gblRejNote, "")
+```
+
+---
+
 ## `IfError` は両方の引数の型を揃える
 
 `IfError(<テーブルを返す式>, Set(...))` は **`無効な引数の型です (Boolean)`** になる。

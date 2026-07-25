@@ -171,7 +171,7 @@ SharePoint にトランザクションは無いので、§6 の手順で担保�
 | `ApplicantId` | Text | 申請者グローバルID | 索引 |
 | `ApplicantName` | Text | 申請者氏名 | |
 | `SubmittedAt` | DateTime | 申請日時 | **索引**（期間検索用） |
-| `Status` | Choice | 状態 | **索引**。`SUBMITTED` `INPROGRESS` `PARTIAL` `APPLIED` `REJECTED` `CANCELED` `ERROR` |
+| `Status` | Choice | 状態 | **索引**。`SUBMITTED`(申請済み) `INPROGRESS`(確認中) `PARTIAL`(一部完了) `APPLIED`(完了) `REJECTED`(差し戻し) `CANCELED`(取り下げ) `ERROR` |
 | `ItemCount` | Number | 明細件数 | 突合用 |
 
 `TargetName` は**申請時点の名称を焼き込む**。マスタが後で改名されても、
@@ -190,7 +190,7 @@ SharePoint にトランザクションは無いので、§6 の手順で担保�
 | `BeforeJson` | Note | 変更前 | `ADD` のときは空 |
 | `AfterJson` | Note | 変更後 | `DELETE` のときは空 |
 | `ChangeText` | Note | 変更内容（人が読む） | |
-| `ItemStatus` | Choice | 明細の状態 | **索引**。`PENDING` `READY` `DONE` `REJECTED`（既定 `PENDING`） |
+| `ItemStatus` | Choice | 明細の状態 | **索引**。`PENDING` `READY` `DONE` `REJECTED` `CANCELED`（既定 `PENDING`） |
 | `ItemNote` | Note | 差し戻し理由・作業メモ | 差し戻したときに記録する |
 | `HandledAt` | DateTime | 状態変更日時 | |
 | `HandledBy` | Text | 状態変更者 | グローバルID |
@@ -229,7 +229,7 @@ ChangeText: 外部接続申請担当（東日本ブロック）
 
 | キー | 用途 |
 |---|---|
-| `AdminGroupId` | 管理者にする Teams（Microsoft 365 グループ）の ID。空なら管理タブは誰にも出ない |
+| `AdminGroupId` | 管理者にする Teams（Microsoft 365 グループ）の ID。空なら申請履歴に管理者向けの操作が出ない |
 
 グループ ID は、そのチームの SharePoint サイトで `/_api/site?$select=GroupId` を開けば分かる。
 **ID をアプリの数式に直書きしない**（テナントを移すたびに作り直しになる）。
@@ -271,9 +271,10 @@ ChangeText: 外部接続申請担当（東日本ブロック）
 | 明細の状態 | 意味 | マスタ |
 |---|---|---|
 | `PENDING` | 未対応 | 触らない |
-| `READY` | 作業待ち（内容 OK、作業前） | 触らない |
+| `READY` | 確認中（内容 OK、作業前） | 触らない |
 | `DONE` | 完了 | **このとき `AfterJson` を当てる** |
 | `REJECTED` | 差し戻し | 触らない（`ItemNote` に理由） |
+| `CANCELED` | 取り下げ（申請者が引っ込めた） | 触らない |
 
 `DONE` にする処理は「`AfterJson` を `ParseJSON` して対象マスタに `Patch`」。
 明細が正・マスタが従なので、**同じ明細を当て直しても同じ結果**になる（べき等）。
@@ -286,11 +287,15 @@ ChangeText: 外部接続申請担当（東日本ブロック）
 未決（PENDING/READY）が 0 件:
   すべて DONE      → APPLIED   （完了）
   すべて REJECTED  → REJECTED  （差し戻し）
+  すべて CANCELED  → CANCELED  （取り下げ）
   混在             → PARTIAL   （一部完了）
 未決あり:
-  DONE/REJECTED/READY が 1 件以上 → INPROGRESS（作業待ち）
-  それ以外                        → SUBMITTED （未対応）
+  DONE/REJECTED/CANCELED/READY が 1 件以上 → INPROGRESS（確認中）
+  それ以外                                 → SUBMITTED （申請済み）
 ```
+
+取り下げは「申請者本人・全明細が `PENDING`」のときだけなので、実際に起きる
+`CANCELED` は必ず全明細が揃った状態になる。
 
 ### `AfterJson` は反映の契約
 
