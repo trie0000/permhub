@@ -654,87 +654,6 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
-    - uScopeCap:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Start
-          Color: =RGBA(122, 118, 108, 1)
-          Height: =16
-          Size: =11
-          Text: ="範囲"
-          Width: =100
-          X: =480
-          Y: =466
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - uScopeNone:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =If(fGU.Scope = "ALL" || fGU.Scope = "PICK", RGBA(122, 118, 108, 1), RGBA(255, 255, 255, 1))
-          Fill: =If(fGU.Scope = "ALL" || fGU.Scope = "PICK", RGBA(232, 228, 216, 1), RGBA(122, 138, 120, 1))
-          FontWeight: ='TextCanvas.Weight'.Bold
-          Height: =32
-          OnSelect: =Set(gblUG, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)); If(IsBlank(gblUG.Gid), Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:"NONE", Codes:"", CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {Scope:"NONE", Codes:""}))
-          RadiusTopLeft: =4
-          RadiusTopRight: =4
-          RadiusBottomLeft: =4
-          RadiusBottomRight: =4
-          Size: =12
-          Text: ="なし"
-          Width: =80
-          X: =480
-          Y: =486
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - uScopeAll:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =If(fGU.Scope = "ALL", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
-          Fill: =If(fGU.Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
-          FontWeight: ='TextCanvas.Weight'.Bold
-          Height: =32
-          OnSelect: =Set(gblUG, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)); If(IsBlank(gblUG.Gid), Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:"ALL", Codes:"", CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {Scope:"ALL", Codes:""}))
-          RadiusTopLeft: =4
-          RadiusTopRight: =4
-          RadiusBottomLeft: =4
-          RadiusBottomRight: =4
-          Size: =12
-          Text: ="全体"
-          Width: =80
-          X: =566
-          Y: =486
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - uScopePick:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =If(fGU.Scope = "PICK", RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))
-          Fill: =If(fGU.Scope = "PICK", RGBA(122, 138, 120, 1), RGBA(232, 228, 216, 1))
-          FontWeight: ='TextCanvas.Weight'.Bold
-          Height: =32
-          OnSelect: =Set(gblUG, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)); Set(gblUNC, If(gblUG.Scope = "ALL", Concat(fEligU, ";" & Title, "") & ";", Coalesce(gblUG.Codes, ""))); If(IsBlank(gblUG.Gid), Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:"PICK", Codes:gblUNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {Scope:"PICK", Codes:gblUNC}))
-          RadiusTopLeft: =4
-          RadiusTopRight: =4
-          RadiusBottomLeft: =4
-          RadiusBottomRight: =4
-          Size: =12
-          Text: ="個別"
-          Width: =80
-          X: =652
-          Y: =486
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
     - uO2Cap:
         Control: ModernText@1.0.0
         Properties:
@@ -742,11 +661,59 @@ Screens:
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
-          Text: ="組織区分2（多段階承認が有効なもののみ）"
-          Visible: =fGU.Scope = "PICK"
-          Width: =400
+          Text: ="権限の範囲（クリックで付与・削除／― は多段階承認が無効で設定できない）"
+          Width: =520
           X: =480
-          Y: =530
+          Y: =466
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - uAllChk:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(fGU.Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(168, 163, 154, 1))
+          FontWeight: ='TextCanvas.Weight'.Bold
+          Height: =30
+          OnSelect: =Set(gblUG, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)); Set(gblUNS, If(gblUG.Scope = "ALL", "NONE", "ALL")); If(IsBlank(gblUG.Gid), Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:gblUNS, Codes:"", CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {Scope:gblUNS, Codes:""}))
+          Size: =16
+          Text: =If(fGU.Scope = "ALL", "☑", "☐")
+          Width: =30
+          X: =480
+          Y: =488
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - uAllName:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(74, 71, 64, 1)
+          FontWeight: ='TextCanvas.Weight'.Bold
+          Height: =30
+          OnSelect: =Set(gblUG, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)); Set(gblUNS, If(gblUG.Scope = "ALL", "NONE", "ALL")); If(IsBlank(gblUG.Gid), Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:gblUNS, Codes:"", CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {Scope:gblUNS, Codes:""}))
+          Size: =12
+          Text: ="全体(組織区分2すべて)"
+          Width: =240
+          X: =512
+          Y: =488
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - uO2Rule:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Fill: =RGBA(228, 224, 214, 1)
+          Height: =1
+          Size: =11
+          Text: =""
+          Width: =Parent.Width - 560
+          X: =480
+          Y: =522
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -755,23 +722,23 @@ Screens:
         Control: Gallery@2.15.0
         Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
         Properties:
-          Height: =150
-          Items: =fEligU
+          Height: =126
+          Items: =fAllU
           ShowScrollbar: =true
           TemplatePadding: =0
           TemplateSize: =30
-          Visible: =fGU.Scope = "PICK"
           Width: =Parent.Width - 560
           WrapCount: =2
           X: =480
-          Y: =550
+          Y: =530
         Children:
         - uo2Chk:
             Control: ModernText@1.0.0
             Properties:
-              Text: =If(fGU.Scope = "ALL" || (fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, "")), "☑", "☐")
-              Color: =If(fGU.Scope = "ALL" || (fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, "")), RGBA(122, 138, 120, 1), RGBA(168, 163, 154, 1))
+              Text: =If(!(If(gblUserRole = "EXTCONN", fP1U.MsExt && ThisItem.ApExt, If(gblUserRole = "WLAN", fP1U.MsWlan && ThisItem.ApWlan, If(gblUserRole = "CLOUD", fP1U.MsCloud && ThisItem.ApCloud, (fP1U.MsExt && ThisItem.ApExt) || (fP1U.MsWlan && ThisItem.ApWlan) || (fP1U.MsCloud && ThisItem.ApCloud))))), "―", If(fGU.Scope = "ALL" || (fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, "")), "☑", "☐"))
+              Color: =If(!(If(gblUserRole = "EXTCONN", fP1U.MsExt && ThisItem.ApExt, If(gblUserRole = "WLAN", fP1U.MsWlan && ThisItem.ApWlan, If(gblUserRole = "CLOUD", fP1U.MsCloud && ThisItem.ApCloud, (fP1U.MsExt && ThisItem.ApExt) || (fP1U.MsWlan && ThisItem.ApWlan) || (fP1U.MsCloud && ThisItem.ApCloud))))), RGBA(196, 192, 184, 1), If(fGU.Scope = "ALL" || (fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, "")), RGBA(122, 138, 120, 1), RGBA(168, 163, 154, 1)))
               Align: ='TextCanvas.Align'.Center
+              FontWeight: ='TextCanvas.Weight'.Bold
               Size: =16
               Height: =30
               Width: =30
@@ -781,12 +748,12 @@ Screens:
               PaddingTop: =0
               PaddingBottom: =0
               VerticalAlign: =VerticalAlign.Middle
-              OnSelect: =Set(gblUG, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)); Set(gblUOn, gblUG.Scope = "ALL" || (gblUG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblUG.Codes, ""))); Set(gblUNC, Concat(Filter(fEligU, If(Title = ThisItem.Title, !gblUOn, gblUG.Scope = "ALL" || (gblUG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblUG.Codes, "")))), ";" & Title, "") & ";"); Set(gblUNS, With({n:CountRows(Filter(fEligU, (";" & Title & ";") in gblUNC))}, If(n = 0, "NONE", If(n = CountRows(fEligU), "ALL", "PICK")))); If(gblUNS <> "PICK", Set(gblUNC, "")); If(IsBlank(gblUG.Gid), Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:gblUNS, Codes:gblUNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {Scope:gblUNS, Codes:gblUNC}))
+              OnSelect: =If(If(gblUserRole = "EXTCONN", fP1U.MsExt && ThisItem.ApExt, If(gblUserRole = "WLAN", fP1U.MsWlan && ThisItem.ApWlan, If(gblUserRole = "CLOUD", fP1U.MsCloud && ThisItem.ApCloud, (fP1U.MsExt && ThisItem.ApExt) || (fP1U.MsWlan && ThisItem.ApWlan) || (fP1U.MsCloud && ThisItem.ApCloud)))), Set(gblUG, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)); Set(gblUOn, gblUG.Scope = "ALL" || (gblUG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblUG.Codes, ""))); Set(gblUNC, Concat(Filter(fEligU, If(Title = ThisItem.Title, !gblUOn, gblUG.Scope = "ALL" || (gblUG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblUG.Codes, "")))), ";" & Title, "") & ";"); Set(gblUNS, With({n:CountRows(Filter(fEligU, (";" & Title & ";") in gblUNC))}, If(n = 0, "NONE", If(n = CountRows(fEligU), "ALL", "PICK")))); If(gblUNS <> "PICK", Set(gblUNC, "")); If(IsBlank(gblUG.Gid), Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:gblUNS, Codes:gblUNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {Scope:gblUNS, Codes:gblUNC})))
         - uo2Name:
             Control: ModernText@1.0.0
             Properties:
               Text: =ThisItem.NameJa
-              Color: =RGBA(74, 71, 64, 1)
+              Color: =If(!(If(gblUserRole = "EXTCONN", fP1U.MsExt && ThisItem.ApExt, If(gblUserRole = "WLAN", fP1U.MsWlan && ThisItem.ApWlan, If(gblUserRole = "CLOUD", fP1U.MsCloud && ThisItem.ApCloud, (fP1U.MsExt && ThisItem.ApExt) || (fP1U.MsWlan && ThisItem.ApWlan) || (fP1U.MsCloud && ThisItem.ApCloud))))), RGBA(168, 163, 154, 1), RGBA(74, 71, 64, 1))
               Align: ='TextCanvas.Align'.Start
               Size: =12
               Height: =30
@@ -797,40 +764,7 @@ Screens:
               PaddingTop: =0
               PaddingBottom: =0
               VerticalAlign: =VerticalAlign.Middle
-              OnSelect: =Set(gblUG, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)); Set(gblUOn, gblUG.Scope = "ALL" || (gblUG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblUG.Codes, ""))); Set(gblUNC, Concat(Filter(fEligU, If(Title = ThisItem.Title, !gblUOn, gblUG.Scope = "ALL" || (gblUG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblUG.Codes, "")))), ";" & Title, "") & ";"); Set(gblUNS, With({n:CountRows(Filter(fEligU, (";" & Title & ";") in gblUNC))}, If(n = 0, "NONE", If(n = CountRows(fEligU), "ALL", "PICK")))); If(gblUNS <> "PICK", Set(gblUNC, "")); If(IsBlank(gblUG.Gid), Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:gblUNS, Codes:gblUNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {Scope:gblUNS, Codes:gblUNC}))
-
-    - uO2All:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Start
-          Color: =RGBA(122, 118, 108, 1)
-          Height: =40
-          Size: =11
-          Text: ="組織区分2 すべてに権限を持ちます。"
-          Visible: =fGU.Scope = "ALL"
-          Width: =400
-          X: =480
-          Y: =550
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - uNoGrant:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Start
-          Color: =RGBA(168, 163, 154, 1)
-          Height: =40
-          Size: =11
-          Text: ="この組織区分1 ではこの権限が付与されていません。「全体」か「個別」を選ぶと付与できます。"
-          Visible: =!(fGU.Scope = "ALL" || fGU.Scope = "PICK")
-          Width: =520
-          X: =480
-          Y: =550
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
+              OnSelect: =If(If(gblUserRole = "EXTCONN", fP1U.MsExt && ThisItem.ApExt, If(gblUserRole = "WLAN", fP1U.MsWlan && ThisItem.ApWlan, If(gblUserRole = "CLOUD", fP1U.MsCloud && ThisItem.ApCloud, (fP1U.MsExt && ThisItem.ApExt) || (fP1U.MsWlan && ThisItem.ApWlan) || (fP1U.MsCloud && ThisItem.ApCloud)))), Set(gblUG, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)); Set(gblUOn, gblUG.Scope = "ALL" || (gblUG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblUG.Codes, ""))); Set(gblUNC, Concat(Filter(fEligU, If(Title = ThisItem.Title, !gblUOn, gblUG.Scope = "ALL" || (gblUG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblUG.Codes, "")))), ";" & Title, "") & ";"); Set(gblUNS, With({n:CountRows(Filter(fEligU, (";" & Title & ";") in gblUNC))}, If(n = 0, "NONE", If(n = CountRows(fEligU), "ALL", "PICK")))); If(gblUNS <> "PICK", Set(gblUNC, "")); If(IsBlank(gblUG.Gid), Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:gblUNS, Codes:gblUNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {Scope:gblUNS, Codes:gblUNC})))
     - uErr:
         Control: ModernText@1.0.0
         Properties:

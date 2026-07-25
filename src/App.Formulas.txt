@@ -23,6 +23,7 @@ fO2ChgN = CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, {C
 fP1U = LookUp(colOrg1, Title = gblUserOrg1);
 fGU = LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole);
 fEligU = Sort(Filter(colOrg2All, Org1Code = gblUserOrg1 && If(gblUserRole = "EXTCONN", fP1U.MsExt && ApExt, If(gblUserRole = "WLAN", fP1U.MsWlan && ApWlan, If(gblUserRole = "CLOUD", fP1U.MsCloud && ApCloud, (fP1U.MsExt && ApExt) || (fP1U.MsWlan && ApWlan) || (fP1U.MsCloud && ApCloud))))), SortOrder);
+fAllU = Sort(Filter(colOrg2All, Org1Code = gblUserOrg1), SortOrder);
 fUChg = Filter(ForAll(Filter(colGEdit, Gid = gblUserGid) As e, With({s:LookUp(colGrantsAll, GlobalId = e.Gid && Org1Code = e.O1 && RoleCode.Value = e.Role)}, {Gid:e.Gid, O1:e.O1, Role:e.Role, NS:e.Scope, NC:Coalesce(e.Codes, ""), BS:If(IsBlank(s.GlobalId), "NONE", s.ScopeType.Value), BC:Coalesce(s.Org2Codes, ""), Chg:(If(IsBlank(s.GlobalId), "NONE", s.ScopeType.Value) <> e.Scope) || (Coalesce(s.Org2Codes, "") <> Coalesce(e.Codes, ""))})), Chg);
 fUChgN = CountRows(fUChg);
 fRoles = Table({rc:"SECMGR",rn:"事業場ITセキュリティ責任者"},{rc:"CONFORM",rn:"適合化担当"},{rc:"EXTCONN",rn:"外部接続申請担当"},{rc:"WLAN",rn:"無線LAN申請担当"},{rc:"CLOUD",rn:"クラウド申請担当"},{rc:"INFOSEC",rn:"情報セキュリティ担当"});
