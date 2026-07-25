@@ -468,6 +468,31 @@ mdlOk.OnSelect:     Set(gblGateOk, true); Set(gblModal, ""); Select(btnSubmit)
   `Set(gblModalWas, gblModal)` に退避してから `Set(gblModal, "")` する
   （`Select` の前に消すので、分岐に使う値が消えてしまう）
 
+## `Sum(空のテーブル, 式)` は 0 ではなく blank を返す
+
+`Filter` の結果が空だと `Sum` / `Average` は **blank**。それを `Visible: =n > 0` に渡すと
+**ラベルが消えない**（件数だけ空欄になった警告が出っぱなしになる）。
+`Coalesce(Sum(...), 0)` で受ける。`ForAll` を集計している場合は行数が固定なのでこの罠は出ない。
+
+## `ShowColumns` の列名は識別子（文字列ではない）
+
+`ShowColumns(リスト, "Title", "Org1Code")` は
+「予期される識別子名」「関数 'ShowColumns' に複数の無効な引数」になる。
+`ForAll(リスト As r, {Title:r.Title, Org1Code:r.Org1Code})` に置き換えるのが確実。
+
+## 貼り付け前に「どのコントロールのどのプロパティか」を必ず見る
+
+ツリー ビューを閉じていると選択が別のコントロールのままで、
+プロパティ コンボの並びも変わる。`App.Formulas` のつもりで **`Screen.Height` に
+名前付き数式を丸ごと貼り付けて 155 エラー**にしたことがある。
+気づいたら `Cmd+Z` 一回で戻る（`Height` は `Max(App.Height, App.MinScreenHeight)` に復帰）。
+
+## クリップボードは貼る直前に中身を確認する
+
+`pbcopy` してから貼るまでの間に別のアプリがクリップボードを奪うことがある。
+**まったく無関係なテキストが `App.Formulas` に入って 1514 エラー**になった。
+`pbpaste | head -c 60` で先頭を確認してから貼る。
+
 ## `Concat` の区切りは第3引数
 
 `Concat(テーブル, 式 & "、")` と書くと**末尾に余分な区切りが残る**。
