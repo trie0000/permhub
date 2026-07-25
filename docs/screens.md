@@ -338,6 +338,19 @@ Power Apps では複数ギャラリーのスクロール位置を同期できな
 
 > 利用者の**新規登録**（`gblUserMode = "New"`）はまだ書き込みを実装していない。
 > 登録には 利用者・所属・権限の 3 種別を 1 申請にまとめる必要がある（§5）。
+> 押しても**通知とエラー表示で止める**（グローバルIDが空のまま権限だけ書かれるのを防ぐ）。
+
+### 編集コレクションの upsert に `IsBlank(<キー列>)` を使わない
+
+```
+NG: If(IsBlank(gblUG.Gid), Collect(colGEdit, {...}), Patch(colGEdit, ..., {...}))
+OK: If(CountRows(Filter(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)) = 0, Collect(...), Patch(...))
+```
+
+**キーが空文字のときに「行が無い」と誤判定する。** 新規登録の画面はグローバルIDが空なので、
+チェックを入れるたびに `Collect` が走って行が増え続け、
+**一度付けたチェックが外せない**（表示は最初の行を見ているので常に ☑ のまま）。
+実際に 42 行たまった。存在判定は必ず `CountRows(Filter(...)) = 0` で行う。
 
 ### グローバルID
 
