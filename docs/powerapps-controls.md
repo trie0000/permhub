@@ -344,6 +344,44 @@ fHist = Filter(colReq, gblHFilter = "all" || …)
 同じ理屈で、データソースへの `LookUp` を画面に散らすとその回数だけ通信が起きる
 （`ScrReq` は `LookUp(PRM_Requests, Title = gblReqNo)` を 13 箇所に書いていた）。
 
+## ギャラリーは `FillPortions` だけではスクロールしない
+
+`ShowScrollbar: =true` にして AutoLayout コンテナーの中で `FillPortions: =1` にしても、
+**はみ出した行はただ切り取られる**（スクロールバーも出ず、ホイールも効かない）。
+組織区分2 が 6 件あるのに 3.7 件ぶんの高さしかなく、下の 2 件を選べなかった。
+
+**ギャラリーに実際の内容の高さを持たせ、コンテナー側をスクロールさせる。**
+
+```
+# ギャラリー
+FillPortions:    =0
+Height:          =CountRows(fO2E) * 44     # 行数 × TemplateSize
+LayoutMinHeight: =0
+
+# 親のレイアウトコンテナー
+LayoutOverflowY: =LayoutOverflow.Scroll    # 列挙は Hide / Scroll の2つ
+```
+
+ヘッダ行はコンテナーの外に置いてあるので、スクロールしても固定されたままになる。
+
+## `Coalesce(x, "")` は「空文字も blank 扱い」
+
+`Coalesce` は**空文字も blank とみなして飛ばす**ので、`Coalesce("", "")` は `""` ではなく
+**`Blank()`** を返す。これを `Substitute` に渡すと結果も blank になり、
+「チェックを入れたのに入らない」という無反応バグになった（マトリックスのセル）。
+
+**トグルの新しい状態は、表示に使っているのと同じ式で組み立て直す。**
+文字列を継ぎ足す・削るロジックを別に書くと、表示と判定がずれたときに気づけない。
+
+```
+# 表示: このセルが ON か
+gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))
+
+# トグル: 押した行だけ反転して、対象すべてから作り直す
+Set(gblOn, <上と同じ式>);
+Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, <上と同じ式(Title 版)>)), ";" & Title, "") & ";")
+```
+
 ## 数式エラーのあるプロパティは「実行されない」
 
 `OnSelect` に数式エラーがあると、**そのボタンはクリックしても何も起きない**。
