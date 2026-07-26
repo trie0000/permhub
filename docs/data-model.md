@@ -191,7 +191,7 @@ SharePoint にトランザクションは無いので、§6 の手順で担保�
 | `AfterJson` | Note | 変更後 | `DELETE` のときは空 |
 | `ChangeText` | Note | 変更内容（人が読む） | |
 | `ItemStatus` | Choice | 明細の状態 | **索引**。`PENDING` `READY` `DONE` `REJECTED` `CANCELED`（既定 `PENDING`） |
-| `ItemNote` | Note | 差し戻し理由・作業メモ | 差し戻したときに記録する |
+| `ItemNote` | Note | 差し戻し理由・作業メモ | **差し戻し・取り下げのときは必須**。UI が空を弾く |
 | `HandledAt` | DateTime | 状態変更日時 | |
 | `HandledBy` | Text | 状態変更者 | グローバルID |
 
@@ -266,7 +266,8 @@ ChangeText: 外部接続申請担当（東日本ブロック）
 
 ### 反映（管理者）
 
-明細の状態を動かす。マスタに書くのは `DONE` にした瞬間だけ。
+状態は**申請まるごと**で動かす（明細ごとの操作は UI から外した）。
+マスタに書くのは `DONE` にした瞬間だけ。
 
 | 明細の状態 | 意味 | マスタ |
 |---|---|---|
@@ -274,7 +275,7 @@ ChangeText: 外部接続申請担当（東日本ブロック）
 | `READY` | 確認中（内容 OK、作業前） | 触らない |
 | `DONE` | 完了 | **このとき `AfterJson` を当てる** |
 | `REJECTED` | 差し戻し | 触らない（`ItemNote` に理由） |
-| `CANCELED` | 取り下げ（申請者が引っ込めた） | 触らない |
+| `CANCELED` | 取り下げ（申請者が引っ込めた） | 触らない（`ItemNote` に理由） |
 
 `DONE` にする処理は「`AfterJson` を `ParseJSON` して対象マスタに `Patch`」。
 明細が正・マスタが従なので、**同じ明細を当て直しても同じ結果**になる（べき等）。
