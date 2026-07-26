@@ -699,7 +699,7 @@ Screens:
                       Wrap: =true
                       PaddingTop: =0
                       PaddingBottom: =0
-                      VerticalAlign: =VerticalAlign.Top
+                      VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
 
                 - qiOp:
@@ -722,7 +722,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Height: =24
-                      AlignInContainer: =AlignInContainer.Start
+                      AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
 
                 - qiKind:
@@ -736,7 +736,7 @@ Screens:
                       Wrap: =true
                       PaddingTop: =0
                       PaddingBottom: =0
-                      VerticalAlign: =VerticalAlign.Top
+                      VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
 
                 - qiKey:
@@ -750,7 +750,7 @@ Screens:
                       Wrap: =true
                       PaddingTop: =0
                       PaddingBottom: =0
-                      VerticalAlign: =VerticalAlign.Top
+                      VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
 
                 - qiChange:
@@ -763,7 +763,7 @@ Screens:
                       Wrap: =true
                       PaddingTop: =0
                       PaddingBottom: =0
-                      VerticalAlign: =VerticalAlign.Top
+                      VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =1
 
             - qiRule:
@@ -777,7 +777,7 @@ Screens:
                   Text: =""
                   Width: =Parent.TemplateWidth
                   X: =0
-                  Y: =55
+                  Y: =fQIRowH - 1
                   Wrap: =true
                   PaddingTop: =0
                   PaddingBottom: =0
