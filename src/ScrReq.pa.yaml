@@ -2,7 +2,7 @@ Screens:
   ScrReq:
     Properties:
       Fill: =RGBA(243, 241, 234, 1)
-      OnVisible: =ClearCollect(colQI, ForAll(Sort(Filter(PRM_RequestItems, ReqNo = gblReqNo), Seq) As i, {Key:i.Title, Seq:i.Seq, Op:i.Operation.Value, K:i.EntityKind.Value, EKey:i.EntityKey, Chg:Coalesce(i.ChangeText, ""), AJ:Coalesce(i.AfterJson, "{}"), St:Coalesce(i.ItemStatus.Value, "PENDING"), Nt:Coalesce(i.ItemNote, "")})); Set(gblRTab, If(CountRows(Filter(colQI, K = "ORG1" || K = "ORG2")) > 0, "org", "user")); Set(gblModal, ""); Set(gblGateOk, false); Set(gblHAct, ""); Reset(inpRRej)
+      OnVisible: =ClearCollect(colQI, ForAll(Sort(Filter(PRM_RequestItems, ReqNo = gblReqNo), Seq) As i, {Key:i.Title, Seq:i.Seq, Op:i.Operation.Value, K:i.EntityKind.Value, GK:Coalesce(i.GroupKind, i.EntityKind.Value), GKey:Coalesce(i.GroupKey, i.EntityKey), EKey:i.EntityKey, Chg:Coalesce(i.ChangeText, ""), AJ:Coalesce(i.AfterJson, "{}"), St:Coalesce(i.ItemStatus.Value, "PENDING")})); ClearCollect(colQG, ForAll(Distinct(colQI, Seq) As d, With({r:LookUp(colQI, Seq = d.Value)}, {Seq:d.Value, K:r.GK, EKey:r.GKey, Op:r.Op, St:r.St, Chg:Concat(Filter(colQI, Seq = d.Value), Chg, Char(10)), Ln:CountRows(Filter(colQI, Seq = d.Value))}))); Set(gblRTab, If(CountRows(Filter(colQG, K = "ORG1" || K = "ORG2")) > 0, "org", "user")); Set(gblModal, ""); Set(gblGateOk, false); Set(gblHAct, ""); Reset(inpRRej)
     Children:
     - qHdrBg:
         Control: ModernText@1.0.0
@@ -61,7 +61,7 @@ Screens:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
-          Height: =156
+          Height: =156 + fNoteH
           RadiusTopLeft: =8
           RadiusTopRight: =8
           RadiusBottomLeft: =8
@@ -357,6 +357,40 @@ Screens:
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
 
+    - qoC0:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =16
+          Size: =11
+          Text: =If(fReq.Status.Value = "CANCELED", "取り下げの理由", "差し戻しの理由")
+          Visible: =fNoteH > 0
+          Width: =Parent.Width - 104
+          X: =52
+          Y: =234
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+
+    - qoV0:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(184, 83, 74, 1)
+          Height: =40
+          Size: =13
+          Text: =Coalesce(fReq.DecisionNote, "")
+          Visible: =fNoteH > 0
+          Width: =Parent.Width - 104
+          X: =52
+          Y: =252
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Top
+
     - rtaborg:
         Control: ModernText@1.0.0
         Properties:
@@ -374,7 +408,7 @@ Screens:
           Text: ="組織マスタの変更（" & CountRows(fQIOrg) & "）"
           Width: =204
           X: =28
-          Y: =244
+          Y: =244 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -397,7 +431,7 @@ Screens:
           Text: ="ユーザマスタの変更（" & CountRows(fQIUser) & "）"
           Width: =204
           X: =240
-          Y: =244
+          Y: =244 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -420,7 +454,7 @@ Screens:
           Visible: =fReq.ApplicantId = gblMeGid && fReqStat = "申請済み"
           Width: =104
           X: =Parent.Width - 132
-          Y: =244
+          Y: =244 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -443,7 +477,7 @@ Screens:
           Visible: =gblIsAdmin && fReqStat <> "差し戻し" && fReqStat <> "完了" && fReqStat <> "取り下げ"
           Width: =96
           X: =Parent.Width - 240
-          Y: =244
+          Y: =244 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -466,7 +500,7 @@ Screens:
           Visible: =gblIsAdmin && fReqStat <> "完了" && fReqStat <> "取り下げ"
           Width: =110
           X: =Parent.Width - 362
-          Y: =244
+          Y: =244 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -489,7 +523,7 @@ Screens:
           Visible: =gblIsAdmin && (fReqStat = "申請済み" || fReqStat = "一部完了")
           Width: =110
           X: =Parent.Width - 484
-          Y: =244
+          Y: =244 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -501,7 +535,7 @@ Screens:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
-          Height: =Parent.Height - 350
+          Height: =Parent.Height - 350 - fNoteH
           RadiusTopLeft: =8
           RadiusTopRight: =8
           RadiusBottomLeft: =8
@@ -510,7 +544,7 @@ Screens:
           Text: =""
           Width: =Parent.Width - 56
           X: =28
-          Y: =290
+          Y: =290 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -526,7 +560,7 @@ Screens:
           Text: ="#"
           Width: =34
           X: =52
-          Y: =304
+          Y: =304 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -542,7 +576,7 @@ Screens:
           Text: ="操作"
           Width: =56
           X: =86
-          Y: =304
+          Y: =304 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -558,7 +592,7 @@ Screens:
           Text: ="対象種別"
           Width: =76
           X: =142
-          Y: =304
+          Y: =304 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -574,7 +608,7 @@ Screens:
           Text: ="対象"
           Width: =190
           X: =218
-          Y: =304
+          Y: =304 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -590,7 +624,7 @@ Screens:
           Text: ="変更内容"
           Width: =Parent.Width - 512
           X: =408
-          Y: =304
+          Y: =304 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -607,7 +641,7 @@ Screens:
           Text: =""
           Width: =Parent.Width - 104
           X: =52
-          Y: =330
+          Y: =330 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -617,7 +651,7 @@ Screens:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
         Properties:
-          Height: =Parent.Height - 396
+          Height: =Parent.Height - 396 - fNoteH
           LayoutAlignItems: =LayoutAlignItems.Stretch
           LayoutDirection: =LayoutDirection.Vertical
           PaddingBottom: =0
@@ -626,7 +660,7 @@ Screens:
           PaddingTop: =0
           Width: =Parent.Width - 104
           X: =52
-          Y: =332
+          Y: =332 + fNoteH
         Children:
         - galQItems:
             Control: Gallery@2.15.0
@@ -636,7 +670,7 @@ Screens:
               Items: =fQI
               ShowScrollbar: =true
               TemplatePadding: =0
-              TemplateSize: =56
+              TemplateSize: =fQIRowH
             Children:
             - qiRow:
                 Control: GroupContainer@1.5.0
@@ -645,7 +679,7 @@ Screens:
                   X: =0
                   Y: =0
                   Width: =Parent.TemplateWidth
-                  Height: =56
+                  Height: =fQIRowH
                   LayoutDirection: =LayoutDirection.Horizontal
                   LayoutAlignItems: =LayoutAlignItems.Stretch
                   PaddingLeft: =0
@@ -665,7 +699,7 @@ Screens:
                       Wrap: =true
                       PaddingTop: =0
                       PaddingBottom: =0
-                      VerticalAlign: =VerticalAlign.Middle
+                      VerticalAlign: =VerticalAlign.Top
                       FillPortions: =0
 
                 - qiOp:
@@ -688,7 +722,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Height: =24
-                      AlignInContainer: =AlignInContainer.Center
+                      AlignInContainer: =AlignInContainer.Start
                       LayoutMinHeight: =0
 
                 - qiKind:
@@ -702,7 +736,7 @@ Screens:
                       Wrap: =true
                       PaddingTop: =0
                       PaddingBottom: =0
-                      VerticalAlign: =VerticalAlign.Middle
+                      VerticalAlign: =VerticalAlign.Top
                       FillPortions: =0
 
                 - qiKey:
@@ -711,12 +745,12 @@ Screens:
                       Align: ='TextCanvas.Align'.Start
                       Color: =RGBA(42, 42, 38, 1)
                       Size: =11
-                      Text: =ThisItem.EKey
+                      Text: =Trim(Substitute(ThisItem.EKey, ";", " "))
                       Width: =190
                       Wrap: =true
                       PaddingTop: =0
                       PaddingBottom: =0
-                      VerticalAlign: =VerticalAlign.Middle
+                      VerticalAlign: =VerticalAlign.Top
                       FillPortions: =0
 
                 - qiChange:
@@ -725,11 +759,11 @@ Screens:
                       Align: ='TextCanvas.Align'.Start
                       Color: =RGBA(74, 71, 64, 1)
                       Size: =12
-                      Text: =ThisItem.Chg & If(IsBlank(ThisItem.Nt), "", " 〔" & ThisItem.Nt & "〕")
+                      Text: =ThisItem.Chg
                       Wrap: =true
                       PaddingTop: =0
                       PaddingBottom: =0
-                      VerticalAlign: =VerticalAlign.Middle
+                      VerticalAlign: =VerticalAlign.Top
                       FillPortions: =1
 
             - qiRule:
@@ -747,7 +781,7 @@ Screens:
                   Wrap: =true
                   PaddingTop: =0
                   PaddingBottom: =0
-                  VerticalAlign: =VerticalAlign.Middle
+                  VerticalAlign: =VerticalAlign.Top
     - qEmpty:
         Control: ModernText@1.0.0
         Properties:
@@ -759,7 +793,7 @@ Screens:
           Visible: =fQIN = 0
           Width: =Parent.Width - 104
           X: =52
-          Y: =366
+          Y: =366 + fNoteH
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -793,7 +827,7 @@ Screens:
           Color: =RGBA(255, 255, 255, 1)
           Fill: =RGBA(122, 138, 120, 1)
           Height: =1
-          OnSelect: =Set(gblSErr, ""); If(CountRows(colTgt) = 0, Set(gblSErr, "対象の明細がありません。")); If(IsBlank(gblSErr) && gblNewStat = "DONE" && CountRows(Filter(colTgt As t, t.K = "ORG2" && t.Op = "ADD" && !IsBlank(LookUp(PRM_Org2, Title = t.EKey).Title))) > 0, Set(gblSErr, "追加する組織区分2 のコードが既に使われています。この明細は差し戻して、申請者に取り直してもらってください。")); If(IsBlank(gblSErr) && gblNewStat = "DONE", ForAll(colTgt As t, With({A:ParseJSON(t.AJ)}, Switch(t.K, "ORG1", Patch(PRM_Org1, LookUp(PRM_Org1, Title = t.EKey), {MsExt:Boolean(A.MsExt), MsWlan:Boolean(A.MsWlan), MsCloud:Boolean(A.MsCloud)}), "ORG2", If(t.Op = "DELETE", Patch(PRM_Org2, LookUp(PRM_Org2, Title = t.EKey), {IsActive:false}), If(t.Op = "ADD", Patch(PRM_Org2, Defaults(PRM_Org2), {Title:t.EKey, Org1Code:Text(A.Org1Code), NameJa:Text(A.NameJa), NameEn:Text(A.NameEn), SortOrder:Value(A.SortOrder), ApExt:Boolean(A.ApExt), ApWlan:Boolean(A.ApWlan), ApCloud:Boolean(A.ApCloud), IsActive:true}), Patch(PRM_Org2, LookUp(PRM_Org2, Title = t.EKey), {NameJa:Text(A.NameJa), NameEn:Text(A.NameEn), SortOrder:Value(A.SortOrder), ApExt:Boolean(A.ApExt), ApWlan:Boolean(A.ApWlan), ApCloud:Boolean(A.ApCloud)}))), "USER", If(t.Op = "DELETE", Patch(PRM_Users, LookUp(PRM_Users, Title = t.EKey), {IsActive:false}), If(IsBlank(LookUp(PRM_Users, Title = t.EKey).Title), Patch(PRM_Users, Defaults(PRM_Users), {Title:t.EKey, FullName:Text(A.FullName), Mail:Text(A.Mail), Department:Text(A.Department), IsActive:true}), Patch(PRM_Users, LookUp(PRM_Users, Title = t.EKey), {FullName:Text(A.FullName), Mail:Text(A.Mail), Department:Text(A.Department), IsActive:true}))), "USERORG1", If(t.Op = "DELETE", Patch(PRM_UserOrg1, LookUp(PRM_UserOrg1, Title = t.EKey), {IsActive:false}), If(IsBlank(LookUp(PRM_UserOrg1, Title = t.EKey).Title), Patch(PRM_UserOrg1, Defaults(PRM_UserOrg1), {Title:t.EKey, GlobalId:Text(A.GlobalId), Org1Code:Text(A.Org1Code), IsActive:true}), Patch(PRM_UserOrg1, LookUp(PRM_UserOrg1, Title = t.EKey), {IsActive:true}))), "GRANT", If(t.Op = "DELETE", Patch(PRM_Grants, LookUp(PRM_Grants, Title = t.EKey), {IsActive:false, LastReqNo:gblReqNo}), If(IsBlank(LookUp(PRM_Grants, Title = t.EKey).Title), Patch(PRM_Grants, Defaults(PRM_Grants), {Title:t.EKey, GlobalId:Text(A.GlobalId), Org1Code:Text(A.Org1Code), RoleCode:{Value:Text(A.RoleCode)}, ScopeType:{Value:Text(A.ScopeType)}, Org2Codes:Text(A.Org2Codes), IsActive:true, LastReqNo:gblReqNo}), Patch(PRM_Grants, LookUp(PRM_Grants, Title = t.EKey), {ScopeType:{Value:Text(A.ScopeType)}, Org2Codes:Text(A.Org2Codes), IsActive:true, LastReqNo:gblReqNo}))))))); If(IsBlank(gblSErr) && gblNewStat = "DONE" && CountRows(Errors(PRM_Org1)) + CountRows(Errors(PRM_Org2)) + CountRows(Errors(PRM_Users)) + CountRows(Errors(PRM_UserOrg1)) + CountRows(Errors(PRM_Grants)) > 0, Set(gblSErr, "マスタへの反映に失敗しました。もう一度「完了」を押すか、SharePoint 側の値を確かめてください。")); If(IsBlank(gblSErr), ForAll(colTgt As t, Patch(PRM_RequestItems, LookUp(PRM_RequestItems, Title = t.Key), {ItemStatus:{Value:gblNewStat}, HandledAt:Now(), HandledBy:gblMeGid, ItemNote:If(gblNewStat = "REJECTED" || gblNewStat = "CANCELED", gblRejNote, "")}))); If(IsBlank(gblSErr), ClearCollect(colRU, ForAll(Filter(PRM_RequestItems, ReqNo = gblReqNo) As i, {S:Coalesce(i.ItemStatus.Value, "PENDING")}))); If(IsBlank(gblSErr), Set(gblRUn, CountRows(colRU))); If(IsBlank(gblSErr), Set(gblRUd, CountRows(Filter(colRU, S = "DONE")))); If(IsBlank(gblSErr), Set(gblRUr, CountRows(Filter(colRU, S = "REJECTED")))); If(IsBlank(gblSErr), Set(gblRUy, CountRows(Filter(colRU, S = "READY")))); If(IsBlank(gblSErr), Set(gblRUc, CountRows(Filter(colRU, S = "CANCELED")))); If(IsBlank(gblSErr), Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {Status:{Value:If(gblRUd + gblRUr + gblRUc = gblRUn, If(gblRUd = gblRUn, "APPLIED", If(gblRUr = gblRUn, "REJECTED", If(gblRUc = gblRUn, "CANCELED", "PARTIAL"))), If(gblRUd + gblRUr + gblRUc + gblRUy > 0, "INPROGRESS", "SUBMITTED"))}})); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colOrg1, Sort(Filter(PRM_Org1, IsActive = true), SortOrder))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colO1Edit, colOrg1)); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colOrg2All, Sort(Filter(PRM_Org2, IsActive = true), SortOrder))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false}))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colO2Any, ForAll(PRM_Org2 As o2, {Title:o2.Title, Org1Code:o2.Org1Code}))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colUsersAll, Filter(PRM_Users, IsActive = true))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colMemberAll, Filter(PRM_UserOrg1, IsActive = true))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(IsBlank(gblSErr), ClearCollect(colPendO2, ForAll(Filter(PRM_RequestItems, EntityKind.Value = "ORG2", Operation.Value = "ADD") As i, {C:i.EntityKey}))); If(IsBlank(gblSErr), ClearCollect(colQI, ForAll(Sort(Filter(PRM_RequestItems, ReqNo = gblReqNo), Seq) As i, {Key:i.Title, Seq:i.Seq, Op:i.Operation.Value, K:i.EntityKind.Value, EKey:i.EntityKey, Chg:Coalesce(i.ChangeText, ""), AJ:Coalesce(i.AfterJson, "{}"), St:Coalesce(i.ItemStatus.Value, "PENDING"), Nt:Coalesce(i.ItemNote, "")}))); If(IsBlank(gblSErr), If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})))); If(IsBlank(gblSErr), Notify(Switch(gblNewStat, "READY", "確認中にしました（明細 " & CountRows(colTgt) & "件）", "DONE", "完了にしてマスタへ反映しました（明細 " & CountRows(colTgt) & "件）", "CANCELED", "取り下げました（明細 " & CountRows(colTgt) & "件）", "差し戻しました（明細 " & CountRows(colTgt) & "件）"), NotificationType.Success)); If(!IsBlank(gblSErr), Notify(gblSErr, NotificationType.Warning)); Set(gblGateOk, false)
+          OnSelect: =Set(gblSErr, ""); If(CountRows(colTgt) = 0, Set(gblSErr, "対象の明細がありません。")); If(IsBlank(gblSErr) && gblNewStat = "DONE" && CountRows(Filter(colTgt As t, t.K = "ORG2" && t.Op = "ADD" && !IsBlank(LookUp(PRM_Org2, Title = t.EKey).Title))) > 0, Set(gblSErr, "追加する組織区分2 のコードが既に使われています。この申請は差し戻して、申請者に取り直してもらってください。")); If(IsBlank(gblSErr) && gblNewStat = "DONE", ForAll(colTgt As t, With({A:ParseJSON(t.AJ)}, Switch(t.K, "ORG1", Patch(PRM_Org1, LookUp(PRM_Org1, Title = t.EKey), {MsExt:Boolean(A.MsExt), MsWlan:Boolean(A.MsWlan), MsCloud:Boolean(A.MsCloud)}), "ORG2", If(t.Op = "DELETE", Patch(PRM_Org2, LookUp(PRM_Org2, Title = t.EKey), {IsActive:false}), If(t.Op = "ADD", Patch(PRM_Org2, Defaults(PRM_Org2), {Title:t.EKey, Org1Code:Text(A.Org1Code), NameJa:Text(A.NameJa), NameEn:Text(A.NameEn), SortOrder:Value(A.SortOrder), ApExt:Boolean(A.ApExt), ApWlan:Boolean(A.ApWlan), ApCloud:Boolean(A.ApCloud), IsActive:true}), Patch(PRM_Org2, LookUp(PRM_Org2, Title = t.EKey), {NameJa:Text(A.NameJa), NameEn:Text(A.NameEn), SortOrder:Value(A.SortOrder), ApExt:Boolean(A.ApExt), ApWlan:Boolean(A.ApWlan), ApCloud:Boolean(A.ApCloud)}))), "USER", If(t.Op = "DELETE", Patch(PRM_Users, LookUp(PRM_Users, Title = t.EKey), {IsActive:false}), If(IsBlank(LookUp(PRM_Users, Title = t.EKey).Title), Patch(PRM_Users, Defaults(PRM_Users), {Title:t.EKey, FullName:Text(A.FullName), Mail:Text(A.Mail), Department:Text(A.Department), IsActive:true}), Patch(PRM_Users, LookUp(PRM_Users, Title = t.EKey), {FullName:Text(A.FullName), Mail:Text(A.Mail), Department:Text(A.Department), IsActive:true}))), "USERORG1", If(t.Op = "DELETE", Patch(PRM_UserOrg1, LookUp(PRM_UserOrg1, Title = t.EKey), {IsActive:false}), If(IsBlank(LookUp(PRM_UserOrg1, Title = t.EKey).Title), Patch(PRM_UserOrg1, Defaults(PRM_UserOrg1), {Title:t.EKey, GlobalId:Text(A.GlobalId), Org1Code:Text(A.Org1Code), IsActive:true}), Patch(PRM_UserOrg1, LookUp(PRM_UserOrg1, Title = t.EKey), {IsActive:true}))), "GRANT", If(t.Op = "DELETE", Patch(PRM_Grants, LookUp(PRM_Grants, Title = t.EKey), {IsActive:false, LastReqNo:gblReqNo}), If(IsBlank(LookUp(PRM_Grants, Title = t.EKey).Title), Patch(PRM_Grants, Defaults(PRM_Grants), {Title:t.EKey, GlobalId:Text(A.GlobalId), Org1Code:Text(A.Org1Code), RoleCode:{Value:Text(A.RoleCode)}, ScopeType:{Value:Text(A.ScopeType)}, Org2Codes:Text(A.Org2Codes), IsActive:true, LastReqNo:gblReqNo}), Patch(PRM_Grants, LookUp(PRM_Grants, Title = t.EKey), {ScopeType:{Value:Text(A.ScopeType)}, Org2Codes:Text(A.Org2Codes), IsActive:true, LastReqNo:gblReqNo}))))))); If(IsBlank(gblSErr) && gblNewStat = "DONE" && CountRows(Errors(PRM_Org1)) + CountRows(Errors(PRM_Org2)) + CountRows(Errors(PRM_Users)) + CountRows(Errors(PRM_UserOrg1)) + CountRows(Errors(PRM_Grants)) > 0, Set(gblSErr, "マスタへの反映に失敗しました。もう一度「完了にする」を押すか、SharePoint 側の値を確かめてください。")); If(IsBlank(gblSErr), ForAll(colTgt As t, Patch(PRM_RequestItems, LookUp(PRM_RequestItems, Title = t.Key), {ItemStatus:{Value:gblNewStat}, HandledAt:Now(), HandledBy:gblMeGid}))); If(IsBlank(gblSErr), ClearCollect(colRU, ForAll(Filter(PRM_RequestItems, ReqNo = gblReqNo) As i, {S:Coalesce(i.ItemStatus.Value, "PENDING")}))); If(IsBlank(gblSErr), Set(gblRUn, CountRows(colRU))); If(IsBlank(gblSErr), Set(gblRUd, CountRows(Filter(colRU, S = "DONE")))); If(IsBlank(gblSErr), Set(gblRUr, CountRows(Filter(colRU, S = "REJECTED")))); If(IsBlank(gblSErr), Set(gblRUy, CountRows(Filter(colRU, S = "READY")))); If(IsBlank(gblSErr), Set(gblRUc, CountRows(Filter(colRU, S = "CANCELED")))); If(IsBlank(gblSErr), Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblReqNo), {DecisionNote:If(gblNewStat = "REJECTED" || gblNewStat = "CANCELED", gblRejNote, ""), Status:{Value:If(gblRUd + gblRUr + gblRUc = gblRUn, If(gblRUd = gblRUn, "APPLIED", If(gblRUr = gblRUn, "REJECTED", If(gblRUc = gblRUn, "CANCELED", "PARTIAL"))), If(gblRUd + gblRUr + gblRUc + gblRUy > 0, "INPROGRESS", "SUBMITTED"))}})); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colOrg1, Sort(Filter(PRM_Org1, IsActive = true), SortOrder))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colO1Edit, colOrg1)); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colOrg2All, Sort(Filter(PRM_Org2, IsActive = true), SortOrder))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false}))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colO2Any, ForAll(PRM_Org2 As o2, {Title:o2.Title, Org1Code:o2.Org1Code}))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colUsersAll, Filter(PRM_Users, IsActive = true))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colMemberAll, Filter(PRM_UserOrg1, IsActive = true))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true))); If(IsBlank(gblSErr) && gblNewStat = "DONE", ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(IsBlank(gblSErr), ClearCollect(colPendO2, ForAll(Filter(PRM_RequestItems, EntityKind.Value = "ORG2", Operation.Value = "ADD") As i, {C:i.EntityKey}))); If(IsBlank(gblSErr), ClearCollect(colQI, ForAll(Sort(Filter(PRM_RequestItems, ReqNo = gblReqNo), Seq) As i, {Key:i.Title, Seq:i.Seq, Op:i.Operation.Value, K:i.EntityKind.Value, GK:Coalesce(i.GroupKind, i.EntityKind.Value), GKey:Coalesce(i.GroupKey, i.EntityKey), EKey:i.EntityKey, Chg:Coalesce(i.ChangeText, ""), AJ:Coalesce(i.AfterJson, "{}"), St:Coalesce(i.ItemStatus.Value, "PENDING")}))); If(IsBlank(gblSErr), ClearCollect(colQG, ForAll(Distinct(colQI, Seq) As d, With({r:LookUp(colQI, Seq = d.Value)}, {Seq:d.Value, K:r.GK, EKey:r.GKey, Op:r.Op, St:r.St, Chg:Concat(Filter(colQI, Seq = d.Value), Chg, Char(10)), Ln:CountRows(Filter(colQI, Seq = d.Value))})))); If(IsBlank(gblSErr), If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})))); If(IsBlank(gblSErr), Notify(Switch(gblNewStat, "READY", "確認中にしました（明細 " & CountRows(colQG) & "件）", "DONE", "完了にしてマスタへ反映しました（明細 " & CountRows(colQG) & "件）", "CANCELED", "取り下げました（明細 " & CountRows(colQG) & "件）", "差し戻しました（明細 " & CountRows(colQG) & "件）"), NotificationType.Success)); If(!IsBlank(gblSErr), Notify(gblSErr, NotificationType.Warning)); Set(gblGateOk, false)
           Size: =8
           Text: =""
           Visible: =false
@@ -830,7 +864,7 @@ Screens:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
-          Height: =248
+          Height: =300
           RadiusTopLeft: =8
           RadiusTopRight: =8
           RadiusBottomLeft: =8
@@ -840,7 +874,7 @@ Screens:
           Visible: =gblModal = "ract"
           Width: =560
           X: =(Parent.Width - 560) / 2
-          Y: =(Parent.Height - 248) / 2
+          Y: =(Parent.Height - 300) / 2
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -858,7 +892,7 @@ Screens:
           Visible: =gblModal = "ract"
           Width: =500
           X: =(Parent.Width - 560) / 2 + 30
-          Y: =(Parent.Height - 248) / 2 + 24
+          Y: =(Parent.Height - 300) / 2 + 24
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -875,7 +909,7 @@ Screens:
           Visible: =gblModal = "ract"
           Width: =500
           X: =(Parent.Width - 560) / 2 + 30
-          Y: =(Parent.Height - 248) / 2 + 56
+          Y: =(Parent.Height - 300) / 2 + 56
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -888,11 +922,11 @@ Screens:
           Color: =RGBA(122, 118, 108, 1)
           Height: =16
           Size: =11
-          Text: =If(gblHAct = "cxl", "取り下げの理由（必須・明細へ記録される）", "差し戻しの理由（必須・明細へ記録される）")
+          Text: =If(gblHAct = "cxl", "取り下げの理由（必須・この申請に記録される）", "差し戻しの理由（必須・この申請に記録される）")
           Visible: =gblModal = "ract" && (gblHAct = "rej" || gblHAct = "cxl")
           Width: =500
           X: =(Parent.Width - 560) / 2 + 30
-          Y: =(Parent.Height - 248) / 2 + 128
+          Y: =(Parent.Height - 300) / 2 + 128
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -901,10 +935,11 @@ Screens:
     - inpRRej:
         Control: ModernTextInput@1.1.1
         Properties:
-          Height: =32
+          Type: =TextInputType.Multiline
+          Height: =96
           Width: =500
           X: =(Parent.Width - 560) / 2 + 30
-          Y: =(Parent.Height - 248) / 2 + 148
+          Y: =(Parent.Height - 300) / 2 + 148
           Visible: =gblModal = "ract" && (gblHAct = "rej" || gblHAct = "cxl")
           Placeholder: =If(gblHAct = "cxl", "例）対象を間違えたので出し直す", "例）権限の範囲が申請書と合っていない")
 
@@ -925,7 +960,7 @@ Screens:
           Visible: =gblModal = "ract"
           Width: =120
           X: =(Parent.Width - 560) / 2 + 248
-          Y: =(Parent.Height - 248) / 2 + 194
+          Y: =(Parent.Height - 300) / 2 + 246
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -948,7 +983,7 @@ Screens:
           Visible: =gblModal = "ract"
           Width: =150
           X: =(Parent.Width - 560) / 2 + 380
-          Y: =(Parent.Height - 248) / 2 + 194
+          Y: =(Parent.Height - 300) / 2 + 246
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0

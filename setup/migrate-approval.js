@@ -101,7 +101,7 @@ const SITE_URL = "https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE";
     }
   };
 
-  // 明細 1 件 = 変更 1 件。状態は明細ごとに持つ
+  // 明細の状態。操作は申請まるごとなので、全明細に同じ値が入る
   //   PENDING  未対応
   //   READY    確認中（内容 OK、作業前）
   //   DONE     完了（この時点でマスタに反映される）
@@ -112,6 +112,22 @@ const SITE_URL = "https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE";
     ["ItemNote", NO("ItemNote", "差し戻し理由・作業メモ")],
     ["HandledAt", DT("HandledAt", "状態変更日時")],
     ["HandledBy", T("HandledBy", "状態変更者", 100)],
+  ]);
+
+  // 明細は「表示・操作の単位」で束ねる。行そのものは対象 1 件ずつのまま
+  // （反映処理を単純に保つため）で、Seq が同じ行が 1 明細として扱われる。
+  //   GroupKind ORG1 / ORG2 / USER
+  //   GroupKey  表示する対象（組織区分1 コード／組織区分2 コードを ";" で並べたもの／グローバルID）
+  await addFields("PRM_RequestItems", [
+    ["GroupKind", T("GroupKind", "明細の種類", 20)],
+    ["GroupKey", T("GroupKey", "明細の対象", 255)],
+  ]);
+
+  // 差し戻し・取り下げの理由は**申請まるごと**に付く。明細ごとには持たない
+  // （明細は「組織区分1 の変更」「組織区分2 の変更」「利用者ごとの変更」の単位で、
+  //   1 明細に複数の対象がまとまるため、理由を明細に紐づける意味がない）
+  await addFields("PRM_Requests", [
+    ["DecisionNote", NO("DecisionNote", "差し戻し・取り下げの理由")],
   ]);
 
   // ---- 3. 索引 ------------------------------------------------------------
@@ -180,6 +196,30 @@ const SITE_URL = "https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE";
     await merge(`/_api/web/lists/getbytitle('PRM_RequestItems')/items(${it.Id})`,
       { __metadata: { type: itemType }, ItemStatus: "DONE" });
   log(`既存明細 ${items.length} 件を DONE にした`);
+
+  // ---- 6. 既存の差し戻し理由を申請側へ移す --------------------------------
+  // 理由は明細ごとに持っていた。申請 1 本につき理由は 1 つなので、
+  // 最初に見つかった ItemNote を DecisionNote に写す（明細側は消さずに残す）
+  const reqType = (await get(
+    "/_api/web/lists/getbytitle('PRM_Requests')?$select=ListItemEntityTypeFullName"
+  )).ListItemEntityTypeFullName;
+  const noted = (await get(
+    "/_api/web/lists/getbytitle('PRM_RequestItems')/items" +
+    "?$select=ReqNo,ItemNote&$top=5000"
+  )).value.filter((i) => i.ItemNote);
+  const byReq = {};
+  for (const i of noted) if (!byReq[i.ReqNo]) byReq[i.ReqNo] = i.ItemNote;
+  let moved = 0;
+  for (const [no, note] of Object.entries(byReq)) {
+    const r = (await get(
+      "/_api/web/lists/getbytitle('PRM_Requests')/items" +
+      `?$select=Id,DecisionNote&$filter=Title eq '${no}'`)).value[0];
+    if (!r || r.DecisionNote) continue;
+    await merge(`/_api/web/lists/getbytitle('PRM_Requests')/items(${r.Id})`,
+      { __metadata: { type: reqType }, DecisionNote: note });
+    moved++;
+  }
+  log(`差し戻し理由 ${moved} 件を申請側へ移した`);
 
   log("完了。PRM_Config の AdminGroupId にグループ ID を入れる。");
 })().catch((e) => console.error("[PRM] 失敗:", e));

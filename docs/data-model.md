@@ -191,7 +191,9 @@ SharePoint にトランザクションは無いので、§6 の手順で担保�
 | `AfterJson` | Note | 変更後 | `DELETE` のときは空 |
 | `ChangeText` | Note | 変更内容（人が読む） | |
 | `ItemStatus` | Choice | 明細の状態 | **索引**。`PENDING` `READY` `DONE` `REJECTED` `CANCELED`（既定 `PENDING`） |
-| `ItemNote` | Note | 差し戻し理由・作業メモ | **差し戻し・取り下げのときは必須**。UI が空を弾く |
+| `ItemNote` | Note | （旧）差し戻し理由 | **使わない**。理由は `PRM_Requests.DecisionNote` に持つ |
+| `GroupKind` | Text | 明細の種類 | `ORG1` / `ORG2` / `USER`。**表示と操作の単位** |
+| `GroupKey` | Text | 明細の対象 | 組織区分1 コード／組織区分2 コードを `;` で並べたもの／グローバルID |
 | `HandledAt` | DateTime | 状態変更日時 | |
 | `HandledBy` | Text | 状態変更者 | グローバルID |
 
@@ -274,8 +276,8 @@ ChangeText: 外部接続申請担当（東日本ブロック）
 | `PENDING` | 未対応 | 触らない |
 | `READY` | 確認中（内容 OK、作業前） | 触らない |
 | `DONE` | 完了 | **このとき `AfterJson` を当てる** |
-| `REJECTED` | 差し戻し | 触らない（`ItemNote` に理由） |
-| `CANCELED` | 取り下げ（申請者が引っ込めた） | 触らない（`ItemNote` に理由） |
+| `REJECTED` | 差し戻し | 触らない（理由は `DecisionNote`） |
+| `CANCELED` | 取り下げ（申請者が引っ込めた） | 触らない（理由は `DecisionNote`） |
 
 `DONE` にする処理は「`AfterJson` を `ParseJSON` して対象マスタに `Patch`」。
 明細が正・マスタが従なので、**同じ明細を当て直しても同じ結果**になる（べき等）。

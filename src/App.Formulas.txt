@@ -53,8 +53,8 @@ fInvUN = Coalesce(Sum(fInvU, Bad), 0);
 fEligUC = Concat(fEligU, ";" & Title, "") & ";";
 fO1ChgN = If(fO1E.MsExt <> fP1.MsExt, 1, 0) + If(fO1E.MsWlan <> fP1.MsWlan, 1, 0) + If(fO1E.MsCloud <> fP1.MsCloud, 1, 0);
 fChgAllN = fO1ChgN + fO2ChgN + CountRows(fChg);
-fQIOrg = Filter(colQI, K = "ORG1" || K = "ORG2");
-fQIUser = Filter(colQI, K = "USER" || K = "USERORG1" || K = "GRANT");
+fQIOrg = Filter(colQG, K = "ORG1" || K = "ORG2");
+fQIUser = Filter(colQG, K = "USER" || K = "USERORG1" || K = "GRANT");
 fQI = Sort(If(gblRTab = "org", fQIOrg, fQIUser), Seq);
 fQIN = CountRows(fQI);
 fQITodoN = CountRows(Filter(fQI, St = "PENDING" || St = "READY"));
@@ -64,5 +64,8 @@ fItReadyN = CountRows(Filter(colQI, St = "READY"));
 fItDoneN = CountRows(Filter(colQI, St = "DONE"));
 fItRejN = CountRows(Filter(colQI, St = "REJECTED"));
 fItCxlN = CountRows(Filter(colQI, St = "CANCELED"));
-fQIAllN = CountRows(colQI);
-fReqStat = If(fQIAllN = 0, "申請済み", If(fItDoneN + fItRejN + fItCxlN = fQIAllN, If(fItDoneN = fQIAllN, "完了", If(fItRejN = fQIAllN, "差し戻し", If(fItCxlN = fQIAllN, "取り下げ", "一部完了"))), If(fItDoneN + fItRejN + fItCxlN + fItReadyN > 0, "確認中", "申請済み")))
+fQIAllN = CountRows(colQG);
+fItAllN = CountRows(colQI);
+fQIRowH = Max(56, 20 * Coalesce(Max(colQG, Ln), 1) + 22);
+fNoteH = If(IsBlank(fReq.DecisionNote), 0, 70);
+fReqStat = If(fItAllN = 0, "申請済み", If(fItDoneN + fItRejN + fItCxlN = fItAllN, If(fItDoneN = fItAllN, "完了", If(fItRejN = fItAllN, "差し戻し", If(fItCxlN = fItAllN, "取り下げ", "一部完了"))), If(fItDoneN + fItRejN + fItCxlN + fItReadyN > 0, "確認中", "申請済み")))
