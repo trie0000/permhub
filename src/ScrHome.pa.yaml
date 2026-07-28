@@ -194,6 +194,8 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
+          Visible: =!gblRO
+
     - tabULHist:
         Control: ModernText@1.0.0
         Properties:
@@ -210,6 +212,8 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
+          Visible: =!gblRO
+
     - tabRule:
         Control: ModernText@1.0.0
         Properties:
