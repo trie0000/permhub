@@ -44,7 +44,7 @@ Screens:
           Align: ='TextCanvas.Align'.End
           Color: =RGBA(255, 255, 255, 1)
           Height: =52
-          OnSelect: =Set(gblTab, "hist"); Navigate(ScrHome)
+          OnSelect: =Set(gblRO, false); Set(gblROReq, ""); Set(gblHlKey, ""); Set(gblTab, "hist"); Navigate(ScrHome)
           Size: =13
           Text: ="申請履歴へ戻る"
           Width: =192
@@ -695,6 +695,7 @@ Screens:
                       Color: =RGBA(122, 118, 108, 1)
                       Size: =11
                       Text: =ThisItem.Seq
+                      OnSelect: =Set(gblRoK, ThisItem.K); Set(gblRoKey, ThisItem.EKey); Select(btnQiGo)
                       Width: =34
                       Wrap: =true
                       PaddingTop: =0
@@ -715,6 +716,7 @@ Screens:
                       RadiusBottomRight: =3
                       Size: =11
                       Text: =Switch(ThisItem.Op, "ADD", "追加", "UPDATE", "変更", "DELETE", "削除", ThisItem.Op)
+                      OnSelect: =Set(gblRoK, ThisItem.K); Set(gblRoKey, ThisItem.EKey); Select(btnQiGo)
                       Width: =56
                       Wrap: =true
                       PaddingTop: =0
@@ -732,6 +734,7 @@ Screens:
                       Color: =RGBA(74, 71, 64, 1)
                       Size: =11
                       Text: =Switch(ThisItem.K, "ORG1", "組織区分1", "ORG2", "組織区分2", "USER", "利用者", "USERORG1", "所属", "GRANT", "権限", ThisItem.K)
+                      OnSelect: =Set(gblRoK, ThisItem.K); Set(gblRoKey, ThisItem.EKey); Select(btnQiGo)
                       Width: =76
                       Wrap: =true
                       PaddingTop: =0
@@ -746,6 +749,7 @@ Screens:
                       Color: =RGBA(42, 42, 38, 1)
                       Size: =11
                       Text: =Trim(Substitute(ThisItem.EKey, ";", " "))
+                      OnSelect: =Set(gblRoK, ThisItem.K); Set(gblRoKey, ThisItem.EKey); Select(btnQiGo)
                       Width: =190
                       Wrap: =true
                       PaddingTop: =0
@@ -760,11 +764,35 @@ Screens:
                       Color: =RGBA(74, 71, 64, 1)
                       Size: =12
                       Text: =ThisItem.Chg
+                      OnSelect: =Set(gblRoK, ThisItem.K); Set(gblRoKey, ThisItem.EKey); Select(btnQiGo)
                       Wrap: =true
                       PaddingTop: =0
                       PaddingBottom: =0
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =1
+
+                - qiOpen:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Align: ='TextCanvas.Align'.Center
+                      Color: =RGBA(94, 111, 92, 1)
+                      Fill: =RGBA(228, 234, 226, 1)
+                      Height: =28
+                      OnSelect: =Set(gblRoK, ThisItem.K); Set(gblRoKey, ThisItem.EKey); Select(btnQiGo)
+                      RadiusTopLeft: =4
+                      RadiusTopRight: =4
+                      RadiusBottomLeft: =4
+                      RadiusBottomRight: =4
+                      Size: =11
+                      Text: ="開く"
+                      Width: =72
+                      Wrap: =true
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      VerticalAlign: =VerticalAlign.Middle
+                      FillPortions: =0
+                      AlignInContainer: =AlignInContainer.Center
+                      LayoutMinHeight: =0
 
             - qiRule:
                 Control: ModernText@1.0.0
@@ -988,4 +1016,13 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
-
+    - btnQiGo:
+        Control: ModernText@1.0.0
+        Properties:
+          Height: =1
+          OnSelect: =Set(gblRoMiss, If(gblRoK = "USER", IsBlank(LookUp(colUsersAll, Title = gblRoKey).Title), If(gblRoK = "ORG2", IsBlank(LookUp(colOrg2All, Title = gblRoKey).Title), false))); If(gblRoMiss, Notify("この対象はまだマスタにありません。申請が完了すると参照できます。", NotificationType.Information)); Set(gblRoP, Coalesce(LookUp(colQI, GKey = gblRoKey && K = "GRANT").EKey, LookUp(colQI, GKey = gblRoKey && K = "USERORG1").EKey, "")); If(!gblRoMiss, Set(gblRO, true); Set(gblROReq, gblReqNo); Set(gblModal, ""); If(gblRoK = "USER", Set(gblUserMode, "Edit"); Set(gblUserGid, gblRoKey); Set(gblUserOrg1, If(IsBlank(gblRoP), Coalesce(LookUp(colMemberAll, GlobalId = gblRoKey).Org1Code, fReq.Org1Code, gblOrg1), Index(Split(gblRoP, "#"), 2).Value)); Set(gblUserRole, If(CountRows(Split(gblRoP, "#")) >= 3, Index(Split(gblRoP, "#"), 3).Value, gblView)); Set(gblHlKey, ""); Navigate(ScrUser), Set(gblOrg1, If(gblRoK = "ORG1", gblRoKey, Coalesce(LookUp(colOrg2All, Title = gblRoKey).Org1Code, fReq.Org1Code, gblOrg1))); Set(gblTab, "org"); Set(gblPage, 0); Set(gblHlKey, If(gblRoK = "ORG2", gblRoKey, "")); Navigate(ScrHome)))
+          Text: =""
+          Visible: =false
+          Width: =1
+          X: =0
+          Y: =0
