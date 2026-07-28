@@ -640,6 +640,33 @@ mxC3.Text =
 原因は一貫して「**`AddColumns` / `ForAll` で作った派生列がギャラリーの子で解決しない**」。
 行を実レコードにすればこの制約に触れない。
 
+#### 可変行高はギャラリーの外（名前付き数式）で計算する
+
+行の高さを本文の行数に合わせて伸ばすとき、式を `TemplateSize` と
+テンプレート内の子（行コンテナーの `Height`、区切り線の `Y`）に**同じ内容で直書きすると
+必ずずれる**。テンプレートの中では列名がその行に束縛されるためで、
+
+```
+Max(56, 22 * Coalesce(Max(colBsk, CountRows(Split(Txt, Char(10)))), 1) + 20)
+```
+
+を書いても、テンプレート内の `Txt` は `Max()` の中でも `ThisItem.Txt` になる。
+結果、`TemplateSize` だけが全行の最大値、子は**その行の値**で計算し、
+1 行しかない行は「高いスロットの中に低い枠」になって区切り線が行の途中に出る。
+
+`App.Formulas` に名前付き数式を置き、`TemplateSize` も子も同じ名前を参照する。
+
+```
+fBskRowH = Max(56, 22 * Coalesce(Max(colBsk, CountRows(Split(Txt, Char(10)))), 1) + 20);
+```
+
+`galBsk.TemplateSize = fBskRowH` / `bskRow.Height = fBskRowH` /
+`bskRowRule.Y = fBskRowH - 1`。申請詳細の `fQIRowH` も同じ形。
+
+なお `App.Formulas` は**定義ごとに `;` で終える**。末尾に定義を追記するときに
+直前の行の `;` を忘れると、その定義自体が消えて
+「名前が無効です: 'fXxx' は認識されません」が全画面に出る。
+
 #### セルは AutoLayout で並べる（絶対 X は使わない）
 
 ギャラリー テンプレート内の子の `X` は**貼り付け時に黙って書き換えられる**。

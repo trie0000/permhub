@@ -3711,7 +3711,7 @@ Screens:
               Items: =colBsk
               ShowScrollbar: =true
               TemplatePadding: =0
-              TemplateSize: =Max(56, 22 * Coalesce(Max(colBsk, CountRows(Split(Txt, Char(10)))), 1) + 20)
+              TemplateSize: =fBskRowH
             Children:
             - bskRow:
                 Control: GroupContainer@1.5.0
@@ -3720,7 +3720,7 @@ Screens:
                   X: =0
                   Y: =0
                   Width: =Parent.TemplateWidth
-                  Height: =Max(56, 22 * Coalesce(Max(colBsk, CountRows(Split(Txt, Char(10)))), 1) + 20)
+                  Height: =fBskRowH
                   LayoutDirection: =LayoutDirection.Horizontal
                   LayoutAlignItems: =LayoutAlignItems.Stretch
                   PaddingLeft: =0
@@ -3800,7 +3800,7 @@ Screens:
                   Text: =""
                   Width: =Parent.TemplateWidth
                   X: =0
-                  Y: =Max(56, 22 * Coalesce(Max(colBsk, CountRows(Split(Txt, Char(10)))), 1) + 19)
+                  Y: =fBskRowH - 1
 
     - bskClose:
         Control: ModernText@1.0.0
