@@ -137,7 +137,31 @@ Studio の「…」メニューには「アプリのバージョン履歴」し�
   タブを閉じる（別ページへ移動する）と**すぐ**解放される。メッセージの 15 分は
   ブラウザが落ちるなどして解放を伝えられなかったときの上限で、正常に閉じたなら待たなくてよい
 
-### 毎回の更新
+### 毎回の更新（Windows / PowerShell）
+
+[setup/deploy.ps1](../setup/deploy.ps1) を叩くだけ。
+
+```powershell
+.\setup\deploy.ps1 -SolutionName permhub
+```
+
+やっていること: YAML の重複検査 → `pac solution export` → 中の `.msapp` を展開 →
+`src/*.pa.yaml` で画面を差し替え → `pac canvas pack` → zip 詰め直し →
+`pac solution import --publish-changes`。
+
+| オプション | |
+|---|---|
+| `-Screens ScrHome` | 差し替える画面を絞る（既定は ScrHome / ScrUser / ScrReq） |
+| `-NoImport` | zip を作るところで止める。中身を見たいとき |
+| `-SrcDir <path>` | 差し替え元を変える（既定は `src`） |
+
+**`Compress-Archive` は使っていない。** ソリューション zip は中身がルート直下に
+並んでいる必要があり、`[System.IO.Compression.ZipFile]::CreateFromDirectory` のほうが確実。
+
+**リポジトリの `.pa.yaml` はそのままコピーでよい。** `pac canvas unpack` が付ける
+先頭のコメントヘッダは無くても pack が通ることを確認済み。
+
+### 毎回の更新（手で叩く場合）
 
 ```bash
 export PATH="$PATH:$HOME/.dotnet/tools"

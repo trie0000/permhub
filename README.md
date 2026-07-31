@@ -110,7 +110,7 @@ Power Apps キャンバスアプリ + SharePoint リスト。**Premium ライセ
 | | |
 |---|---|
 | [docs/deploy.md](docs/deploy.md) | **別テナントへの導入手順（テナント依存の前提値の一覧つき）** |
-| [docs/cli.md](docs/cli.md) | Power Platform CLI で `.msapp` と YAML を往復する（検証結果） |
+| [docs/cli.md](docs/cli.md) | **`setup/deploy.ps1` でコマンドだけでアプリを更新する**（Power Platform CLI） |
 | [docs/spec-permission.md](docs/spec-permission.md) | 権限仕様（多段階承認の判定、権限6種、範囲、正副） |
 | [docs/data-model.md](docs/data-model.md) | リスト構造と履歴の設計 |
 | [docs/screens.md](docs/screens.md) | 画面設計 |
