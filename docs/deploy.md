@@ -9,34 +9,42 @@
 |---|---|---|
 | □ | 対象 SharePoint サイトの URL | 新規にサイトを作るなら先に作る |
 | □ | そのサイトの**所有者権限**があるアカウント | セットアップスクリプトが列を作る |
-| □ | 管理者にする Teams（Microsoft 365 グループ）の ID | そのチームの SharePoint サイトで `/_api/site?$select=GroupId` |
-| □ | **自分の Entra ID オブジェクト ID** | 手順 2 参照。**これが無いとアプリが空で開く** |
+| □ | 管理者にする Teams（Microsoft 365 グループ）の ID | `DO.adminMe` ならサイト自身のグループを使う。別にするなら手順 3 |
+| □ | **自分の Entra ID オブジェクト ID** | `DO.bindMe` が自動で取る。手で入れるなら手順 2。**これが無いとアプリが空で開く** |
 | □ | Power Apps 環境（モダンコントロールを ON にできること） | 環境の言語も確認する（手順 5） |
-| □ | 初期データを入れるか、サンプルで動かすか | 手順 1 の `SEED` |
+| □ | 初期データを入れるか、ダミーで動かすか | 手順 1 の `DO.seed` |
 
-## 1. SharePoint リストを作る
+## 1. SharePoint を用意する
 
-[setup/create-lists.js](../setup/create-lists.js) の先頭 2 行を書き換える。
+[setup/setup.js](../setup/setup.js) を 1 回貼って実行するだけ。
+**リスト 8 本・列・索引・一意制約・ダミーのマスタ・自分の紐付け・管理者グループ**が揃う。
+
+先頭の 2 か所を直す。
 
 ```js
 const SITE_URL = "https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE";
-const SEED = true; // サンプルデータを投入するか
+
+const DO = {
+  lists:    true,  // リスト 8 本・列・索引・一意制約
+  seed:     true,  // ダミーのマスタ（本番では false）
+  bindMe:   true,  // 今ログインしている自分を BIND_GID の利用者に紐づける
+  adminMe:  true,  // このサイトの Microsoft 365 グループを管理者グループにする
+  backfill: false, // 承認機能より前に作ったサイトの後始末
+};
 ```
 
-`SEED` は**本番テナントでは `false`**。`true` だと架空の組織・利用者・権限が入る
-（動作を見たいだけの検証テナントなら `true` のままでよい）。
+| 用途 | `DO` |
+|---|---|
+| **検証環境**（空サイトに一発で動くものを作る） | 既定のまま |
+| **本番**（実データを自分で入れる） | `seed` / `bindMe` / `adminMe` を `false`。手順 2・3 を手でやる |
+| **既存サイトの更新**（列だけ足す） | `lists` だけ `true` |
 
-対象サイトを開いた状態でブラウザのコンソールに貼り付けて実行する。
-`PRM_Org1` / `PRM_Org2` / `PRM_Users` / `PRM_UserOrg1` / `PRM_Grants` /
-`PRM_Requests` / `PRM_RequestItems` の 7 本が、索引と一意制約つきで作られる。
+対象サイトを開いた状態で DevTools のコンソールに全文を貼り付けて実行する
+（サイト所有者権限が必要）。**何度実行しても安全**で、既にあるリスト・列・選択肢・行は飛ばす。
 
-続けて [setup/migrate-approval.js](../setup/migrate-approval.js) を同じ手順で実行する。
-承認・作業管理の列と `PRM_Config`（8 本目）が足される。どちらも**再実行しても安全**
-（既にある列は飛ばす）。
+## 2. ログイン者の紐付け（`bindMe` を `false` にしたとき）
 
-## 2. 自分をマスタに登録する（省略できない）
-
-`App.OnStart` は**ログイン中のユーザを Entra ID のオブジェクト ID で `PRM_Users` から引く**。
+アプリは **ログイン中のユーザを Entra ID のオブジェクト ID で `PRM_Users` から引く**。
 
 ```
 Set(gblMyAdId, Office365ユーザー.MyProfileV2().id);
@@ -47,36 +55,38 @@ Set(gblMeGid, If(IsBlank(gblMe.Title), "1234567", gblMe.Title));
 引けないと `gblMeGid` が `"1234567"` に落ちる。新しいテナントにその ID の人は居ないので、
 **所属が 1 件も取れず、組織マスタもユーザマスタも空で開く**。
 
-### 2-1. 自分のオブジェクト ID を調べる
-
-アプリを作ったあと（手順 4 の途中）、空の画面にラベルを 1 つ置いて
-`Text: =Office365ユーザー.MyProfileV2().id` にし、プレビューで値を控える。
-Entra ID 管理センターのユーザー詳細「オブジェクト ID」でも同じ値が取れる。
-
-### 2-2. 最低限のデータを入れる
-
-`SEED = false` にした場合は、SharePoint のリスト画面から直接入れる。
+`bindMe: true` ならスクリプトが自動でやる（SharePoint のユーザープロファイル
+`msOnline-ObjectId` を読んで `PRM_Users` に書く）。手でやる場合は次を入れる。
 
 | リスト | 入れる行 |
 |---|---|
 | `PRM_Org1` | 組織区分1 を 1 件以上（`Title` = コード、`NameJa`、`SortOrder`、`IsActive` = はい、`MsExt`/`MsWlan`/`MsCloud`） |
 | `PRM_Org2` | その配下の組織区分2（`Title` = コード、`Org1Code`、`NameJa`、`SortOrder`、`ApExt`/`ApWlan`/`ApCloud`、`IsActive` = はい） |
-| `PRM_Users` | 自分（`Title` = グローバルID、`FullName`、**`AdObjectId` = 2-1 の値**、`IsActive` = はい） |
+| `PRM_Users` | 自分（`Title` = グローバルID、`FullName`、**`AdObjectId`**、`IsActive` = はい） |
 | `PRM_UserOrg1` | `Title` = `<グローバルID>#<組織区分1コード>`、`GlobalId`、`Org1Code`、`IsActive` = はい |
 
-`SEED = true` の場合もサンプルの利用者には `AdObjectId` が入っていないので、
-**自分の行（または任意の 1 行）に `AdObjectId` を手で埋める**。
+オブジェクト ID は Entra ID 管理センターのユーザー詳細「オブジェクト ID」、または
+対象サイトのコンソールで次を実行しても取れる。
 
-### 2-3. 本番に出す前にフォールバックを外す
+```js
+(await (await fetch("/_api/SP.UserProfiles.PeopleManager/GetMyProperties?$select=UserProfileProperties",
+  { headers: { Accept: "application/json;odata=nometadata" } })).json())
+  .UserProfileProperties.find(p => p.Key === "msOnline-ObjectId").Value
+```
+
+### 本番に出す前にフォールバックを外す
 
 `"1234567"` のままだと、マスタ未登録の人が**全員そのグローバルIDとして申請できてしまう**。
 本番テナントでは `App.OnStart` のこの箇所を空文字にして、
 未登録なら申請させない作りに変えること（現状は未実装。ヘッダには「未登録」と出るだけ）。
 
-## 3. 管理者グループを設定する
+## 3. 管理者グループ（`adminMe` を `false` にしたとき）
 
 `PRM_Config` の `AdminGroupId` 行の `Value` に、管理者にする Teams（Microsoft 365 グループ）の
-ID を入れる。
+ID を入れる。そのチームの SharePoint サイトで `/_api/site?$select=GroupId` を開けば分かる。
+
+`adminMe: true` なら、**スクリプトを流したサイト自身のグループ**が設定される
+（そのチームのメンバー全員が管理者になる）。別のグループにしたいときは手で入れ直す。
 
 空のままだと申請履歴・申請詳細に **確認中／完了／差し戻し が出ない**
 （＝誰も申請を完了にできず、マスタに反映されない）。申請と取り下げはできる。
@@ -168,7 +178,7 @@ Power Apps 側の共有に加えて、**SharePoint リスト側の権限が要�
 | グローバルID の書式 | 数字 7 桁 または 英字 1 桁 + 数字 6 桁 | `ScrUser` の `IsMatch(gblNewGid, "^([0-9]{7}\|[A-Z][0-9]{6})$")` |
 | 組織区分2 のコード採番 | `"A"` + 組織区分1 コードの下 2 桁 + 連番 2 桁（`B01` → `A0101`） | `App.Formulas` の `fO2NextCode` |
 | 多段階承認の 3 種 | 外部接続 / 無線LAN / クラウド | 列そのもの（`PRM_Org1.MsExt/MsWlan/MsCloud`、`PRM_Org2.ApExt/ApWlan/ApCloud`）。増減はスキーマ変更 |
-| 未登録者のフォールバック | `"1234567"` | `App.OnStart`（手順 2-3） |
+| 未登録者のフォールバック | `"1234567"` | `App.OnStart`（手順 2） |
 | 申請履歴の取得範囲 | 直近 365 日 | `App.OnStart` の `DateAdd(Now(), -365, TimeUnit.Days)` |
 
 ## 10. 引っかかりやすいところ

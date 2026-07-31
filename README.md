@@ -95,17 +95,14 @@ Power Apps キャンバスアプリ + SharePoint リスト。**Premium ライセ
 
 **別テナントに立てる手順は [docs/deploy.md](docs/deploy.md)。** 概略だけ:
 
-1. [setup/create-lists.js](setup/create-lists.js) の `SITE_URL` と `SEED` を直し、
-   対象サイトを開いた状態でコンソールに貼って実行（`PRM_*` 7 本）
-2. 続けて [setup/migrate-approval.js](setup/migrate-approval.js) を同じ手順で実行
-   （承認・作業管理の列と `PRM_Config`）。どちらも再実行して安全
-3. **`PRM_Users` の自分の行に `AdObjectId`（Entra ID のオブジェクト ID）を入れる。**
-   これが無いとログイン者を特定できず、アプリが空で開く
-4. `PRM_Config.AdminGroupId` に管理者の Teams グループ ID を入れる
-   （空だと確認中／完了／差し戻しが出ない）
-5. 空のキャンバスアプリを作り、モダンコントロールを ON、レイアウトをレスポンシブにして、
+1. [setup/setup.js](setup/setup.js) の `SITE_URL` を対象サイトに直し、
+   対象サイトを開いた状態でコンソールに貼って実行する。
+   **リスト 8 本・列・索引・ダミーのマスタ・自分の紐付け・管理者グループまで 1 回で入る**
+   （本番では `seed` / `bindMe` / `adminMe` を `false` にして実データを入れる）。
+   何度実行しても安全で、既存サイトに対しては足りない列だけが足される
+2. 空のキャンバスアプリを作り、モダンコントロールを ON、レイアウトをレスポンシブにして、
    `PRM_*` 8 本と「Office 365 ユーザー」「Office 365 グループ」を接続
-6. `App.Formulas` → `App.OnStart` → `ScrHome` → `ScrUser` → `ScrReq` の順に
+3. `App.Formulas` → `App.OnStart` → `ScrHome` → `ScrUser` → `ScrReq` の順に
    [src/](src/) の中身を貼る。`App.StartScreen` を `ScrHome` にして `Screen1` を削除
 
 ## ドキュメント
