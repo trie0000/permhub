@@ -98,58 +98,78 @@ python3 setup/check-yaml.py
 Studio の「…」メニューには「アプリのバージョン履歴」しか無く、**Studio 側から
 ローカルの `.msapp` を開く導線は無い**。取り込みはアプリ一覧から行う。
 
-| | 今の方式 | `.msapp` 方式 |
-|---|---|---|
-| 操作 | クリップボードにコピー → 画面を削除 → 貼り付け、を **3 画面ぶん** | ファイルを **1 つ選ぶ** |
-| おおよその操作数 | 12〜15 | 3 |
+| | 貼り付け方式 | `.msapp` 取り込み | ソリューション経由 |
+|---|---|---|---|
+| 操作 | コピー → 画面削除 → 貼り付け ×3 画面 | ファイルを 1 つ選ぶ | **コマンドのみ** |
+| 操作数 | 12〜15 | 3 | 0 |
+| 結果 | 既存アプリを更新 | **新規アプリになる** | **既存アプリを更新** |
+| 向く用途 | — | 別テナントへの初回導入 | **反復開発** |
 
 > **未確認**: 取り込みが既存アプリの更新になるのか、新規アプリとして作られるのかは
 > 未検証（ブラウザ自動化からローカルファイルを上げられなかったため）。
 > 新規アプリになる場合、反復開発には向かず、別テナントへの初回導入向けになる。
 
-## ソリューション経路（検証結果・未完）
+## ソリューション経路で既存アプリを更新する（検証済み）
 
-完全自動化（`pac solution import` で既存アプリを更新）を試した。**ソリューションに Premium は要らない。**
-ただし途中で 2 回つまずいたので、その内容を残す。
+**YAML を直してコマンドだけで既存アプリを更新できる。** 貼り付けも `.msapp` の取り込みも要らない。
 
-### アプリ登録は不要
+### 前提
 
-`pac auth create` の対話ログイン（`Type: User`）のまま `pac canvas download` も
-`pac solution list` も通る。**Entra ID のアプリ登録・サービスプリンシパルが要るのは
-GitHub Actions などで無人実行するときだけ。**
+- **Premium は不要。Entra ID のアプリ登録・サービスプリンシパルも不要。**
+  `pac auth create` の対話ログイン（`Type: User`）で足りる。
+  アプリ登録が要るのは GitHub Actions などで無人実行するときだけ
+- Dataverse のある環境
+- アプリがソリューションに入っていること（下の初回準備）
 
-### ソリューションは普通に作れる
+### 初回だけの準備
 
-ポータルの「新しいソリューション」で作れる。公開元は既定の `CDS Default Publisher` でよい。
+1. ポータルの **ソリューション →「新しいソリューション」**。公開元は既定の
+   `CDS Default Publisher` でよい
+2. **「既存を追加」→「アプリ」→「キャンバス アプリ」→「Dataverse の外部」**タブ
+   → アプリを選んで「追加」
 
-### つまずき① 作りたてのアプリは追加候補に出ない
+ここで 2 つ引っかかる。
 
-保存した直後のアプリは「既存を追加 → アプリ → キャンバス アプリ → Dataverse の外部」の
-一覧に**出てこない**（検索しても出ない）。**22 分後には出た。** インデックスの反映待ちなので、
-慌てて別の原因を疑わないこと。
+- **保存した直後のアプリは一覧に出ない。** 検索しても出てこない。
+  インデックスの反映待ちで、**20 分ほどで出る**
+- **そのアプリを Studio で開いていると追加できない。**
+  `'<アプリ名>' is locked by user ... please wait at least 15 minutes` と出る。
+  タブを閉じる（別ページへ移動する）と**すぐ**解放される。メッセージの 15 分は
+  ブラウザが落ちるなどして解放を伝えられなかったときの上限で、正常に閉じたなら待たなくてよい
 
-### つまずき② Studio で開いていると追加できない
+### 毎回の更新
 
-一覧から選んで「追加」を押すと、こう出る。
+```bash
+export PATH="$PATH:$HOME/.dotnet/tools"
+export DOTNET_ROOT="/opt/homebrew/opt/dotnet/libexec"
 
+# 1. 取り出す
+pac solution export --path ./sol.zip --name <ソリューションの一意名> --overwrite
+mkdir solx && cd solx && unzip -q ../sol.zip
+
+# 2. 中の .msapp を YAML に開いて、画面を差し替える
+M=CanvasApps/<接頭辞>_<アプリ名>_<id>_DocumentUri.msapp
+pac canvas unpack --msapp "$M" --sources s --layout SourceCode
+cp ~/mytools/permhub/src/ScrHome.pa.yaml s/Src/ScrHome.pa.yaml   # ヘッダ行の扱いに注意
+pac canvas pack --sources s --msapp "$M" --layout SourceCode --overwrite
+rm -rf s
+
+# 3. 詰め直して戻す
+zip -q -r -X ../sol-mod.zip . && cd ..
+pac solution import --path ./sol-mod.zip --force-overwrite --publish-changes
 ```
-'<アプリ名>' is locked by user <ユーザー>. If all authoring sessions for this app
-have recently been closed, please wait at least 15 minutes before retrying the operation.
-```
 
-**そのアプリを Studio で開いているタブがあると編集ロックがかかる。** タブを閉じて（または
-別ページへ移動して）から、しばらく待って再試行する。
+`--publish-changes` まで付ければ**公開まで一度に済む**。
 
-### 「特典が不十分」のバナーについて
+> **`Cannot start another [Import] because there is a previous [Import] running`**
+> が出ることがある。直前のソリューション操作が裏で走っているだけなので、
+> 少し置いて再実行すれば通る（今回は 3 回目までこれが出て、4 回目で通った）。
 
-ソリューション画面には
-`この環境への現在の特典が不十分であるため、1 つ以上のコマンドを使用できません`
-が常時出ているが、**キャンバスアプリの追加はこれに阻まれていない**
-（アプリは選択できて、失敗の理由はロックだった）。バナーが灰色にしているのは別のコマンド。
+### 検証したこと
 
-> **ここまでで未完。** ロック解除待ちのため `pac solution export` → 差し替え →
-> `pac solution import` の一周は通していない。**「Premium が要る」は誤り**なので、
-> 時間を置いて再試行する価値がある。
+`s/Src/ScrHome.pa.yaml` のタイトルを `"権限申請"` → `"権限申請 [solution経由]"` に変えて
+上の 3 手順を実行したところ、**Studio で開いたアプリのヘッダが `権限申請 [solution経由]` に
+変わっていた。** 手作業は一切なし。
 
 ## `.msapp` の中身
 
