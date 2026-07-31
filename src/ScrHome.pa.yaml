@@ -729,6 +729,7 @@ Screens:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
         Properties:
+          Fill: =RGBA(0, 0, 0, 0)
           Height: =Parent.Height - 606
           LayoutAlignItems: =LayoutAlignItems.Stretch
           LayoutOverflowY: =LayoutOverflow.Scroll
@@ -746,6 +747,7 @@ Screens:
             Control: Gallery@2.15.0
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
+              Fill: =RGBA(0, 0, 0, 0)
               FillPortions: =0
               Height: =CountRows(fO2E) * 44
               LayoutMinHeight: =0
@@ -1606,6 +1608,7 @@ Screens:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
         Properties:
+          Fill: =RGBA(0, 0, 0, 0)
           Height: =24
           LayoutDirection: =LayoutDirection.Horizontal
           LayoutAlignItems: =LayoutAlignItems.Stretch
@@ -1755,6 +1758,7 @@ Screens:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
         Properties:
+          Fill: =RGBA(0, 0, 0, 0)
           Height: =Parent.Height - 318
           LayoutAlignItems: =LayoutAlignItems.Stretch
           LayoutDirection: =LayoutDirection.Vertical
@@ -1771,6 +1775,7 @@ Screens:
             Control: Gallery@2.15.0
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
+              Fill: =RGBA(0, 0, 0, 0)
               FillPortions: =1
               Items: =fHist
               ShowScrollbar: =true
@@ -2128,6 +2133,7 @@ Screens:
     - cardMx:
         Control: ModernText@1.0.0
         Properties:
+          Fill: =RGBA(250, 250, 247, 1)
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: '=RGBA(250, 250, 247, 1)
@@ -2857,6 +2863,7 @@ Screens:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
         Properties:
+          Fill: =RGBA(0, 0, 0, 0)
           Height: =Parent.Height - 482 - If(fInvN > 0, 26, 0)
           LayoutAlignItems: =LayoutAlignItems.Stretch
           LayoutOverflowY: =LayoutOverflow.Scroll
@@ -2874,6 +2881,7 @@ Screens:
             Control: Gallery@2.15.0
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
+              Fill: =RGBA(0, 0, 0, 0)
               FillPortions: =0
               Height: =CountRows(fO2Live) * 46
               LayoutMinHeight: =0
@@ -3707,6 +3715,7 @@ Screens:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
         Properties:
+          Fill: =RGBA(0, 0, 0, 0)
           Height: =352
           LayoutAlignItems: =LayoutAlignItems.Stretch
           LayoutDirection: =LayoutDirection.Vertical
@@ -3723,6 +3732,7 @@ Screens:
             Control: Gallery@2.15.0
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
+              Fill: =RGBA(0, 0, 0, 0)
               FillPortions: =1
               Items: =colBsk
               ShowScrollbar: =true

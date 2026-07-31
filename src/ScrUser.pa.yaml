@@ -358,6 +358,7 @@ Screens:
         Control: Gallery@2.15.0
         Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
         Properties:
+          Fill: =RGBA(0, 0, 0, 0)
           Visible: =gblUserMode <> "New"
           Height: =40
           Items: '=Filter(colOrg1, Title in Filter(colMemberAll, GlobalId = gblUserGid, IsActive = true).Org1Code)
@@ -749,6 +750,7 @@ Screens:
         Control: Gallery@2.15.0
         Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
         Properties:
+          Fill: =RGBA(0, 0, 0, 0)
           Height: =126
           Items: =fAllU
           ShowScrollbar: =true

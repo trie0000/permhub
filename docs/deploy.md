@@ -307,9 +307,8 @@ LC_CTYPE=UTF-8 pbpaste | wc -c
 ```
 
 > `setup.js` は SharePoint のユーザープロファイル `msOnline-ObjectId` を使っている。
-> これが `MyProfileV2().id` と同じ値になることは**まだ実機で突き合わせていない**。
-> 食い違っていたらこのラベルで分かるので、その場合は表示された左側の値を
-> `PRM_Users.AdObjectId` に手で入れる。
+> これが `Office365ユーザー.MyProfileV2().id` と一致することは**実機で確認済み**
+> （`bindMe` で書き込んだあと、ヘッダに氏名とグローバルIDが出ることで確かめた）。
 
 ## 8. 共有と SharePoint の権限
 

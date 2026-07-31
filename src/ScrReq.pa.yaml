@@ -651,6 +651,7 @@ Screens:
         Control: GroupContainer@1.5.0
         Variant: AutoLayout
         Properties:
+          Fill: =RGBA(0, 0, 0, 0)
           Height: =Parent.Height - 396 - fNoteH
           LayoutAlignItems: =LayoutAlignItems.Stretch
           LayoutDirection: =LayoutDirection.Vertical
@@ -666,6 +667,7 @@ Screens:
             Control: Gallery@2.15.0
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
+              Fill: =RGBA(0, 0, 0, 0)
               FillPortions: =1
               Items: =fQI
               ShowScrollbar: =true
