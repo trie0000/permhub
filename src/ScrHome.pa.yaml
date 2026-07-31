@@ -2133,12 +2133,9 @@ Screens:
     - cardMx:
         Control: ModernText@1.0.0
         Properties:
-          Fill: =RGBA(250, 250, 247, 1)
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
-          Fill: '=RGBA(250, 250, 247, 1)
-
-            '
+          Fill: =RGBA(250, 250, 247, 1)
           Height: =Parent.Height - 320
           RadiusTopLeft: =8
           RadiusTopRight: =8

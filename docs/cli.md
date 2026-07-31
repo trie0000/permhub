@@ -63,6 +63,31 @@ pac canvas pack --sources out --msapp new.msapp --layout SourceCode --overwrite
 > pack は「Studio で一度開いて検証しろ」と警告を出す。YAML から組み立てた `.msapp` は
 > Studio で開くまで検証されていない、という意味。
 
+## 組み立てる前に検査する
+
+**`pac canvas pack` は壊れた YAML を素通しする。** パックは成功して、取り込みで
+初めて `PA1001 ... Duplicate name 'Fill'` のように落ちる。`pac canvas validate` は廃止済み。
+Python の `yaml.safe_load` も既定では重複キーを許す（後勝ち）ので気づけない。
+
+そこで自前で見る。
+
+```bash
+python3 setup/check-yaml.py
+```
+
+同じ `Properties` ブロックに同名のプロパティが 2 つあると、行番号を出して exit 1 になる。
+
+> プロパティの値が複数行のクォート形式で書かれていることがある。
+>
+> ```yaml
+>           Fill: '=RGBA(250, 250, 247, 1)
+>
+>             '
+> ```
+>
+> `Fill: =` を探す検査だとこれを見落とし、「Fill が無い」と誤判定して二重に足してしまう。
+> **キー名だけで突き合わせること。**
+
 ## 戻す（`.msapp` → テナント）— ここだけ手作業
 
 `pac canvas` にアップロードコマンドは無い。UI から入れる。
