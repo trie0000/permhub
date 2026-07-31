@@ -93,46 +93,26 @@ Power Apps キャンバスアプリ + SharePoint リスト。**Premium ライセ
 
 ## セットアップ
 
-### 1. SharePoint リストを作る
+**別テナントに立てる手順は [docs/deploy.md](docs/deploy.md)。** 概略だけ:
 
-[setup/create-lists.js](setup/create-lists.js) の `SITE_URL` を書き換え、
-対象サイトを開いた状態でブラウザのコンソールに貼り付けて実行する（サイト所有者権限が必要）。
-
-`PRM_Org1` / `PRM_Org2` / `PRM_Users` / `PRM_UserOrg1` / `PRM_Grants` /
-`PRM_Requests` / `PRM_RequestItems` の 7 本が作られ、索引・一意制約・サンプルデータまで入る。
-
-続けて [setup/migrate-approval.js](setup/migrate-approval.js) を同じ手順で実行する。
-承認・作業管理に使う列（`PRM_RequestItems.ItemStatus` 等）と `PRM_Config` が追加される。
-再実行しても安全（既にある列は飛ばす）。
-
-### 1.5. 管理者グループを設定する
-
-`PRM_Config` の `AdminGroupId` に、**管理者にしたい Teams（Microsoft 365 グループ）の ID** を入れる。
-ID はそのチームの SharePoint サイトで `/_api/site?$select=GroupId` を開けば分かる。
-
-空のままなら申請履歴に管理者向けの操作が出ない（申請と取り下げだけできる状態）。
-
-### 2. アプリを作る
-
-1. 空のキャンバスアプリを作成
-2. **設定 → 更新 → 新規 → 「モダン コントロールとモダン テーマ」を ON**
-3. **設定 → 表示 → アプリ レイアウトを「レスポンシブ」**
-4. データの追加で `PRM_*` 8 本（`PRM_Config` を含む）と
-   「Office 365 ユーザー」「**Office 365 グループ**」を接続
-5. `App.OnStart` に [src/App.OnStart.txt](src/App.OnStart.txt) を貼る
-6. `App.Formulas` に [src/App.Formulas.txt](src/App.Formulas.txt) を貼る（**画面より先に**。
-   画面はここで定義した名前付き数式を参照している）
-7. ツリービューで画面を右クリック →「貼り付け」で
-   [src/ScrHome.pa.yaml](src/ScrHome.pa.yaml) →
-   [src/ScrUser.pa.yaml](src/ScrUser.pa.yaml) →
-   [src/ScrReq.pa.yaml](src/ScrReq.pa.yaml) の順に流し込む
-8. `App.StartScreen` に `ScrHome` を設定
-9. 空の `Screen1` を削除して保存
+1. [setup/create-lists.js](setup/create-lists.js) の `SITE_URL` と `SEED` を直し、
+   対象サイトを開いた状態でコンソールに貼って実行（`PRM_*` 7 本）
+2. 続けて [setup/migrate-approval.js](setup/migrate-approval.js) を同じ手順で実行
+   （承認・作業管理の列と `PRM_Config`）。どちらも再実行して安全
+3. **`PRM_Users` の自分の行に `AdObjectId`（Entra ID のオブジェクト ID）を入れる。**
+   これが無いとログイン者を特定できず、アプリが空で開く
+4. `PRM_Config.AdminGroupId` に管理者の Teams グループ ID を入れる
+   （空だと確認中／完了／差し戻しが出ない）
+5. 空のキャンバスアプリを作り、モダンコントロールを ON、レイアウトをレスポンシブにして、
+   `PRM_*` 8 本と「Office 365 ユーザー」「Office 365 グループ」を接続
+6. `App.Formulas` → `App.OnStart` → `ScrHome` → `ScrUser` → `ScrReq` の順に
+   [src/](src/) の中身を貼る。`App.StartScreen` を `ScrHome` にして `Screen1` を削除
 
 ## ドキュメント
 
 | | |
 |---|---|
+| [docs/deploy.md](docs/deploy.md) | **別テナントへの導入手順（テナント依存の前提値の一覧つき）** |
 | [docs/spec-permission.md](docs/spec-permission.md) | 権限仕様（多段階承認の判定、権限6種、範囲、正副） |
 | [docs/data-model.md](docs/data-model.md) | リスト構造と履歴の設計 |
 | [docs/screens.md](docs/screens.md) | 画面設計 |
