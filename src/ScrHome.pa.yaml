@@ -3866,6 +3866,36 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
+    - emptyCard:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(247, 236, 214, 1)
+          Height: =232
+          RadiusTopLeft: =6
+          RadiusTopRight: =6
+          RadiusBottomLeft: =6
+          RadiusBottomRight: =6
+          Text: =""
+          Visible: =(gblTab = "org" || gblTab = "user") && IsEmpty(colMyOrg1)
+          Width: =Parent.Width - 56
+          X: =28
+          Y: =182
+    - emptyMsg:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 96, 40, 1)
+          Height: =200
+          Size: =13
+          Text: =If(IsEmpty(colOrg1), "データがまだ読み込まれていません。" & Char(10) & Char(10) & "・ツリービューの App を右クリック →「OnStart を実行します」を押す" & Char(10) & "　（貼り替えても、プレビューでも自動では走りません）" & Char(10) & "・それでも空なら「データの追加」で PRM_ 8 本が繋がっているか確認する", "あなたに所属する組織区分1 がありません。ログイン者は " & gblMeGid & " として扱われています。" & Char(10) & Char(10) & "・PRM_Users にこのグローバルIDの行があるか" & Char(10) & "・その行の AdObjectId が自分の Entra ID オブジェクトID と一致しているか" & Char(10) & "　（グローバルID は Entra ID には無いので、この対応付けだけが手がかりです）" & Char(10) & "・PRM_UserOrg1 に「グローバルID#組織区分1コード」の行があり、IsActive が「はい」か" & Char(10) & Char(10) & "直したら App を右クリック →「OnStart を実行します」で読み直します。")
+          Visible: =(gblTab = "org" || gblTab = "user") && IsEmpty(colMyOrg1)
+          Width: =Parent.Width - 104
+          X: =52
+          Y: =198
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Top
     - roBlock:
         Control: ModernText@1.0.0
         Properties:
