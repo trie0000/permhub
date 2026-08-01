@@ -165,8 +165,8 @@ Studio の「…」メニューには「アプリのバージョン履歴」し�
 .\setup\deploy.ps1 -SolutionName permhub
 ```
 
-やっていること: YAML の重複検査 → `pac solution export` → 中の `.msapp` を展開 →
-`src/*.pa.yaml` で画面を差し替え → `pac canvas pack` → zip 詰め直し →
+やっていること: YAML の重複検査 → `pac solution export` → **zip の中の `.msapp` だけを
+その場で差し替え**（`unpack` → `src/*.pa.yaml` で画面を差し替え → `pack`）→
 `pac solution import --publish-changes`。
 
 | オプション | |
@@ -189,8 +189,34 @@ Error: The given solution unique name (xxx) is not valid
 （→ [deploy.md](deploy.md) 手順 9）か、**別の環境に繋がっている**。
 スクリプトは実行の最初に `pac auth who` で接続先を表示する。
 
-**`Compress-Archive` は使っていない。** ソリューション zip は中身がルート直下に
-並んでいる必要があり、`[System.IO.Compression.ZipFile]::CreateFromDirectory` のほうが確実。
+**ソリューション zip は解凍して詰め直さない。** Windows PowerShell 5.1 は .NET Framework で
+動き、そこの `ZipFile.CreateFromDirectory` は **zip 内のパス区切りに OS の区切り文字**を使う。
+Windows だとエントリ名が `CanvasApps\..._DocumentUri.msapp`（円記号）になり、zip の仕様も
+`customizations.xml` の参照も `/` なので、取り込み側がアプリ本体を見つけられず
+
+```
+Error: CanvasApp import: FAILURE:
+The solution specified an expected assets file but that file was missing or invalid.
+```
+
+で落ちる。**macOS / Linux の PowerShell 7 は `/` なので同じスクリプトでも通ってしまい、
+手元では再現しない。** `Compress-Archive` も同様に使えない。
+
+`Expand-Archive` 側も怪しい。ソリューション zip には
+`[Content_Types].xml`（名前に `[ ]` を含む＝ PowerShell ではワイルドカード）と
+`*_BackgroundImageUri`（拡張子が無い）が入っている。
+
+`deploy.ps1` は**解凍せず、zip を開いたまま `.msapp` のエントリだけ入れ替える**。
+
+```powershell
+$zip = [System.IO.Compression.ZipFile]::Open($path, 'Update')
+$entry = $zip.Entries | Where-Object { $_.FullName -like 'CanvasApps/*.msapp' }
+$name = $entry.FullName          # 元の名前をそのまま使う（区切り文字が変わらない）
+$entry.Delete()
+$new = $zip.CreateEntry($name, 'Optimal')
+```
+
+差し替えた後に**元の zip とエントリ名を突き合わせ、落ちたファイルがあれば警告を出す**。
 
 **`deploy.ps1` は UTF-8 BOM 付きで保存してある。消さないこと。**
 Windows PowerShell 5.1 は **BOM 無しの `.ps1` を OS の ANSI コードページ**

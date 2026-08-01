@@ -454,6 +454,16 @@ CanvasApps/cr875_permhubsolutiontest_09c62_DocumentUri.msapp
 `src/*.pa.yaml` を直してこれを叩けば、アプリが更新されて公開まで済む。
 詳細と手で叩く版は [docs/cli.md](cli.md)。
 
+### 9-5. `deploy.ps1` でつまずくところ
+
+| 出るもの | 意味 |
+|---|---|
+| `pac が見つからない` | .NET SDK **10** を入れてから `dotnet tool install --global Microsoft.PowerApps.CLI.Tool`。SDK 9 以下だと `DotnetToolSettings.xml がパッケージで見つかりませんでした` になる |
+| `The given solution unique name (xxx) is not valid` | 一意名の取り違えか、そのテナントで 9-2 / 9-3 をまだやっていない。スクリプトがその場で一覧を出す |
+| 日本語が化けて `式またはステートメントのトークン ... を使用できません` が大量に出る | `deploy.ps1` の **UTF-8 BOM が外れた**。Windows PowerShell 5.1 は BOM 無しの `.ps1` を CP932 として読む。リポジトリから取り直す |
+| `CanvasApp import: FAILURE: The solution specified an expected assets file but that file was missing or invalid` | **古い `deploy.ps1`**。zip を解凍して詰め直していた版は、Windows だと zip 内のパス区切りが円記号になり取り込みが本体を見つけられない。取り直す（→ [cli.md](cli.md)） |
+| `Cannot start another [Import] because there is a previous [Import] running` | 直前の操作が裏で走っているだけ。スクリプトが 40 秒おきに 6 回まで自動で待ち直す |
+
 ## 10. テナントに合わせて直す前提値
 
 そのままでは合わない可能性が高い箇所。**手順 6 の前にソースを直す**方が、

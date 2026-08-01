@@ -143,7 +143,6 @@ Write-Host '  重複なし'
 $Work = Join-Path ([System.IO.Path]::GetTempPath()) "permhub-deploy-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
 New-Item -ItemType Directory -Path $Work -Force | Out-Null
 $zipIn = Join-Path $Work 'sol.zip'
-$ext = Join-Path $Work 'sol'
 $zipOut = Join-Path $Work 'sol-mod.zip'
 
 # ---- 3. エクスポート -------------------------------------------------------
@@ -165,7 +164,7 @@ if ($LASTEXITCODE -ne 0) {
     上に並んだ名前（表示名ではない）を -SolutionName に渡す。
 
 [2] このテナントではまだ準備していない
-    上に permhub が無いならこれ。そのテナントで
+    上に目的の名前が無いならこれ。そのテナントで
     アプリを作る（docs/deploy.md 手順 1〜6）→ ソリューションに入れる（手順 9）
     を先にやる。ソリューションは export/import でテナント間を運べない。
 
@@ -176,47 +175,89 @@ if ($LASTEXITCODE -ne 0) {
 '@
 }
 
-Expand-Archive -Path $zipIn -DestinationPath $ext -Force
-
-# ファイル名の接頭辞（cr875_ など）は公開元によって変わるので名前では拾わない
-$msappAll = @(Get-ChildItem -Path (Join-Path $ext 'CanvasApps') -Filter '*.msapp' -File)
-if ($msappAll.Count -eq 0) {
-  Stop-Here 'ソリューションにキャンバスアプリが入っていない。docs/deploy.md 手順 9-2 を先にやる。'
-}
-if ($msappAll.Count -gt 1) {
-  # 取り違えると別のアプリを壊すので、黙って 1 つ目を選ばない
-  Write-Warn 'このソリューションにキャンバスアプリが複数ある:'
-  foreach ($m in $msappAll) { Write-Host "      $($m.Name)" }
-  Stop-Here 'どれに反映するか決められない。ソリューションはアプリ 1 つにするか、対象だけを別ソリューションに分ける。'
-}
-$msapp = $msappAll[0]
-Write-Host "  対象: $($msapp.Name)"
-
-# ---- 4. 画面を差し替える ---------------------------------------------------
-Write-Step '画面を差し替え'
-$srcOut = Join-Path $Work 'unpacked'
-pac canvas unpack --msapp $msapp.FullName --sources $srcOut --layout SourceCode
-if ($LASTEXITCODE -ne 0) { throw '.msapp の展開に失敗した。' }
-
-foreach ($s in $Screens) {
-  $from = Join-Path $SrcDir "$s.pa.yaml"
-  $to = Join-Path $srcOut "Src\$s.pa.yaml"
-  if (-not (Test-Path $to)) { Write-Warn "$s はアプリ側に無い。新しい画面として入る" }
-  Copy-Item $from $to -Force
-  Write-Host "  $s.pa.yaml"
-}
-
-pac canvas pack --sources $srcOut --msapp $msapp.FullName --layout SourceCode --overwrite
-if ($LASTEXITCODE -ne 0) { throw '.msapp の組み立てに失敗した。' }
-
-# ---- 5. 詰め直す -----------------------------------------------------------
-# Compress-Archive は使わない。ソリューション zip は中身がルート直下に並んでいる
-# 必要があり、CreateFromDirectory のほうが確実。
-Write-Step 'zip を詰め直す'
+# ---- 4. zip の中の .msapp だけを差し替える ---------------------------------
+# 解凍して詰め直してはいけない。Windows PowerShell 5.1 は .NET Framework で動き、
+# そこの ZipFile.CreateFromDirectory は zip 内のパス区切りに OS の区切り文字を使う。
+# つまり Windows では
+#     CanvasApps\..._DocumentUri.msapp     ← 円記号
+# というエントリ名になる。zip の仕様も customizations.xml の参照も / なので、
+# 取り込み側はアプリ本体を見つけられず
+#     CanvasApp import: FAILURE:
+#     The solution specified an expected assets file but that file was missing or invalid
+# で落ちる。macOS/Linux の PowerShell 7 は / なので同じスクリプトでも通ってしまい、
+# 手元では再現しない。加えて Expand-Archive は
+#     [Content_Types].xml      … 名前に [ ] を含む（PowerShell ではワイルドカード）
+#     *_BackgroundImageUri     … 拡張子が無い
+# の扱いも怪しい。
+#
+# そこで解凍せず、zip を開いたまま .msapp のエントリだけ入れ替える。エントリ名は
+# 元のものをそのまま使い回すので区切り文字は変わらず、他のファイルには一切触らない。
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-if (Test-Path $zipOut) { Remove-Item $zipOut -Force }
-[System.IO.Compression.ZipFile]::CreateFromDirectory(
-  $ext, $zipOut, [System.IO.Compression.CompressionLevel]::Optimal, $false)
+Copy-Item $zipIn $zipOut -Force
+
+$zip = [System.IO.Compression.ZipFile]::Open($zipOut, [System.IO.Compression.ZipArchiveMode]::Update)
+try {
+  $entries = @($zip.Entries | Where-Object { $_.FullName -like 'CanvasApps/*.msapp' })
+  if ($entries.Count -eq 0) {
+    $zip.Dispose()
+    Stop-Here 'ソリューションにキャンバスアプリが入っていない。docs/deploy.md 手順 9-2 を先にやる。'
+  }
+  if ($entries.Count -gt 1) {
+    # 取り違えると別のアプリを壊すので、黙って 1 つ目を選ばない
+    Write-Warn 'このソリューションにキャンバスアプリが複数ある:'
+    foreach ($e in $entries) { Write-Host "      $($e.Name)" }
+    $zip.Dispose()
+    Stop-Here 'どれに反映するか決められない。ソリューションはアプリ 1 つにする。'
+  }
+  $entry = $entries[0]
+  $entryName = $entry.FullName
+  Write-Host "  対象: $($entry.Name)"
+
+  $msappPath = Join-Path $Work 'app.msapp'
+  [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $msappPath, $true)
+
+  Write-Step '画面を差し替え'
+  $srcOut = Join-Path $Work 'unpacked'
+  pac canvas unpack --msapp $msappPath --sources $srcOut --layout SourceCode
+  if ($LASTEXITCODE -ne 0) { $zip.Dispose(); Stop-Here '.msapp の展開に失敗した。' }
+
+  foreach ($s in $Screens) {
+    $from = Join-Path $SrcDir "$s.pa.yaml"
+    $to = Join-Path (Join-Path $srcOut 'Src') "$s.pa.yaml"
+    if (-not (Test-Path $to)) { Write-Warn "$s はアプリ側に無い。新しい画面として入る" }
+    Copy-Item $from $to -Force
+    Write-Host "  $s.pa.yaml"
+  }
+
+  pac canvas pack --sources $srcOut --msapp $msappPath --layout SourceCode --overwrite
+  if ($LASTEXITCODE -ne 0) { $zip.Dispose(); Stop-Here '.msapp の組み立てに失敗した。' }
+
+  Write-Step 'zip の .msapp を差し替え'
+  $entry.Delete()
+  $newEntry = $zip.CreateEntry($entryName, [System.IO.Compression.CompressionLevel]::Optimal)
+  $out = $newEntry.Open()
+  try {
+    $bytes = [System.IO.File]::ReadAllBytes($msappPath)
+    $out.Write($bytes, 0, $bytes.Length)
+  } finally { $out.Dispose() }
+}
+finally { $zip.Dispose() }
+
+# 差し替え以外のファイルが失われていないか確かめる。落ちていると取り込みが
+# assets file missing で失敗するので、ここで気づけるようにする
+$before = [System.IO.Compression.ZipFile]::OpenRead($zipIn)
+$after = [System.IO.Compression.ZipFile]::OpenRead($zipOut)
+try {
+  $b = @($before.Entries | ForEach-Object { $_.FullName })
+  $a = @($after.Entries | ForEach-Object { $_.FullName })
+  $lost = @($b | Where-Object { $a -notcontains $_ })
+  if ($lost.Count -gt 0) {
+    Write-Warn '詰め直しでファイルが落ちた:'
+    foreach ($l in $lost) { Write-Host "      $l" }
+  } else {
+    Write-Host "  同梱ファイル $($a.Count) 件（欠落なし）"
+  }
+} finally { $before.Dispose(); $after.Dispose() }
 
 if ($NoImport) {
   Write-Step '完了（import はしていない）'
@@ -224,7 +265,7 @@ if ($NoImport) {
   return
 }
 
-# ---- 6. インポート ---------------------------------------------------------
+# ---- 5. インポート ---------------------------------------------------------
 # 直前のソリューション操作が裏で走っていると
 # `Cannot start another [Import] because there is a previous [Import] running`
 # で弾かれる。少し置いて数回試す。
