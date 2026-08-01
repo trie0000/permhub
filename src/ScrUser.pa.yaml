@@ -2,7 +2,7 @@ Screens:
   ScrUser:
     Properties:
       Fill: =RGBA(243, 241, 234, 1)
-      OnVisible: =Set(gblU, LookUp(colUsersAll, Title = gblUserGid)); Set(gblGid, If(gblUserMode = "New", "", gblUserGid)); Set(gblAdName, If(gblUserMode = "New", "", Coalesce(gblU.FullName, ""))); Set(gblAdMail, If(gblUserMode = "New", "", Coalesce(gblU.Mail, ""))); Set(gblAdDept, If(gblUserMode = "New", "", Coalesce(gblU.Department, ""))); Set(gblAdOid, If(gblUserMode = "New", "", Coalesce(gblU.AdObjectId, ""))); Set(gblAdMsg, ""); Set(gblErr, ""); Set(gblModal, ""); Reset(txtGid); Reset(txtName); Reset(txtMail); Reset(txtDept); Select(btnInitU)
+      OnVisible: =Set(gblU, LookUp(colUsersAll, Title = gblUserGid)); Set(gblGid, If(gblUserMode = "New", "", gblUserGid)); Set(gblAdName, If(gblUserMode = "New", "", Coalesce(gblU.FullName, ""))); Set(gblAdMail, If(gblUserMode = "New", "", Coalesce(gblU.Mail, ""))); Set(gblAdDept, If(gblUserMode = "New", "", Coalesce(gblU.Department, ""))); Set(gblAdOid, If(gblUserMode = "New", "", Coalesce(gblU.AdObjectId, ""))); Set(gblAdMsg, ""); Set(gblErr, ""); Set(gblModal, ""); Reset(txtGid); Select(btnInitU)
     Children:
     - uHdrBg:
         Control: ModernText@1.0.0
@@ -125,7 +125,7 @@ Screens:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
-          Height: =150
+          Height: =160
           RadiusTopLeft: =8
           RadiusTopRight: =8
           RadiusBottomLeft: =8
@@ -145,12 +145,12 @@ Screens:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           FontWeight: ='TextCanvas.Weight'.Bold
-          Height: =28
+          Height: =26
           Size: =15
           Text: ="基本情報"
           Width: =300
           X: =52
-          Y: =154
+          Y: =150
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -160,12 +160,12 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
-          Height: =16
+          Height: =14
           Size: =11
           Text: ="グローバルID"
           Width: =200
-          X: =52
-          Y: =190
+          X: =896
+          Y: =236
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -174,11 +174,11 @@ Screens:
         Control: ModernTextInput@1.1.1
         Properties:
           Default: =gblGid
-          Height: =34
+          Height: =30
           Placeholder: ="1234567"
           Width: =180
-          X: =52
-          Y: =208
+          X: =896
+          Y: =250
     - uGidHint:
         Control: ModernText@1.0.0
         Properties:
@@ -187,9 +187,9 @@ Screens:
           Height: =18
           Size: =10
           Text: =If(gblUserMode <> "New", "変更不可", If(IsBlank(txtGid.Text), "数字7桁 または 英字1桁+数字6桁", If(IsMatch(Upper(txtGid.Text), "^([0-9]{7}|[A-Z][0-9]{6})$"), "OK", "形式が違います")))
-          Width: =180
-          X: =52
-          Y: =244
+          Width: =200
+          X: =1092
+          Y: =256
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -199,75 +199,73 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
-          Height: =16
+          Height: =14
           Size: =11
           Text: ="氏名"
           Width: =200
-          X: =248
-          Y: =190
+          X: =52
+          Y: =236
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
     - txtName:
-        Control: ModernTextInput@1.1.1
+        Control: ModernText@1.0.0
         Properties:
-          DisplayMode: =DisplayMode.View
-          Default: =gblAdName
-          Height: =34
+          Text: =gblAdName
+          Height: =22
           Placeholder: ="山田 太郎"
           Width: =220
-          X: =248
-          Y: =208
+          X: =52
+          Y: =252
     - uMailCap:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
-          Height: =16
+          Height: =14
           Size: =11
           Text: ="メールアドレス"
           Width: =200
-          X: =484
-          Y: =190
+          X: =300
+          Y: =236
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
     - txtMail:
-        Control: ModernTextInput@1.1.1
+        Control: ModernText@1.0.0
         Properties:
-          Default: =gblAdMail
-          Height: =34
+          Text: =gblAdMail
+          Height: =22
           Placeholder: ="taro.yamada@example.com"
           Width: =300
-          X: =484
-          Y: =208
+          X: =300
+          Y: =252
     - uDeptCap:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
-          Height: =16
+          Height: =14
           Size: =11
           Text: ="部署名"
           Width: =200
-          X: =800
-          Y: =190
+          X: =628
+          Y: =236
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
     - txtDept:
-        Control: ModernTextInput@1.1.1
+        Control: ModernText@1.0.0
         Properties:
-          DisplayMode: =DisplayMode.View
-          Default: =gblAdDept
-          Height: =34
+          Text: =gblAdDept
+          Height: =22
           Placeholder: ="営業企画部"
-          Width: =220
-          X: =800
-          Y: =208
+          Width: =240
+          X: =628
+          Y: =252
     - uAdBtn:
         Control: ModernText@1.0.0
         Properties:
@@ -275,17 +273,17 @@ Screens:
           Color: =RGBA(255, 255, 255, 1)
           Fill: =RGBA(122, 138, 120, 1)
           FontWeight: ='TextCanvas.Weight'.Bold
-          Height: =34
-          OnSelect: =Set(gblAdMsg, ""); Set(gblAdOid, ""); IfError(Set(gblAdP, Office365ユーザー.UserProfileV2(Trim(txtMail.Text))); Set(gblAdOid, Coalesce(gblAdP.id, "")); Set(gblAdName, Coalesce(gblAdP.displayName, "")); Set(gblAdDept, Coalesce(gblAdP.department, "")); Set(gblAdMail, Coalesce(gblAdP.mail, Trim(txtMail.Text))); Set(gblAdMsg, "Entra ID から取得しました。"), Set(gblAdOid, ""); Set(gblAdMsg, "そのメールアドレスの利用者が Entra ID に見つかりません。")); Reset(txtName); Reset(txtDept); Reset(txtMail)
+          Height: =30
+          OnSelect: =Set(gblAdMsg, ""); Set(gblAdOid, ""); IfError(ClearCollect(colAdHit, Office365ユーザー.SearchUser({searchTerm:Trim(txtAdQ.Text), top:15})), Clear(colAdHit); Set(gblAdMsg, "検索できませんでした。")); If(CountRows(colAdHit) = 0, If(IsBlank(gblAdMsg), Set(gblAdMsg, "該当する利用者がいません。")), If(CountRows(colAdHit) = 1, With({u:First(colAdHit)}, Set(gblAdOid, Coalesce(u.Id, "")); Set(gblAdName, Coalesce(u.DisplayName, "")); Set(gblAdDept, Coalesce(u.Department, "")); Set(gblAdMail, Coalesce(u.Mail, u.UserPrincipalName, "")); Set(gblAdMsg, "Entra ID から取得しました。")), Set(gblAdMsg, CountRows(colAdHit) & " 件見つかりました。右の一覧から選んでください。")))
           RadiusTopLeft: =5
           RadiusTopRight: =5
           RadiusBottomLeft: =5
           RadiusBottomRight: =5
-          Size: =12
-          Text: ="ADから取得"
-          Width: =130
-          X: =1036
-          Y: =208
+          Size: =14
+          Text: ="🔍"
+          Width: =40
+          X: =360
+          Y: =198
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -1061,13 +1059,13 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =If(gblAdMsg = "Entra ID から取得しました。", RGBA(94, 111, 92, 1), RGBA(184, 83, 74, 1))
-          Height: =18
+          Height: =30
           Size: =11
           Text: =gblAdMsg
           Visible: =!IsBlank(gblAdMsg)
-          Width: =Parent.Width - 300
-          X: =248
-          Y: =244
+          Width: =Parent.Width - 856
+          X: =800
+          Y: =198
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -1138,3 +1136,39 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
+    - uAdQCap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =14
+          Size: =11
+          Text: ="利用者を検索（氏名 または メールアドレス）"
+          Visible: =!gblRO
+          Width: =320
+          X: =52
+          Y: =182
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - txtAdQ:
+        Control: ModernTextInput@1.1.1
+        Properties:
+          Default: =""
+          Visible: =!gblRO
+          Width: =300
+          Height: =30
+          X: =52
+          Y: =198
+    - drpAdHit:
+        Control: ModernDropdown@1.0.2
+        Properties:
+          Items: =colAdHit
+          ItemDisplayText: =ThisItem.DisplayName & "（" & Coalesce(ThisItem.Mail, ThisItem.UserPrincipalName) & "）"
+          OnChange: =With({u:drpAdHit.Selected}, Set(gblAdOid, Coalesce(u.Id, "")); Set(gblAdName, Coalesce(u.DisplayName, "")); Set(gblAdDept, Coalesce(u.Department, "")); Set(gblAdMail, Coalesce(u.Mail, u.UserPrincipalName, "")); Set(gblAdMsg, "Entra ID から取得しました。"))
+          Visible: =!gblRO && CountRows(colAdHit) > 1
+          Width: =380
+          Height: =30
+          X: =410
+          Y: =198
