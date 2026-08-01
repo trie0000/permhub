@@ -356,11 +356,29 @@ Power Apps 側の共有に加えて、**SharePoint リスト側の権限が要�
 
 ```powershell
 dotnet tool install --global Microsoft.PowerApps.CLI.Tool
-pac auth create --name <このテナント用の名前>
+pac auth create --name permhub
 ```
 
 ブラウザでサインイン画面が出る。**Entra ID のアプリ登録・サービスプリンシパルは不要**、
 **Premium も不要**。無人実行（GitHub Actions 等）にするときだけアプリ登録が要る。
+
+> **`--name` は自分で好きに付ける手元のラベル。** テナント名やアカウント名とは関係なく、
+> どこにも送信されない。30 文字まで。**この PC に複数テナントの接続を保存して切り替える
+> ためだけのもの**なので、1 テナントしか使わないなら `permhub` でよい。
+>
+> 複数のテナントを行き来するなら、区別できる名前にしておく。
+>
+> ```powershell
+> pac auth create --name permhub-honban    # 本番テナント
+> pac auth create --name permhub-kensho    # 検証テナント
+>
+> pac auth list        # 保存済みの一覧（* が今使っているもの）
+> pac auth select --index 2   # 切り替え
+> pac auth who         # 今どのテナントに繋がっているか
+> ```
+>
+> **`deploy.ps1` は「今アクティブなプロファイル」のテナントに対して実行される。**
+> 流す前に `pac auth who` で行き先を確かめる。
 
 ### 9-2. ソリューションを作る
 

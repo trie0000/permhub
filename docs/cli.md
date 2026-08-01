@@ -36,6 +36,10 @@ export DOTNET_ROOT="/opt/homebrew/opt/dotnet/libexec"
 pac auth create --name permhub
 ```
 
+`--name` は手元のラベル。好きに付けてよく、テナント名とは無関係。複数テナントを
+使い分けるときに `pac auth list` / `pac auth select` で切り替えるためのもの。
+**`pac auth who` で今の行き先を確かめてから流すこと。**
+
 ## 取り出す（アプリ → YAML）
 
 **先に Studio で「公開」する。** `pac canvas download` は公開済みバージョンしか返さないので、
