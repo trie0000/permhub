@@ -271,7 +271,7 @@ Screens:
           Fill: =RGBA(122, 138, 120, 1)
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =30
-          OnSelect: =Set(gblAdMsg, ""); Set(gblAdOid, ""); IfError(ClearCollect(colAdHit, Office365ユーザー.SearchUserV2({searchTerm:Trim(txtAdQ.Text), top:15}).value), Clear(colAdHit); Set(gblAdMsg, "検索できませんでした。")); If(CountRows(colAdHit) = 0, If(IsBlank(gblAdMsg), Set(gblAdMsg, "該当する利用者がいません。")), If(CountRows(colAdHit) = 1, With({u:First(colAdHit)}, Set(gblAdOid, Coalesce(u.Id, "")); Set(gblAdName, Coalesce(u.DisplayName, "")); Set(gblAdDept, Coalesce(u.Department, "")); Set(gblAdMail, Coalesce(u.Mail, u.UserPrincipalName, "")); Set(gblAdMsg, "Entra ID から取得しました。")), Set(gblAdMsg, CountRows(colAdHit) & " 件見つかりました。右の一覧から選んでください。")))
+          OnSelect: =Set(gblAdMsg, ""); Set(gblAdOid, ""); IfError(ClearCollect(colAdHit, ForAll(Office365ユーザー.SearchUserV2({searchTerm:Trim(txtAdQ.Text), top:15}).value As u, {Id:u.Id, DisplayName:u.DisplayName, Department:u.Department, Mail:u.Mail, UserPrincipalName:u.UserPrincipalName, Disp:u.DisplayName & "（" & Coalesce(u.Mail, u.UserPrincipalName, "") & "）"})), Clear(colAdHit); Set(gblAdMsg, "検索できませんでした。")); If(CountRows(colAdHit) = 0, If(IsBlank(gblAdMsg), Set(gblAdMsg, "該当する利用者がいません。")), If(CountRows(colAdHit) = 1, With({u:First(colAdHit)}, Set(gblAdOid, Coalesce(u.Id, "")); Set(gblAdName, Coalesce(u.DisplayName, "")); Set(gblAdDept, Coalesce(u.Department, "")); Set(gblAdMail, Coalesce(u.Mail, u.UserPrincipalName, "")); Set(gblAdMsg, "Entra ID から取得しました。")), Set(gblAdMsg, CountRows(colAdHit) & " 件見つかりました。右の一覧から選んでください。")))
           RadiusTopLeft: =5
           RadiusTopRight: =5
           RadiusBottomLeft: =5
@@ -1162,7 +1162,7 @@ Screens:
         Control: ModernDropdown@1.0.2
         Properties:
           Items: =colAdHit
-          ItemDisplayText: =ThisItem.DisplayName & "（" & Coalesce(ThisItem.Mail, ThisItem.UserPrincipalName) & "）"
+          ItemDisplayText: =ThisItem.Disp
           OnChange: =With({u:drpAdHit.Selected}, Set(gblAdOid, Coalesce(u.Id, "")); Set(gblAdName, Coalesce(u.DisplayName, "")); Set(gblAdDept, Coalesce(u.Department, "")); Set(gblAdMail, Coalesce(u.Mail, u.UserPrincipalName, "")); Set(gblAdMsg, "Entra ID から取得しました。"))
           Visible: =!gblRO && CountRows(colAdHit) > 1
           Width: =380

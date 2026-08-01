@@ -122,6 +122,30 @@ error PA2108 : Unknown property 'Placeholder' for control type 'ModernText@1.0.0
 > `Fill: =` を探す検査だとこれを見落とし、「Fill が無い」と誤判定して二重に足してしまう。
 > **キー名だけで突き合わせること。**
 
+## `ItemDisplayText` には式を置けない
+
+ドロップダウンの `ItemDisplayText` は**列の参照しか受け付けない**。関数も名前付き数式も
+置けず、Studio の「アプリのチェック」で落ちる。
+
+```
+このプロパティの式では fChgByO1 を使用できません
+この関数 LookUp はこのプロパティでは使用できません
+この関数 Coalesce はこのプロパティでは使用できません
+```
+
+**表示用の文字は `Items` の側で作る。**
+
+```yaml
+Items: =fMyOrg1D                 # ForAll(...) で Disp 列を作った名前付き数式
+ItemDisplayText: =ThisItem.Disp  # 列の参照だけ
+```
+
+編集中の状態に追随させたいなら、`Items` を名前付き数式（または ForAll 式）にする。
+`ClearCollect` でコレクションに入れてしまうと、その時点の値で固まる。
+
+> **`Filter(col, true)` は警告になる。**「この述語はリテラル値である」。
+> 絞り込まないならコレクションをそのまま渡す。
+
 ## コネクタの戻り値の名前（実地で踏んだところ）
 
 **`Office365ユーザー` は関数によって列名の綴りが違う。**

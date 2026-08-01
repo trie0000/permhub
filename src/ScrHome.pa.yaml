@@ -70,9 +70,9 @@ Screens:
     - drpOrg1:
         Control: ModernDropdown@1.0.2
         Properties:
-          Items: =colMyOrg1
-          ItemDisplayText: =If(Coalesce(LookUp(fChgByO1, C = ThisItem.Title).n, 0) > 0, "・", "") & ThisItem.NameJa
-          Default: =LookUp(colMyOrg1, Title = gblOrg1)
+          Items: =fMyOrg1D
+          ItemDisplayText: =ThisItem.Disp
+          Default: =LookUp(fMyOrg1D, Title = gblOrg1)
           OnChange: =Set(gblOrg1, drpOrg1.Selected.Title); Set(gblPage, 0); If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")}))); Select(btnInitOM)
           X: =28
           Y: =130
@@ -4057,7 +4057,7 @@ Screens:
     - btnSnapM:
         Control: ModernText@1.0.0
         Properties:
-          OnSelect: =Set(gblStepM, gblStepM + 1); RemoveIf(colHMG, S >= gblStepM); RemoveIf(colHMN, S >= gblStepM); RemoveIf(colHMU, S >= gblStepM); Collect(colHMG, ForAll(Filter(colGEdit, O1 = gblOrg1) As e, {S:gblStepM, R:e})); Collect(colHMN, ForAll(Filter(colNewU, O1 = gblOrg1) As e, {S:gblStepM, R:e})); Collect(colHMU, ForAll(Filter(colUEdit, true) As e, {S:gblStepM, R:e})); Set(gblStepMMax, gblStepM)
+          OnSelect: =Set(gblStepM, gblStepM + 1); RemoveIf(colHMG, S >= gblStepM); RemoveIf(colHMN, S >= gblStepM); RemoveIf(colHMU, S >= gblStepM); Collect(colHMG, ForAll(Filter(colGEdit, O1 = gblOrg1) As e, {S:gblStepM, R:e})); Collect(colHMN, ForAll(Filter(colNewU, O1 = gblOrg1) As e, {S:gblStepM, R:e})); Collect(colHMU, ForAll(colUEdit As e, {S:gblStepM, R:e})); Set(gblStepMMax, gblStepM)
           Height: =1
           Text: =""
           Visible: =false
@@ -4067,7 +4067,7 @@ Screens:
     - btnInitOM:
         Control: ModernText@1.0.0
         Properties:
-          OnSelect: =Set(gblStepO, 0); Set(gblStepOMax, 0); Clear(colHO1); Clear(colHO2); Collect(colHO1, ForAll(Filter(colO1Edit, Title = gblOrg1) As e, {S:0, R:e})); Collect(colHO2, ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, {S:0, R:e})); Set(gblStepM, 0); Set(gblStepMMax, 0); Clear(colHMG); Clear(colHMN); Clear(colHMU); Collect(colHMG, ForAll(Filter(colGEdit, O1 = gblOrg1) As e, {S:0, R:e})); Collect(colHMN, ForAll(Filter(colNewU, O1 = gblOrg1) As e, {S:0, R:e})); Collect(colHMU, ForAll(Filter(colUEdit, true) As e, {S:0, R:e}))
+          OnSelect: =Set(gblStepO, 0); Set(gblStepOMax, 0); Clear(colHO1); Clear(colHO2); Collect(colHO1, ForAll(Filter(colO1Edit, Title = gblOrg1) As e, {S:0, R:e})); Collect(colHO2, ForAll(Filter(colO2Edit, Org1Code = gblOrg1) As e, {S:0, R:e})); Set(gblStepM, 0); Set(gblStepMMax, 0); Clear(colHMG); Clear(colHMN); Clear(colHMU); Collect(colHMG, ForAll(Filter(colGEdit, O1 = gblOrg1) As e, {S:0, R:e})); Collect(colHMN, ForAll(Filter(colNewU, O1 = gblOrg1) As e, {S:0, R:e})); Collect(colHMU, ForAll(colUEdit As e, {S:0, R:e}))
           Height: =1
           Text: =""
           Visible: =false
