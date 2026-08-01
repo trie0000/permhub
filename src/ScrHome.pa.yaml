@@ -434,7 +434,7 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
-          OnSelect: =Patch(colO1Edit, fO1E, {MsExt:!fO1E.MsExt})
+          OnSelect: =Patch(colO1Edit, fO1E, {MsExt:!fO1E.MsExt}); Select(btnSnapH)
           BorderThickness: =If(fO1E.MsExt <> fP1.MsExt, 2, 0)
           BorderColor: =RGBA(198, 122, 58, 1)
     - lblO1WlanCap:
@@ -475,7 +475,7 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
-          OnSelect: =Patch(colO1Edit, fO1E, {MsWlan:!fO1E.MsWlan})
+          OnSelect: =Patch(colO1Edit, fO1E, {MsWlan:!fO1E.MsWlan}); Select(btnSnapH)
           BorderThickness: =If(fO1E.MsWlan <> fP1.MsWlan, 2, 0)
           BorderColor: =RGBA(198, 122, 58, 1)
     - lblO1CloudCap:
@@ -516,7 +516,7 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
-          OnSelect: =Patch(colO1Edit, fO1E, {MsCloud:!fO1E.MsCloud})
+          OnSelect: =Patch(colO1Edit, fO1E, {MsCloud:!fO1E.MsCloud}); Select(btnSnapH)
           BorderThickness: =If(fO1E.MsCloud <> fP1.MsCloud, 2, 0)
           BorderColor: =RGBA(198, 122, 58, 1)
     - cardO2:
@@ -789,7 +789,7 @@ Screens:
                     Control: ModernTextInput@1.1.1
                     Properties:
                       Default: =ThisItem.NameJa
-                      OnChange: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {NameJa:Trim(Self.Text)})
+                      OnChange: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {NameJa:Trim(Self.Text)}); Select(btnSnapH)
                       DisplayMode: =If(ThisItem.IsDel, DisplayMode.View, DisplayMode.Edit)
                       Width: =186
                       Height: =30
@@ -799,7 +799,7 @@ Screens:
                     Control: ModernTextInput@1.1.1
                     Properties:
                       Default: =ThisItem.NameEn
-                      OnChange: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {NameEn:Trim(Self.Text)})
+                      OnChange: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {NameEn:Trim(Self.Text)}); Select(btnSnapH)
                       DisplayMode: =If(ThisItem.IsDel, DisplayMode.View, DisplayMode.Edit)
                       Width: =156
                       Height: =30
@@ -839,7 +839,7 @@ Screens:
                       FillPortions: =0
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =Set(gblSwapA, ThisItem.Title); Set(gblSwapB, Coalesce(Last(Filter(fO2E, SortOrder < ThisItem.SortOrder)).Title, ThisItem.Title)); Set(gblSwapN, ThisItem.SortOrder); Set(gblSwapM, LookUp(colO2Edit, Title = gblSwapB).SortOrder); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapA), {SortOrder:gblSwapM}); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapB), {SortOrder:gblSwapN})
+                      OnSelect: =Set(gblSwapA, ThisItem.Title); Set(gblSwapB, Coalesce(Last(Filter(fO2E, SortOrder < ThisItem.SortOrder)).Title, ThisItem.Title)); Set(gblSwapN, ThisItem.SortOrder); Set(gblSwapM, LookUp(colO2Edit, Title = gblSwapB).SortOrder); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapA), {SortOrder:gblSwapM}); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapB), {SortOrder:gblSwapN}); Select(btnSnapH)
                 - o2Down:
                     Control: ModernText@1.0.0
                     Properties:
@@ -861,7 +861,7 @@ Screens:
                       FillPortions: =0
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =Set(gblSwapA, ThisItem.Title); Set(gblSwapB, Coalesce(First(Filter(fO2E, SortOrder > ThisItem.SortOrder)).Title, ThisItem.Title)); Set(gblSwapN, ThisItem.SortOrder); Set(gblSwapM, LookUp(colO2Edit, Title = gblSwapB).SortOrder); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapA), {SortOrder:gblSwapM}); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapB), {SortOrder:gblSwapN})
+                      OnSelect: =Set(gblSwapA, ThisItem.Title); Set(gblSwapB, Coalesce(First(Filter(fO2E, SortOrder > ThisItem.SortOrder)).Title, ThisItem.Title)); Set(gblSwapN, ThisItem.SortOrder); Set(gblSwapM, LookUp(colO2Edit, Title = gblSwapB).SortOrder); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapA), {SortOrder:gblSwapM}); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapB), {SortOrder:gblSwapN}); Select(btnSnapH)
                 - o2SortSpR:
                     Control: ModernText@1.0.0
                     Properties:
@@ -903,7 +903,7 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =If(fO1E.MsExt, Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApExt:!ThisItem.ApExt}))
+                      OnSelect: =If(fO1E.MsExt, Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApExt:!ThisItem.ApExt})); Select(btnSnapH)
                       BorderThickness: =If(fO1E.MsExt && ThisItem.ApExt <> LookUp(colOrg2All, Title = ThisItem.Title).ApExt, 2, 0)
                       BorderColor: =RGBA(198, 122, 58, 1)
                 - o2ExtSpR:
@@ -946,7 +946,7 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =If(fO1E.MsWlan, Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApWlan:!ThisItem.ApWlan}))
+                      OnSelect: =If(fO1E.MsWlan, Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApWlan:!ThisItem.ApWlan})); Select(btnSnapH)
                       BorderThickness: =If(fO1E.MsWlan && ThisItem.ApWlan <> LookUp(colOrg2All, Title = ThisItem.Title).ApWlan, 2, 0)
                       BorderColor: =RGBA(198, 122, 58, 1)
                 - o2WlanSpR:
@@ -989,7 +989,7 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =If(fO1E.MsCloud, Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApCloud:!ThisItem.ApCloud}))
+                      OnSelect: =If(fO1E.MsCloud, Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApCloud:!ThisItem.ApCloud})); Select(btnSnapH)
                       BorderThickness: =If(fO1E.MsCloud && ThisItem.ApCloud <> LookUp(colOrg2All, Title = ThisItem.Title).ApCloud, 2, 0)
                       BorderColor: =RGBA(198, 122, 58, 1)
                 - o2CloudSpR:
@@ -1025,7 +1025,7 @@ Screens:
                       Fill: =If(ThisItem.IsDel, RGBA(232, 228, 216, 1), RGBA(0, 0, 0, 0))
                       Size: =11
                       Text: =If(ThisItem.IsDel, "取消", "削除")
-                      OnSelect: =If(ThisItem.IsNew, RemoveIf(colO2Edit, Title = ThisItem.Title), Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {IsDel:!ThisItem.IsDel}))
+                      OnSelect: =If(ThisItem.IsNew, RemoveIf(colO2Edit, Title = ThisItem.Title), Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {IsDel:!ThisItem.IsDel})); Select(btnSnapH)
                       RadiusTopLeft: =4
                       RadiusTopRight: =4
                       RadiusBottomLeft: =4
@@ -2685,7 +2685,7 @@ Screens:
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG1), false, true), Set(gblG, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG1, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          OnSelect: =If(If(IsBlank(fG1), false, true), Set(gblG, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG1, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2702,7 +2702,7 @@ Screens:
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG2), false, true), Set(gblG, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG2, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          OnSelect: =If(If(IsBlank(fG2), false, true), Set(gblG, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG2, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2719,7 +2719,7 @@ Screens:
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG3), false, true), Set(gblG, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG3, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          OnSelect: =If(If(IsBlank(fG3), false, true), Set(gblG, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG3, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2736,7 +2736,7 @@ Screens:
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG4), false, true), Set(gblG, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG4, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          OnSelect: =If(If(IsBlank(fG4), false, true), Set(gblG, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG4, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2753,7 +2753,7 @@ Screens:
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG5), false, true), Set(gblG, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG5, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          OnSelect: =If(If(IsBlank(fG5), false, true), Set(gblG, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG5, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2770,7 +2770,7 @@ Screens:
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG6), false, true), Set(gblG, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG6, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          OnSelect: =If(If(IsBlank(fG6), false, true), Set(gblG, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG6, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2787,7 +2787,7 @@ Screens:
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG7), false, true), Set(gblG, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG7, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          OnSelect: =If(If(IsBlank(fG7), false, true), Set(gblG, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG7, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2804,7 +2804,7 @@ Screens:
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG8), false, true), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          OnSelect: =If(If(IsBlank(fG8), false, true), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2821,7 +2821,7 @@ Screens:
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG9), false, true), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          OnSelect: =If(If(IsBlank(fG9), false, true), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2838,7 +2838,7 @@ Screens:
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG10), false, true), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+          OnSelect: =If(If(IsBlank(fG10), false, true), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2949,7 +2949,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG1), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG1, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                      OnSelect: =If(If(IsBlank(fG1), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG1, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
                 - mxC2:
                     Control: ModernText@1.0.0
                     Properties:
@@ -2967,7 +2967,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG2), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG2, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                      OnSelect: =If(If(IsBlank(fG2), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG2, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
                 - mxC3:
                     Control: ModernText@1.0.0
                     Properties:
@@ -2985,7 +2985,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG3), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG3, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                      OnSelect: =If(If(IsBlank(fG3), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG3, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
                 - mxC4:
                     Control: ModernText@1.0.0
                     Properties:
@@ -3003,7 +3003,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG4), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG4, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                      OnSelect: =If(If(IsBlank(fG4), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG4, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
                 - mxC5:
                     Control: ModernText@1.0.0
                     Properties:
@@ -3021,7 +3021,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG5), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG5, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                      OnSelect: =If(If(IsBlank(fG5), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG5, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
                 - mxC6:
                     Control: ModernText@1.0.0
                     Properties:
@@ -3039,7 +3039,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG6), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG6, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                      OnSelect: =If(If(IsBlank(fG6), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG6, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
                 - mxC7:
                     Control: ModernText@1.0.0
                     Properties:
@@ -3057,7 +3057,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG7), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG7, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                      OnSelect: =If(If(IsBlank(fG7), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG7, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
                 - mxC8:
                     Control: ModernText@1.0.0
                     Properties:
@@ -3075,7 +3075,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG8), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                      OnSelect: =If(If(IsBlank(fG8), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
                 - mxC9:
                     Control: ModernText@1.0.0
                     Properties:
@@ -3093,7 +3093,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG9), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                      OnSelect: =If(If(IsBlank(fG9), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
                 - mxC10:
                     Control: ModernText@1.0.0
                     Properties:
@@ -3111,7 +3111,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG10), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC})))
+                      OnSelect: =If(If(IsBlank(fG10), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapH)
             - mxRowRule:
                 Control: ModernText@1.0.0
                 Properties:
@@ -3159,7 +3159,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Height: =1
-          OnSelect: =Set(gblBskNew, CountRows(Filter(colNewU, Gid = gblBskKey)) > 0); If(gblBskK = "ORG1", With({o:LookUp(colOrg1, Title = gblBskKey)}, Patch(colO1Edit, LookUp(colO1Edit, Title = gblBskKey), {MsExt:o.MsExt, MsWlan:o.MsWlan, MsCloud:o.MsCloud}))); If(gblBskK = "ORG2", Set(gblBskWasNew, CountRows(Filter(colO2Edit, Title = gblBskKey && IsNew)) > 0)); If(gblBskK = "ORG2" && gblBskWasNew, RemoveIf(colO2Edit, Title = gblBskKey)); If(gblBskK = "ORG2" && !gblBskWasNew, With({o:LookUp(colOrg2All, Title = gblBskKey)}, Patch(colO2Edit, LookUp(colO2Edit, Title = gblBskKey), {NameJa:o.NameJa, NameEn:o.NameEn, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsDel:false}))); If(gblBskK = "USER", RemoveIf(colGEdit, Gid = gblBskKey)); If(gblBskK = "USER", Collect(colGEdit, ForAll(Filter(colGrantsAll, GlobalId = gblBskKey) As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(gblBskK = "USER" && gblBskNew, RemoveIf(colNewU, Gid = gblBskKey)); If(gblBskK = "USER" && gblBskNew, RemoveIf(colMemberAll, GlobalId = gblBskKey)); If(gblBskK = "USER" && gblBskNew, RemoveIf(colUsersAll, Title = gblBskKey)); If(gblBskK = "USER" && !gblBskNew, With({e:LookUp(colUEdit, Gid = gblBskKey)}, If(!IsBlank(e.Gid), Patch(colUsersAll, LookUp(colUsersAll, Title = gblBskKey), {FullName:e.BName, Mail:e.BMail, Department:e.BDept})))); If(gblBskK = "USER", RemoveIf(colUEdit, Gid = gblBskKey)); Notify("この明細を申請から外しました。", NotificationType.Success); Select(btnBsk)
+          OnSelect: =Set(gblBskNew, CountRows(Filter(colNewU, Gid = gblBskKey)) > 0); If(gblBskK = "ORG1", With({o:LookUp(colOrg1, Title = gblBskKey)}, Patch(colO1Edit, LookUp(colO1Edit, Title = gblBskKey), {MsExt:o.MsExt, MsWlan:o.MsWlan, MsCloud:o.MsCloud}))); If(gblBskK = "ORG2", Set(gblBskWasNew, CountRows(Filter(colO2Edit, Title = gblBskKey && IsNew)) > 0)); If(gblBskK = "ORG2" && gblBskWasNew, RemoveIf(colO2Edit, Title = gblBskKey)); If(gblBskK = "ORG2" && !gblBskWasNew, With({o:LookUp(colOrg2All, Title = gblBskKey)}, Patch(colO2Edit, LookUp(colO2Edit, Title = gblBskKey), {NameJa:o.NameJa, NameEn:o.NameEn, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsDel:false}))); If(gblBskK = "USER", RemoveIf(colGEdit, Gid = gblBskKey)); If(gblBskK = "USER", Collect(colGEdit, ForAll(Filter(colGrantsAll, GlobalId = gblBskKey) As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(gblBskK = "USER" && gblBskNew, RemoveIf(colNewU, Gid = gblBskKey)); If(gblBskK = "USER" && gblBskNew, RemoveIf(colMemberAll, GlobalId = gblBskKey)); If(gblBskK = "USER" && gblBskNew, RemoveIf(colUsersAll, Title = gblBskKey)); If(gblBskK = "USER" && !gblBskNew, With({e:LookUp(colUEdit, Gid = gblBskKey)}, If(!IsBlank(e.Gid), Patch(colUsersAll, LookUp(colUsersAll, Title = gblBskKey), {FullName:e.BName, Mail:e.BMail, Department:e.BDept})))); If(gblBskK = "USER", RemoveIf(colUEdit, Gid = gblBskKey)); Notify("この明細を申請から外しました。", NotificationType.Success); Select(btnBsk); Select(btnSnapH)
           Text: =""
           Visible: =false
           Width: =1
@@ -3194,7 +3194,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Visible: =(gblTab = "org" || gblTab = "user") && !gblRO
-          OnSelect: =Set(gblErr, ""); Set(gblStop, false); ClearCollect(colO1Chg, fO1ChgAll); Set(gblGo1, CountRows(colO1Chg) > 0); ClearCollect(colO2Chg, Filter(ForAll(colO2Edit As e, With({o:LookUp(colOrg2All, Title = e.Title)}, {Code:e.Title, O1:e.Org1Code, NameJa:e.NameJa, NameEn:e.NameEn, Op:If(e.IsNew, "ADD", If(e.IsDel, "DELETE", "UPDATE")), BJa:o.NameJa, BEn:o.NameEn, BExt:o.ApExt, BWlan:o.ApWlan, BCloud:o.ApCloud, BSort:o.SortOrder, AExt:e.ApExt, AWlan:e.ApWlan, ACloud:e.ApCloud, ASort:e.SortOrder, Chg:e.IsNew || e.IsDel || (e.NameJa <> o.NameJa) || (e.NameEn <> o.NameEn) || (e.ApExt <> o.ApExt) || (e.ApWlan <> o.ApWlan) || (e.ApCloud <> o.ApCloud) || (e.SortOrder <> o.SortOrder)})), Chg)); Set(gblGo2, CountRows(colO2Chg) > 0); ClearCollect(colGChg, fChgAll); ClearCollect(colGUsr0, ForAll(Distinct(colGChg, Gid) As d, {G:d.Value})); Collect(colGUsr0, ForAll(colNewU As n, {G:n.Gid})); Collect(colGUsr0, ForAll(colUEdit As e2, {G:e2.Gid})); ClearCollect(colGUsr, ForAll(Distinct(colGUsr0, G) As d, {G:d.Value})); Set(gblGo3, CountRows(colGUsr) > 0); If(!gblGo1 && !gblGo2 && !gblGo3, Set(gblErr, "申請するものがありません。組織マスタの要否・表示順、マトリックスのセル、または利用者の新規登録を追加してください。")); If(IsBlank(gblErr) && fInvAllN > 0, Set(gblErr, "多段階承認が無効になった組織区分2 に権限が " & fInvAllN & " 件残っています。ユーザマスタの赤いセルをクリックして外してから申請してください（" & fInvAllTxt & "）。")); If(IsBlank(gblErr) && gblGo3 && fNoAppN > 0 && !gblGateOk, Set(gblStop, true)); If(gblStop, Set(gblModal, "grant")); Set(gblGateOk, false); ClearCollect(colBskO1, ForAll(colO1Chg As c, {V:c.C})); Collect(colBskO1, ForAll(colO2Chg As c, {V:c.O1})); Collect(colBskO1, ForAll(colGChg As c, {V:c.O1})); Collect(colBskO1, ForAll(colNewU As n, {V:n.O1})); Set(gblBskO1N, CountRows(Distinct(colBskO1, V))); Set(gblBskO1, If(gblBskO1N = 1, First(Distinct(colBskO1, V)).Value, gblOrg1)); Set(gblSeqO1, CountRows(colO1Chg)); Set(gblSeqO2, gblSeqO1 + CountRows(colO2Chg)); Set(gblItemN, gblSeqO2 + CountRows(colGUsr)); If(IsBlank(gblErr) && !gblStop, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd-hhmmss") & "-" & Text(RandBetween(100, 999)))); If(IsBlank(gblErr) && !gblStop && !IsBlank(LookUp(PRM_Requests, Title = gblReqNo).Title), Set(gblReqNo, gblReqNo & "-2")); If(IsBlank(gblErr) && !gblStop, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:If(gblGo1 && !gblGo2 && !gblGo3, "ORG1", !gblGo1 && gblGo2 && !gblGo3, "ORG2", !gblGo1 && !gblGo2 && gblGo3, "USER", "MIXED")}, TargetKey:gblBskO1, TargetName:If(gblBskO1N > 1, "複数の組織区分1", Coalesce(LookUp(colOrg1, Title = gblBskO1).NameJa, fP1.NameJa)), Summary:Concat(Filter(Table({n:"組織区分1 の設定 " & CountRows(colO1Chg) & "件",c:gblSeqO1},{n:"組織区分2 の変更 " & CountRows(colO2Chg) & "件",c:CountRows(colO2Chg)},{n:"利用者・権限の変更 " & CountRows(colGUsr) & "名",c:CountRows(colGUsr)}), c > 0), n, "、"), ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:gblItemN, Org1Code:gblBskO1})); If(IsBlank(gblErr) && !gblStop && gblGo1, ForAll(Sequence(CountRows(colO1Chg)) As i, With({c:Index(colO1Chg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(i.Value, "000") & "-01", ReqNo:gblReqNo, Seq:i.Value, GroupKind:"ORG1", GroupKey:c.C, Operation:{Value:"UPDATE"}, EntityKind:{Value:"ORG1"}, EntityKey:c.C, ItemStatus:{Value:"PENDING"}, BeforeJson:JSON({MsExt:c.BExt, MsWlan:c.BWlan, MsCloud:c.BCloud}), AfterJson:JSON({MsExt:c.AExt, MsWlan:c.AWlan, MsCloud:c.ACloud}), ChangeText:c.Nm & "（" & c.C & "）：" & Concat(Filter(Table({n:"外部接続",b:c.BExt,a:c.AExt},{n:"無線LAN",b:c.BWlan,a:c.AWlan},{n:"クラウド",b:c.BCloud,a:c.ACloud}), b <> a), n & " " & If(b, "要", "不要") & "→" & If(a, "要", "不要"), "、")})))); If(IsBlank(gblErr) && !gblStop && gblGo2, ForAll(Sequence(CountRows(colO2Chg)) As i, With({c:Index(colO2Chg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(gblSeqO1 + i.Value, "000") & "-01", ReqNo:gblReqNo, Seq:gblSeqO1 + i.Value, GroupKind:"ORG2", GroupKey:c.Code, Operation:{Value:c.Op}, EntityKind:{Value:"ORG2"}, EntityKey:c.Code, ItemStatus:{Value:"PENDING"}, BeforeJson:If(c.Op = "ADD", "{}", "{""NameJa"":""" & Substitute(Coalesce(c.BJa, ""), """", "\""") & """,""NameEn"":""" & Substitute(Coalesce(c.BEn, ""), """", "\""") & """,""ApExt"":" & If(c.BExt, "true", "false") & ",""ApWlan"":" & If(c.BWlan, "true", "false") & ",""ApCloud"":" & If(c.BCloud, "true", "false") & ",""SortOrder"":" & c.BSort & "}"), AfterJson:If(c.Op = "DELETE", "{""IsActive"":false}", "{""Org1Code"":""" & c.O1 & """,""NameJa"":""" & Substitute(Coalesce(c.NameJa, ""), """", "\""") & """,""NameEn"":""" & Substitute(Coalesce(c.NameEn, ""), """", "\""") & """,""ApExt"":" & If(c.AExt, "true", "false") & ",""ApWlan"":" & If(c.AWlan, "true", "false") & ",""ApCloud"":" & If(c.ACloud, "true", "false") & ",""SortOrder"":" & c.ASort & "}"), ChangeText:c.NameJa & "（" & c.Code & "）：" & If(c.Op = "ADD", "新規登録（表示順 " & c.ASort & "）", If(c.Op = "DELETE", "削除", Concat(Filter(Table({n:"日本語名称",b:Coalesce(c.BJa, ""),a:Coalesce(c.NameJa, "")},{n:"英語名称",b:Coalesce(c.BEn, ""),a:Coalesce(c.NameEn, "")},{n:"外部接続",b:If(c.BExt, "要", "不要"),a:If(c.AExt, "要", "不要")},{n:"無線LAN",b:If(c.BWlan, "要", "不要"),a:If(c.AWlan, "要", "不要")},{n:"クラウド",b:If(c.BCloud, "要", "不要"),a:If(c.ACloud, "要", "不要")},{n:"表示順",b:Text(c.BSort),a:Text(c.ASort)}), b <> a), n & " " & b & "→" & a, "、")))})))); If(IsBlank(gblErr) && !gblStop && gblGo3, ForAll(Sequence(CountRows(colGUsr)) As u, With({nu:LookUp(colNewU, Gid = Index(colGUsr, u.Value).G), eu:LookUp(colUEdit, Gid = Index(colGUsr, u.Value).G)}, If(!IsBlank(nu.Gid) || !IsBlank(eu.Gid), Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(gblSeqO2 + u.Value, "000") & "-01", ReqNo:gblReqNo, Seq:gblSeqO2 + u.Value, GroupKind:"USER", GroupKey:Index(colGUsr, u.Value).G, Operation:{Value:If(!IsBlank(nu.Gid), "ADD", "UPDATE")}, EntityKind:{Value:"USER"}, EntityKey:Index(colGUsr, u.Value).G, ItemStatus:{Value:"PENDING"}, BeforeJson:If(!IsBlank(nu.Gid), "{}", JSON({FullName:eu.BName, Mail:eu.BMail, Department:eu.BDept})), AfterJson:If(!IsBlank(nu.Gid), JSON({FullName:nu.FullName, Mail:nu.Mail, Department:nu.Dept, AdObjectId:Coalesce(nu.AdOid, "")}), JSON({FullName:eu.FullName, Mail:eu.Mail, Department:eu.Dept})), ChangeText:If(!IsBlank(nu.Gid), nu.FullName & "（" & nu.Gid & "）：利用者を登録（" & If(IsBlank(nu.Dept), "部署未設定", nu.Dept) & "）", eu.FullName & "（" & eu.Gid & "）：基本情報 " & Concat(Filter(Table({n:"氏名",b:Coalesce(eu.BName, ""),a:Coalesce(eu.FullName, "")},{n:"メール",b:Coalesce(eu.BMail, ""),a:Coalesce(eu.Mail, "")},{n:"部署",b:Coalesce(eu.BDept, ""),a:Coalesce(eu.Dept, "")}), b <> a), n & " " & b & "→" & a, "、"))}))))); If(IsBlank(gblErr) && !gblStop && gblGo3, ForAll(Sequence(CountRows(colGUsr)) As u, With({nu:LookUp(colNewU, Gid = Index(colGUsr, u.Value).G)}, If(!IsBlank(nu.Gid), Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(gblSeqO2 + u.Value, "000") & "-02", ReqNo:gblReqNo, Seq:gblSeqO2 + u.Value, GroupKind:"USER", GroupKey:nu.Gid, Operation:{Value:"ADD"}, EntityKind:{Value:"USERORG1"}, EntityKey:nu.Gid & "#" & nu.O1, ItemStatus:{Value:"PENDING"}, BeforeJson:"{}", AfterJson:"{""GlobalId"":""" & nu.Gid & """,""Org1Code"":""" & nu.O1 & """}", ChangeText:nu.FullName & "（" & nu.Gid & "）：所属を追加（" & LookUp(colOrg1, Title = nu.O1).NameJa & "）"}))))); If(IsBlank(gblErr) && !gblStop && gblGo3, ForAll(Sequence(CountRows(colGUsr)) As u, With({g:Index(colGUsr, u.Value).G}, ForAll(Sequence(CountRows(Filter(colGChg, Gid = g))) As i, With({c:Index(Filter(colGChg, Gid = g), i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(gblSeqO2 + u.Value, "000") & "-" & Text(i.Value + 10, "00"), ReqNo:gblReqNo, Seq:gblSeqO2 + u.Value, GroupKind:"USER", GroupKey:g, Operation:{Value:If(c.BS = "NONE", "ADD", If(c.NS = "NONE", "DELETE", "UPDATE"))}, EntityKind:{Value:"GRANT"}, EntityKey:c.Gid & "#" & c.O1 & "#" & c.Role, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""ScopeType"":""" & c.BS & """,""Org2Codes"":""" & c.BC & """}", AfterJson:If(c.NS = "NONE", "{""IsActive"":false}", "{""GlobalId"":""" & c.Gid & """,""Org1Code"":""" & c.O1 & """,""RoleCode"":""" & c.Role & """,""ScopeType"":""" & c.NS & """,""Org2Codes"":""" & c.NC & """}"), ChangeText:LookUp(colUsersAll, Title = c.Gid).FullName & "（" & LookUp(fRoles, rc = c.Role).rn & "）：" & If(c.BS = "NONE", "権限なし", If(c.BS = "ALL", "全体", "個別（" & Concat(Filter(colOrg2All, Org1Code = c.O1 && (";" & Title & ";") in c.BC), NameJa, "、") & "）")) & "→" & If(c.NS = "NONE", "権限なし", If(c.NS = "ALL", "全体", "個別（" & Concat(Filter(colO2Edit, Org1Code = c.O1 && (";" & Title & ";") in c.NC), NameJa, "、") & "）"))})))))); If(IsBlank(gblErr) && !gblStop, Clear(colNewU)); If(IsBlank(gblErr) && !gblStop, Clear(colUEdit)); If(IsBlank(gblErr) && !gblStop, ClearCollect(colO1Edit, colOrg1)); If(IsBlank(gblErr) && !gblStop, ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false}))); If(IsBlank(gblErr) && !gblStop, ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(IsBlank(gblErr) && !gblStop, ClearCollect(colPendO2, ForAll(Filter(PRM_RequestItems, EntityKind.Value = "ORG2", Operation.Value = "ADD") As i, {C:i.EntityKey}))); If(IsBlank(gblErr) && !gblStop, If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1 || ApplicantId = gblMeGid, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})))); If(IsBlank(gblErr) && !gblStop, Notify("申請しました（" & gblReqNo & "／明細 " & gblItemN & "件）。管理者が内容を確認して作業します。", NotificationType.Success)); If(!IsBlank(gblErr), Notify(gblErr, NotificationType.Warning))
+          OnSelect: =Set(gblErr, ""); Set(gblStop, false); ClearCollect(colO1Chg, fO1ChgAll); Set(gblGo1, CountRows(colO1Chg) > 0); ClearCollect(colO2Chg, Filter(ForAll(colO2Edit As e, With({o:LookUp(colOrg2All, Title = e.Title)}, {Code:e.Title, O1:e.Org1Code, NameJa:e.NameJa, NameEn:e.NameEn, Op:If(e.IsNew, "ADD", If(e.IsDel, "DELETE", "UPDATE")), BJa:o.NameJa, BEn:o.NameEn, BExt:o.ApExt, BWlan:o.ApWlan, BCloud:o.ApCloud, BSort:o.SortOrder, AExt:e.ApExt, AWlan:e.ApWlan, ACloud:e.ApCloud, ASort:e.SortOrder, Chg:e.IsNew || e.IsDel || (e.NameJa <> o.NameJa) || (e.NameEn <> o.NameEn) || (e.ApExt <> o.ApExt) || (e.ApWlan <> o.ApWlan) || (e.ApCloud <> o.ApCloud) || (e.SortOrder <> o.SortOrder)})), Chg)); Set(gblGo2, CountRows(colO2Chg) > 0); ClearCollect(colGChg, fChgAll); ClearCollect(colGUsr0, ForAll(Distinct(colGChg, Gid) As d, {G:d.Value})); Collect(colGUsr0, ForAll(colNewU As n, {G:n.Gid})); Collect(colGUsr0, ForAll(colUEdit As e2, {G:e2.Gid})); ClearCollect(colGUsr, ForAll(Distinct(colGUsr0, G) As d, {G:d.Value})); Set(gblGo3, CountRows(colGUsr) > 0); If(!gblGo1 && !gblGo2 && !gblGo3, Set(gblErr, "申請するものがありません。組織マスタの要否・表示順、マトリックスのセル、または利用者の新規登録を追加してください。")); If(IsBlank(gblErr) && fInvAllN > 0, Set(gblErr, "多段階承認が無効になった組織区分2 に権限が " & fInvAllN & " 件残っています。ユーザマスタの赤いセルをクリックして外してから申請してください（" & fInvAllTxt & "）。")); If(IsBlank(gblErr) && gblGo3 && fNoAppN > 0 && !gblGateOk, Set(gblStop, true)); If(gblStop, Set(gblModal, "grant")); Set(gblGateOk, false); ClearCollect(colBskO1, ForAll(colO1Chg As c, {V:c.C})); Collect(colBskO1, ForAll(colO2Chg As c, {V:c.O1})); Collect(colBskO1, ForAll(colGChg As c, {V:c.O1})); Collect(colBskO1, ForAll(colNewU As n, {V:n.O1})); Set(gblBskO1N, CountRows(Distinct(colBskO1, V))); Set(gblBskO1, If(gblBskO1N = 1, First(Distinct(colBskO1, V)).Value, gblOrg1)); Set(gblSeqO1, CountRows(colO1Chg)); Set(gblSeqO2, gblSeqO1 + CountRows(colO2Chg)); Set(gblItemN, gblSeqO2 + CountRows(colGUsr)); If(IsBlank(gblErr) && !gblStop, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd-hhmmss") & "-" & Text(RandBetween(100, 999)))); If(IsBlank(gblErr) && !gblStop && !IsBlank(LookUp(PRM_Requests, Title = gblReqNo).Title), Set(gblReqNo, gblReqNo & "-2")); If(IsBlank(gblErr) && !gblStop, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:If(gblGo1 && !gblGo2 && !gblGo3, "ORG1", !gblGo1 && gblGo2 && !gblGo3, "ORG2", !gblGo1 && !gblGo2 && gblGo3, "USER", "MIXED")}, TargetKey:gblBskO1, TargetName:If(gblBskO1N > 1, "複数の組織区分1", Coalesce(LookUp(colOrg1, Title = gblBskO1).NameJa, fP1.NameJa)), Summary:Concat(Filter(Table({n:"組織区分1 の設定 " & CountRows(colO1Chg) & "件",c:gblSeqO1},{n:"組織区分2 の変更 " & CountRows(colO2Chg) & "件",c:CountRows(colO2Chg)},{n:"利用者・権限の変更 " & CountRows(colGUsr) & "名",c:CountRows(colGUsr)}), c > 0), n, "、"), ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:gblItemN, Org1Code:gblBskO1})); If(IsBlank(gblErr) && !gblStop && gblGo1, ForAll(Sequence(CountRows(colO1Chg)) As i, With({c:Index(colO1Chg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(i.Value, "000") & "-01", ReqNo:gblReqNo, Seq:i.Value, GroupKind:"ORG1", GroupKey:c.C, Operation:{Value:"UPDATE"}, EntityKind:{Value:"ORG1"}, EntityKey:c.C, ItemStatus:{Value:"PENDING"}, BeforeJson:JSON({MsExt:c.BExt, MsWlan:c.BWlan, MsCloud:c.BCloud}), AfterJson:JSON({MsExt:c.AExt, MsWlan:c.AWlan, MsCloud:c.ACloud}), ChangeText:c.Nm & "（" & c.C & "）：" & Concat(Filter(Table({n:"外部接続",b:c.BExt,a:c.AExt},{n:"無線LAN",b:c.BWlan,a:c.AWlan},{n:"クラウド",b:c.BCloud,a:c.ACloud}), b <> a), n & " " & If(b, "要", "不要") & "→" & If(a, "要", "不要"), "、")})))); If(IsBlank(gblErr) && !gblStop && gblGo2, ForAll(Sequence(CountRows(colO2Chg)) As i, With({c:Index(colO2Chg, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(gblSeqO1 + i.Value, "000") & "-01", ReqNo:gblReqNo, Seq:gblSeqO1 + i.Value, GroupKind:"ORG2", GroupKey:c.Code, Operation:{Value:c.Op}, EntityKind:{Value:"ORG2"}, EntityKey:c.Code, ItemStatus:{Value:"PENDING"}, BeforeJson:If(c.Op = "ADD", "{}", "{""NameJa"":""" & Substitute(Coalesce(c.BJa, ""), """", "\""") & """,""NameEn"":""" & Substitute(Coalesce(c.BEn, ""), """", "\""") & """,""ApExt"":" & If(c.BExt, "true", "false") & ",""ApWlan"":" & If(c.BWlan, "true", "false") & ",""ApCloud"":" & If(c.BCloud, "true", "false") & ",""SortOrder"":" & c.BSort & "}"), AfterJson:If(c.Op = "DELETE", "{""IsActive"":false}", "{""Org1Code"":""" & c.O1 & """,""NameJa"":""" & Substitute(Coalesce(c.NameJa, ""), """", "\""") & """,""NameEn"":""" & Substitute(Coalesce(c.NameEn, ""), """", "\""") & """,""ApExt"":" & If(c.AExt, "true", "false") & ",""ApWlan"":" & If(c.AWlan, "true", "false") & ",""ApCloud"":" & If(c.ACloud, "true", "false") & ",""SortOrder"":" & c.ASort & "}"), ChangeText:c.NameJa & "（" & c.Code & "）：" & If(c.Op = "ADD", "新規登録（表示順 " & c.ASort & "）", If(c.Op = "DELETE", "削除", Concat(Filter(Table({n:"日本語名称",b:Coalesce(c.BJa, ""),a:Coalesce(c.NameJa, "")},{n:"英語名称",b:Coalesce(c.BEn, ""),a:Coalesce(c.NameEn, "")},{n:"外部接続",b:If(c.BExt, "要", "不要"),a:If(c.AExt, "要", "不要")},{n:"無線LAN",b:If(c.BWlan, "要", "不要"),a:If(c.AWlan, "要", "不要")},{n:"クラウド",b:If(c.BCloud, "要", "不要"),a:If(c.ACloud, "要", "不要")},{n:"表示順",b:Text(c.BSort),a:Text(c.ASort)}), b <> a), n & " " & b & "→" & a, "、")))})))); If(IsBlank(gblErr) && !gblStop && gblGo3, ForAll(Sequence(CountRows(colGUsr)) As u, With({nu:LookUp(colNewU, Gid = Index(colGUsr, u.Value).G), eu:LookUp(colUEdit, Gid = Index(colGUsr, u.Value).G)}, If(!IsBlank(nu.Gid) || !IsBlank(eu.Gid), Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(gblSeqO2 + u.Value, "000") & "-01", ReqNo:gblReqNo, Seq:gblSeqO2 + u.Value, GroupKind:"USER", GroupKey:Index(colGUsr, u.Value).G, Operation:{Value:If(!IsBlank(nu.Gid), "ADD", "UPDATE")}, EntityKind:{Value:"USER"}, EntityKey:Index(colGUsr, u.Value).G, ItemStatus:{Value:"PENDING"}, BeforeJson:If(!IsBlank(nu.Gid), "{}", JSON({FullName:eu.BName, Mail:eu.BMail, Department:eu.BDept})), AfterJson:If(!IsBlank(nu.Gid), JSON({FullName:nu.FullName, Mail:nu.Mail, Department:nu.Dept, AdObjectId:Coalesce(nu.AdOid, "")}), JSON({FullName:eu.FullName, Mail:eu.Mail, Department:eu.Dept})), ChangeText:If(!IsBlank(nu.Gid), nu.FullName & "（" & nu.Gid & "）：利用者を登録（" & If(IsBlank(nu.Dept), "部署未設定", nu.Dept) & "）", eu.FullName & "（" & eu.Gid & "）：基本情報 " & Concat(Filter(Table({n:"氏名",b:Coalesce(eu.BName, ""),a:Coalesce(eu.FullName, "")},{n:"メール",b:Coalesce(eu.BMail, ""),a:Coalesce(eu.Mail, "")},{n:"部署",b:Coalesce(eu.BDept, ""),a:Coalesce(eu.Dept, "")}), b <> a), n & " " & b & "→" & a, "、"))}))))); If(IsBlank(gblErr) && !gblStop && gblGo3, ForAll(Sequence(CountRows(colGUsr)) As u, With({nu:LookUp(colNewU, Gid = Index(colGUsr, u.Value).G)}, If(!IsBlank(nu.Gid), Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(gblSeqO2 + u.Value, "000") & "-02", ReqNo:gblReqNo, Seq:gblSeqO2 + u.Value, GroupKind:"USER", GroupKey:nu.Gid, Operation:{Value:"ADD"}, EntityKind:{Value:"USERORG1"}, EntityKey:nu.Gid & "#" & nu.O1, ItemStatus:{Value:"PENDING"}, BeforeJson:"{}", AfterJson:"{""GlobalId"":""" & nu.Gid & """,""Org1Code"":""" & nu.O1 & """}", ChangeText:nu.FullName & "（" & nu.Gid & "）：所属を追加（" & LookUp(colOrg1, Title = nu.O1).NameJa & "）"}))))); If(IsBlank(gblErr) && !gblStop && gblGo3, ForAll(Sequence(CountRows(colGUsr)) As u, With({g:Index(colGUsr, u.Value).G}, ForAll(Sequence(CountRows(Filter(colGChg, Gid = g))) As i, With({c:Index(Filter(colGChg, Gid = g), i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-" & Text(gblSeqO2 + u.Value, "000") & "-" & Text(i.Value + 10, "00"), ReqNo:gblReqNo, Seq:gblSeqO2 + u.Value, GroupKind:"USER", GroupKey:g, Operation:{Value:If(c.BS = "NONE", "ADD", If(c.NS = "NONE", "DELETE", "UPDATE"))}, EntityKind:{Value:"GRANT"}, EntityKey:c.Gid & "#" & c.O1 & "#" & c.Role, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""ScopeType"":""" & c.BS & """,""Org2Codes"":""" & c.BC & """}", AfterJson:If(c.NS = "NONE", "{""IsActive"":false}", "{""GlobalId"":""" & c.Gid & """,""Org1Code"":""" & c.O1 & """,""RoleCode"":""" & c.Role & """,""ScopeType"":""" & c.NS & """,""Org2Codes"":""" & c.NC & """}"), ChangeText:LookUp(colUsersAll, Title = c.Gid).FullName & "（" & LookUp(fRoles, rc = c.Role).rn & "）：" & If(c.BS = "NONE", "権限なし", If(c.BS = "ALL", "全体", "個別（" & Concat(Filter(colOrg2All, Org1Code = c.O1 && (";" & Title & ";") in c.BC), NameJa, "、") & "）")) & "→" & If(c.NS = "NONE", "権限なし", If(c.NS = "ALL", "全体", "個別（" & Concat(Filter(colO2Edit, Org1Code = c.O1 && (";" & Title & ";") in c.NC), NameJa, "、") & "）"))})))))); If(IsBlank(gblErr) && !gblStop, Clear(colNewU)); If(IsBlank(gblErr) && !gblStop, Clear(colUEdit)); If(IsBlank(gblErr) && !gblStop, ClearCollect(colO1Edit, colOrg1)); If(IsBlank(gblErr) && !gblStop, ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false}))); If(IsBlank(gblErr) && !gblStop, ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(IsBlank(gblErr) && !gblStop, ClearCollect(colPendO2, ForAll(Filter(PRM_RequestItems, EntityKind.Value = "ORG2", Operation.Value = "ADD") As i, {C:i.EntityKey}))); If(IsBlank(gblErr) && !gblStop, If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1 || ApplicantId = gblMeGid, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})))); If(IsBlank(gblErr) && !gblStop, Notify("申請しました（" & gblReqNo & "／明細 " & gblItemN & "件）。管理者が内容を確認して作業します。", NotificationType.Success)); If(!IsBlank(gblErr), Notify(gblErr, NotificationType.Warning)); Set(gblStep, 0); Set(gblStepMax, 0); Clear(colHst1); Clear(colHst2); Clear(colHstG); Clear(colHstN); Clear(colHstU); Collect(colHst1, ForAll(colO1Edit As e, {S:0, R:e})); Collect(colHst2, ForAll(colO2Edit As e, {S:0, R:e})); Collect(colHstG, ForAll(colGEdit As e, {S:0, R:e})); Collect(colHstN, ForAll(colNewU As e, {S:0, R:e})); Collect(colHstU, ForAll(colUEdit As e, {S:0, R:e}))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -3418,7 +3418,7 @@ Screens:
           RadiusTopRight: =5
           RadiusBottomLeft: =5
           RadiusBottomRight: =5
-          OnSelect: =Set(gblModalWas, gblModal); If(gblModalWas = "new" && !IsBlank(inpO2Ja.Text), Collect(colO2Edit, {Title:fO2NextCode, NameJa:inpO2Ja.Text, NameEn:inpO2En.Text, Org1Code:gblOrg1, SortOrder:Coalesce(Max(Filter(colO2Edit, Org1Code = gblOrg1), SortOrder), 0) + 1, ApExt:false, ApWlan:false, ApCloud:false, IsNew:true, IsDel:false})); If(gblModalWas = "new" && !IsBlank(inpO2Ja.Text), Set(gblModal, "")); If(gblModalWas = "new" && IsBlank(inpO2Ja.Text), Notify("日本語名称を入力してください。", NotificationType.Warning)); If(gblModalWas = "grant", Set(gblGateOk, true)); If(gblModalWas = "grant", Set(gblModal, "")); If(gblModalWas = "grant", Select(btnSubmitAll))
+          OnSelect: =Set(gblModalWas, gblModal); If(gblModalWas = "new" && !IsBlank(inpO2Ja.Text), Collect(colO2Edit, {Title:fO2NextCode, NameJa:inpO2Ja.Text, NameEn:inpO2En.Text, Org1Code:gblOrg1, SortOrder:Coalesce(Max(Filter(colO2Edit, Org1Code = gblOrg1), SortOrder), 0) + 1, ApExt:false, ApWlan:false, ApCloud:false, IsNew:true, IsDel:false})); If(gblModalWas = "new" && !IsBlank(inpO2Ja.Text), Set(gblModal, "")); If(gblModalWas = "new" && IsBlank(inpO2Ja.Text), Notify("日本語名称を入力してください。", NotificationType.Warning)); If(gblModalWas = "grant", Set(gblGateOk, true)); If(gblModalWas = "grant", Set(gblModal, "")); If(gblModalWas = "grant", Select(btnSubmitAll)); Select(btnSnapH)
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -3994,9 +3994,65 @@ Screens:
           Size: =12
           Text: ="　申請中の変更が " & fPendN & " 件あります（押すと申請履歴へ）"
           Visible: =(gblTab = "org" || gblTab = "user") && !gblRO && fPendN > 0
-          Width: =Parent.Width - 352
+          Width: =Parent.Width - 548
           X: =324
           Y: =130
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - btnSnapH:
+        Control: ModernText@1.0.0
+        Properties:
+          OnSelect: =Set(gblStep, gblStep + 1); RemoveIf(colHst1, S >= gblStep); RemoveIf(colHst2, S >= gblStep); RemoveIf(colHstG, S >= gblStep); RemoveIf(colHstN, S >= gblStep); RemoveIf(colHstU, S >= gblStep); Collect(colHst1, ForAll(colO1Edit As e, {S:gblStep, R:e})); Collect(colHst2, ForAll(colO2Edit As e, {S:gblStep, R:e})); Collect(colHstG, ForAll(colGEdit As e, {S:gblStep, R:e})); Collect(colHstN, ForAll(colNewU As e, {S:gblStep, R:e})); Collect(colHstU, ForAll(colUEdit As e, {S:gblStep, R:e})); Set(gblStepMax, gblStep)
+          Height: =1
+          Text: =""
+          Visible: =false
+          Width: =1
+          X: =0
+          Y: =0
+    - btnUndoH:
+        Control: ModernText@1.0.0
+        Properties:
+          Color: =If(gblStep > 0, RGBA(74, 71, 64, 1), RGBA(180, 176, 168, 1))
+          Fill: =If(gblStep > 0, RGBA(232, 228, 216, 1), RGBA(240, 238, 231, 1))
+          OnSelect: =If(gblStep > 0, Set(gblStep, gblStep - 1); ClearCollect(colO1Edit, ForAll(Filter(colHst1, S = gblStep) As h, h.R)); ClearCollect(colO2Edit, ForAll(Filter(colHst2, S = gblStep) As h, h.R)); ClearCollect(colGEdit, ForAll(Filter(colHstG, S = gblStep) As h, h.R)); ClearCollect(colNewU, ForAll(Filter(colHstN, S = gblStep) As h, h.R)); ClearCollect(colUEdit, ForAll(Filter(colHstU, S = gblStep) As h, h.R)))
+          Text: ="↶ 元に戻す"
+          Visible: =(gblTab = "org" || gblTab = "user") && !gblRO
+          Width: =96
+          X: =Parent.Width - 214
+          Y: =130
+          Align: ='TextCanvas.Align'.Center
+          FontWeight: ='TextCanvas.Weight'.Bold
+          Height: =34
+          RadiusTopLeft: =5
+          RadiusTopRight: =5
+          RadiusBottomLeft: =5
+          RadiusBottomRight: =5
+          Size: =12
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - btnRedoH:
+        Control: ModernText@1.0.0
+        Properties:
+          Color: =If(gblStep < gblStepMax, RGBA(74, 71, 64, 1), RGBA(180, 176, 168, 1))
+          Fill: =If(gblStep < gblStepMax, RGBA(232, 228, 216, 1), RGBA(240, 238, 231, 1))
+          OnSelect: =If(gblStep < gblStepMax, Set(gblStep, gblStep + 1); ClearCollect(colO1Edit, ForAll(Filter(colHst1, S = gblStep) As h, h.R)); ClearCollect(colO2Edit, ForAll(Filter(colHst2, S = gblStep) As h, h.R)); ClearCollect(colGEdit, ForAll(Filter(colHstG, S = gblStep) As h, h.R)); ClearCollect(colNewU, ForAll(Filter(colHstN, S = gblStep) As h, h.R)); ClearCollect(colUEdit, ForAll(Filter(colHstU, S = gblStep) As h, h.R)))
+          Text: ="↷ やり直す"
+          Visible: =(gblTab = "org" || gblTab = "user") && !gblRO
+          Width: =96
+          X: =Parent.Width - 112
+          Y: =130
+          Align: ='TextCanvas.Align'.Center
+          FontWeight: ='TextCanvas.Weight'.Bold
+          Height: =34
+          RadiusTopLeft: =5
+          RadiusTopRight: =5
+          RadiusBottomLeft: =5
+          RadiusBottomRight: =5
+          Size: =12
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
