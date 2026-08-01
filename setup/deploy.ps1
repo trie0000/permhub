@@ -292,7 +292,8 @@ Copy-Item $zipIn $zipOut -Force
 
 $zip = [System.IO.Compression.ZipFile]::Open($zipOut, [System.IO.Compression.ZipArchiveMode]::Update)
 try {
-  $entries = @($zip.Entries | Where-Object { $_.FullName -like 'CanvasApps/*.msapp' })
+  # zip 内の区切りは / とは限らない。Studio が保存した .msapp は円記号で入っている
+  $entries = @($zip.Entries | Where-Object { $_.FullName.Replace('\', '/') -like 'CanvasApps/*.msapp' })
   if ($entries.Count -eq 0) {
     Write-Warn 'このソリューションの中身:'
     foreach ($e in $zip.Entries) { Write-Host "      $($e.FullName)" }
@@ -322,7 +323,7 @@ try {
   # .msapp のファイル名は接頭辞_英数字だけのスラッグ_id なので、名前が日本語だと
   # 空になって判別できない。customizations.xml の表示名を出す
   $appDisp = ''
-  $cx = $zip.Entries | Where-Object { $_.FullName -eq 'customizations.xml' }
+  $cx = $zip.Entries | Where-Object { $_.FullName.Replace('\', '/') -eq 'customizations.xml' }
   if ($cx) {
     $rd = New-Object System.IO.StreamReader($cx.Open(), [System.Text.Encoding]::UTF8)
     try { $xml = $rd.ReadToEnd() } finally { $rd.Dispose() }
@@ -341,7 +342,7 @@ try {
   $have = @()
   $app = [System.IO.Compression.ZipFile]::OpenRead($msappPath)
   try {
-    $dsEntry = $app.Entries | Where-Object { $_.FullName -eq 'References/DataSources.json' }
+    $dsEntry = $app.Entries | Where-Object { $_.FullName.Replace('\', '/') -eq 'References/DataSources.json' }
     if ($dsEntry) {
       $rd = New-Object System.IO.StreamReader($dsEntry.Open(), [System.Text.Encoding]::UTF8)
       try { $have = @((($rd.ReadToEnd()) | ConvertFrom-Json).DataSources | ForEach-Object { $_.Name }) }
