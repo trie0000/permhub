@@ -486,7 +486,11 @@ CanvasApps/cr875_permhubsolutiontest_09c62_DocumentUri.msapp
    | SharePoint リスト | `PRM_Config` `PRM_Grants` `PRM_Org1` `PRM_Org2` `PRM_RequestItems` `PRM_Requests` `PRM_UserOrg1` `PRM_Users` |
    | コネクタ | `Office365ユーザー` `Office365グループ`（英語環境なら `Office365Users` / `Office365Groups`） |
 
-4. **保存して、タブを閉じる** — 開いたままだとソリューションに追加できない
+4. **保存して、公開して、タブを閉じる** — **保存だけでは足りない。**
+   `pac solution export` が取ってくるのは**公開済みのバージョン**なので、
+   公開しないとデータソースを足したことが反映されず、`deploy.ps1` が
+   「アプリに無い名前」として 10 個とも並べて止まる。
+   右上「公開」→「このバージョンを公開する」。開いたままだとソリューションにも追加できない
 5. **ソリューションを作り、このアプリを追加する** — 9-2 / 9-3
 6. **流し込む**
 
