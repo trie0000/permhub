@@ -81,4 +81,9 @@ fBskRowH = Max(56, 22 * Coalesce(Max(colBsk, CountRows(Split(Txt, Char(10)))), 1
 fROChgH = If(IsBlank(gblROChg), 0, 22 * CountRows(Split(gblROChg, Char(10))) + 34);
 fPendO1 = Filter(colPendItem, O1 = gblOrg1);
 fPendN = CountRows(fPendO1);
-fNoAppRole = ForAll(fRoles As r, {rc:r.rc, n:CountRows(Filter(colOrg2All, Org1Code = gblUserOrg1 && If(r.rc = "EXTCONN", fP1U.MsExt && ApExt, If(r.rc = "WLAN", fP1U.MsWlan && ApWlan, If(r.rc = "CLOUD", fP1U.MsCloud && ApCloud, (fP1U.MsExt && ApExt) || (fP1U.MsWlan && ApWlan) || (fP1U.MsCloud && ApCloud)))) && CountRows(Filter(colGEdit, O1 = gblUserOrg1 && Role = r.rc && (Scope = "ALL" || (Scope = "PICK" && (";" & Title & ";") in Coalesce(Codes, ""))))) = 0))})
+fNoAppRole = ForAll(fRoles As r, {rc:r.rc, n:CountRows(Filter(colOrg2All, Org1Code = gblUserOrg1 && If(r.rc = "EXTCONN", fP1U.MsExt && ApExt, If(r.rc = "WLAN", fP1U.MsWlan && ApWlan, If(r.rc = "CLOUD", fP1U.MsCloud && ApCloud, (fP1U.MsExt && ApExt) || (fP1U.MsWlan && ApWlan) || (fP1U.MsCloud && ApCloud)))) && CountRows(Filter(colGEdit, O1 = gblUserOrg1 && Role = r.rc && (Scope = "ALL" || (Scope = "PICK" && (";" & Title & ";") in Coalesce(Codes, ""))))) = 0))});
+fChgTabO = fO1ChgN + fO2ChgN;
+fChgTabU = CountRows(fChg) + CountRows(Filter(colNewU, O1 = gblOrg1)) + CountRows(colUEdit);
+fChgRole = ForAll(fRoles As r, {rc:r.rc, n:CountRows(Filter(fChg, Role = r.rc))});
+fChgRoleU = ForAll(fRoles As r, {rc:r.rc, n:CountRows(Filter(fUChg, Role = r.rc && O1 = gblUserOrg1))});
+fChgByO1 = ForAll(colOrg1 As o, {C:o.Title, n:CountRows(Filter(fO1ChgAll, C = o.Title)) + CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = o.Title) As e, With({x:LookUp(colOrg2All, Title = e.Title)}, {Chg:e.IsNew || e.IsDel || (e.NameJa <> x.NameJa) || (e.NameEn <> x.NameEn) || (e.ApExt <> x.ApExt) || (e.ApWlan <> x.ApWlan) || (e.ApCloud <> x.ApCloud) || (e.SortOrder <> x.SortOrder)})), Chg)) + CountRows(Filter(fChgAll, O1 = o.Title)) + CountRows(Filter(colNewU, O1 = o.Title))})

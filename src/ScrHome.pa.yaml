@@ -71,7 +71,7 @@ Screens:
         Control: ModernDropdown@1.0.2
         Properties:
           Items: =colMyOrg1
-          ItemDisplayText: =ThisItem.NameJa
+          ItemDisplayText: =If(Coalesce(LookUp(fChgByO1, C = ThisItem.Title).n, 0) > 0, "・", "") & ThisItem.NameJa
           Default: =LookUp(colMyOrg1, Title = gblOrg1)
           OnChange: =Set(gblOrg1, drpOrg1.Selected.Title); Set(gblPage, 0); If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")}))); Select(btnInitOM)
           X: =28
@@ -100,7 +100,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(gblTab = "org", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          Color: =If(fChgTabO > 0, RGBA(198, 122, 58, 1), If(gblTab = "org", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1)))
           Fill: =If(gblTab = "org", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
           FontWeight: =If(gblTab = "org", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =40
@@ -110,7 +110,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =13
-          Text: ="組織マスタ"
+          Text: =If(fChgTabO > 0, "・", "") & "組織マスタ"
           Width: =150
           X: =28
           Y: =62
@@ -138,7 +138,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(gblTab = "user", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          Color: =If(fChgTabU > 0, RGBA(198, 122, 58, 1), If(gblTab = "user", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1)))
           Fill: =If(gblTab = "user", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
           FontWeight: =If(gblTab = "user", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =40
@@ -148,7 +148,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =13
-          Text: ="ユーザマスタ"
+          Text: =If(fChgTabU > 0, "・", "") & "ユーザマスタ"
           Width: =150
           X: =186
           Y: =62
@@ -1054,6 +1054,16 @@ Screens:
                   PaddingTop: =0
                   PaddingBottom: =0
                   VerticalAlign: =VerticalAlign.Middle
+            - o2Strike:
+                Control: ModernText@1.0.0
+                Properties:
+                  Fill: =RGBA(184, 83, 74, 1)
+                  Height: =1
+                  Text: =""
+                  Visible: =ThisItem.IsDel || !IsBlank(LookUp(colPendItem, GK = "ORG2" && GKey = ThisItem.Title && Op = "DELETE").No)
+                  Width: =440
+                  X: =0
+                  Y: =21
     - lblO2Warn:
         Control: ModernText@1.0.0
         Properties:
@@ -1095,7 +1105,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(gblView = "SECMGR", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          Color: =If(Coalesce(LookUp(fChgRole, rc = "SECMGR").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblView = "SECMGR", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1)))
           Fill: =If(gblView = "SECMGR", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
           FontWeight: =If(gblView = "SECMGR", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
@@ -1105,7 +1115,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: ="事業場IT責任者"
+          Text: =If(Coalesce(LookUp(fChgRole, rc = "SECMGR").n, 0) > 0, "・", "") & "事業場IT責任者"
           Visible: =gblTab = "user"
           Width: =150
           X: =28
@@ -1118,7 +1128,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(gblView = "CONFORM", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          Color: =If(Coalesce(LookUp(fChgRole, rc = "CONFORM").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblView = "CONFORM", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1)))
           Fill: =If(gblView = "CONFORM", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
           FontWeight: =If(gblView = "CONFORM", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
@@ -1128,7 +1138,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: ="適合化"
+          Text: =If(Coalesce(LookUp(fChgRole, rc = "CONFORM").n, 0) > 0, "・", "") & "適合化"
           Visible: =gblTab = "user"
           Width: =118
           X: =184
@@ -1141,7 +1151,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(gblView = "EXTCONN", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          Color: =If(Coalesce(LookUp(fChgRole, rc = "EXTCONN").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblView = "EXTCONN", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1)))
           Fill: =If(gblView = "EXTCONN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
           FontWeight: =If(gblView = "EXTCONN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
@@ -1151,7 +1161,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: ="外部接続"
+          Text: =If(Coalesce(LookUp(fChgRole, rc = "EXTCONN").n, 0) > 0, "・", "") & "外部接続"
           Visible: =gblTab = "user"
           Width: =118
           X: =308
@@ -1164,7 +1174,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(gblView = "WLAN", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          Color: =If(Coalesce(LookUp(fChgRole, rc = "WLAN").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblView = "WLAN", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1)))
           Fill: =If(gblView = "WLAN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
           FontWeight: =If(gblView = "WLAN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
@@ -1174,7 +1184,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: ="無線LAN"
+          Text: =If(Coalesce(LookUp(fChgRole, rc = "WLAN").n, 0) > 0, "・", "") & "無線LAN"
           Visible: =gblTab = "user"
           Width: =118
           X: =432
@@ -1187,7 +1197,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(gblView = "CLOUD", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          Color: =If(Coalesce(LookUp(fChgRole, rc = "CLOUD").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblView = "CLOUD", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1)))
           Fill: =If(gblView = "CLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
           FontWeight: =If(gblView = "CLOUD", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
@@ -1197,7 +1207,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: ="クラウド"
+          Text: =If(Coalesce(LookUp(fChgRole, rc = "CLOUD").n, 0) > 0, "・", "") & "クラウド"
           Visible: =gblTab = "user"
           Width: =118
           X: =556
@@ -1210,7 +1220,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(gblView = "INFOSEC", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          Color: =If(Coalesce(LookUp(fChgRole, rc = "INFOSEC").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblView = "INFOSEC", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1)))
           Fill: =If(gblView = "INFOSEC", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
           FontWeight: =If(gblView = "INFOSEC", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
@@ -1220,7 +1230,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: ="情報セキュリティ"
+          Text: =If(Coalesce(LookUp(fChgRole, rc = "INFOSEC").n, 0) > 0, "・", "") & "情報セキュリティ"
           Visible: =gblTab = "user"
           Width: =150
           X: =680
@@ -2179,13 +2189,13 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG1 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          Color: =If(CountRows(Filter(fChg, Gid = fG1)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG1 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG1).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG1)) > 0, "● ", "") & If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG1 && Op = "DELETE").No), Concat(Split(LookUp(colUsersAll, Title = fG1).FullName, ""), Result & UniChar(822)), LookUp(colUsersAll, Title = fG1).FullName)
 
             '
           Visible: '=gblTab = "user"
@@ -2225,13 +2235,13 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG2 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          Color: =If(CountRows(Filter(fChg, Gid = fG2)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG2 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG2).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG2)) > 0, "● ", "") & If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG2 && Op = "DELETE").No), Concat(Split(LookUp(colUsersAll, Title = fG2).FullName, ""), Result & UniChar(822)), LookUp(colUsersAll, Title = fG2).FullName)
 
             '
           Visible: '=gblTab = "user"
@@ -2271,13 +2281,13 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG3 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          Color: =If(CountRows(Filter(fChg, Gid = fG3)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG3 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG3).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG3)) > 0, "● ", "") & If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG3 && Op = "DELETE").No), Concat(Split(LookUp(colUsersAll, Title = fG3).FullName, ""), Result & UniChar(822)), LookUp(colUsersAll, Title = fG3).FullName)
 
             '
           Visible: '=gblTab = "user"
@@ -2317,13 +2327,13 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG4 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          Color: =If(CountRows(Filter(fChg, Gid = fG4)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG4 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG4).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG4)) > 0, "● ", "") & If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG4 && Op = "DELETE").No), Concat(Split(LookUp(colUsersAll, Title = fG4).FullName, ""), Result & UniChar(822)), LookUp(colUsersAll, Title = fG4).FullName)
 
             '
           Visible: '=gblTab = "user"
@@ -2363,13 +2373,13 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG5 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          Color: =If(CountRows(Filter(fChg, Gid = fG5)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG5 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG5).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG5)) > 0, "● ", "") & If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG5 && Op = "DELETE").No), Concat(Split(LookUp(colUsersAll, Title = fG5).FullName, ""), Result & UniChar(822)), LookUp(colUsersAll, Title = fG5).FullName)
 
             '
           Visible: '=gblTab = "user"
@@ -2409,13 +2419,13 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG6 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          Color: =If(CountRows(Filter(fChg, Gid = fG6)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG6 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG6).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG6)) > 0, "● ", "") & If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG6 && Op = "DELETE").No), Concat(Split(LookUp(colUsersAll, Title = fG6).FullName, ""), Result & UniChar(822)), LookUp(colUsersAll, Title = fG6).FullName)
 
             '
           Visible: '=gblTab = "user"
@@ -2455,13 +2465,13 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG7 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          Color: =If(CountRows(Filter(fChg, Gid = fG7)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG7 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG7).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG7)) > 0, "● ", "") & If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG7 && Op = "DELETE").No), Concat(Split(LookUp(colUsersAll, Title = fG7).FullName, ""), Result & UniChar(822)), LookUp(colUsersAll, Title = fG7).FullName)
 
             '
           Visible: '=gblTab = "user"
@@ -2501,13 +2511,13 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG8 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          Color: =If(CountRows(Filter(fChg, Gid = fG8)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG8 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG8).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG8)) > 0, "● ", "") & If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG8 && Op = "DELETE").No), Concat(Split(LookUp(colUsersAll, Title = fG8).FullName, ""), Result & UniChar(822)), LookUp(colUsersAll, Title = fG8).FullName)
 
             '
           Visible: '=gblTab = "user"
@@ -2524,13 +2534,13 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG9 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          Color: =If(CountRows(Filter(fChg, Gid = fG9)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG9 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG9).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG9)) > 0, "● ", "") & If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG9 && Op = "DELETE").No), Concat(Split(LookUp(colUsersAll, Title = fG9).FullName, ""), Result & UniChar(822)), LookUp(colUsersAll, Title = fG9).FullName)
 
             '
           Visible: '=gblTab = "user"
@@ -2547,13 +2557,13 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG10 && Role = gblView)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
+          Color: =If(CountRows(Filter(fChg, Gid = fG10)) > 0, RGBA(198, 122, 58, 1), RGBA(42, 42, 38, 1))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG10 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG10).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG10)) > 0, "● ", "") & If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG10 && Op = "DELETE").No), Concat(Split(LookUp(colUsersAll, Title = fG10).FullName, ""), Result & UniChar(822)), LookUp(colUsersAll, Title = fG10).FullName)
 
             '
           Visible: '=gblTab = "user"

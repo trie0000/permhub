@@ -416,7 +416,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(gblUserRole = "SECMGR", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "SECMGR").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "SECMGR", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
           Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "SECMGR").n, 0) > 0, If(gblUserRole = "SECMGR", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "SECMGR", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "SECMGR", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
@@ -428,7 +428,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: =With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "SECMGR")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "事業場ITセキュリティ責任者"
+          Text: =If(Coalesce(LookUp(fChgRoleU, rc = "SECMGR").n, 0) > 0, "・", "") & With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "SECMGR")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "事業場ITセキュリティ責任者"
           Width: =300
           X: =52
           Y: =418
@@ -455,7 +455,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(gblUserRole = "CONFORM", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "CONFORM").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "CONFORM", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
           Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "CONFORM").n, 0) > 0, If(gblUserRole = "CONFORM", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "CONFORM", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "CONFORM", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
@@ -467,7 +467,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: =With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "CONFORM")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "適合化担当"
+          Text: =If(Coalesce(LookUp(fChgRoleU, rc = "CONFORM").n, 0) > 0, "・", "") & With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "CONFORM")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "適合化担当"
           Width: =300
           X: =52
           Y: =458
@@ -494,7 +494,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(gblUserRole = "EXTCONN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "EXTCONN").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "EXTCONN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
           Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "EXTCONN").n, 0) > 0, If(gblUserRole = "EXTCONN", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "EXTCONN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "EXTCONN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
@@ -506,7 +506,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: =With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "EXTCONN")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "外部接続申請担当"
+          Text: =If(Coalesce(LookUp(fChgRoleU, rc = "EXTCONN").n, 0) > 0, "・", "") & With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "EXTCONN")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "外部接続申請担当"
           Width: =300
           X: =52
           Y: =498
@@ -533,7 +533,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(gblUserRole = "WLAN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "WLAN").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "WLAN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
           Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "WLAN").n, 0) > 0, If(gblUserRole = "WLAN", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "WLAN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "WLAN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
@@ -545,7 +545,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: =With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "WLAN")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "無線LAN申請担当"
+          Text: =If(Coalesce(LookUp(fChgRoleU, rc = "WLAN").n, 0) > 0, "・", "") & With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "WLAN")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "無線LAN申請担当"
           Width: =300
           X: =52
           Y: =538
@@ -572,7 +572,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(gblUserRole = "CLOUD", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "CLOUD").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "CLOUD", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
           Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "CLOUD").n, 0) > 0, If(gblUserRole = "CLOUD", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "CLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "CLOUD", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
@@ -584,7 +584,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: =With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "CLOUD")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "クラウド申請担当"
+          Text: =If(Coalesce(LookUp(fChgRoleU, rc = "CLOUD").n, 0) > 0, "・", "") & With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "CLOUD")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "クラウド申請担当"
           Width: =300
           X: =52
           Y: =578
@@ -611,7 +611,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(gblUserRole = "INFOSEC", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "INFOSEC").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "INFOSEC", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
           Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "INFOSEC").n, 0) > 0, If(gblUserRole = "INFOSEC", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "INFOSEC", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "INFOSEC", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
@@ -623,7 +623,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: =With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "INFOSEC")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "情報セキュリティ担当"
+          Text: =If(Coalesce(LookUp(fChgRoleU, rc = "INFOSEC").n, 0) > 0, "・", "") & With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "INFOSEC")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "情報セキュリティ担当"
           Width: =300
           X: =52
           Y: =618
