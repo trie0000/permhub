@@ -18,6 +18,9 @@
 .PARAMETER Screens
   差し替える画面。既定は ScrHome / ScrUser / ScrReq。
 
+.PARAMETER NoDataSourceCheck
+  データソース名が足りなくても止めない。
+
 .PARAMETER WithApp
   src/App.Formulas.txt と src/App.OnStart.txt もアプリへ反映する。
   既定では中身を突き合わせて、違っていれば知らせるだけ。
@@ -41,7 +44,8 @@ param(
   [string[]]$Screens = @('ScrHome', 'ScrUser', 'ScrReq'),
   [switch]$NoImport,
   [switch]$PruneScreens,
-  [switch]$WithApp
+  [switch]$WithApp,
+  [switch]$NoDataSourceCheck
 )
 
 $ErrorActionPreference = 'Stop'
@@ -350,9 +354,25 @@ try {
   if ($missing.Count -gt 0) {
     Write-Warn 'src が使っているのにアプリに無い名前:'
     foreach ($m in $missing) { Write-Host "      $m" -ForegroundColor Yellow }
-    Write-Warn 'このままだと App.OnStart 全体がエラーになり、グローバル変数が'
-    Write-Warn '一切セットされず、全画面が名前エラーで埋まる。アプリ側で'
-    Write-Warn 'この名前のデータソースを追加するか、src の側を実際の名前に合わせる。'
+    if (-not $NoDataSourceCheck) {
+      $zip.Dispose()
+      Stop-Here @'
+このまま入れると壊れたアプリになるので止めた。
+
+データソースはリストの GUID とサイト URL に紐づいているので、YAML では作れない。
+アプリを開いて、その環境の SharePoint サイトに対して自分で追加するしかない。
+
+  左の「データ」→「データの追加」→ SharePoint → サイトを選ぶ
+  → 上に出た名前のリストにチェック → 接続
+
+コネクタ（Office365... ）は同じ画面の検索から追加する。名前は環境の表示言語に
+なるので、日本語環境なら Office365ユーザー / Office365グループ。
+
+追加したら保存して、タブを閉じてから、もう一度このスクリプトを流す。
+
+止めずに進めるなら -NoDataSourceCheck。
+'@
+    }
   }
   else { Write-Host '  src が使う名前はすべて揃っている' }
 
@@ -442,6 +462,23 @@ try {
     elseif ($r.State -eq 'added') { Write-Warn "App.$prop がアプリに無い。入れるなら -WithApp" }
     else { Write-Warn "App.$prop がアプリ側と違う。反映するなら -WithApp" }
   }
+  # 画面を消したときに StartScreen がその画面を指したままだとアプリが開けない。
+  # 新規の空アプリに流し込むと必ずこれになる（Screen1 を消すため）
+  $present = @(Get-ChildItem -Path $srcIn -Filter '*.pa.yaml' -File |
+    Where-Object { $_.Name -ne 'App.pa.yaml' -and $_.Name -notlike '_*' } |
+    ForEach-Object { $_.Name -replace '\.pa\.yaml$', '' })
+  for ($k = 0; $k -lt $appLines.Count; $k++) {
+    if ($appLines[$k] -match '^    StartScreen:\s*=\s*(.+?)\s*$') {
+      $cur = $Matches[1]
+      if ($present -notcontains $cur) {
+        $appLines[$k] = '    StartScreen: =' + $Screens[0]
+        $appChanged = $true
+        Write-Warn "StartScreen が $cur を指していたが、その画面は無い。$($Screens[0]) にした"
+      }
+      break
+    }
+  }
+
   if ($appChanged) {
     Set-Content -LiteralPath $appYaml -Value $appLines -Encoding UTF8
   }
