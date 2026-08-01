@@ -276,7 +276,7 @@ Screens:
           Fill: =RGBA(122, 138, 120, 1)
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =34
-          OnSelect: =Set(gblAdMsg, ""); Set(gblAdOid, ""); ClearCollect(colAdHit, Office365ユーザー.SearchUserV2({searchTerm:Trim(txtMail.Text), top:10}).value); Set(gblAdOid, Coalesce(LookUp(colAdHit, Lower(Coalesce(mail, "")) = Lower(Trim(txtMail.Text))).id, LookUp(colAdHit, Lower(Coalesce(userPrincipalName, "")) = Lower(Trim(txtMail.Text))).id, "")); If(IsBlank(gblAdOid), Set(gblAdMsg, "そのメールアドレスの利用者が Entra ID に見つかりません。"), Set(gblAdP, Office365ユーザー.UserProfileV2(gblAdOid)); Set(gblAdName, Coalesce(gblAdP.displayName, "")); Set(gblAdDept, Coalesce(gblAdP.department, "")); Set(gblAdMail, Coalesce(gblAdP.mail, Trim(txtMail.Text))); Set(gblAdMsg, "Entra ID から取得しました。")); Reset(txtName); Reset(txtDept); Reset(txtMail)
+          OnSelect: =Set(gblAdMsg, ""); Set(gblAdOid, ""); IfError(Set(gblAdP, Office365ユーザー.UserProfileV2(Trim(txtMail.Text))); Set(gblAdOid, Coalesce(gblAdP.id, "")); Set(gblAdName, Coalesce(gblAdP.displayName, "")); Set(gblAdDept, Coalesce(gblAdP.department, "")); Set(gblAdMail, Coalesce(gblAdP.mail, Trim(txtMail.Text))); Set(gblAdMsg, "Entra ID から取得しました。"), Set(gblAdOid, ""); Set(gblAdMsg, "そのメールアドレスの利用者が Entra ID に見つかりません。")); Reset(txtName); Reset(txtDept); Reset(txtMail)
           RadiusTopLeft: =5
           RadiusTopRight: =5
           RadiusBottomLeft: =5

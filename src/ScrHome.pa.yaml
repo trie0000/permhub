@@ -3994,7 +3994,7 @@ Screens:
           Size: =12
           Text: ="　申請中の変更が " & fPendN & " 件あります（押すと申請履歴へ）"
           Visible: =(gblTab = "org" || gblTab = "user") && !gblRO && fPendN > 0
-          Width: =Parent.Width - 548
+          Width: =Parent.Width - 650
           X: =324
           Y: =130
           Wrap: =true
@@ -4053,6 +4053,29 @@ Screens:
           RadiusBottomLeft: =5
           RadiusBottomRight: =5
           Size: =12
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - btnReload:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(fBskN > 0, RGBA(180, 176, 168, 1), RGBA(74, 71, 64, 1))
+          Fill: =If(fBskN > 0, RGBA(240, 238, 231, 1), RGBA(232, 228, 216, 1))
+          FontWeight: ='TextCanvas.Weight'.Bold
+          Height: =34
+          OnSelect: =If(fBskN > 0, Notify("編集中の内容があります。申請するか取り消してから読み直してください。", NotificationType.Warning), Refresh(PRM_Org1); Refresh(PRM_Org2); Refresh(PRM_Users); Refresh(PRM_Grants); Refresh(PRM_UserOrg1); ClearCollect(colOrg1, Sort(Filter(PRM_Org1, IsActive = true), SortOrder)); ClearCollect(colO1Edit, colOrg1); ClearCollect(colOrg2All, Sort(Filter(PRM_Org2, IsActive = true), SortOrder)); ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false})); ClearCollect(colO2Any, ForAll(PRM_Org2 As o2, {Title:o2.Title, Org1Code:o2.Org1Code})); ClearCollect(colUsersAll, Filter(PRM_Users, IsActive = true)); ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true)); ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")})); ClearCollect(colMemberAll, Filter(PRM_UserOrg1, IsActive = true)); Notify("マスタを読み直しました。", NotificationType.Success); Select(btnSnapH))
+          RadiusTopLeft: =5
+          RadiusTopRight: =5
+          RadiusBottomLeft: =5
+          RadiusBottomRight: =5
+          Size: =12
+          Text: ="⟳ 読み直す"
+          Visible: =(gblTab = "org" || gblTab = "user") && !gblRO
+          Width: =96
+          X: =Parent.Width - 316
+          Y: =130
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
