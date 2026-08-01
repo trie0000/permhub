@@ -2,7 +2,7 @@ Screens:
   ScrUser:
     Properties:
       Fill: =RGBA(243, 241, 234, 1)
-      OnVisible: =Set(gblU, LookUp(colUsersAll, Title = gblUserGid)); Set(gblGid, If(gblUserMode = "New", "", gblUserGid)); Set(gblAdName, If(gblUserMode = "New", "", Coalesce(gblU.FullName, ""))); Set(gblAdMail, If(gblUserMode = "New", "", Coalesce(gblU.Mail, ""))); Set(gblAdDept, If(gblUserMode = "New", "", Coalesce(gblU.Department, ""))); Set(gblAdOid, If(gblUserMode = "New", "", Coalesce(gblU.AdObjectId, ""))); Set(gblAdMsg, ""); Set(gblErr, ""); Set(gblModal, ""); Reset(txtGid); Reset(txtName); Reset(txtMail); Reset(txtDept)
+      OnVisible: =Set(gblU, LookUp(colUsersAll, Title = gblUserGid)); Set(gblGid, If(gblUserMode = "New", "", gblUserGid)); Set(gblAdName, If(gblUserMode = "New", "", Coalesce(gblU.FullName, ""))); Set(gblAdMail, If(gblUserMode = "New", "", Coalesce(gblU.Mail, ""))); Set(gblAdDept, If(gblUserMode = "New", "", Coalesce(gblU.Department, ""))); Set(gblAdOid, If(gblUserMode = "New", "", Coalesce(gblU.AdObjectId, ""))); Set(gblAdMsg, ""); Set(gblErr, ""); Set(gblModal, ""); Reset(txtGid); Reset(txtName); Reset(txtMail); Reset(txtDept); Select(btnInitU)
     Children:
     - uHdrBg:
         Control: ModernText@1.0.0
@@ -883,7 +883,7 @@ Screens:
           Fill: =If(gblUserMode = "New", RGBA(122, 138, 120, 1), If(fUChgN + If(gblUserMode <> "New" && ((Trim(txtName.Text) <> Coalesce(gblU.FullName, "")) || (Trim(txtMail.Text) <> Coalesce(gblU.Mail, "")) || (Trim(txtDept.Text) <> Coalesce(gblU.Department, ""))), 1, 0) = 0, RGBA(206, 202, 192, 1), RGBA(122, 138, 120, 1)))
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =36
-          OnSelect: =Set(gblErr, ""); Set(gblStop, false); Set(gblUB, LookUp(colUsersAll, Title = gblUserGid)); Set(gblSNew, CountRows(Filter(colNewU, Gid = gblUserGid)) > 0); Set(gblGoB, gblUserMode <> "New" && ((Trim(txtName.Text) <> Coalesce(gblU.FullName, "")) || (Trim(txtMail.Text) <> Coalesce(gblU.Mail, "")) || (Trim(txtDept.Text) <> Coalesce(gblU.Department, "")))); ClearCollect(colUChg, fUChg); Set(gblGoG, gblUserMode <> "New" && CountRows(colUChg) > 0); Set(gblGoN, gblUserMode = "New"); Set(gblNewGid, Upper(Trim(txtGid.Text))); If(gblGoN && !IsMatch(gblNewGid, "^([0-9]{7}|[A-Z][0-9]{6})$"), Set(gblErr, "グローバルIDの形式が違います（数字7桁 または 英字1桁+数字6桁）。")); If(gblGoN && IsBlank(gblErr) && !IsBlank(LookUp(PRM_Users, Title = gblNewGid).Title), Set(gblErr, "そのグローバルIDはすでに登録されています。")); If(gblGoN && IsBlank(gblErr) && CountRows(Filter(colNewU, Gid = gblNewGid)) > 0, Set(gblErr, "そのグローバルIDはすでに申請に追加されています。")); If(gblGoN && IsBlank(gblErr) && IsBlank(Trim(txtName.Text)), Set(gblErr, "メールアドレスを入れて「ADから取得」を押してください。")); If(gblGoN && IsBlank(gblErr) && IsBlank(gblUserOrg1), Set(gblErr, "所属組織区分1 を選んでください。")); ClearCollect(colNewG, Filter(colGEdit, Gid = "" && O1 = gblUserOrg1 && Scope <> "NONE")); If(IsBlank(gblErr) && !gblGoN && !gblGoB && !gblGoG, Set(gblErr, "変更がありません。基本情報を直すか、範囲や組織区分2 を変更してください。")); If(IsBlank(gblErr) && gblGoB && IsBlank(Trim(txtName.Text)), Set(gblErr, "メールアドレスを入れて「ADから取得」を押してください。")); Set(gblGateOk, false); Set(gblTgtGid, If(gblGoN, gblNewGid, gblUserGid)); Set(gblItemN, 1); If(false, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd-hhmmss") & "-" & Text(RandBetween(100, 999)))); If(false, Set(gblReqNo, gblReqNo & "-2")); If(false, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:If(gblGoN, "USER", If(gblGoB && gblGoG, "MIXED", If(gblGoG, "GRANT", "USER")))}, TargetKey:If(gblGoN, gblNewGid, gblUserGid), TargetName:If(gblGoN, Trim(txtName.Text) & "（" & gblNewGid & "）", Coalesce(gblUB.FullName, "") & "（" & gblUserGid & "）"), Summary:If(gblGoN, "利用者の新規登録（権限 " & CountRows(colNewG) & "件）", Concat(Filter(Table({n:"基本情報の変更",c:If(gblGoB, 1, 0)},{n:"権限の変更 " & CountRows(colUChg) & "件",c:CountRows(colUChg)}), c > 0), n, "、")), ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:1, Org1Code:gblUserOrg1})); If(IsBlank(gblErr) && !gblStop && gblGoN, Collect(colNewU, {Gid:gblNewGid, FullName:Trim(txtName.Text), Mail:Trim(txtMail.Text), Dept:Trim(txtDept.Text), O1:gblUserOrg1, AdOid:gblAdOid})); If(IsBlank(gblErr) && !gblStop && gblGoN, Collect(colUsersAll, {Title:gblNewGid, FullName:Trim(txtName.Text), Mail:Trim(txtMail.Text), Department:Trim(txtDept.Text), IsActive:true})); If(IsBlank(gblErr) && !gblStop && gblGoN, Collect(colMemberAll, {Title:gblNewGid & "#" & gblUserOrg1, GlobalId:gblNewGid, Org1Code:gblUserOrg1, IsActive:true})); If(IsBlank(gblErr) && !gblStop && gblGoN, ForAll(colNewG As c, Patch(colGEdit, LookUp(colGEdit, Gid = "" && O1 = c.O1 && Role = c.Role), {Gid:gblNewGid}))); If(IsBlank(gblErr) && !gblStop && gblGoN, RemoveIf(colGEdit, Gid = "")); If(IsBlank(gblErr) && !gblStop && !gblGoN && gblGoB && gblSNew, Patch(colNewU, LookUp(colNewU, Gid = gblUserGid), {FullName:Trim(txtName.Text), Mail:Trim(txtMail.Text), Dept:Trim(txtDept.Text)})); If(IsBlank(gblErr) && !gblStop && !gblGoN && gblGoB && !gblSNew && CountRows(Filter(colUEdit, Gid = gblUserGid)) = 0, Collect(colUEdit, {Gid:gblUserGid, FullName:Coalesce(gblUB.FullName, ""), Mail:Coalesce(gblUB.Mail, ""), Dept:Coalesce(gblUB.Department, ""), BName:Coalesce(gblUB.FullName, ""), BMail:Coalesce(gblUB.Mail, ""), BDept:Coalesce(gblUB.Department, "")})); If(IsBlank(gblErr) && !gblStop && !gblGoN && gblGoB && !gblSNew, Patch(colUEdit, LookUp(colUEdit, Gid = gblUserGid), {FullName:Trim(txtName.Text), Mail:Trim(txtMail.Text), Dept:Trim(txtDept.Text)})); If(IsBlank(gblErr) && !gblStop && !gblGoN && gblGoB, Patch(colUsersAll, LookUp(colUsersAll, Title = gblUserGid), {FullName:Trim(txtName.Text), Mail:Trim(txtMail.Text), Department:Trim(txtDept.Text)})); If(false, ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(false, If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1 || ApplicantId = gblMeGid, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})))); If(IsBlank(gblErr) && !gblStop && !gblGoN, Notify("申請に追加しました（" & Trim(txtName.Text) & "）。ほかの変更とまとめて「申請」で出します。", NotificationType.Success)); If(IsBlank(gblErr) && !gblStop && gblGoN, Notify("申請に追加しました（" & Trim(txtName.Text) & "）。ほかの変更とまとめて「申請」で出します。", NotificationType.Success)); If(IsBlank(gblErr) && !gblStop, Navigate(ScrHome)); If(!IsBlank(gblErr), Notify(gblErr, NotificationType.Warning)); Set(gblStep, 0); Set(gblStepMax, 0); Clear(colHst1); Clear(colHst2); Clear(colHstG); Clear(colHstN); Clear(colHstU); Collect(colHst1, ForAll(colO1Edit As e, {S:0, R:e})); Collect(colHst2, ForAll(colO2Edit As e, {S:0, R:e})); Collect(colHstG, ForAll(colGEdit As e, {S:0, R:e})); Collect(colHstN, ForAll(colNewU As e, {S:0, R:e})); Collect(colHstU, ForAll(colUEdit As e, {S:0, R:e}))
+          OnSelect: =Set(gblErr, ""); Set(gblStop, false); Set(gblUB, LookUp(colUsersAll, Title = gblUserGid)); Set(gblSNew, CountRows(Filter(colNewU, Gid = gblUserGid)) > 0); Set(gblGoB, gblUserMode <> "New" && ((Trim(txtName.Text) <> Coalesce(gblU.FullName, "")) || (Trim(txtMail.Text) <> Coalesce(gblU.Mail, "")) || (Trim(txtDept.Text) <> Coalesce(gblU.Department, "")))); ClearCollect(colUChg, fUChg); Set(gblGoG, gblUserMode <> "New" && CountRows(colUChg) > 0); Set(gblGoN, gblUserMode = "New"); Set(gblNewGid, Upper(Trim(txtGid.Text))); If(gblGoN && !IsMatch(gblNewGid, "^([0-9]{7}|[A-Z][0-9]{6})$"), Set(gblErr, "グローバルIDの形式が違います（数字7桁 または 英字1桁+数字6桁）。")); If(gblGoN && IsBlank(gblErr) && !IsBlank(LookUp(PRM_Users, Title = gblNewGid).Title), Set(gblErr, "そのグローバルIDはすでに登録されています。")); If(gblGoN && IsBlank(gblErr) && CountRows(Filter(colNewU, Gid = gblNewGid)) > 0, Set(gblErr, "そのグローバルIDはすでに申請に追加されています。")); If(gblGoN && IsBlank(gblErr) && IsBlank(Trim(txtName.Text)), Set(gblErr, "メールアドレスを入れて「ADから取得」を押してください。")); If(gblGoN && IsBlank(gblErr) && IsBlank(gblUserOrg1), Set(gblErr, "所属組織区分1 を選んでください。")); ClearCollect(colNewG, Filter(colGEdit, Gid = "" && O1 = gblUserOrg1 && Scope <> "NONE")); If(IsBlank(gblErr) && !gblGoN && !gblGoB && !gblGoG, Set(gblErr, "変更がありません。基本情報を直すか、範囲や組織区分2 を変更してください。")); If(IsBlank(gblErr) && gblGoB && IsBlank(Trim(txtName.Text)), Set(gblErr, "メールアドレスを入れて「ADから取得」を押してください。")); Set(gblGateOk, false); Set(gblTgtGid, If(gblGoN, gblNewGid, gblUserGid)); Set(gblItemN, 1); If(false, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd-hhmmss") & "-" & Text(RandBetween(100, 999)))); If(false, Set(gblReqNo, gblReqNo & "-2")); If(false, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:If(gblGoN, "USER", If(gblGoB && gblGoG, "MIXED", If(gblGoG, "GRANT", "USER")))}, TargetKey:If(gblGoN, gblNewGid, gblUserGid), TargetName:If(gblGoN, Trim(txtName.Text) & "（" & gblNewGid & "）", Coalesce(gblUB.FullName, "") & "（" & gblUserGid & "）"), Summary:If(gblGoN, "利用者の新規登録（権限 " & CountRows(colNewG) & "件）", Concat(Filter(Table({n:"基本情報の変更",c:If(gblGoB, 1, 0)},{n:"権限の変更 " & CountRows(colUChg) & "件",c:CountRows(colUChg)}), c > 0), n, "、")), ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:1, Org1Code:gblUserOrg1})); If(IsBlank(gblErr) && !gblStop && gblGoN, Collect(colNewU, {Gid:gblNewGid, FullName:Trim(txtName.Text), Mail:Trim(txtMail.Text), Dept:Trim(txtDept.Text), O1:gblUserOrg1, AdOid:gblAdOid})); If(IsBlank(gblErr) && !gblStop && gblGoN, Collect(colUsersAll, {Title:gblNewGid, FullName:Trim(txtName.Text), Mail:Trim(txtMail.Text), Department:Trim(txtDept.Text), IsActive:true})); If(IsBlank(gblErr) && !gblStop && gblGoN, Collect(colMemberAll, {Title:gblNewGid & "#" & gblUserOrg1, GlobalId:gblNewGid, Org1Code:gblUserOrg1, IsActive:true})); If(IsBlank(gblErr) && !gblStop && gblGoN, ForAll(colNewG As c, Patch(colGEdit, LookUp(colGEdit, Gid = "" && O1 = c.O1 && Role = c.Role), {Gid:gblNewGid}))); If(IsBlank(gblErr) && !gblStop && gblGoN, RemoveIf(colGEdit, Gid = "")); If(IsBlank(gblErr) && !gblStop && !gblGoN && gblGoB && gblSNew, Patch(colNewU, LookUp(colNewU, Gid = gblUserGid), {FullName:Trim(txtName.Text), Mail:Trim(txtMail.Text), Dept:Trim(txtDept.Text)})); If(IsBlank(gblErr) && !gblStop && !gblGoN && gblGoB && !gblSNew && CountRows(Filter(colUEdit, Gid = gblUserGid)) = 0, Collect(colUEdit, {Gid:gblUserGid, FullName:Coalesce(gblUB.FullName, ""), Mail:Coalesce(gblUB.Mail, ""), Dept:Coalesce(gblUB.Department, ""), BName:Coalesce(gblUB.FullName, ""), BMail:Coalesce(gblUB.Mail, ""), BDept:Coalesce(gblUB.Department, "")})); If(IsBlank(gblErr) && !gblStop && !gblGoN && gblGoB && !gblSNew, Patch(colUEdit, LookUp(colUEdit, Gid = gblUserGid), {FullName:Trim(txtName.Text), Mail:Trim(txtMail.Text), Dept:Trim(txtDept.Text)})); If(IsBlank(gblErr) && !gblStop && !gblGoN && gblGoB, Patch(colUsersAll, LookUp(colUsersAll, Title = gblUserGid), {FullName:Trim(txtName.Text), Mail:Trim(txtMail.Text), Department:Trim(txtDept.Text)})); If(false, ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(false, If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1 || ApplicantId = gblMeGid, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})))); If(IsBlank(gblErr) && !gblStop && !gblGoN, Notify("申請に追加しました（" & Trim(txtName.Text) & "）。ほかの変更とまとめて「申請」で出します。", NotificationType.Success)); If(IsBlank(gblErr) && !gblStop && gblGoN, Notify("申請に追加しました（" & Trim(txtName.Text) & "）。ほかの変更とまとめて「申請」で出します。", NotificationType.Success)); If(IsBlank(gblErr) && !gblStop, Navigate(ScrHome)); If(!IsBlank(gblErr), Notify(gblErr, NotificationType.Warning)); Select(btnInitU)
           RadiusTopLeft: =5
           RadiusTopRight: =5
           RadiusBottomLeft: =5
@@ -1075,7 +1075,17 @@ Screens:
     - btnSnapU:
         Control: ModernText@1.0.0
         Properties:
-          OnSelect: =Set(gblStep, gblStep + 1); RemoveIf(colHst1, S >= gblStep); RemoveIf(colHst2, S >= gblStep); RemoveIf(colHstG, S >= gblStep); RemoveIf(colHstN, S >= gblStep); RemoveIf(colHstU, S >= gblStep); Collect(colHst1, ForAll(colO1Edit As e, {S:gblStep, R:e})); Collect(colHst2, ForAll(colO2Edit As e, {S:gblStep, R:e})); Collect(colHstG, ForAll(colGEdit As e, {S:gblStep, R:e})); Collect(colHstN, ForAll(colNewU As e, {S:gblStep, R:e})); Collect(colHstU, ForAll(colUEdit As e, {S:gblStep, R:e})); Set(gblStepMax, gblStep)
+          OnSelect: =Set(gblStepU, gblStepU + 1); RemoveIf(colHUG, S >= gblStepU); RemoveIf(colHUN, S >= gblStepU); RemoveIf(colHUU, S >= gblStepU); Collect(colHUG, ForAll(Filter(colGEdit, Gid = gblUserGid) As e, {S:gblStepU, R:e})); Collect(colHUN, ForAll(Filter(colNewU, Gid = gblUserGid) As e, {S:gblStepU, R:e})); Collect(colHUU, ForAll(Filter(colUEdit, Gid = gblUserGid) As e, {S:gblStepU, R:e})); Set(gblStepUMax, gblStepU)
+          Height: =1
+          Text: =""
+          Visible: =false
+          Width: =1
+          X: =0
+          Y: =0
+    - btnInitU:
+        Control: ModernText@1.0.0
+        Properties:
+          OnSelect: =Set(gblStepU, 0); Set(gblStepUMax, 0); Clear(colHUG); Clear(colHUN); Clear(colHUU); Collect(colHUG, ForAll(Filter(colGEdit, Gid = gblUserGid) As e, {S:0, R:e})); Collect(colHUN, ForAll(Filter(colNewU, Gid = gblUserGid) As e, {S:0, R:e})); Collect(colHUU, ForAll(Filter(colUEdit, Gid = gblUserGid) As e, {S:0, R:e}))
           Height: =1
           Text: =""
           Visible: =false
@@ -1085,14 +1095,12 @@ Screens:
     - btnUndoU:
         Control: ModernText@1.0.0
         Properties:
-          Color: =If(gblStep > 0, RGBA(74, 71, 64, 1), RGBA(180, 176, 168, 1))
-          Fill: =If(gblStep > 0, RGBA(232, 228, 216, 1), RGBA(240, 238, 231, 1))
-          OnSelect: =If(gblStep > 0, Set(gblStep, gblStep - 1); ClearCollect(colO1Edit, ForAll(Filter(colHst1, S = gblStep) As h, h.R)); ClearCollect(colO2Edit, ForAll(Filter(colHst2, S = gblStep) As h, h.R)); ClearCollect(colGEdit, ForAll(Filter(colHstG, S = gblStep) As h, h.R)); ClearCollect(colNewU, ForAll(Filter(colHstN, S = gblStep) As h, h.R)); ClearCollect(colUEdit, ForAll(Filter(colHstU, S = gblStep) As h, h.R)))
+          Color: =If(gblStepU > 0, RGBA(74, 71, 64, 1), RGBA(180, 176, 168, 1))
+          Fill: =If(gblStepU > 0, RGBA(232, 228, 216, 1), RGBA(240, 238, 231, 1))
+          OnSelect: =If(gblStepU > 0, Set(gblStepU, gblStepU - 1); RemoveIf(colGEdit, Gid = gblUserGid); Collect(colGEdit, ForAll(Filter(colHUG, S = gblStepU) As h, h.R)); RemoveIf(colNewU, Gid = gblUserGid); Collect(colNewU, ForAll(Filter(colHUN, S = gblStepU) As h, h.R)); RemoveIf(colUEdit, Gid = gblUserGid); Collect(colUEdit, ForAll(Filter(colHUU, S = gblStepU) As h, h.R)))
           Text: ="↶ 元に戻す"
           Visible: =!gblRO
-          Width: =96
-          X: =Parent.Width - 256
-          Y: =81
+          X: =Parent.Width - 552
           Align: ='TextCanvas.Align'.Center
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =34
@@ -1101,6 +1109,8 @@ Screens:
           RadiusBottomLeft: =5
           RadiusBottomRight: =5
           Size: =12
+          Width: =96
+          Y: =9
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -1108,14 +1118,12 @@ Screens:
     - btnRedoU:
         Control: ModernText@1.0.0
         Properties:
-          Color: =If(gblStep < gblStepMax, RGBA(74, 71, 64, 1), RGBA(180, 176, 168, 1))
-          Fill: =If(gblStep < gblStepMax, RGBA(232, 228, 216, 1), RGBA(240, 238, 231, 1))
-          OnSelect: =If(gblStep < gblStepMax, Set(gblStep, gblStep + 1); ClearCollect(colO1Edit, ForAll(Filter(colHst1, S = gblStep) As h, h.R)); ClearCollect(colO2Edit, ForAll(Filter(colHst2, S = gblStep) As h, h.R)); ClearCollect(colGEdit, ForAll(Filter(colHstG, S = gblStep) As h, h.R)); ClearCollect(colNewU, ForAll(Filter(colHstN, S = gblStep) As h, h.R)); ClearCollect(colUEdit, ForAll(Filter(colHstU, S = gblStep) As h, h.R)))
+          Color: =If(gblStepU < gblStepUMax, RGBA(74, 71, 64, 1), RGBA(180, 176, 168, 1))
+          Fill: =If(gblStepU < gblStepUMax, RGBA(232, 228, 216, 1), RGBA(240, 238, 231, 1))
+          OnSelect: =If(gblStepU < gblStepUMax, Set(gblStepU, gblStepU + 1); RemoveIf(colGEdit, Gid = gblUserGid); Collect(colGEdit, ForAll(Filter(colHUG, S = gblStepU) As h, h.R)); RemoveIf(colNewU, Gid = gblUserGid); Collect(colNewU, ForAll(Filter(colHUN, S = gblStepU) As h, h.R)); RemoveIf(colUEdit, Gid = gblUserGid); Collect(colUEdit, ForAll(Filter(colHUU, S = gblStepU) As h, h.R)))
           Text: ="↷ やり直す"
           Visible: =!gblRO
-          Width: =96
-          X: =Parent.Width - 156
-          Y: =81
+          X: =Parent.Width - 452
           Align: ='TextCanvas.Align'.Center
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =34
@@ -1124,6 +1132,8 @@ Screens:
           RadiusBottomLeft: =5
           RadiusBottomRight: =5
           Size: =12
+          Width: =96
+          Y: =9
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
