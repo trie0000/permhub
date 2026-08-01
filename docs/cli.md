@@ -165,6 +165,17 @@ Studio の「…」メニューには「アプリのバージョン履歴」し�
 .\setup\deploy.ps1 -SolutionName permhub
 ```
 
+実行の最初に**どのアプリを触るのかを表示名で出す**。
+
+```
+対象: 権限申請  [cr875_permhubsolutiontest_09c62_DocumentUri.msapp]
+```
+
+`.msapp` のファイル名は「接頭辞_英数字だけのスラッグ_id」なので、**アプリ名が日本語だと
+スラッグが空になり `crdca__52819` のようになって判別できない**。表示名を見て、
+**自分が編集しているアプリと同じか確かめること。** 違っていたら、ソリューションに
+入っているのが別のアプリ。
+
 やっていること: YAML の重複検査 → `pac solution export` → **zip の中の `.msapp` だけを
 その場で差し替え**（`unpack` → `src/*.pa.yaml` で画面を差し替え → `pack`）→
 `pac solution import --publish-changes`。
@@ -214,6 +225,9 @@ App:
 
 画面のようにファイルごと差し替えられないので、`deploy.ps1` は**このブロックの中身だけ**を
 `src/App.Formulas.txt` / `src/App.OnStart.txt` で入れ替える。`StartScreen` や `Theme` は触らない。
+
+`OnStart:` が 1 行で書かれている（中身が短いとこうなる）アプリでも拾う。
+**そもそも入っていないアプリなら `-WithApp` で新しく入れる**（`Properties:` の直下）。
 
 既定は**突き合わせて知らせるだけ**。テナント側でコネクタ名などを直していると、
 黙って上書きすると消えてしまうため。

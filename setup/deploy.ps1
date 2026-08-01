@@ -77,16 +77,23 @@ function Get-ControlNames($path) {
 #       =Set(...);
 # の形なので、画面のようにファイルごと差し替えられない。ブロックの範囲を返す
 function Get-AppBlock($lines, $prop) {
-  $start = -1
   for ($i = 0; $i -lt $lines.Count; $i++) {
-    if ($lines[$i] -match "^    $prop" + ':\s*\|\s*$') { $start = $i; break }
+    # ブロック形式:  OnStart: |
+    if ($lines[$i] -match ('^    ' + $prop + ':\s*\|\s*$')) {
+      $end = $lines.Count
+      for ($j = $i + 1; $j -lt $lines.Count; $j++) {
+        if ($lines[$j] -match '^    [A-Za-z]') { $end = $j; break }
+      }
+      $old = @()
+      if ($end -gt ($i + 1)) { $old = @($lines[($i + 1)..($end - 1)]) }
+      return @{ Start = $i; End = $end; Old = $old }
+    }
+    # 1 行形式:  OnStart: =Set(x, 1)   （中身が短いとこうなる）
+    if ($lines[$i] -match ('^    ' + $prop + ':\s*(=.*)$')) {
+      return @{ Start = $i; End = $i + 1; Old = @('      ' + $Matches[1]) }
+    }
   }
-  if ($start -lt 0) { return $null }
-  $end = $lines.Count
-  for ($i = $start + 1; $i -lt $lines.Count; $i++) {
-    if ($lines[$i] -match '^    [A-Za-z]') { $end = $i; break }
-  }
-  return @{ Start = $start; End = $end }
+  return $null
 }
 
 # .txt を YAML のブロックスカラーの形にする（6 字下げ、先頭行に =）
@@ -99,6 +106,33 @@ function New-AppBlockBody($textPath) {
     else { $body += "      $l" }
   }
   return $body
+}
+
+# App.pa.yaml の 1 プロパティを .txt の中身で入れ替える。
+# 返り値の State は same / replaced / added / nowhere
+function Set-AppBlock($lines, $prop, $textPath) {
+  $body = @(New-AppBlockBody $textPath)
+  $blk = Get-AppBlock $lines $prop
+  if ($null -ne $blk) {
+    if (((@($blk.Old) -join "`n").TrimEnd()) -eq (($body -join "`n").TrimEnd())) {
+      return @{ Lines = $lines; State = 'same' }
+    }
+    $head = @()
+    if ($blk.Start -gt 0) { $head = @($lines[0..($blk.Start - 1)]) }
+    $tail = @()
+    if ($blk.End -lt $lines.Count) { $tail = @($lines[$blk.End..($lines.Count - 1)]) }
+    return @{ Lines = @($head + @('    ' + $prop + ': |') + $body + $tail); State = 'replaced' }
+  }
+  # そもそも入っていないアプリもある。Properties: の直下に足す
+  $pi = -1
+  for ($k = 0; $k -lt $lines.Count; $k++) {
+    if ($lines[$k] -match '^  Properties:\s*$') { $pi = $k; break }
+  }
+  if ($pi -lt 0) { return @{ Lines = $lines; State = 'nowhere' } }
+  $head = @($lines[0..$pi])
+  $tail = @()
+  if (($pi + 1) -lt $lines.Count) { $tail = @($lines[($pi + 1)..($lines.Count - 1)]) }
+  return @{ Lines = @($head + @('    ' + $prop + ': |') + $body + $tail); State = 'added' }
 }
 
 function Stop-Here($msg) { Write-Host ''; Write-Host $msg -ForegroundColor Red; exit 1 }
@@ -268,7 +302,17 @@ try {
   }
   $entry = $entries[0]
   $entryName = $entry.FullName
-  Write-Host "  対象: $($entry.Name)"
+  # .msapp のファイル名は接頭辞_英数字だけのスラッグ_id なので、名前が日本語だと
+  # 空になって判別できない。customizations.xml の表示名を出す
+  $appDisp = ''
+  $cx = $zip.Entries | Where-Object { $_.FullName -eq 'customizations.xml' }
+  if ($cx) {
+    $rd = New-Object System.IO.StreamReader($cx.Open(), [System.Text.Encoding]::UTF8)
+    try { $xml = $rd.ReadToEnd() } finally { $rd.Dispose() }
+    $m = [regex]::Match($xml, '<CanvasApp>.*?<DisplayName>([^<]*)</DisplayName>', 'Singleline')
+    if ($m.Success) { $appDisp = $m.Groups[1].Value }
+  }
+  Write-Host "  対象: $appDisp  [$($entry.Name)]"
 
   $msappPath = Join-Path $Work 'app.msapp'
   [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $msappPath, $true)
@@ -386,25 +430,17 @@ try {
     $prop = $pair[0]
     $txt = Join-Path $SrcDir $pair[1]
     if (-not (Test-Path $txt)) { continue }
-    $blk = Get-AppBlock $appLines $prop
-    if ($null -eq $blk) { Write-Warn "App.pa.yaml に $prop が無い"; continue }
-    $body = @(New-AppBlockBody $txt)
-    $old = @()
-    if ($blk.End -gt ($blk.Start + 1)) { $old = @($appLines[($blk.Start + 1)..($blk.End - 1)]) }
-    $sameText = (($old -join "`n").TrimEnd() -eq ($body -join "`n").TrimEnd())
-    if ($sameText) { Write-Host "  App.$prop は一致"; continue }
-
-    if ($WithApp) {
-      $head = @($appLines[0..$blk.Start])
-      $tail = @()
-      if ($blk.End -lt $appLines.Count) { $tail = @($appLines[$blk.End..($appLines.Count - 1)]) }
-      $appLines = @($head + $body + $tail)
+    $r = Set-AppBlock $appLines $prop $txt
+    if ($r.State -eq 'same') { Write-Host "  App.$prop は一致" }
+    elseif ($r.State -eq 'nowhere') { Write-Warn "App.pa.yaml に Properties: が見つからない" }
+    elseif ($WithApp) {
+      $appLines = @($r.Lines)
       $appChanged = $true
-      Write-Host "  App.$prop を差し替え"
+      if ($r.State -eq 'added') { Write-Host "  App.$prop を新しく入れた" }
+      else { Write-Host "  App.$prop を差し替え" }
     }
-    else {
-      Write-Warn "App.$prop がアプリ側と違う（$($old.Count) 行 → $($body.Count) 行）。反映するなら -WithApp"
-    }
+    elseif ($r.State -eq 'added') { Write-Warn "App.$prop がアプリに無い。入れるなら -WithApp" }
+    else { Write-Warn "App.$prop がアプリ側と違う。反映するなら -WithApp" }
   }
   if ($appChanged) {
     Set-Content -LiteralPath $appYaml -Value $appLines -Encoding UTF8
