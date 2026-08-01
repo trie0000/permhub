@@ -84,7 +84,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =32
           Size: =16
-          Text: =Switch(fReq.ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者", "GRANT", "権限変更", "MIXED", "組織＋ユーザ", fReq.ReqType.Value) & "　" & fReq.TargetName
+          Text: =Switch(fReq.ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者", "GRANT", "権限変更", "MIXED", "複数種別", fReq.ReqType.Value) & "　" & fReq.TargetName
           Width: =Parent.Width - 104
           X: =52
           Y: =86
@@ -150,7 +150,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =24
           Size: =13
-          Text: =Switch(fReq.ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者", "GRANT", "権限変更", "MIXED", "組織＋ユーザ", fReq.ReqType.Value)
+          Text: =Switch(fReq.ReqType.Value, "ORG1", "組織区分1マスタ", "ORG2", "組織区分2マスタ", "USER", "利用者", "GRANT", "権限変更", "MIXED", "複数種別", fReq.ReqType.Value)
           Width: =220
           X: =292
           Y: =144
