@@ -43,12 +43,14 @@ if (-not $SrcDir) { $SrcDir = Join-Path $Root 'src' }
 
 function Write-Step($msg) { Write-Host "==> $msg" -ForegroundColor Cyan }
 function Write-Warn($msg) { Write-Host "  ! $msg" -ForegroundColor Yellow }
+# 利用者が直せる失敗はこれで止める。throw だと本文が 2 回出て読みにくい
+function Stop-Here($msg) { Write-Host ''; Write-Host $msg -ForegroundColor Red; exit 1 }
 
 # ---- 0. 前提の確認 ---------------------------------------------------------
 Write-Step '前提を確認'
 
 if (-not (Get-Command pac -ErrorAction SilentlyContinue)) {
-  throw @'
+  Stop-Here @'
 pac (Power Platform CLI) が見つからない。コマンドで入る。
 
     winget install Microsoft.DotNet.SDK.10
@@ -72,7 +74,7 @@ winget の Microsoft.PowerAppsCLI は使わない。中身が powerapps-cli-1.0.
 # バージョン番号ではなくヘルプに SourceCode があるかで判定する（版によって番号体系が違うため）
 $packHelp = pac canvas pack 2>&1 | Out-String
 if ($packHelp -notmatch 'SourceCode') {
-  throw @'
+  Stop-Here @'
 pac が古い。`pac canvas pack` に --layout SourceCode が無い。
 
     pac --version
@@ -85,7 +87,7 @@ pac が古い。`pac canvas pack` に --layout SourceCode が無い。
 
 $auth = pac auth list 2>&1 | Out-String
 if ($auth -match 'No profiles were found') {
-  throw '認証プロファイルが無い。pac auth create --name permhub を実行する。'
+  Stop-Here '認証プロファイルが無い。pac auth create --name permhub を実行する。'
 }
 
 # どのテナント・どの環境に流すのかを先に出す。プロファイルを複数持っていると
@@ -133,7 +135,7 @@ foreach ($s in $Screens) {
   }
 }
 if ($dupTotal -gt 0) {
-  throw "重複 $dupTotal 件。このまま取り込むと PA1001 で失敗する。直してから再実行する。"
+  Stop-Here "重複 $dupTotal 件。このまま取り込むと PA1001 で失敗する。直してから再実行する。"
 }
 Write-Host '  重複なし'
 
@@ -148,15 +150,29 @@ $zipOut = Join-Path $Work 'sol-mod.zip'
 Write-Step "ソリューション '$SolutionName' をエクスポート"
 pac solution export --path $zipIn --name $SolutionName --overwrite
 if ($LASTEXITCODE -ne 0) {
-  Write-Warn "ソリューション '$SolutionName' を取り出せなかった。この環境にあるものは:"
-  pac solution list
-  throw @'
-一意名が違うか、別の環境に繋がっている。
+  Write-Warn "ソリューション '$SolutionName' が無い。この環境にある一意名:"
+  # 表のまま出すと表示名（日本語）で折り返して読めないので、1 列目だけ並べる
+  $names = @()
+  foreach ($l in (pac solution list 2>&1)) {
+    if ($l -match '^([A-Za-z_][A-Za-z0-9_]*)\s{2,}') { $names += $Matches[1] }
+  }
+  foreach ($n in $names) { Write-Host "      $n" }
+  if ($names.Count -eq 0) { Write-Host '      （1 つも無い）' }
+  Stop-Here @'
+次のどれか。
 
-・上の一覧の Unique Name（表示名ではない）を -SolutionName に渡す
-・一覧に無いなら、そのテナントではまだアプリをソリューションに入れていない
-  → docs/deploy.md 手順 9
-・そもそも接続先が違うなら pac auth list / pac auth select で切り替える
+[1] 一意名の取り違え
+    上に並んだ名前（表示名ではない）を -SolutionName に渡す。
+
+[2] このテナントではまだ準備していない
+    上に permhub が無いならこれ。そのテナントで
+    アプリを作る（docs/deploy.md 手順 1〜6）→ ソリューションに入れる（手順 9）
+    を先にやる。ソリューションは export/import でテナント間を運べない。
+
+[3] 接続先が違う
+    上の「接続先」の表示を見る。違うなら
+        pac auth list
+        pac auth select --index <番号>
 '@
 }
 
