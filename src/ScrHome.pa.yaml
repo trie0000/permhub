@@ -425,7 +425,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =13
-          Text: =If(fO1E.MsExt, "要", "不要")
+          Text: =If(fO1E.MsExt, "要", "不要") & If(fO1E.MsExt <> LookUp(colOrg1, Title = gblOrg1).MsExt, " ＊", "")
           Visible: =gblTab = "org"
           Width: =56
           X: =52
@@ -466,7 +466,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =13
-          Text: =If(fO1E.MsWlan, "要", "不要")
+          Text: =If(fO1E.MsWlan, "要", "不要") & If(fO1E.MsWlan <> LookUp(colOrg1, Title = gblOrg1).MsWlan, " ＊", "")
           Visible: =gblTab = "org"
           Width: =56
           X: =262
@@ -507,7 +507,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =13
-          Text: =If(fO1E.MsCloud, "要", "不要")
+          Text: =If(fO1E.MsCloud, "要", "不要") & If(fO1E.MsCloud <> LookUp(colOrg1, Title = gblOrg1).MsCloud, " ＊", "")
           Visible: =gblTab = "org"
           Width: =56
           X: =472
@@ -893,7 +893,7 @@ Screens:
                       RadiusBottomLeft: =4
                       RadiusBottomRight: =4
                       Size: =11
-                      Text: =If(!fO1E.MsExt, "―", If(ThisItem.ApExt, "要", "不要"))
+                      Text: =If(!fO1E.MsExt, "―", If(ThisItem.ApExt, "要", "不要")) & If(ThisItem.IsNew || ThisItem.IsDel, "", If(ThisItem.ApExt <> LookUp(colOrg2All, Title = ThisItem.Title).ApExt, " ＊", ""))
                       Width: =56
                       Wrap: =true
                       PaddingTop: =0
@@ -936,7 +936,7 @@ Screens:
                       RadiusBottomLeft: =4
                       RadiusBottomRight: =4
                       Size: =11
-                      Text: =If(!fO1E.MsWlan, "―", If(ThisItem.ApWlan, "要", "不要"))
+                      Text: =If(!fO1E.MsWlan, "―", If(ThisItem.ApWlan, "要", "不要")) & If(ThisItem.IsNew || ThisItem.IsDel, "", If(ThisItem.ApWlan <> LookUp(colOrg2All, Title = ThisItem.Title).ApWlan, " ＊", ""))
                       Width: =56
                       Wrap: =true
                       PaddingTop: =0
@@ -979,7 +979,7 @@ Screens:
                       RadiusBottomLeft: =4
                       RadiusBottomRight: =4
                       Size: =11
-                      Text: =If(!fO1E.MsCloud, "―", If(ThisItem.ApCloud, "要", "不要"))
+                      Text: =If(!fO1E.MsCloud, "―", If(ThisItem.ApCloud, "要", "不要")) & If(ThisItem.IsNew || ThisItem.IsDel, "", If(ThisItem.ApCloud <> LookUp(colOrg2All, Title = ThisItem.Title).ApCloud, " ＊", ""))
                       Width: =56
                       Wrap: =true
                       PaddingTop: =0

@@ -296,7 +296,7 @@ Screens:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
-          Height: =Parent.Height - 400
+          Height: =Parent.Height - 420
           RadiusTopLeft: =8
           RadiusTopRight: =8
           RadiusBottomLeft: =8
@@ -417,7 +417,7 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "SECMGR", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
-          Fill: =If(gblUserRole = "SECMGR", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "SECMGR").n, 0) > 0, If(gblUserRole = "SECMGR", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "SECMGR", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "SECMGR", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "SECMGR")
@@ -456,7 +456,7 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "CONFORM", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
-          Fill: =If(gblUserRole = "CONFORM", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "CONFORM").n, 0) > 0, If(gblUserRole = "CONFORM", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "CONFORM", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "CONFORM", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "CONFORM")
@@ -495,7 +495,7 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "EXTCONN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
-          Fill: =If(gblUserRole = "EXTCONN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "EXTCONN").n, 0) > 0, If(gblUserRole = "EXTCONN", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "EXTCONN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "EXTCONN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "EXTCONN")
@@ -534,7 +534,7 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "WLAN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
-          Fill: =If(gblUserRole = "WLAN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "WLAN").n, 0) > 0, If(gblUserRole = "WLAN", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "WLAN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "WLAN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "WLAN")
@@ -573,7 +573,7 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "CLOUD", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
-          Fill: =If(gblUserRole = "CLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "CLOUD").n, 0) > 0, If(gblUserRole = "CLOUD", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "CLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "CLOUD", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "CLOUD")
@@ -612,7 +612,7 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =If(gblUserRole = "INFOSEC", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1))
-          Fill: =If(gblUserRole = "INFOSEC", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
+          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "INFOSEC").n, 0) > 0, If(gblUserRole = "INFOSEC", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "INFOSEC", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "INFOSEC", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "INFOSEC")
@@ -813,6 +813,11 @@ Screens:
     - uNoApp:
         Control: ModernText@1.0.0
         Properties:
+          RadiusBottomRight: =4
+          RadiusBottomLeft: =4
+          RadiusTopRight: =4
+          RadiusTopLeft: =4
+          Fill: =RGBA(250, 238, 224, 1)
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(184, 83, 74, 1)
           Height: =26
@@ -820,7 +825,7 @@ Screens:
           Text: =If(fInvUN > 0, "⚠ 多段階承認が無効になった組織区分2 に権限が " & fInvUN & " 件残っています。赤いチェックを外してください", "⚠ 承認できる人がいない組み合わせが " & fNoAppUN & " 件あります（" & fNoAppUTxt & "）")
           Width: =Parent.Width - 104
           X: =52
-          Y: =Parent.Height - 106
+          Y: =Parent.Height - 110
           Wrap: =false
           PaddingTop: =0
           PaddingBottom: =0
@@ -830,8 +835,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =RGBA(184, 83, 74, 1)
-          Fill: =RGBA(243, 241, 234, 1)
+          Color: =RGBA(160, 62, 54, 1)
+          Fill: =RGBA(247, 226, 223, 1)
           Height: =36
           OnSelect: =Set(gblDelGo, gblGateOk); If(!gblGateOk, Set(gblModal, "del")); Set(gblGateOk, false); If(gblDelGo, Set(gblU2, LookUp(colUsersAll, Title = gblUserGid))); If(gblDelGo, ClearCollect(colDelG, Filter(colGrantsAll, GlobalId = gblUserGid))); If(gblDelGo, ClearCollect(colDelM, Filter(colMemberAll, GlobalId = gblUserGid))); If(gblDelGo, Set(gblItemN, 1)); If(gblDelGo, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd-hhmmss") & "-" & Text(RandBetween(100, 999)))); If(gblDelGo && !IsBlank(LookUp(PRM_Requests, Title = gblReqNo).Title), Set(gblReqNo, gblReqNo & "-2")); If(gblDelGo, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"USER"}, TargetKey:gblUserGid, TargetName:gblU2.FullName & "（" & gblUserGid & "）", Summary:"利用者の削除（所属 " & CountRows(colDelM) & "件・権限 " & CountRows(colDelG) & "件を失効）", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:1, Org1Code:gblUserOrg1})); If(gblDelGo, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001-01", ReqNo:gblReqNo, Seq:1, GroupKind:"USER", GroupKey:gblUserGid, Operation:{Value:"DELETE"}, EntityKind:{Value:"USER"}, EntityKey:gblUserGid, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""IsActive"":true}", AfterJson:"{""IsActive"":false}", ChangeText:gblU2.FullName & "（" & gblUserGid & "）：利用者を無効化"})); If(gblDelGo, ForAll(Sequence(CountRows(colDelM)) As i, With({m:Index(colDelM, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001-" & Text(i.Value + 10, "00"), ReqNo:gblReqNo, Seq:1, GroupKind:"USER", GroupKey:gblUserGid, Operation:{Value:"DELETE"}, EntityKind:{Value:"USERORG1"}, EntityKey:m.Title, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""IsActive"":true}", AfterJson:"{""IsActive"":false}", ChangeText:gblU2.FullName & "（" & LookUp(colOrg1, Title = m.Org1Code).NameJa & "）：所属を失効"})))); If(gblDelGo, ForAll(Sequence(CountRows(colDelG)) As i, With({g:Index(colDelG, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001-" & Text(i.Value + 100, "000"), ReqNo:gblReqNo, Seq:1, GroupKind:"USER", GroupKey:gblUserGid, Operation:{Value:"DELETE"}, EntityKind:{Value:"GRANT"}, EntityKey:g.Title, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""ScopeType"":""" & g.ScopeType.Value & """,""Org2Codes"":""" & Coalesce(g.Org2Codes, "") & """}", AfterJson:"{""IsActive"":false}", ChangeText:LookUp(colOrg1, Title = g.Org1Code).NameJa & " ／ " & LookUp(fRoles, rc = g.RoleCode.Value).rn & "：失効"})))); If(gblDelGo, If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1 || ApplicantId = gblMeGid, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})))); If(gblDelGo, Notify("削除を申請しました（" & gblReqNo & "／明細 " & gblItemN & "件）。管理者が作業すると失効します。", NotificationType.Success)); If(gblDelGo, Navigate(ScrHome))
           RadiusTopLeft: =5
