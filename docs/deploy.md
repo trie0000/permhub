@@ -462,6 +462,7 @@ CanvasApps/cr875_permhubsolutiontest_09c62_DocumentUri.msapp
 | `The given solution unique name (xxx) is not valid` | 一意名の取り違えか、そのテナントで 9-2 / 9-3 をまだやっていない。スクリプトがその場で一覧を出す |
 | 日本語が化けて `式またはステートメントのトークン ... を使用できません` が大量に出る | `deploy.ps1` の **UTF-8 BOM が外れた**。Windows PowerShell 5.1 は BOM 無しの `.ps1` を CP932 として読む。リポジトリから取り直す |
 | `CanvasApp import: FAILURE: The solution specified an expected assets file but that file was missing or invalid` | **古い `deploy.ps1`**。zip を解凍して詰め直していた版は、Windows だと zip 内のパス区切りが円記号になり取り込みが本体を見つけられない。取り直す（→ [cli.md](cli.md)） |
+| `gblIsAdmin` など名前エラーが大量に出る | データソース名が合っていない。`App.OnStart` 全体がエラーになり変数がセットされない。`deploy.ps1` が `! src が使っているのにアプリに無い名前` として出す |
 | 画面は出るのにデータが空 | `App.OnStart` が動いていない。→ 7-1。`OnStart` にエラーがあると黙って実行されない |
 | `! App.OnStart がアプリ側と違う` | アプリの `App.OnStart` がリポジトリと違う。反映するなら `-WithApp`（→ [cli.md](cli.md)） |
 | `error PA2110 : An entity with name 'xxx' already exists` | アプリに `src` に無い画面が残っていて、コントロール名がぶつかっている。要らない画面なら `-PruneScreens` を付けて消す（→ [cli.md](cli.md)） |

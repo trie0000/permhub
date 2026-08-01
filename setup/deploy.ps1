@@ -273,6 +273,45 @@ try {
   $msappPath = Join-Path $Work 'app.msapp'
   [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $msappPath, $true)
 
+  # データソース名が 1 つでも合っていないと App.OnStart 全体がエラーになり、
+  # グローバル変数が一切セットされず、全画面が「名前が認識されません」で埋まる。
+  # 症状からは原因が見えないので、ここで突き合わせておく
+  Write-Step 'データソースを確認'
+  $have = @()
+  $app = [System.IO.Compression.ZipFile]::OpenRead($msappPath)
+  try {
+    $dsEntry = $app.Entries | Where-Object { $_.FullName -eq 'References/DataSources.json' }
+    if ($dsEntry) {
+      $rd = New-Object System.IO.StreamReader($dsEntry.Open(), [System.Text.Encoding]::UTF8)
+      try { $have = @((($rd.ReadToEnd()) | ConvertFrom-Json).DataSources | ForEach-Object { $_.Name }) }
+      finally { $rd.Dispose() }
+    }
+  }
+  finally { $app.Dispose() }
+
+  $need = @()
+  foreach ($f in @(Get-ChildItem -Path $SrcDir -File |
+      Where-Object { $_.Name -like '*.pa.yaml' -or $_.Name -like 'App.*.txt' })) {
+    $t = Get-Content -LiteralPath $f.FullName -Raw -Encoding UTF8
+    # コネクタ名は環境の表示言語になる（Office365ユーザー / Office365Users）。
+    # 直後は必ず "." なので、そこまでを名前とみなす
+    foreach ($pat in @('PRM_[A-Za-z0-9_]+', 'Office365[^\s.,()]+')) {
+      foreach ($m in [regex]::Matches($t, $pat)) { $need += $m.Value }
+    }
+  }
+  $need = @($need | Sort-Object -Unique)
+  $missing = @($need | Where-Object { $have -notcontains $_ })
+
+  Write-Host "  アプリ側: $(($have | Sort-Object) -join ', ')"
+  if ($missing.Count -gt 0) {
+    Write-Warn 'src が使っているのにアプリに無い名前:'
+    foreach ($m in $missing) { Write-Host "      $m" -ForegroundColor Yellow }
+    Write-Warn 'このままだと App.OnStart 全体がエラーになり、グローバル変数が'
+    Write-Warn '一切セットされず、全画面が名前エラーで埋まる。アプリ側で'
+    Write-Warn 'この名前のデータソースを追加するか、src の側を実際の名前に合わせる。'
+  }
+  else { Write-Host '  src が使う名前はすべて揃っている' }
+
   Write-Step '画面を差し替え'
   $srcOut = Join-Path $Work 'unpacked'
   pac canvas unpack --msapp $msappPath --sources $srcOut --layout SourceCode
