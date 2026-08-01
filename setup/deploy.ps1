@@ -178,9 +178,18 @@ if ($LASTEXITCODE -ne 0) {
 
 Expand-Archive -Path $zipIn -DestinationPath $ext -Force
 
-$msapp = Get-ChildItem -Path (Join-Path $ext 'CanvasApps') -Filter '*.msapp' -File |
-         Select-Object -First 1
-if (-not $msapp) { throw "CanvasApps に .msapp が無い。アプリがソリューションに入っていない。" }
+# ファイル名の接頭辞（cr875_ など）は公開元によって変わるので名前では拾わない
+$msappAll = @(Get-ChildItem -Path (Join-Path $ext 'CanvasApps') -Filter '*.msapp' -File)
+if ($msappAll.Count -eq 0) {
+  Stop-Here 'ソリューションにキャンバスアプリが入っていない。docs/deploy.md 手順 9-2 を先にやる。'
+}
+if ($msappAll.Count -gt 1) {
+  # 取り違えると別のアプリを壊すので、黙って 1 つ目を選ばない
+  Write-Warn 'このソリューションにキャンバスアプリが複数ある:'
+  foreach ($m in $msappAll) { Write-Host "      $($m.Name)" }
+  Stop-Here 'どれに反映するか決められない。ソリューションはアプリ 1 つにするか、対象だけを別ソリューションに分ける。'
+}
+$msapp = $msappAll[0]
 Write-Host "  対象: $($msapp.Name)"
 
 # ---- 4. 画面を差し替える ---------------------------------------------------
