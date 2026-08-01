@@ -526,7 +526,7 @@ CanvasApps/cr875_permhubsolutiontest_09c62_DocumentUri.msapp
 | 権限 6 種のコードと名称 | `SECMGR` 事業場ITセキュリティ責任者 / `CONFORM` 適合化担当 / `EXTCONN` 外部接続申請担当 / `WLAN` 無線LAN申請担当 / `CLOUD` クラウド申請担当 / `INFOSEC` 情報セキュリティ担当 | `App.Formulas` の `fRoles`、`ScrHome` の権限種別タブ、`ScrUser` の役割行。**種類を増減するならコントロールの追加・削除が要る**（1 種別 = 1 コントロール） |
 | グローバルID の書式 | 数字 7 桁 または 英字 1 桁 + 数字 6 桁 | `ScrUser` の `IsMatch(gblNewGid, "^([0-9]{7}\|[A-Z][0-9]{6})$")` |
 | 組織区分2 のコード採番 | `"A"` + 組織区分1 コードの下 2 桁 + 連番 2 桁（`B01` → `A0101`） | `App.Formulas` の `fO2NextCode` |
-| 多段階承認の 3 種 | 外部接続 / 無線LAN / クラウド | 列そのもの（`PRM_Org1.MsExt/MsWlan/MsCloud`、`PRM_Org2.ApExt/ApWlan/ApCloud`）。増減はスキーマ変更 |
+| 多段階承認の 3 種 | 外部接続 / 無線LAN / クラウド | 列そのもの（`PRM_Org2.ApExt/ApWlan/ApCloud`）。増減はスキーマ変更 |
 | 未登録者のフォールバック | `"1234567"` | `App.OnStart`（手順 2） |
 | 申請履歴の取得範囲 | 直近 365 日 | `App.OnStart` の `DateAdd(Now(), -365, TimeUnit.Days)` |
 

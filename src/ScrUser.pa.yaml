@@ -411,8 +411,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "SECMGR").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "SECMGR", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
-          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "SECMGR").n, 0) > 0, If(gblUserRole = "SECMGR", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "SECMGR", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "SECMGR").n, 0) > 0, RGBA(184, 83, 74, 1), If(gblUserRole = "SECMGR", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
+          Fill: =If((Coalesce(LookUp(fNoAppRole, rc = "SECMGR").n, 0) > 0 || Coalesce(LookUp(fInvRoleU, rc = "SECMGR").n, 0) > 0), If(gblUserRole = "SECMGR", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "SECMGR", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "SECMGR", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "SECMGR")
@@ -450,8 +450,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "CONFORM").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "CONFORM", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
-          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "CONFORM").n, 0) > 0, If(gblUserRole = "CONFORM", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "CONFORM", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "CONFORM").n, 0) > 0, RGBA(184, 83, 74, 1), If(gblUserRole = "CONFORM", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
+          Fill: =If((Coalesce(LookUp(fNoAppRole, rc = "CONFORM").n, 0) > 0 || Coalesce(LookUp(fInvRoleU, rc = "CONFORM").n, 0) > 0), If(gblUserRole = "CONFORM", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "CONFORM", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "CONFORM", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "CONFORM")
@@ -489,8 +489,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "EXTCONN").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "EXTCONN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
-          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "EXTCONN").n, 0) > 0, If(gblUserRole = "EXTCONN", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "EXTCONN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "EXTCONN").n, 0) > 0, RGBA(184, 83, 74, 1), If(gblUserRole = "EXTCONN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
+          Fill: =If((Coalesce(LookUp(fNoAppRole, rc = "EXTCONN").n, 0) > 0 || Coalesce(LookUp(fInvRoleU, rc = "EXTCONN").n, 0) > 0), If(gblUserRole = "EXTCONN", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "EXTCONN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "EXTCONN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "EXTCONN")
@@ -528,8 +528,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "WLAN").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "WLAN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
-          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "WLAN").n, 0) > 0, If(gblUserRole = "WLAN", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "WLAN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "WLAN").n, 0) > 0, RGBA(184, 83, 74, 1), If(gblUserRole = "WLAN", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
+          Fill: =If((Coalesce(LookUp(fNoAppRole, rc = "WLAN").n, 0) > 0 || Coalesce(LookUp(fInvRoleU, rc = "WLAN").n, 0) > 0), If(gblUserRole = "WLAN", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "WLAN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "WLAN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "WLAN")
@@ -567,8 +567,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "CLOUD").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "CLOUD", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
-          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "CLOUD").n, 0) > 0, If(gblUserRole = "CLOUD", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "CLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "CLOUD").n, 0) > 0, RGBA(184, 83, 74, 1), If(gblUserRole = "CLOUD", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
+          Fill: =If((Coalesce(LookUp(fNoAppRole, rc = "CLOUD").n, 0) > 0 || Coalesce(LookUp(fInvRoleU, rc = "CLOUD").n, 0) > 0), If(gblUserRole = "CLOUD", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "CLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "CLOUD", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "CLOUD")
@@ -606,8 +606,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "INFOSEC").n, 0) > 0, RGBA(198, 122, 58, 1), If(gblUserRole = "INFOSEC", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
-          Fill: =If(Coalesce(LookUp(fNoAppRole, rc = "INFOSEC").n, 0) > 0, If(gblUserRole = "INFOSEC", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "INFOSEC", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "INFOSEC").n, 0) > 0, RGBA(184, 83, 74, 1), If(gblUserRole = "INFOSEC", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
+          Fill: =If((Coalesce(LookUp(fNoAppRole, rc = "INFOSEC").n, 0) > 0 || Coalesce(LookUp(fInvRoleU, rc = "INFOSEC").n, 0) > 0), If(gblUserRole = "INFOSEC", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "INFOSEC", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblUserRole = "INFOSEC", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =36
           OnSelect: '=Set(gblUserRole, "INFOSEC")
@@ -777,6 +777,7 @@ Screens:
         - uo2Name:
             Control: ModernText@1.0.0
             Properties:
+              Fill: =If((If(gblUserRole = "EXTCONN", ThisItem.ApExt, If(gblUserRole = "WLAN", ThisItem.ApWlan, If(gblUserRole = "CLOUD", ThisItem.ApCloud, ThisItem.ApExt || ThisItem.ApWlan || ThisItem.ApCloud))) && CountRows(Filter(colGEdit, O1 = gblUserOrg1 && Role = gblUserRole && (Scope = "ALL" || (Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(Codes, ""))))) = 0), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
               Text: =ThisItem.NameJa
               Color: =If((";" & ThisItem.Title & ";") in fEligUC, RGBA(74, 71, 64, 1), If(fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, ""), RGBA(184, 83, 74, 1), RGBA(168, 163, 154, 1)))
               Align: ='TextCanvas.Align'.Start

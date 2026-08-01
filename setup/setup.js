@@ -83,9 +83,6 @@ const BIND_GID = "1234567";
   const SCHEMA = {
     PRM_Org1: { desc: "権限申請: 組織区分1マスタ", title: "組織区分1コード", fields: [
       T("NameJa", "日本語名称"), T("NameEn", "英語名称"), N("SortOrder", "表示順"),
-      B("MsExt", "多段階設定要否(外部接続申請)", false),
-      B("MsWlan", "多段階設定要否(無線LAN申請)", false),
-      B("MsCloud", "多段階設定要否(クラウド申請)", false),
       B("IsActive", "有効", true),
     ], idx: [] },
     PRM_Org2: { desc: "権限申請: 組織区分2マスタ", title: "組織区分2コード", fields: [
@@ -213,9 +210,9 @@ const BIND_GID = "1234567";
   if (DO.seed) {
     await ensureItems("PRM_Org1", [
       { Title: "B01", NameJa: "東日本ブロック", NameEn: "East Japan Block", SortOrder: 1,
-        MsExt: true, MsWlan: true, MsCloud: true, IsActive: true },
+        IsActive: true },
       { Title: "B02", NameJa: "中部ブロック", NameEn: "Central Japan Block", SortOrder: 2,
-        MsExt: true, MsWlan: false, MsCloud: true, IsActive: true },
+        IsActive: true },
     ]);
 
     const o2 = [
