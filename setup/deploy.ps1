@@ -294,8 +294,21 @@ $zip = [System.IO.Compression.ZipFile]::Open($zipOut, [System.IO.Compression.Zip
 try {
   $entries = @($zip.Entries | Where-Object { $_.FullName -like 'CanvasApps/*.msapp' })
   if ($entries.Count -eq 0) {
+    Write-Warn 'このソリューションの中身:'
+    foreach ($e in $zip.Entries) { Write-Host "      $($e.FullName)" }
     $zip.Dispose()
-    Stop-Here 'ソリューションにキャンバスアプリが入っていない。docs/deploy.md 手順 9-2 を先にやる。'
+    Stop-Here @'
+ソリューションにキャンバスアプリが入っていない。
+
+追加したつもりでも入っていないことがある。よくあるのは
+
+  ・保存した直後のアプリは「既存を追加」の一覧に出ない（20 分ほどかかる）
+  ・「コード アプリ」など別の種類を選んでいる
+    選ぶのは アプリ →「キャンバス アプリ」→「Dataverse の外部」タブ
+
+ポータルでソリューションを開き、中にキャンバスアプリが 1 個あることを
+目で確かめてから、もう一度これを流す。
+'@
   }
   if ($entries.Count -gt 1) {
     # 取り違えると別のアプリを壊すので、黙って 1 つ目を選ばない
