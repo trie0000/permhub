@@ -145,24 +145,35 @@ function Stop-Here($msg) { Write-Host ''; Write-Host $msg -ForegroundColor Red; 
 Write-Step '前提を確認'
 
 if (-not (Get-Command pac -ErrorAction SilentlyContinue)) {
-  Stop-Here @'
-pac (Power Platform CLI) が見つからない。コマンドで入る。
-
+  # Windows / WSL・Linux・macOS で入れ方が違う。pac 本体は .NET のツールなので
+  # どれでも動く（このスクリプトも PowerShell 7 があれば OS を問わない）
+  if ($IsWindows) {
+    $how = @'
     winget install Microsoft.DotNet.SDK.10
     # ここで新しいターミナルを開く（PATH を読み直すため）
     dotnet tool install --global Microsoft.PowerApps.CLI.Tool
     pac auth create --name permhub
+'@
+  }
+  else {
+    $how = @'
+    # .NET SDK 10 を入れる（Ubuntu / WSL の例）
+    sudo apt-get update && sudo apt-get install -y dotnet-sdk-10.0
+    dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+    export PATH="$PATH:$HOME/.dotnet/tools"     # ~/.bashrc にも書いておく
+    pac auth create --name permhub
+'@
+  }
+  Stop-Here @"
+pac (Power Platform CLI) が見つからない。入れる。
 
-**SDK は 10 でないと駄目。** pac は NuGet に出ている全バージョンが net10.0 専用で、
-SDK 9 以下だと次で失敗する:
-
-    設定ファイル 'DotnetToolSettings.xml' がパッケージで見つかりませんでした
-
-ランタイムだけだと "No .NET SDKs were found" になる。SDK が要る。
+$how
+SDK は 10 が要る。9 以下だと DotnetToolSettings.xml がパッケージで
+見つかりませんでした で入らない。
 
 winget の Microsoft.PowerAppsCLI は使わない。中身が powerapps-cli-1.0.msi で
-古く、このスクリプトが使う --layout SourceCode が無い。
-'@
+古く、--layout SourceCode が無い。
+"@
 }
 
 # pac が古いと --layout SourceCode が無く、このスクリプトは動かない。

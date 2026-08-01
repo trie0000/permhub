@@ -220,6 +220,32 @@ Studio の「…」メニューには「アプリのバージョン履歴」し�
   タブを閉じる（別ページへ移動する）と**すぐ**解放される。メッセージの 15 分は
   ブラウザが落ちるなどして解放を伝えられなかったときの上限で、正常に閉じたなら待たなくてよい
 
+### WSL / Linux / macOS でも同じスクリプトで動く
+
+`deploy.ps1` は **PowerShell 7 があれば OS を問わない**。`pac` は .NET のツールなので
+Windows 専用ではない。WSL から流しても同じ結果になる。
+
+```bash
+# .NET SDK 10（Ubuntu / WSL）
+sudo apt-get update && sudo apt-get install -y dotnet-sdk-10.0 powershell
+dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+export PATH="$PATH:$HOME/.dotnet/tools"     # ~/.bashrc にも書いておく
+pac auth create --name permhub
+```
+
+```bash
+pwsh ./setup/deploy.ps1 -SolutionName <一意名>
+```
+
+OS 依存の分岐はスクリプトに 1 箇所だけある。`pac` が入っていないときの案内文で、
+`$IsWindows` を見て winget と apt を出し分けている。処理そのものは共通。
+
+**Windows PowerShell 5.1 でだけ効く作りにはしていない。** zip はエントリを名前で
+差し替えるので、パス区切りが `/` でも円記号でも壊れない（→ 下の「解凍して詰め直さない」）。
+
+> `pac auth create` はブラウザを開く。WSL でブラウザが開かないときは、
+> 端末に出るデバイスコードの URL を Windows 側のブラウザに貼る。
+
 ### 毎回の更新（Windows / PowerShell）
 
 [setup/deploy.ps1](../setup/deploy.ps1) を叩くだけ。
