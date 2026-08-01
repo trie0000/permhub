@@ -99,6 +99,29 @@ def check(path):
     return found
 
 
+def check_parens(path):
+    """括弧が釣り合っていない式を (行, プロパティ, ずれ) で返す。
+
+    式の一部を機械的に消したときに閉じ括弧だけ残ると、取り込みは通るのに
+    Studio で「予期しない文字があります」になる。
+    """
+    found = []
+    for n, line in enumerate(path.read_text(encoding="utf-8").split("\n"), 1):
+        m = re.match(r"^\s*([A-Za-z][A-Za-z0-9_]*): =(.*)$", line)
+        if not m:
+            continue
+        depth = 0
+        quoted = False
+        for ch in m.group(2):
+            if ch == '"':
+                quoted = not quoted
+            elif not quoted:
+                depth += (ch == "(") - (ch == ")")
+        if depth:
+            found.append((n, m.group(1), depth))
+    return found
+
+
 def main():
     if not TARGETS:
         print("src/*.pa.yaml が見つからない", file=sys.stderr)
@@ -106,6 +129,10 @@ def main():
     bad = 0
     for path in TARGETS:
         hits = check(path)
+        for n, prop, depth in check_parens(path):
+            side = "閉じ括弧が足りない" if depth > 0 else "閉じ括弧が多い"
+            print(f"{path.relative_to(ROOT)}:{n}: {prop} の括弧が合わない（{side} {abs(depth)}）")
+            bad += 1
         for n, ctrl, kind, prop in check_props(path):
             print(f"{path.relative_to(ROOT)}:{n}: {kind} に '{prop}' は無い（{ctrl}）")
             bad += 1

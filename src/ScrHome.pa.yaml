@@ -793,8 +793,8 @@ Screens:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
-                      Color: =If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApExt <> LookUp(colOrg2All, Title = ThisItem.Title).ApExt, RGBA(184, 83, 74, 1), If(ThisItem.ApExt, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))))
-                      Fill: =If(ThisItem.ApExt, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1)))
+                      Color: =If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApExt <> LookUp(colOrg2All, Title = ThisItem.Title).ApExt, RGBA(184, 83, 74, 1), If(ThisItem.ApExt, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
+                      Fill: =If(ThisItem.ApExt, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1))
                       FontWeight: ='TextCanvas.Weight'.Bold
                       RadiusTopLeft: =4
                       RadiusTopRight: =4
@@ -811,7 +811,7 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApExt:!ThisItem.ApExt})); Select(btnSnapO)
+                      OnSelect: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApExt:!ThisItem.ApExt}); Select(btnSnapO)
                       BorderThickness: =If(ThisItem.ApExt <> LookUp(colOrg2All, Title = ThisItem.Title).ApExt, 2, 0)
                       BorderColor: =RGBA(184, 83, 74, 1)
                 - o2ExtSpR:
@@ -836,8 +836,8 @@ Screens:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
-                      Color: =If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApWlan <> LookUp(colOrg2All, Title = ThisItem.Title).ApWlan, RGBA(184, 83, 74, 1), If(ThisItem.ApWlan, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))))
-                      Fill: =If(ThisItem.ApWlan, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1)))
+                      Color: =If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApWlan <> LookUp(colOrg2All, Title = ThisItem.Title).ApWlan, RGBA(184, 83, 74, 1), If(ThisItem.ApWlan, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
+                      Fill: =If(ThisItem.ApWlan, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1))
                       FontWeight: ='TextCanvas.Weight'.Bold
                       RadiusTopLeft: =4
                       RadiusTopRight: =4
@@ -854,7 +854,7 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApWlan:!ThisItem.ApWlan})); Select(btnSnapO)
+                      OnSelect: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApWlan:!ThisItem.ApWlan}); Select(btnSnapO)
                       BorderThickness: =If(ThisItem.ApWlan <> LookUp(colOrg2All, Title = ThisItem.Title).ApWlan, 2, 0)
                       BorderColor: =RGBA(184, 83, 74, 1)
                 - o2WlanSpR:
@@ -879,8 +879,8 @@ Screens:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
-                      Color: =If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApCloud <> LookUp(colOrg2All, Title = ThisItem.Title).ApCloud, RGBA(184, 83, 74, 1), If(ThisItem.ApCloud, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))))
-                      Fill: =If(ThisItem.ApCloud, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1)))
+                      Color: =If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApCloud <> LookUp(colOrg2All, Title = ThisItem.Title).ApCloud, RGBA(184, 83, 74, 1), If(ThisItem.ApCloud, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
+                      Fill: =If(ThisItem.ApCloud, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1))
                       FontWeight: ='TextCanvas.Weight'.Bold
                       RadiusTopLeft: =4
                       RadiusTopRight: =4
@@ -897,7 +897,7 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApCloud:!ThisItem.ApCloud})); Select(btnSnapO)
+                      OnSelect: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApCloud:!ThisItem.ApCloud}); Select(btnSnapO)
                       BorderThickness: =If(ThisItem.ApCloud <> LookUp(colOrg2All, Title = ThisItem.Title).ApCloud, 2, 0)
                       BorderColor: =RGBA(184, 83, 74, 1)
                 - o2CloudSpR:

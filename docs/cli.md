@@ -96,7 +96,7 @@ python3 setup/check-yaml.py
 ```
 
 同じ `Properties` ブロックに同名のプロパティが 2 つあると、行番号を出して exit 1 になる。
-**そのコントロールに無いプロパティ**も落とす。
+**そのコントロールに無いプロパティ**と、**括弧が合っていない式**も落とす。
 
 ```
 src/ScrUser.pa.yaml:217: ModernText に 'Placeholder' は無い（txtName）
@@ -109,6 +109,16 @@ error PA2108 : Unknown property 'Placeholder' for control type 'ModernText@1.0.0
 ```
 
 入力欄（`ModernTextInput`）を文字（`ModernText`）に変えたときの消し忘れで踏んだ。
+
+括弧のほうはこう出る。
+
+```
+src/ScrHome.pa.yaml:1013: Fill の括弧が合わない（閉じ括弧が多い 1）
+```
+
+**式の一部を機械的に消すと、閉じ括弧だけ残る。** `If(cond, a, <式>)` の `If(cond, a, `
+だけを消すと `<式>)` になり、取り込みは通るのに Studio で
+`予期しない文字があります` になる。組織区分1 の要否を外したときに 9 箇所踏んだ。
 プロパティ名は [Text modern control](https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/controls/modern-controls/modern-control-text) に合わせてある。
 
 > プロパティの値が複数行のクォート形式で書かれていることがある。
