@@ -24,9 +24,16 @@ export PATH="$PATH:$HOME/.dotnet/tools"
 ```
 
 > **`dotnet tool install` は .NET SDK が要る。** ランタイムだけの PC では
-> `No .NET SDKs were found` で失敗する。SDK を入れたくない Windows では
-> `https://aka.ms/PowerAppsCLI` の MSI でも入るが、**版が古いと
-> `--layout SourceCode` が無く使えない**。`pac canvas pack` のヘルプで確認する。
+> `No .NET SDKs were found` で失敗する。Windows ならコマンドで入る。
+>
+> ```powershell
+> winget install Microsoft.DotNet.SDK.9
+> # 新しいターミナルを開いてから
+> dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+> ```
+>
+> **`winget install Microsoft.PowerAppsCLI` は使わない。** 中身が
+> `powerapps-cli-1.0.msi` で古く、`--layout SourceCode` が無い。
 
 Homebrew の dotnet を使っている場合、`pac` が .NET ランタイムを見つけられない。
 `DOTNET_ROOT` を指す。

@@ -49,22 +49,18 @@ Write-Step '前提を確認'
 
 if (-not (Get-Command pac -ErrorAction SilentlyContinue)) {
   throw @'
-pac (Power Platform CLI) が見つからない。入れ方は 2 通り。
+pac (Power Platform CLI) が見つからない。コマンドで入る。
 
-[A] .NET SDK 経由（検証済みの構成。pac が最新になる）
-
-    1. https://aka.ms/dotnet/download から .NET SDK を入れる
-       ※ ランタイムだけでは足りない。"No .NET SDKs were found" はこれが原因
-    2. dotnet tool install --global Microsoft.PowerApps.CLI.Tool
-
-[B] MSI（.NET SDK が要らない）
-
-    https://aka.ms/PowerAppsCLI から powerapps-cli MSI を入れる
-    ※ 配布されている版が古いことがある。入れたあと下のバージョン確認が通るか見る
-
-どちらでも、入れたら新しいターミナルを開いて認証する:
-
+    winget install Microsoft.DotNet.SDK.9
+    # ここで新しいターミナルを開く（PATH を読み直すため）
+    dotnet tool install --global Microsoft.PowerApps.CLI.Tool
     pac auth create --name permhub
+
+.NET SDK を先に入れるのは、dotnet tool install に SDK が要るため。
+ランタイムだけだと "No .NET SDKs were found" で失敗する。
+
+winget の Microsoft.PowerAppsCLI は使わない。中身が powerapps-cli-1.0.msi で
+古く、このスクリプトが使う --layout SourceCode が無い。
 '@
 }
 
