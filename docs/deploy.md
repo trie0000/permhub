@@ -98,7 +98,7 @@ Set(gblMeGid, If(IsBlank(gblMe.Title), "1234567", gblMe.Title));
 
 | リスト | 入れる行 |
 |---|---|
-| `PRM_Org1` | 組織区分1 を 1 件以上（`Title` = コード、`NameJa`、`SortOrder`、`IsActive` = はい、`MsExt`/`MsWlan`/`MsCloud`） |
+| `PRM_Org1` | 組織区分1 を 1 件以上（`Title` = コード、`NameJa`、`SortOrder`、`IsActive` = はい） |
 | `PRM_Org2` | その配下の組織区分2（`Title` = コード、`Org1Code`、`NameJa`、`SortOrder`、`ApExt`/`ApWlan`/`ApCloud`、`IsActive` = はい） |
 | `PRM_Users` | 自分（`Title` = グローバルID、`FullName`、**`AdObjectId`**、`IsActive` = はい） |
 | `PRM_UserOrg1` | `Title` = `<グローバルID>#<組織区分1コード>`、`GlobalId`、`Org1Code`、`IsActive` = はい |

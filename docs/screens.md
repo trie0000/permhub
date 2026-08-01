@@ -766,11 +766,10 @@ fBskRowH = Max(56, 22 * Coalesce(Max(colBsk, CountRows(Split(Txt, Char(10)))), 1
 セルの `OnSelect`:
 
 ```
-If(LookUp(colOrg1, Title = gblOrg1).MsExt,
-   Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApExt:!ThisItem.ApExt}))
+Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApExt:!ThisItem.ApExt})
 ```
 
-`If` で囲うことで、**組織区分1 側が「不要」の種別（`―` 表示）はクリックしても何も起きない**。
+多段階承認の要否は**組織区分2 だけで持つ**。組織区分1 側に要否は無い。
 
 ### 未申請の変更を見せる
 

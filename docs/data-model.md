@@ -54,9 +54,6 @@ SharePoint にトランザクションは無いので、§6 の手順で担保�
 | `NameJa` | Text | 日本語名称 | |
 | `NameEn` | Text | 英語名称 | |
 | `SortOrder` | Number | 表示順 | |
-| `MsExt` | Boolean | 多段階設定要否（外部接続申請） | |
-| `MsWlan` | Boolean | 多段階設定要否（無線LAN申請） | |
-| `MsCloud` | Boolean | 多段階設定要否（クラウド申請） | |
 | `IsActive` | Boolean | 有効 | 既定 true |
 
 ### `PRM_Org2` 組織区分2
@@ -77,9 +74,9 @@ SharePoint にトランザクションは無いので、§6 の手順で担保�
 保存すると組織区分1 を変えたときに全件更新が必要になり、必ず食い違う。**都度計算する。**
 
 ```
-有効Ext(org2)   = Org1[org2.Org1Code].MsExt   && org2.ApExt
-有効Wlan(org2)  = Org1[org2.Org1Code].MsWlan  && org2.ApWlan
-有効Cloud(org2) = Org1[org2.Org1Code].MsCloud && org2.ApCloud
+有効Ext(org2)   = org2.ApExt
+有効Wlan(org2)  = org2.ApWlan
+有効Cloud(org2) = org2.ApCloud
 ```
 
 ### `PRM_Users` 利用者
@@ -308,7 +305,6 @@ ChangeText: 外部接続申請担当（東日本ブロック）
 
 | 種別 / 操作 | `EntityKey` | `AfterJson` |
 |---|---|---|
-| ORG1 / UPDATE | 組織区分1コード | `{"MsExt":b,"MsWlan":b,"MsCloud":b}` |
 | ORG2 / ADD | 新コード | `{"Org1Code":"…","NameJa":"…","NameEn":"…","SortOrder":n,"ApExt":b,"ApWlan":b,"ApCloud":b}` |
 | ORG2 / UPDATE | コード | 同上（`Org1Code` は無くてよい） |
 | USER / ADD・UPDATE | グローバルID | `{"FullName":"…","Mail":"…","Department":"…"}` |
