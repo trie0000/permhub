@@ -88,6 +88,11 @@ if ($auth -match 'No profiles were found') {
   throw '認証プロファイルが無い。pac auth create --name permhub を実行する。'
 }
 
+# どのテナント・どの環境に流すのかを先に出す。プロファイルを複数持っていると
+# 意図しないテナントのアプリを上書きしかねない
+Write-Step '接続先'
+pac auth who
+
 foreach ($s in $Screens) {
   $p = Join-Path $SrcDir "$s.pa.yaml"
   if (-not (Test-Path $p)) { throw "見つからない: $p" }
@@ -142,7 +147,18 @@ $zipOut = Join-Path $Work 'sol-mod.zip'
 # ---- 3. エクスポート -------------------------------------------------------
 Write-Step "ソリューション '$SolutionName' をエクスポート"
 pac solution export --path $zipIn --name $SolutionName --overwrite
-if ($LASTEXITCODE -ne 0) { throw "エクスポートに失敗した。一意名を確認する（pac solution list）。" }
+if ($LASTEXITCODE -ne 0) {
+  Write-Warn "ソリューション '$SolutionName' を取り出せなかった。この環境にあるものは:"
+  pac solution list
+  throw @'
+一意名が違うか、別の環境に繋がっている。
+
+・上の一覧の Unique Name（表示名ではない）を -SolutionName に渡す
+・一覧に無いなら、そのテナントではまだアプリをソリューションに入れていない
+  → docs/deploy.md 手順 9
+・そもそも接続先が違うなら pac auth list / pac auth select で切り替える
+'@
+}
 
 Expand-Archive -Path $zipIn -DestinationPath $ext -Force
 

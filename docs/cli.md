@@ -175,6 +175,20 @@ Studio の「…」メニューには「アプリのバージョン履歴」し�
 | `-NoImport` | zip を作るところで止める。中身を見たいとき |
 | `-SrcDir <path>` | 差し替え元を変える（既定は `src`） |
 
+**`-SolutionName` に渡すのは「一意名」**（表示名ではない）。`pac solution list` の
+`Unique Name` 列。違う名前を渡すと
+
+```
+Error: The given solution unique name (xxx) is not valid
+```
+
+になる。`deploy.ps1` はこのとき**その環境にあるソリューション一覧をその場で出す**ので、
+そこから正しい `Unique Name` を選ぶ。
+
+一覧に出ないなら、**そのテナントではまだアプリをソリューションに入れていない**
+（→ [deploy.md](deploy.md) 手順 9）か、**別の環境に繋がっている**。
+スクリプトは実行の最初に `pac auth who` で接続先を表示する。
+
 **`Compress-Archive` は使っていない。** ソリューション zip は中身がルート直下に
 並んでいる必要があり、`[System.IO.Compression.ZipFile]::CreateFromDirectory` のほうが確実。
 
