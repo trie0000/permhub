@@ -18,6 +18,10 @@
 .PARAMETER Screens
   差し替える画面。既定は ScrHome / ScrUser / ScrReq。
 
+.PARAMETER WithApp
+  src/App.Formulas.txt と src/App.OnStart.txt もアプリへ反映する。
+  既定では中身を突き合わせて、違っていれば知らせるだけ。
+
 .PARAMETER PruneScreens
   src に無い画面をアプリから削除する。名前がぶつかって取り込めないときに使う。
 
@@ -36,7 +40,8 @@ param(
   [string]$SrcDir,
   [string[]]$Screens = @('ScrHome', 'ScrUser', 'ScrReq'),
   [switch]$NoImport,
-  [switch]$PruneScreens
+  [switch]$PruneScreens,
+  [switch]$WithApp
 )
 
 $ErrorActionPreference = 'Stop'
@@ -62,6 +67,38 @@ function Get-ControlNames($path) {
     }
   }
   return $names
+}
+
+# App.OnStart と App.Formulas は画面ではなく App.pa.yaml の中にある。
+#     Formulas: |
+#       =fMem = ...;
+#       ...
+#     OnStart: |
+#       =Set(...);
+# の形なので、画面のようにファイルごと差し替えられない。ブロックの範囲を返す
+function Get-AppBlock($lines, $prop) {
+  $start = -1
+  for ($i = 0; $i -lt $lines.Count; $i++) {
+    if ($lines[$i] -match "^    $prop" + ':\s*\|\s*$') { $start = $i; break }
+  }
+  if ($start -lt 0) { return $null }
+  $end = $lines.Count
+  for ($i = $start + 1; $i -lt $lines.Count; $i++) {
+    if ($lines[$i] -match '^    [A-Za-z]') { $end = $i; break }
+  }
+  return @{ Start = $start; End = $end }
+}
+
+# .txt を YAML のブロックスカラーの形にする（6 字下げ、先頭行に =）
+function New-AppBlockBody($textPath) {
+  $body = @()
+  $first = $true
+  foreach ($l in @(Get-Content -LiteralPath $textPath -Encoding UTF8)) {
+    if ($first) { $body += "      =$l"; $first = $false }
+    elseif ($l -eq '') { $body += '' }
+    else { $body += "      $l" }
+  }
+  return $body
 }
 
 function Stop-Here($msg) { Write-Host ''; Write-Host $msg -ForegroundColor Red; exit 1 }
@@ -298,6 +335,40 @@ try {
     if (-not (Test-Path $to)) { Write-Warn "$s はアプリ側に無い。新しい画面として入る" }
     Copy-Item $from $to -Force
     Write-Host "  $s.pa.yaml"
+  }
+
+  # App.Formulas / App.OnStart は App.pa.yaml の中なので、画面と同じようには入らない。
+  # 黙って上書きするとテナント側で直したコネクタ名などを消してしまうので、
+  # 既定は突き合わせて知らせるだけにする
+  $appYaml = Join-Path $srcIn 'App.pa.yaml'
+  $appLines = @(Get-Content -LiteralPath $appYaml -Encoding UTF8)
+  $appChanged = $false
+  foreach ($pair in @(@('Formulas', 'App.Formulas.txt'), @('OnStart', 'App.OnStart.txt'))) {
+    $prop = $pair[0]
+    $txt = Join-Path $SrcDir $pair[1]
+    if (-not (Test-Path $txt)) { continue }
+    $blk = Get-AppBlock $appLines $prop
+    if ($null -eq $blk) { Write-Warn "App.pa.yaml に $prop が無い"; continue }
+    $body = @(New-AppBlockBody $txt)
+    $old = @()
+    if ($blk.End -gt ($blk.Start + 1)) { $old = @($appLines[($blk.Start + 1)..($blk.End - 1)]) }
+    $sameText = (($old -join "`n").TrimEnd() -eq ($body -join "`n").TrimEnd())
+    if ($sameText) { Write-Host "  App.$prop は一致"; continue }
+
+    if ($WithApp) {
+      $head = @($appLines[0..$blk.Start])
+      $tail = @()
+      if ($blk.End -lt $appLines.Count) { $tail = @($appLines[$blk.End..($appLines.Count - 1)]) }
+      $appLines = @($head + $body + $tail)
+      $appChanged = $true
+      Write-Host "  App.$prop を差し替え"
+    }
+    else {
+      Write-Warn "App.$prop がアプリ側と違う（$($old.Count) 行 → $($body.Count) 行）。反映するなら -WithApp"
+    }
+  }
+  if ($appChanged) {
+    Set-Content -LiteralPath $appYaml -Value $appLines -Encoding UTF8
   }
 
   pac canvas pack --sources $srcOut --msapp $msappPath --layout SourceCode --overwrite

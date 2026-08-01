@@ -172,9 +172,50 @@ Studio の「…」メニューには「アプリのバージョン履歴」し�
 | オプション | |
 |---|---|
 | `-Screens ScrHome` | 差し替える画面を絞る（既定は ScrHome / ScrUser / ScrReq） |
+| `-WithApp` | `App.Formulas` と `App.OnStart` も反映する（下記） |
 | `-PruneScreens` | `src` に無い画面をアプリから削除する（下記） |
 | `-NoImport` | zip を作るところで止める。中身を見たいとき |
 | `-SrcDir <path>` | 差し替え元を変える（既定は `src`） |
+
+### `App.Formulas` と `App.OnStart`
+
+**この 2 つは画面ファイルではなく `App.pa.yaml` の中にある。**
+
+```yaml
+App:
+  Properties:
+    Formulas: |
+      =fMem = Filter(colMemberAll, Org1Code = gblOrg1);
+      ...
+    OnStart: |
+      =Set(gblMyAdId, Office365ユーザー.MyProfileV2().id); ...
+    StartScreen: =ScrHome
+```
+
+画面のようにファイルごと差し替えられないので、`deploy.ps1` は**このブロックの中身だけ**を
+`src/App.Formulas.txt` / `src/App.OnStart.txt` で入れ替える。`StartScreen` や `Theme` は触らない。
+
+既定は**突き合わせて知らせるだけ**。テナント側でコネクタ名などを直していると、
+黙って上書きすると消えてしまうため。
+
+```
+! App.Formulas がアプリ側と違う（80 行 → 81 行）。反映するなら -WithApp
+```
+
+反映するなら `-WithApp` を付ける。
+
+```powershell
+.\setup\deploy.ps1 -SolutionName <一意名> -WithApp
+```
+
+**`OnStart` を入れ替えても自動では走らない。** アプリを開いて
+`App` の `…` →「OnStart を実行します」を押す（プレビューでも再実行されない）。
+
+> **`OnStart` にエラーが 1 つでもあると、黙って何も実行されない。**
+> 画面は出るのにデータが空、という見え方になる。聴診器アイコンの
+> 「アプリのチェック」→「数式」でエラーを 0 にする。別テナントで多いのは
+> コネクタ名の言語違い（`Office365ユーザー` ↔ `Office365Users`）と
+> データソースの繋ぎ忘れ。
 
 ### `src` に無い画面が残っているとき
 
