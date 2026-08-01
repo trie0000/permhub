@@ -28,6 +28,49 @@ KEY = re.compile(r"^(\s*)([A-Za-z][A-Za-z0-9_.]*):(?: |$)")
 PROPS = re.compile(r"^(\s*)Properties:\s*$")
 
 
+# コントロールごとの使えるプロパティ。取り込みは通るのに Studio で開くと
+# PA2108 Unknown property で落ちるので、手元で気づけるようにしておく。
+# 出典: learn.microsoft.com「Text modern control in canvas apps」
+_COMMON = {
+    "X", "Y", "Width", "Height", "Visible", "DisplayMode",
+    # コンテナの子として使うもの
+    "AlignInContainer", "FillPortions", "LayoutMinHeight", "LayoutMinWidth",
+}
+CTRL_PROPS = {
+    "ModernText": _COMMON | {
+        "Text", "OnSelect", "Wrap", "AutoHeight", "Align", "VerticalAlign",
+        "Font", "Size", "Color", "FontWeight", "Italic", "Underline", "Strikethrough",
+        "Fill", "BorderColor", "BorderStyle", "BorderThickness",
+        "PaddingTop", "PaddingBottom", "PaddingLeft", "PaddingRight",
+        "RadiusTopLeft", "RadiusTopRight", "RadiusBottomLeft", "RadiusBottomRight",
+    },
+}
+CTRL_LINE = re.compile(r"^(\s*)- ([A-Za-z0-9_]+):\s*$")
+CTRL_DECL = re.compile(r"^\s*Control: ([A-Za-z0-9_]+)@")
+
+
+def check_props(path):
+    """そのコントロールに無いプロパティを (行, 名前, 種類, プロパティ) で返す。"""
+    found = []
+    name = kind = None
+    ind = -1
+    for n, line in enumerate(path.read_text(encoding="utf-8").split("\n"), 1):
+        m = CTRL_LINE.match(line)
+        if m:
+            name, kind, ind = m.group(2), None, len(m.group(1))
+            continue
+        d = CTRL_DECL.match(line)
+        if d and name:
+            kind = d.group(1)
+            continue
+        if kind not in CTRL_PROPS:
+            continue
+        k = KEY.match(line)
+        if k and len(k.group(1)) == ind + 6 and k.group(2) not in CTRL_PROPS[kind]:
+            found.append((n, name, kind, k.group(2)))
+    return found
+
+
 def check(path):
     """同一 Properties ブロック内の重複キーを返す。"""
     found = []
@@ -63,6 +106,9 @@ def main():
     bad = 0
     for path in TARGETS:
         hits = check(path)
+        for n, ctrl, kind, prop in check_props(path):
+            print(f"{path.relative_to(ROOT)}:{n}: {kind} に '{prop}' は無い（{ctrl}）")
+            bad += 1
         rel = path.relative_to(ROOT)
         if hits:
             for n, name, first in hits:

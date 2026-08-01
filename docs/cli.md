@@ -96,6 +96,20 @@ python3 setup/check-yaml.py
 ```
 
 同じ `Properties` ブロックに同名のプロパティが 2 つあると、行番号を出して exit 1 になる。
+**そのコントロールに無いプロパティ**も落とす。
+
+```
+src/ScrUser.pa.yaml:217: ModernText に 'Placeholder' は無い（txtName）
+```
+
+これは**取り込みは通るのに Studio で開くと落ちる**種類の間違い。
+
+```
+error PA2108 : Unknown property 'Placeholder' for control type 'ModernText@1.0.0'
+```
+
+入力欄（`ModernTextInput`）を文字（`ModernText`）に変えたときの消し忘れで踏んだ。
+プロパティ名は [Text modern control](https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/controls/modern-controls/modern-control-text) に合わせてある。
 
 > プロパティの値が複数行のクォート形式で書かれていることがある。
 >
@@ -107,6 +121,21 @@ python3 setup/check-yaml.py
 >
 > `Fill: =` を探す検査だとこれを見落とし、「Fill が無い」と誤判定して二重に足してしまう。
 > **キー名だけで突き合わせること。**
+
+## コネクタの戻り値の名前（実地で踏んだところ）
+
+**`Office365ユーザー` は関数によって列名の綴りが違う。**
+
+| 関数 | 戻り | 列名 |
+|---|---|---|
+| `MyProfileV2()` / `UserProfileV2(id)` | `GraphUser_V1` | **camelCase**（`id` `displayName` `department` `mail`） |
+| `SearchUserV2({searchTerm, top}).value` | `array of User` | **PascalCase**（`Id` `DisplayName` `Department` `Mail` `UserPrincipalName`） |
+
+同じコネクタでも V2 の「プロファイル系」は Graph の綴り、「検索」は旧来の綴りになる。
+`SearchUserV2().value` を camelCase で読んで `名前が無効です。'mail' は認識されません`
+で落ちた。`SearchUser`（V1）は非推奨なので使わない。
+
+出典: [Office 365 Users コネクタ](https://learn.microsoft.com/en-us/connectors/office365users/)
 
 ## 戻す（`.msapp` → テナント）— ここだけ手作業
 
