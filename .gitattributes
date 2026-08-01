@@ -1,0 +1,7 @@
+# PowerShell は BOM 無しの .ps1 を Windows の ANSI（日本語環境なら CP932）として読む。
+# 日本語が文字化けして構文エラーになるため、UTF-8 BOM 付きで置いてある（消さないこと）。
+# 改行も CRLF で配る。
+*.ps1 text eol=crlf
+
+# .pa.yaml は Power Apps がそのまま読む。git に手を入れさせない
+*.pa.yaml -text

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   src/*.pa.yaml をソリューション経由で既存のキャンバスアプリに反映する（Windows / PowerShell）。
 
@@ -85,7 +85,7 @@ pac が古い。`pac canvas pack` に --layout SourceCode が無い。
 
 $auth = pac auth list 2>&1 | Out-String
 if ($auth -match 'No profiles were found') {
-  throw "認証プロファイルが無い。`pac auth create --name permhub` を実行する。"
+  throw '認証プロファイルが無い。pac auth create --name permhub を実行する。'
 }
 
 foreach ($s in $Screens) {

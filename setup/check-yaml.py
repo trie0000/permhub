@@ -33,7 +33,7 @@ def check(path):
     found = []
     indent = None
     seen = {}
-    for n, line in enumerate(path.read_text().split("\n"), 1):
+    for n, line in enumerate(path.read_text(encoding="utf-8").split("\n"), 1):
         m = PROPS.match(line)
         if m:
             indent = len(m.group(1)) + 2

@@ -178,6 +178,21 @@ Studio の「…」メニューには「アプリのバージョン履歴」し�
 **`Compress-Archive` は使っていない。** ソリューション zip は中身がルート直下に
 並んでいる必要があり、`[System.IO.Compression.ZipFile]::CreateFromDirectory` のほうが確実。
 
+**`deploy.ps1` は UTF-8 BOM 付きで保存してある。消さないこと。**
+Windows PowerShell 5.1 は **BOM 無しの `.ps1` を OS の ANSI コードページ**
+（日本語環境なら CP932）**として読む**。UTF-8 のまま置くと日本語が
+
+```
+throw "繧ｨ繧ｯ繧ｹ繝昴�ｼ繝医↓螟ｱ謨励＠縺溘・
+```
+
+のように化け、化けたバイトの中の `\` や `'` が引用符やヒアストリングを壊して
+`式またはステートメントのトークン ... を使用できません` が大量に出る。
+`.gitattributes` で `*.ps1 text eol=crlf` も指定してある。
+
+**ダブルクォート内でバックティックを使わない。** PowerShell ではエスケープ文字。
+`"...`pac auth create`..."` と書くとバックティックが消える。
+
 **リポジトリの `.pa.yaml` はそのままコピーでよい。** `pac canvas unpack` が付ける
 先頭のコメントヘッダは無くても pack が通ることを確認済み。
 
