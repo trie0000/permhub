@@ -18,6 +18,9 @@
 .PARAMETER Screens
   差し替える画面。既定は ScrHome / ScrUser / ScrReq。
 
+.PARAMETER PruneScreens
+  src に無い画面をアプリから削除する。名前がぶつかって取り込めないときに使う。
+
 .PARAMETER NoImport
   import を行わず、詰め直した zip を作るところで止める。中身を確認したいとき。
 
@@ -32,7 +35,8 @@ param(
   [Parameter(Mandatory = $true)][string]$SolutionName,
   [string]$SrcDir,
   [string[]]$Screens = @('ScrHome', 'ScrUser', 'ScrReq'),
-  [switch]$NoImport
+  [switch]$NoImport,
+  [switch]$PruneScreens
 )
 
 $ErrorActionPreference = 'Stop'
@@ -44,6 +48,22 @@ if (-not $SrcDir) { $SrcDir = Join-Path $Root 'src' }
 function Write-Step($msg) { Write-Host "==> $msg" -ForegroundColor Cyan }
 function Write-Warn($msg) { Write-Host "  ! $msg" -ForegroundColor Yellow }
 # 利用者が直せる失敗はこれで止める。throw だと本文が 2 回出て読みにくい
+# .pa.yaml のコントロール定義は
+#     - drpOrg1:
+#         Control: ModernDropdown@1.0.2
+# の形。次の行が Control: のものだけ拾えば、数式の中の "- xxx:" を拾わずに済む
+function Get-ControlNames($path) {
+  $names = @()
+  $lines = @(Get-Content -LiteralPath $path -Encoding UTF8)
+  for ($i = 0; $i -lt $lines.Count; $i++) {
+    if ($lines[$i] -match '^\s*-\s+([A-Za-z_][A-Za-z0-9_]*):\s*$') {
+      $n = $Matches[1]
+      if (($i + 1) -lt $lines.Count -and $lines[$i + 1] -match '^\s*Control:\s') { $names += $n }
+    }
+  }
+  return $names
+}
+
 function Stop-Here($msg) { Write-Host ''; Write-Host $msg -ForegroundColor Red; exit 1 }
 
 # ---- 0. 前提の確認 ---------------------------------------------------------
@@ -220,6 +240,57 @@ try {
   $srcOut = Join-Path $Work 'unpacked'
   pac canvas unpack --msapp $msappPath --sources $srcOut --layout SourceCode
   if ($LASTEXITCODE -ne 0) { $zip.Dispose(); Stop-Here '.msapp の展開に失敗した。' }
+
+  # コントロール名はアプリ全体で一意。src に無い画面が残っていて、そこに同じ名前の
+  # コントロールがあると取り込みが
+  #     error PA2110 : An entity with name 'xxx' already exists
+  # で落ちる。黙って消すと相手の作った画面を壊すので、ぶつかったときだけ止める
+  $srcIn = Join-Path $srcOut 'Src'
+  $others = @(Get-ChildItem -Path $srcIn -Filter '*.pa.yaml' -File |
+    Where-Object { $_.Name -ne 'App.pa.yaml' -and $_.Name -notlike '_*' } |
+    ForEach-Object { $_.Name -replace '\.pa\.yaml$', '' } |
+    Where-Object { $Screens -notcontains $_ })
+
+  if ($others.Count -gt 0) {
+    Write-Warn "アプリ側に src に無い画面がある: $($others -join ', ')"
+    if ($PruneScreens) {
+      foreach ($o in $others) {
+        Remove-Item (Join-Path $srcIn "$o.pa.yaml") -Force
+        Write-Host "  削除: $o"
+      }
+    }
+    else {
+      $mine = @{}
+      foreach ($s in $Screens) {
+        foreach ($n in (Get-ControlNames (Join-Path $SrcDir "$s.pa.yaml"))) { $mine[$n] = $s }
+      }
+      $clash = @()
+      foreach ($o in $others) {
+        foreach ($n in (Get-ControlNames (Join-Path $srcIn "$o.pa.yaml"))) {
+          if ($mine.ContainsKey($n)) { $clash += "$n  ($o と $($mine[$n]))" }
+        }
+      }
+      if ($clash.Count -gt 0) {
+        Write-Warn 'コントロール名がぶつかっている:'
+        foreach ($c in $clash) { Write-Host "      $c" }
+        $zip.Dispose()
+        Stop-Here @'
+コントロール名はアプリ全体で一意なので、このまま入れると取り込みが
+    error PA2110 : An entity with name 'xxx' already exists
+で落ちる。どちらかにする。
+
+[1] その画面が要らないなら消す
+        .\setup\deploy.ps1 -SolutionName <一意名> -PruneScreens
+    src に無い画面をアプリから削除したうえで反映する。
+    アプリからその画面が消えるので、中身が要らないことを確かめてから。
+
+[2] その画面を残したいなら
+    Studio でその画面のコントロールを、上に出た名前と重ならない名前に変える。
+'@
+      }
+      Write-Host '  名前の衝突は無いのでそのまま残す'
+    }
+  }
 
   foreach ($s in $Screens) {
     $from = Join-Path $SrcDir "$s.pa.yaml"

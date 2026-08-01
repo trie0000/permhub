@@ -172,8 +172,34 @@ Studio の「…」メニューには「アプリのバージョン履歴」し�
 | オプション | |
 |---|---|
 | `-Screens ScrHome` | 差し替える画面を絞る（既定は ScrHome / ScrUser / ScrReq） |
+| `-PruneScreens` | `src` に無い画面をアプリから削除する（下記） |
 | `-NoImport` | zip を作るところで止める。中身を見たいとき |
 | `-SrcDir <path>` | 差し替え元を変える（既定は `src`） |
+
+### `src` に無い画面が残っているとき
+
+**コントロール名はアプリ全体で一意。** そのテナントのアプリに `src` に無い画面が
+残っていて、そこに同じ名前のコントロールがあると、取り込みが落ちる。
+
+```
+Src\ScrHome.pa.yaml(70,7) : error PA2110 : An entity with name 'drpOrg1'
+already exists. Other definition located at Src\ScrEdit.pa.yaml(194,9).
+```
+
+`deploy.ps1` は展開した時点で `src` に無い画面を見つけ、**コントロール名がぶつかって
+いるものだけを並べて止める**。ぶつかっていなければそのまま残して続ける。
+
+その画面が要らないなら消してから反映する。**アプリからその画面が消える**ので、
+中身が要らないことを確かめてから。
+
+```powershell
+.\setup\deploy.ps1 -SolutionName <一意名> -PruneScreens
+```
+
+残したいなら、Studio でその画面のコントロールを重ならない名前に変える。
+
+> 画面を消して `pac canvas pack` しても通ることは確認済み。`_EditorState.pa.yaml` が
+> その画面を参照したままでも pack が畳んでくれる。
 
 **`-SolutionName` に渡すのは「一意名」**（表示名ではない）。`pac solution list` の
 `Unique Name` 列。違う名前を渡すと
