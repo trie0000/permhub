@@ -27,10 +27,14 @@ export PATH="$PATH:$HOME/.dotnet/tools"
 > `No .NET SDKs were found` で失敗する。Windows ならコマンドで入る。
 >
 > ```powershell
-> winget install Microsoft.DotNet.SDK.9
+> winget install Microsoft.DotNet.SDK.10
 > # 新しいターミナルを開いてから
 > dotnet tool install --global Microsoft.PowerApps.CLI.Tool
 > ```
+>
+> **SDK は 10 が要る。** pac は NuGet 上の全バージョンが `net10.0` 専用で、
+> SDK 9 以下だと `DotnetToolSettings.xml がパッケージで見つかりませんでした`
+> で入らない。古い pac を `--version` で指定しても回避できない。
 >
 > **`winget install Microsoft.PowerAppsCLI` は使わない。** 中身が
 > `powerapps-cli-1.0.msi` で古く、`--layout SourceCode` が無い。

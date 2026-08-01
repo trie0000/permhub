@@ -51,13 +51,17 @@ if (-not (Get-Command pac -ErrorAction SilentlyContinue)) {
   throw @'
 pac (Power Platform CLI) が見つからない。コマンドで入る。
 
-    winget install Microsoft.DotNet.SDK.9
+    winget install Microsoft.DotNet.SDK.10
     # ここで新しいターミナルを開く（PATH を読み直すため）
     dotnet tool install --global Microsoft.PowerApps.CLI.Tool
     pac auth create --name permhub
 
-.NET SDK を先に入れるのは、dotnet tool install に SDK が要るため。
-ランタイムだけだと "No .NET SDKs were found" で失敗する。
+**SDK は 10 でないと駄目。** pac は NuGet に出ている全バージョンが net10.0 専用で、
+SDK 9 以下だと次で失敗する:
+
+    設定ファイル 'DotnetToolSettings.xml' がパッケージで見つかりませんでした
+
+ランタイムだけだと "No .NET SDKs were found" になる。SDK が要る。
 
 winget の Microsoft.PowerAppsCLI は使わない。中身が powerapps-cli-1.0.msi で
 古く、このスクリプトが使う --layout SourceCode が無い。

@@ -357,7 +357,7 @@ Power Apps 側の共有に加えて、**SharePoint リスト側の権限が要�
 **コマンドだけで入る。**
 
 ```powershell
-winget install Microsoft.DotNet.SDK.9
+winget install Microsoft.DotNet.SDK.10
 ```
 
 **ここで新しいターミナルを開く**（PATH を読み直すため）。続けて:
@@ -365,6 +365,16 @@ winget install Microsoft.DotNet.SDK.9
 ```powershell
 dotnet tool install --global Microsoft.PowerApps.CLI.Tool
 ```
+
+**バージョンは 10 でないと駄目。** `pac` は NuGet に出ている**全バージョンが
+`net10.0` 専用**で、SDK 9 以下だとインストール自体が次で失敗する。
+
+```
+設定ファイル 'DotnetToolSettings.xml' がパッケージで見つかりませんでした
+ツール 'microsoft.powerapps.cli.tool' をインストールできませんでした
+```
+
+`--version` で古い pac を指定しても回避できない（2.2.1 まで遡っても `net10.0` のみ）。
 
 .NET SDK を先に入れるのは、**`dotnet tool install` に SDK が要る**ため。
 ランタイムだけ入っている PC では `No .NET SDKs were found` で失敗する。
