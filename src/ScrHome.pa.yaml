@@ -236,7 +236,7 @@ Screens:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
-          Height: =210
+          Height: =150
           RadiusTopLeft: =8
           RadiusTopRight: =8
           RadiusBottomLeft: =8
@@ -379,61 +379,13 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
-    - lblO1ExtCap:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Start
-          Color: =RGBA(122, 118, 108, 1)
-          Height: =16
-          Size: =11
-          Text: ="外部接続申請"
-          Visible: =gblTab = "org"
-          Width: =200
-          X: =52
-          Y: =326
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - lblO1WlanCap:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Start
-          Color: =RGBA(122, 118, 108, 1)
-          Height: =16
-          Size: =11
-          Text: ="無線LAN申請"
-          Visible: =gblTab = "org"
-          Width: =200
-          X: =262
-          Y: =326
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - lblO1CloudCap:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Start
-          Color: =RGBA(122, 118, 108, 1)
-          Height: =16
-          Size: =11
-          Text: ="クラウド申請"
-          Visible: =gblTab = "org"
-          Width: =200
-          X: =472
-          Y: =326
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
     - cardO2:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(42, 42, 38, 1)
           Fill: =RGBA(250, 250, 247, 1)
-          Height: =Parent.Height - 440
+          Height: =Parent.Height - 380
           RadiusTopLeft: =8
           RadiusTopRight: =8
           RadiusBottomLeft: =8
@@ -443,7 +395,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =Parent.Width - 56
           X: =28
-          Y: =404
+          Y: =344
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -460,7 +412,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =400
           X: =52
-          Y: =420
+          Y: =360
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -483,7 +435,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =148
           X: =Parent.Width - 200
-          Y: =420
+          Y: =360
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -499,7 +451,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =90
           X: =52
-          Y: =462
+          Y: =402
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -515,7 +467,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =180
           X: =150
-          Y: =462
+          Y: =402
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -531,7 +483,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =150
           X: =336
-          Y: =462
+          Y: =402
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -547,7 +499,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =60
           X: =492
-          Y: =462
+          Y: =402
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -557,7 +509,7 @@ Screens:
         Properties:
           Text: ="多段階承認要否"
           X: =632
-          Y: =438
+          Y: =378
           Width: =282
           Height: =18
           Size: =11
@@ -579,7 +531,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =96
           X: =632
-          Y: =462
+          Y: =402
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -595,7 +547,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =96
           X: =728
-          Y: =462
+          Y: =402
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -611,7 +563,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =90
           X: =824
-          Y: =462
+          Y: =402
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -628,7 +580,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =Parent.Width - 104
           X: =52
-          Y: =486
+          Y: =426
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -638,7 +590,7 @@ Screens:
         Variant: AutoLayout
         Properties:
           Fill: =RGBA(0, 0, 0, 0)
-          Height: =Parent.Height - 606
+          Height: =Parent.Height - 546
           LayoutAlignItems: =LayoutAlignItems.Stretch
           LayoutOverflowY: =LayoutOverflow.Scroll
           LayoutDirection: =LayoutDirection.Vertical
@@ -649,7 +601,7 @@ Screens:
           Visible: =gblTab = "org"
           Width: =Parent.Width - 104
           X: =52
-          Y: =488
+          Y: =428
         Children:
         - galO2:
             Control: Gallery@2.15.0
@@ -3167,7 +3119,7 @@ Screens:
           Color: =RGBA(122, 118, 108, 1)
           Height: =24
           Size: =11
-          Text: ="☑ 権限あり　　☐ 権限なし　　― 対象外（多段階承認が無効）　　赤いセル 無効になった権限（外すまで申請できない）　　セルのクリックで付与・削除　　氏名クリックで詳細へ"
+          Text: ="☑ 権限あり　　☐ 権限なし　　赤いセル 無効になった権限（外すまで申請できない）　　セルのクリックで付与・削除　　氏名クリックで詳細へ"
           Visible: '=gblTab = "user"
 
             '
