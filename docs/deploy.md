@@ -354,8 +354,31 @@ Power Apps 側の共有に加えて、**SharePoint リスト側の権限が要�
 
 ### 9-1. `pac` を入れて認証する
 
+入れ方は 2 通り。**`dotnet tool install` は .NET SDK が要る。**
+ランタイムだけ入っている PC では `No .NET SDKs were found` で失敗する。
+
+**[A] .NET SDK 経由**（検証済みの構成。`pac` が最新になる）
+
 ```powershell
+# https://aka.ms/dotnet/download から .NET SDK を入れてから
 dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+```
+
+**[B] MSI**（.NET SDK が要らない）
+
+`https://aka.ms/PowerAppsCLI` を開くと `powerapps-cli` の MSI が落ちてくる。
+ただし**配布されている版が古いことがある**。入れたら次で確認する。
+
+```powershell
+pac canvas pack        # --layout に SourceCode が並んでいれば使える
+```
+
+並んでいなければ古いので、[A] で入れ直す（`deploy.ps1` はこれを自動で見て、
+古ければ最初に止まる）。
+
+どちらでも、入れたら**新しいターミナルを開いて**認証する。
+
+```powershell
 pac auth create --name permhub
 ```
 

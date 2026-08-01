@@ -49,13 +49,37 @@ Write-Step '前提を確認'
 
 if (-not (Get-Command pac -ErrorAction SilentlyContinue)) {
   throw @'
-pac (Power Platform CLI) が見つからない。次で入れる:
+pac (Power Platform CLI) が見つからない。入れ方は 2 通り。
 
-    dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+[A] .NET SDK 経由（検証済みの構成。pac が最新になる）
 
-そのあと新しいターミナルを開き、認証する:
+    1. https://aka.ms/dotnet/download から .NET SDK を入れる
+       ※ ランタイムだけでは足りない。"No .NET SDKs were found" はこれが原因
+    2. dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+
+[B] MSI（.NET SDK が要らない）
+
+    https://aka.ms/PowerAppsCLI から powerapps-cli MSI を入れる
+    ※ 配布されている版が古いことがある。入れたあと下のバージョン確認が通るか見る
+
+どちらでも、入れたら新しいターミナルを開いて認証する:
 
     pac auth create --name permhub
+'@
+}
+
+# pac が古いと --layout SourceCode が無く、このスクリプトは動かない。
+# バージョン番号ではなくヘルプに SourceCode があるかで判定する（版によって番号体系が違うため）
+$packHelp = pac canvas pack 2>&1 | Out-String
+if ($packHelp -notmatch 'SourceCode') {
+  throw @'
+pac が古い。`pac canvas pack` に --layout SourceCode が無い。
+
+    pac --version
+
+で版を確認し、新しいものを入れ直す:
+
+    dotnet tool update --global Microsoft.PowerApps.CLI.Tool
 '@
 }
 
