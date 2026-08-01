@@ -468,6 +468,50 @@ CanvasApps/cr875_permhubsolutiontest_09c62_DocumentUri.msapp
 | `error PA2110 : An entity with name 'xxx' already exists` | アプリに `src` に無い画面が残っていて、コントロール名がぶつかっている。要らない画面なら `-PruneScreens` を付けて消す（→ [cli.md](cli.md)） |
 | `Cannot start another [Import] because there is a previous [Import] running` | 直前の操作が裏で走っているだけ。スクリプトが 40 秒おきに 6 回まで自動で待ち直す |
 
+## 9-6. まっさらな環境での立ち上げ（検証済みの手順）
+
+**この順番でないと動かない。** データソースはリストの GUID とサイト URL に
+紐づいているので、**YAML では作れない**。アプリ側で自分で追加するしかなく、
+それが済むまで `deploy.ps1` は画面を入れても壊れたアプリになるだけ。
+
+順に、これだけ。
+
+1. **SharePoint のリストを作る** — `setup/setup.js`（手順 1）。8 本できる
+2. **空のキャンバスアプリを作る** — 「空のアプリ」→ タブレット。
+   **SharePoint リストからは作らない**（余計な画面とデータソースが付いてくる）
+3. **データソースを 10 個追加する** — 左の「データ」→「データの追加」
+
+   | 種別 | 名前 |
+   |---|---|
+   | SharePoint リスト | `PRM_Config` `PRM_Grants` `PRM_Org1` `PRM_Org2` `PRM_RequestItems` `PRM_Requests` `PRM_UserOrg1` `PRM_Users` |
+   | コネクタ | `Office365ユーザー` `Office365グループ`（英語環境なら `Office365Users` / `Office365Groups`） |
+
+4. **保存して、タブを閉じる** — 開いたままだとソリューションに追加できない
+5. **ソリューションを作り、このアプリを追加する** — 9-2 / 9-3
+6. **流し込む**
+
+   ```powershell
+   .\setup\deploy.ps1 -SolutionName <一意名> -WithApp -PruneScreens
+   ```
+
+   `-WithApp` で `App.Formulas` と `App.OnStart` が入る。`-PruneScreens` で
+   `Screen1` が消える。`StartScreen` は自動で `ScrHome` に付け替わる
+
+7. **アプリを ▷ で開く** — `App.OnStart` は起動時に走る。Studio は要らない
+
+2 回目以降は `-WithApp` も `-PruneScreens` も要らない。
+
+```powershell
+.\setup\deploy.ps1 -SolutionName <一意名>
+```
+
+> **手順 3 を飛ばすと `deploy.ps1` は止まる。** 足りないデータソース名を並べて
+> 終了コード 1 で抜ける。壊れたアプリを作らないため。
+>
+> この 1〜7 は dev 環境で、アプリを「空アプリ＋データソースだけ」の状態に戻してから
+> 通しで実行し、`src` と一致する 3 画面・`App.Formulas` 80 行・`App.OnStart`・
+> `StartScreen = ScrHome`・データソース 12 件が揃うことを確認してある。
+
 ## 10. テナントに合わせて直す前提値
 
 そのままでは合わない可能性が高い箇所。**手順 6 の前にソースを直す**方が、
