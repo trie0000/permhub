@@ -333,6 +333,12 @@ try {
       $rd = New-Object System.IO.StreamReader($dsEntry.Open(), [System.Text.Encoding]::UTF8)
       try { $have = @((($rd.ReadToEnd()) | ConvertFrom-Json).DataSources | ForEach-Object { $_.Name }) }
       finally { $rd.Dispose() }
+      # 「ファイルが無い」と「0 件」は原因が違う。区別できるようにしておく
+      if ($have.Count -eq 0) { Write-Warn 'References/DataSources.json はあるが 0 件' }
+    }
+    else {
+      Write-Warn 'この .msapp に References/DataSources.json が無い'
+      Write-Host "      .msapp の中身: $((($app.Entries | ForEach-Object { $_.FullName }) -join ', '))"
     }
   }
   finally { $app.Dispose() }
