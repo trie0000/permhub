@@ -90,4 +90,11 @@ fChgByO1 = ForAll(colOrg1 As o, {C:o.Title, n:CountRows(Filter(fO1ChgAll, C = o.
 fMyOrg1D = ForAll(colMyOrg1 As o, {Title:o.Title, NameJa:o.NameJa, Disp:If(Coalesce(LookUp(fChgByO1, C = o.Title).n, 0) > 0, "・", "") & o.NameJa});
 fInvRoleU = ForAll(fRoles As r, {rc:r.rc, n:CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = gblUserOrg1) As o, {C:o.Title, A:If(o.IsDel, false, If(r.rc = "EXTCONN", o.ApExt, If(r.rc = "WLAN", o.ApWlan, If(r.rc = "CLOUD", o.ApCloud, o.ApExt || o.ApWlan || o.ApCloud))))}), (";" & C & ";") in Coalesce(LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = r.rc).Codes, "") && Not(A)))});
 fUDelPend = !IsBlank(LookUp(colPendItem, GK = "USER" && GKey = gblUserGid && Op = "DELETE").No);
-fRejMineN = CountRows(Filter(colReq, ApId = gblMeGid && S = "REJECTED"))
+fRejMineN = CountRows(Filter(colReq, ApId = gblMeGid && S = "REJECTED"));
+fReReq = fReq.Status.Value = "REJECTED" && fReq.ApplicantId = gblMeGid;
+fReqOther = Filter(colPendItem, No <> gblReqNo && GKey in Distinct(colQI, GKey).Value);
+fReqOtherN = CountRows(fReqOther);
+fReqDrift = Filter(ForAll(colQI As q, {Nm:q.Chg, D:With({B:ParseJSON(q.BJ)}, Switch(q.K, "ORG2", With({o:LookUp(colOrg2All, Title = q.EKey)}, If(q.Op = "ADD", !IsBlank(o.Title), IsBlank(o.Title) || Text(B.NameJa) <> o.NameJa || Text(B.NameEn) <> o.NameEn || Value(B.SortOrder) <> o.SortOrder || Boolean(B.ApExt) <> o.ApExt || Boolean(B.ApWlan) <> o.ApWlan || Boolean(B.ApCloud) <> o.ApCloud)), "USER", With({u:LookUp(colUsersAll, Title = q.EKey)}, If(q.Op = "ADD" || IsBlank(Text(B.FullName)), false, Text(B.FullName) <> u.FullName || Text(B.Mail) <> u.Mail || Text(B.Department) <> u.Department)), "GRANT", With({g:LookUp(colGrantsAll, Title = q.EKey)}, If(IsBlank(Text(B.ScopeType)), false, Text(B.ScopeType) <> Coalesce(g.ScopeType.Value, "NONE") || Coalesce(Text(B.Org2Codes), "") <> Coalesce(g.Org2Codes, ""))), false))}), D);
+fReqDriftN = CountRows(fReqDrift);
+fReqReOk = fReqOtherN = 0 && fReqDriftN = 0;
+fReqIssueTxt = If(fReqDriftN > 0, "申請後に変わったもの " & fReqDriftN & " 件（" & Concat(FirstN(fReqDrift, 3), Nm, "／") & "）", "") & If(fReqOtherN > 0 && fReqDriftN > 0, "、", "") & If(fReqOtherN > 0, "同じ対象に別の申請 " & fReqOtherN & " 件", "")

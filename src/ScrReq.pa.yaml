@@ -1028,3 +1028,52 @@ Screens:
           Width: =1
           X: =0
           Y: =0
+    - btnReReqGo:
+        Control: ModernText@1.0.0
+        Properties:
+          OnSelect: =ForAll(Filter(colQI, K = "ORG2") As q, With({A:ParseJSON(q.AJ)}, If(q.Op = "DELETE", Patch(colO2Edit, LookUp(colO2Edit, Title = q.EKey), {IsDel:true}), If(q.Op = "ADD", Collect(colO2Edit, {Title:q.EKey, NameJa:Text(A.NameJa), NameEn:Text(A.NameEn), Org1Code:Text(A.Org1Code), SortOrder:Value(A.SortOrder), ApExt:Boolean(A.ApExt), ApWlan:Boolean(A.ApWlan), ApCloud:Boolean(A.ApCloud), IsNew:true, IsDel:false}), Patch(colO2Edit, LookUp(colO2Edit, Title = q.EKey), {NameJa:Text(A.NameJa), NameEn:Text(A.NameEn), SortOrder:Value(A.SortOrder), ApExt:Boolean(A.ApExt), ApWlan:Boolean(A.ApWlan), ApCloud:Boolean(A.ApCloud)}))))); ForAll(Filter(colQI, K = "USER" && Op = "ADD") As q, With({A:ParseJSON(q.AJ), o:LookUp(colQI, K = "USERORG1" && GKey = q.GKey)}, If(CountRows(Filter(colNewU, Gid = q.EKey)) = 0, Collect(colNewU, {Gid:q.EKey, FullName:Text(A.FullName), Mail:Text(A.Mail), Dept:Text(A.Department), O1:Coalesce(Index(Split(o.EKey, "#"), 2).Value, gblOrg1), AdOid:Coalesce(Text(A.AdObjectId), "")})))); ForAll(Filter(colQI, K = "GRANT") As q, With({A:ParseJSON(q.AJ), p:Split(q.EKey, "#")}, With({gid:Index(p, 1).Value, o1:Index(p, 2).Value, rc:Index(p, 3).Value, ns:Coalesce(Text(A.ScopeType), "NONE"), nc:Coalesce(Text(A.Org2Codes), "")}, If(CountRows(Filter(colGEdit, Gid = gid && O1 = o1 && Role = rc)) = 0, Collect(colGEdit, {Gid:gid, O1:o1, Role:rc, Scope:ns, Codes:nc, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gid && O1 = o1 && Role = rc), {Scope:ns, Codes:nc}))))); Set(gblReReqFrom, gblReqNo); Set(gblTab, "org"); Set(gblRO, false); Set(gblROReq, ""); Set(gblROChg, ""); Navigate(ScrHome); Notify("差し戻された内容を読み込みました。修正してから申請してください。申請すると新しい申請番号になります。", NotificationType.Success, 10000)
+          Height: =1
+          Text: =""
+          Visible: =false
+          Width: =1
+          X: =0
+          Y: =0
+    - btnReReq:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(255, 255, 255, 1)
+          Fill: =RGBA(122, 138, 120, 1)
+          FontWeight: ='TextCanvas.Weight'.Bold
+          Height: =32
+          OnSelect: =If(fReqReOk, Select(btnReReqGo), Notify("この申請が参照している内容は、申請したあとに変わっています（" & fReqIssueTxt & "）。この申請からは再申請できません。マスタの画面から新しく申請してください。", NotificationType.Warning, 15000))
+          RadiusTopLeft: =5
+          RadiusTopRight: =5
+          RadiusBottomLeft: =5
+          RadiusBottomRight: =5
+          Size: =12
+          Text: ="内容を修正して再申請"
+          Visible: =fReReq
+          Width: =200
+          X: =Parent.Width - 700
+          Y: =244 + fNoteH
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblReReqWarn:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(160, 62, 54, 1)
+          Height: =20
+          Size: =11
+          Text: ="⚠ " & fReqIssueTxt & "。再申請はできません"
+          Visible: =fReReq && !fReqReOk
+          Width: =Parent.Width - 56
+          X: =28
+          Y: =282 + fNoteH
+          Wrap: =false
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
