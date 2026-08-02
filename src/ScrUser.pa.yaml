@@ -160,13 +160,13 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
-          Height: =14
+          Height: =18
           Size: =11
           Text: ="グローバルID"
           Width: =200
           X: =896
           Y: =236
-          Wrap: =true
+          Wrap: =false
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -190,7 +190,7 @@ Screens:
           Width: =200
           X: =1092
           Y: =256
-          Wrap: =true
+          Wrap: =false
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -199,21 +199,23 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
-          Height: =14
+          Height: =18
           Size: =11
           Text: ="氏名"
           Width: =200
           X: =52
           Y: =236
-          Wrap: =true
+          Wrap: =false
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
     - txtName:
         Control: ModernText@1.0.0
         Properties:
+          Wrap: =false
+          Size: =13
           Text: =gblAdName
-          Height: =22
+          Height: =26
           Width: =220
           X: =52
           Y: =252
@@ -222,21 +224,23 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
-          Height: =14
+          Height: =18
           Size: =11
           Text: ="メールアドレス"
           Width: =200
           X: =300
           Y: =236
-          Wrap: =true
+          Wrap: =false
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
     - txtMail:
         Control: ModernText@1.0.0
         Properties:
+          Wrap: =false
+          Size: =13
           Text: =gblAdMail
-          Height: =22
+          Height: =26
           Width: =300
           X: =300
           Y: =252
@@ -245,21 +249,23 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
-          Height: =14
+          Height: =18
           Size: =11
           Text: ="部署名"
           Width: =200
           X: =628
           Y: =236
-          Wrap: =true
+          Wrap: =false
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
     - txtDept:
         Control: ModernText@1.0.0
         Properties:
+          Wrap: =false
+          Size: =13
           Text: =gblAdDept
-          Height: =22
+          Height: =26
           Width: =240
           X: =628
           Y: =252
@@ -761,7 +767,7 @@ Screens:
             Properties:
               Text: =If((";" & ThisItem.Title & ";") in fEligUC, If(fGU.Scope = "ALL" || (fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, "")), "☑", "☐"), If(fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, ""), "☑", "―"))
               Fill: =If(!((";" & ThisItem.Title & ";") in fEligUC) && fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, ""), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-              Color: =If((";" & ThisItem.Title & ";") in fEligUC, If(fGU.Scope = "ALL" || (fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, "")), RGBA(122, 138, 120, 1), RGBA(168, 163, 154, 1)), If(fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))
+              Color: =If((fGU.Scope = "ALL" || (fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, ""))) <> With({b:LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole)}, b.ScopeType.Value = "ALL" || (b.ScopeType.Value = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(b.Org2Codes, ""))), RGBA(184, 83, 74, 1), If((";" & ThisItem.Title & ";") in fEligUC, If(fGU.Scope = "ALL" || (fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, "")), RGBA(122, 138, 120, 1), RGBA(168, 163, 154, 1)), If(fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
               Align: ='TextCanvas.Align'.Center
               FontWeight: ='TextCanvas.Weight'.Bold
               Size: =16
@@ -840,7 +846,7 @@ Screens:
           RadiusBottomLeft: =5
           RadiusBottomRight: =5
           Size: =13
-          Text: ="この利用者を削除"
+          Text: ="ユーザを削除"
           Width: =210
           X: =52
           Y: =Parent.Height - 76
@@ -1139,14 +1145,14 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(122, 118, 108, 1)
-          Height: =14
+          Height: =18
           Size: =11
           Text: ="利用者を検索（氏名 または メールアドレス）"
           Visible: =!gblRO
           Width: =320
           X: =52
           Y: =182
-          Wrap: =true
+          Wrap: =false
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle

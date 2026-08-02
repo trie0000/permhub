@@ -55,7 +55,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =RGBA(122, 118, 108, 1)
+          Color: =If((fChgTabO > 0 || fChgTabU > 0), RGBA(184, 83, 74, 1), RGBA(122, 118, 108, 1))
           Height: =16
           Size: =11
           Text: ="組織区分1"
@@ -83,7 +83,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =RGBA(42, 42, 38, 1)
+          Color: =If((fChgTabO > 0 || fChgTabU > 0), RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =34
           Size: =15
@@ -2050,7 +2050,7 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG1 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG1)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG1 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG1)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
@@ -2097,7 +2097,7 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG2 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG2)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG2 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG2)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
@@ -2144,7 +2144,7 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG3 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG3)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG3 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG3)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
@@ -2191,7 +2191,7 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG4 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG4)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG4 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG4)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
@@ -2238,7 +2238,7 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG5 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG5)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG5 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG5)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
@@ -2285,7 +2285,7 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG6 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG6)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG6 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG6)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
@@ -2332,7 +2332,7 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG7 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG7)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG7 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG7)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
@@ -2379,7 +2379,7 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG8 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG8)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG8 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG8)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
@@ -2403,7 +2403,7 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG9 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG9)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG9 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG9)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
@@ -2427,7 +2427,7 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG10 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(CountRows(Filter(fChg, Gid = fG10)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG10 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG10)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
