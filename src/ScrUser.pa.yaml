@@ -377,7 +377,7 @@ Screens:
             Control: ModernText@1.0.0
             Properties:
               Align: ='TextCanvas.Align'.Center
-              Color: =If(ThisItem.Title = gblUserOrg1, RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+              Color: =If(CountRows(Filter(fUChg, O1 = ThisItem.Title)) > 0, RGBA(184, 83, 74, 1), If(ThisItem.Title = gblUserOrg1, RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1)))
               Fill: =If(ThisItem.Title = gblUserOrg1, RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0))
               FontWeight: =If(ThisItem.Title = gblUserOrg1, 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
               Height: =40
@@ -389,7 +389,7 @@ Screens:
               RadiusBottomLeft: =5
               RadiusBottomRight: =5
               Size: =12
-              Text: =ThisItem.NameJa
+              Text: =If(CountRows(Filter(fUChg, O1 = ThisItem.Title)) > 0, "・", "") & ThisItem.NameJa
               Width: =172
               X: =0
               Y: =0

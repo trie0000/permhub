@@ -648,6 +648,7 @@ Screens:
                 - o2Ja:
                     Control: ModernTextInput@1.1.1
                     Properties:
+                      Color: =If((ThisItem.IsNew || ThisItem.NameJa <> LookUp(colOrg2All, Title = ThisItem.Title).NameJa), RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
                       Default: =ThisItem.NameJa
                       OnChange: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {NameJa:Trim(Self.Text)}); Select(btnSnapO)
                       DisplayMode: =If(ThisItem.IsDel, DisplayMode.View, DisplayMode.Edit)
@@ -658,6 +659,7 @@ Screens:
                 - o2En:
                     Control: ModernTextInput@1.1.1
                     Properties:
+                      Color: =If((ThisItem.IsNew || ThisItem.NameEn <> LookUp(colOrg2All, Title = ThisItem.Title).NameEn), RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
                       Default: =ThisItem.NameEn
                       OnChange: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {NameEn:Trim(Self.Text)}); Select(btnSnapO)
                       DisplayMode: =If(ThisItem.IsDel, DisplayMode.View, DisplayMode.Edit)
@@ -669,7 +671,7 @@ Screens:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
-                      Color: =RGBA(122, 118, 108, 1)
+                      Color: =If((ThisItem.IsNew || ThisItem.SortOrder <> LookUp(colOrg2All, Title = ThisItem.Title).SortOrder), RGBA(184, 83, 74, 1), RGBA(122, 118, 108, 1))
                       Size: =12
                       Text: =ThisItem.SortOrder
                       Width: =70

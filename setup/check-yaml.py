@@ -44,6 +44,15 @@ CTRL_PROPS = {
         "PaddingTop", "PaddingBottom", "PaddingLeft", "PaddingRight",
         "RadiusTopLeft", "RadiusTopRight", "RadiusBottomLeft", "RadiusBottomRight",
     },
+    "ModernTextInput": _COMMON | {
+        "Default", "Text", "Placeholder", "OnChange", "OnSelect", "Type", "TriggerOutput",
+        "MaxLength", "Required", "ValidationState", "Align",
+        "PaddingTop", "PaddingBottom", "PaddingLeft", "PaddingRight",
+        "Appearance", "BasePaletteColor", "Font", "Size", "Color", "FontWeight",
+        "Italic", "Underline", "Strikethrough", "Fill", "BorderColor", "BorderStyle",
+        "BorderThickness", "RadiusTopLeft", "RadiusTopRight", "RadiusBottomLeft",
+        "RadiusBottomRight", "AccessibleLabel", "ContentLanguage",
+    },
 }
 CTRL_LINE = re.compile(r"^(\s*)- ([A-Za-z0-9_]+):\s*$")
 CTRL_DECL = re.compile(r"^\s*Control: ([A-Za-z0-9_]+)@")
