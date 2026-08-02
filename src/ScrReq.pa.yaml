@@ -1068,8 +1068,8 @@ Screens:
           Color: =RGBA(160, 62, 54, 1)
           Height: =20
           Size: =11
-          Text: ="⚠ " & fReqIssueTxt & "。再申請はできません"
-          Visible: =fReReq && !fReqReOk
+          Text: ="⚠ " & fReqIssueTxt & "。再申請はできません" & "　【" & Concat(ForAll(colQI As q, With({B:ParseJSON(q.BJ), o:LookUp(colOrg2All, Title = q.EKey)}, "K=" & q.K & " Op=" & q.Op & " noRow=" & Text(IsBlank(o.Title)) & " Ja=" & Text(Text(B.NameJa) <> o.NameJa) & " En=" & Text(Text(B.NameEn) <> o.NameEn) & " So=" & Text(Value(B.SortOrder) <> o.SortOrder) & " Ext=" & Text(Boolean(B.ApExt) <> o.ApExt) & " Wl=" & Text(Boolean(B.ApWlan) <> o.ApWlan) & " Cl=" & Text(Boolean(B.ApCloud) <> o.ApCloud) & " 他申請=" & fReqOtherN)), Value, " / ") & "】"
+          Visible: =fReReq
           Width: =Parent.Width - 56
           X: =28
           Y: =282 + fNoteH

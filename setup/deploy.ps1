@@ -606,9 +606,22 @@ if (-not $NoPublish) {
     $q = $appDisp.Replace("'", "''")
     # このモジュールの認証はセッション（プロセス）の中に持たれる。別プロセスで
     # 叩くと引き継がれないので、同じ呼び出しの中でサインインを先に済ませる。
-    # キャッシュが生きていれば黙って通り、切れているときだけ画面が出る
+    #
+    # 3 つの環境変数がそろっていればサービスプリンシパルで無人サインインする。
+    # そろっていなければ対話サインイン（キャッシュが生きていれば黙って通り、
+    # 切れているときだけ画面が出る）。
+    # シークレットはコマンドラインに載せない。子プロセスが環境変数から読む
+    $spReady = $env:PERMHUB_SP_TENANT -and $env:PERMHUB_SP_APPID -and $env:PERMHUB_SP_SECRET
+    if ($spReady) {
+      Write-Host '  サービスプリンシパルでサインインする'
+      $signIn = 'Add-PowerAppsAccount -TenantID $env:PERMHUB_SP_TENANT ' +
+                '-ApplicationId $env:PERMHUB_SP_APPID -ClientSecret $env:PERMHUB_SP_SECRET | Out-Null; '
+    }
+    else {
+      $signIn = 'Add-PowerAppsAccount | Out-Null; '
+    }
     $inner = 'Import-Module Microsoft.PowerApps.Administration.PowerShell; ' +
-             'Add-PowerAppsAccount | Out-Null; ' +
+             $signIn +
              '$a = @(Get-AdminPowerApp | Where-Object { $_.DisplayName -eq ''' + $q + ''' }); ' +
              'if ($a.Count -eq 0) { throw ''その表示名のアプリが見つからない'' }; ' +
              'if ($a.Count -gt 1) { throw ''同じ表示名のアプリが複数ある'' }; ' +
