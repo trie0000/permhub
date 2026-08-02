@@ -18,6 +18,9 @@
 .PARAMETER Screens
   差し替える画面。既定は ScrHome / ScrUser / ScrReq。
 
+.PARAMETER NoPublish
+  アプリの公開をしない。Studio で自分で公開するとき。
+
 .PARAMETER NoDataSourceCheck
   データソース名が足りなくても止めない。
 
@@ -45,7 +48,8 @@ param(
   [switch]$NoImport,
   [switch]$PruneScreens,
   [switch]$WithApp,
-  [switch]$NoDataSourceCheck
+  [switch]$NoDataSourceCheck,
+  [switch]$NoPublish
 )
 
 $ErrorActionPreference = 'Stop'
@@ -577,6 +581,48 @@ for ($i = 1; $i -le 6; $i++) {
 }
 
 if (-not $ok) { throw 'インポートに失敗した。上の出力を確認する。' }
+
+# ---- 6. アプリを公開 -------------------------------------------------------
+# ソリューションの取り込みではキャンバスアプリは公開されない。取り込みで変わるのは
+# 「保存された版」で、利用者に配られる「公開された版」は別。実機で確かめた:
+# 取り込み直後のプレイヤーは古い中身のまま「新しいバージョンを間もなく利用できます」
+# と出し、Studio で公開して初めて切り替わる。
+#
+# Publish-AdminPowerApp は .NET Framework 製で PowerShell 7 では動かないため、
+# Windows PowerShell 5.1 を別に呼ぶ。無ければ手で公開してもらう。
+if (-not $NoPublish) {
+  Write-Step 'アプリを公開'
+  $ps5 = $null
+  foreach ($c in @('powershell.exe', '/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe')) {
+    $g = Get-Command $c -ErrorAction SilentlyContinue
+    if ($g) { $ps5 = $g.Source; break }
+  }
+  if (-not $ps5) {
+    Write-Warn 'Windows PowerShell 5.1 が無いので公開できない。'
+    Write-Warn 'Studio でアプリを開いて「公開」→「このバージョンを公開する」。'
+  }
+  else {
+    # 単一引用符の中では $ が展開されないので、逃がし文字が要らない
+    $q = $appDisp.Replace("'", "''")
+    $inner = 'Import-Module Microsoft.PowerApps.Administration.PowerShell; ' +
+             '$a = @(Get-AdminPowerApp | Where-Object { $_.DisplayName -eq ''' + $q + ''' }); ' +
+             'if ($a.Count -eq 0) { throw ''その表示名のアプリが見つからない'' }; ' +
+             'if ($a.Count -gt 1) { throw ''同じ表示名のアプリが複数ある'' }; ' +
+             'Publish-AdminPowerApp -EnvironmentName $a[0].EnvironmentName -AppName $a[0].AppName; ' +
+             'Write-Output ''published'''
+    $out = & $ps5 -NoProfile -ExecutionPolicy Bypass -Command $inner 2>&1
+    if (($out -join [Environment]::NewLine) -match 'published') {
+      Write-Host "  公開した: $appDisp"
+    }
+    else {
+      foreach ($l in $out) { Write-Host "      $l" }
+      Write-Warn '公開できなかった。初回は次の 2 つが要る（Windows PowerShell 5.1 で実行）。'
+      Write-Warn '  Install-Module Microsoft.PowerApps.Administration.PowerShell -Scope CurrentUser'
+      Write-Warn '  Add-PowerAppsAccount      # サインイン。8 時間ほど保つ'
+      Write-Warn 'それでも駄目なら Studio で「公開」を押す。'
+    }
+  }
+}
 
 Write-Step '完了。アプリを開き直すと反映されている'
 Write-Host "  作業フォルダ: $Work"

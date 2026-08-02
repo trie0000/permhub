@@ -297,6 +297,51 @@ OS 依存の分岐はスクリプトに 1 箇所だけある。`pac` が入っ�
 データソース名は**追加した時点のリスト名**になる。後からリストを改名しても
 アプリ側の名前は変わらない。
 
+### 取り込んだだけでは公開されない
+
+**`pac solution import --publish-changes` はキャンバスアプリを公開しない。**
+取り込みで変わるのは「保存された版」で、**利用者に配られる「公開された版」は別**。
+
+実機で確かめた。取り込み直後のプレイヤーは古い中身のまま
+
+```
+このアプリの新しいバージョンを間もなく利用できます。公開されたらお知らせします。
+```
+
+と出し、Studio で公開して初めて
+
+```
+このアプリの古いバージョンを使用しています。更新して、最新バージョンを使用してください。
+```
+
+に変わる。**毎回必要**で、1 回だけではない。
+
+`deploy.ps1` は取り込みのあとに公開まで行う。`Publish-AdminPowerApp` は
+**.NET Framework 製で PowerShell 7 では動かない**ので、Windows PowerShell 5.1 を
+別に呼んでいる。5.1 が無い環境（WSL / Linux / macOS）では飛ばして、
+Studio で公開するよう促す。
+
+初回だけ、**Windows PowerShell 5.1 で**この 2 つが要る。
+
+```powershell
+Install-Module Microsoft.PowerApps.Administration.PowerShell -Scope CurrentUser
+```
+
+```powershell
+Add-PowerAppsAccount
+```
+
+サインインは 8 時間ほど保つ。`pac auth` とは別系統なので、両方が要る。
+
+> `Install-Module` が `ShouldContinue` の例外で落ちるときは、NuGet プロバイダの
+> 導入で対話プロンプトが出せていない。先に入れておく。
+>
+> ```powershell
+> Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
+> ```
+
+`-NoPublish` で公開だけ飛ばせる。
+
 ### `App.Formulas` と `App.OnStart`
 
 **この 2 つは画面ファイルではなく `App.pa.yaml` の中にある。**

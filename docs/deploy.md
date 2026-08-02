@@ -503,6 +503,11 @@ CanvasApps/cr875_permhubsolutiontest_09c62_DocumentUri.msapp
 
 7. **アプリを ▷ で開く** — `App.OnStart` は起動時に走る。Studio は要らない
 
+> **取り込んだだけでは利用者に配られない。** キャンバスアプリは「保存された版」と
+> 「公開された版」が別で、`deploy.ps1` は取り込みのあと公開まで行う。
+> Windows PowerShell 5.1 が無い環境では公開を飛ばすので、Studio で
+> 「公開」→「このバージョンを公開する」を押す。→ [cli.md](cli.md)
+
 2 回目以降は `-WithApp` も `-PruneScreens` も要らない。
 
 ```powershell
