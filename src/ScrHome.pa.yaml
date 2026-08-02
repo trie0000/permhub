@@ -70,6 +70,8 @@ Screens:
     - drpOrg1:
         Control: ModernDropdown@1.0.2
         Properties:
+          FontWeight: =If(Coalesce(LookUp(fChgByO1, C = gblOrg1).n, 0) > 0, 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
+          Color: =If(Coalesce(LookUp(fChgByO1, C = gblOrg1).n, 0) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
           Items: =fMyOrg1D
           ItemDisplayText: =ThisItem.Disp
           Default: =LookUp(fMyOrg1D, Title = gblOrg1)

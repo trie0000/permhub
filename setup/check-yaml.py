@@ -53,6 +53,14 @@ CTRL_PROPS = {
         "BorderThickness", "RadiusTopLeft", "RadiusTopRight", "RadiusBottomLeft",
         "RadiusBottomRight", "AccessibleLabel", "ContentLanguage",
     },
+    "ModernDropdown": _COMMON | {
+        "Items", "ItemDisplayText", "Default", "AccessibleLabel", "OnChange", "Required",
+        "ValidationState", "PaddingTop", "PaddingBottom", "PaddingLeft", "PaddingRight",
+        "Appearance", "BasePaletteColor", "Font", "Size", "Color", "FontWeight",
+        "Italic", "Underline", "Strikethrough", "Fill", "BorderColor", "BorderStyle",
+        "BorderThickness", "RadiusTopLeft", "RadiusTopRight", "RadiusBottomLeft",
+        "RadiusBottomRight", "ContentLanguage",
+    },
 }
 CTRL_LINE = re.compile(r"^(\s*)- ([A-Za-z0-9_]+):\s*$")
 CTRL_DECL = re.compile(r"^\s*Control: ([A-Za-z0-9_]+)@")
