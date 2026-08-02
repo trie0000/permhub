@@ -212,10 +212,13 @@ Screens:
     - txtName:
         Control: ModernText@1.0.0
         Properties:
+          VerticalAlign: =VerticalAlign.Middle
+          PaddingBottom: =0
+          PaddingTop: =0
           Wrap: =false
           Size: =13
           Text: =gblAdName
-          Height: =26
+          Height: =30
           Width: =220
           X: =52
           Y: =252
@@ -237,10 +240,13 @@ Screens:
     - txtMail:
         Control: ModernText@1.0.0
         Properties:
+          VerticalAlign: =VerticalAlign.Middle
+          PaddingBottom: =0
+          PaddingTop: =0
           Wrap: =false
           Size: =13
           Text: =gblAdMail
-          Height: =26
+          Height: =30
           Width: =300
           X: =300
           Y: =252
@@ -262,10 +268,13 @@ Screens:
     - txtDept:
         Control: ModernText@1.0.0
         Properties:
+          VerticalAlign: =VerticalAlign.Middle
+          PaddingBottom: =0
+          PaddingTop: =0
           Wrap: =false
           Size: =13
           Text: =gblAdDept
-          Height: =26
+          Height: =30
           Width: =240
           X: =628
           Y: =252
@@ -702,7 +711,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(fGU.Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(168, 163, 154, 1))
+          Color: =If((fGU.Scope = "ALL") <> With({b:LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole)}, b.ScopeType.Value = "ALL"), RGBA(184, 83, 74, 1), If(fGU.Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(168, 163, 154, 1)))
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =30
           OnSelect: =Set(gblUG, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)); Set(gblUNS, If(gblUG.Scope = "ALL", "NONE", "ALL")); If(CountRows(Filter(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)) = 0, Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:gblUNS, Codes:"", CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {Scope:gblUNS, Codes:""})); Select(btnSnapU)
@@ -719,7 +728,7 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Start
-          Color: =RGBA(74, 71, 64, 1)
+          Color: =If((fGU.Scope = "ALL") <> With({b:LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole)}, b.ScopeType.Value = "ALL"), RGBA(184, 83, 74, 1), RGBA(74, 71, 64, 1))
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =30
           OnSelect: =Set(gblUG, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)); Set(gblUNS, If(gblUG.Scope = "ALL", "NONE", "ALL")); If(CountRows(Filter(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole)) = 0, Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:gblUNS, Codes:"", CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {Scope:gblUNS, Codes:""})); Select(btnSnapU)
@@ -837,16 +846,16 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =RGBA(160, 62, 54, 1)
-          Fill: =RGBA(247, 226, 223, 1)
+          Color: =If(fUDelPend, RGBA(74, 71, 64, 1), RGBA(160, 62, 54, 1))
+          Fill: =If(fUDelPend, RGBA(232, 228, 216, 1), RGBA(247, 226, 223, 1))
           Height: =36
-          OnSelect: =Set(gblDelGo, gblGateOk); If(!gblGateOk, Set(gblModal, "del")); Set(gblGateOk, false); If(gblDelGo, Set(gblU2, LookUp(colUsersAll, Title = gblUserGid))); If(gblDelGo, ClearCollect(colDelG, Filter(colGrantsAll, GlobalId = gblUserGid))); If(gblDelGo, ClearCollect(colDelM, Filter(colMemberAll, GlobalId = gblUserGid))); If(gblDelGo, Set(gblItemN, 1)); If(gblDelGo, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd-hhmmss") & "-" & Text(RandBetween(100, 999)))); If(gblDelGo && !IsBlank(LookUp(PRM_Requests, Title = gblReqNo).Title), Set(gblReqNo, gblReqNo & "-2")); If(gblDelGo, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"USER"}, TargetKey:gblUserGid, TargetName:gblU2.FullName & "（" & gblUserGid & "）", Summary:"利用者の削除（所属 " & CountRows(colDelM) & "件・権限 " & CountRows(colDelG) & "件を失効）", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:1, Org1Code:gblUserOrg1})); If(gblDelGo, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001-01", ReqNo:gblReqNo, Seq:1, GroupKind:"USER", GroupKey:gblUserGid, Operation:{Value:"DELETE"}, EntityKind:{Value:"USER"}, EntityKey:gblUserGid, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""IsActive"":true}", AfterJson:"{""IsActive"":false}", ChangeText:gblU2.FullName & "（" & gblUserGid & "）：利用者を無効化"})); If(gblDelGo, ForAll(Sequence(CountRows(colDelM)) As i, With({m:Index(colDelM, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001-" & Text(i.Value + 10, "00"), ReqNo:gblReqNo, Seq:1, GroupKind:"USER", GroupKey:gblUserGid, Operation:{Value:"DELETE"}, EntityKind:{Value:"USERORG1"}, EntityKey:m.Title, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""IsActive"":true}", AfterJson:"{""IsActive"":false}", ChangeText:gblU2.FullName & "（" & LookUp(colOrg1, Title = m.Org1Code).NameJa & "）：所属を失効"})))); If(gblDelGo, ForAll(Sequence(CountRows(colDelG)) As i, With({g:Index(colDelG, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001-" & Text(i.Value + 100, "000"), ReqNo:gblReqNo, Seq:1, GroupKind:"USER", GroupKey:gblUserGid, Operation:{Value:"DELETE"}, EntityKind:{Value:"GRANT"}, EntityKey:g.Title, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""ScopeType"":""" & g.ScopeType.Value & """,""Org2Codes"":""" & Coalesce(g.Org2Codes, "") & """}", AfterJson:"{""IsActive"":false}", ChangeText:LookUp(colOrg1, Title = g.Org1Code).NameJa & " ／ " & LookUp(fRoles, rc = g.RoleCode.Value).rn & "：失効"})))); If(gblDelGo, If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1 || ApplicantId = gblMeGid, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})))); If(gblDelGo, Notify("削除を申請しました（" & gblReqNo & "／明細 " & gblItemN & "件）。管理者が作業すると失効します。", NotificationType.Success)); If(gblDelGo, Navigate(ScrHome))
+          OnSelect: =If(fUDelPend, Set(gblDelReq, LookUp(colPendItem, GK = "USER" && GKey = gblUserGid && Op = "DELETE").No); Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblDelReq), {Status:{Value:"CANCELED"}, DecisionNote:"利用者の画面から削除を取り消し"}); ForAll(Filter(PRM_RequestItems, ReqNo = gblDelReq) As it, Patch(PRM_RequestItems, it, {ItemStatus:{Value:"CANCELED"}, HandledAt:Now(), HandledBy:gblMeGid})); RemoveIf(colPendItem, No = gblDelReq); If(!IsBlank(LookUp(colReq, No = gblDelReq).No), Patch(colReq, LookUp(colReq, No = gblDelReq), {S:"CANCELED"})); Notify("削除の申請を取り下げました。権限の設定ができるようになります。", NotificationType.Success), Set(gblDelGo, gblGateOk); If(!gblGateOk, Set(gblModal, "del")); Set(gblGateOk, false); If(gblDelGo, Set(gblU2, LookUp(colUsersAll, Title = gblUserGid))); If(gblDelGo, ClearCollect(colDelG, Filter(colGrantsAll, GlobalId = gblUserGid))); If(gblDelGo, ClearCollect(colDelM, Filter(colMemberAll, GlobalId = gblUserGid))); If(gblDelGo, Set(gblItemN, 1)); If(gblDelGo, Set(gblReqNo, "REQ-" & Text(Now(), "yyyymmdd-hhmmss") & "-" & Text(RandBetween(100, 999)))); If(gblDelGo && !IsBlank(LookUp(PRM_Requests, Title = gblReqNo).Title), Set(gblReqNo, gblReqNo & "-2")); If(gblDelGo, Patch(PRM_Requests, Defaults(PRM_Requests), {Title:gblReqNo, ReqType:{Value:"USER"}, TargetKey:gblUserGid, TargetName:gblU2.FullName & "（" & gblUserGid & "）", Summary:"利用者の削除（所属 " & CountRows(colDelM) & "件・権限 " & CountRows(colDelG) & "件を失効）", ApplicantId:gblMeGid, ApplicantName:gblMe.FullName, SubmittedAt:Now(), Status:{Value:"SUBMITTED"}, ItemCount:1, Org1Code:gblUserOrg1})); If(gblDelGo, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001-01", ReqNo:gblReqNo, Seq:1, GroupKind:"USER", GroupKey:gblUserGid, Operation:{Value:"DELETE"}, EntityKind:{Value:"USER"}, EntityKey:gblUserGid, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""IsActive"":true}", AfterJson:"{""IsActive"":false}", ChangeText:gblU2.FullName & "（" & gblUserGid & "）：利用者を無効化"})); If(gblDelGo, ForAll(Sequence(CountRows(colDelM)) As i, With({m:Index(colDelM, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001-" & Text(i.Value + 10, "00"), ReqNo:gblReqNo, Seq:1, GroupKind:"USER", GroupKey:gblUserGid, Operation:{Value:"DELETE"}, EntityKind:{Value:"USERORG1"}, EntityKey:m.Title, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""IsActive"":true}", AfterJson:"{""IsActive"":false}", ChangeText:gblU2.FullName & "（" & LookUp(colOrg1, Title = m.Org1Code).NameJa & "）：所属を失効"})))); If(gblDelGo, ForAll(Sequence(CountRows(colDelG)) As i, With({g:Index(colDelG, i.Value)}, Patch(PRM_RequestItems, Defaults(PRM_RequestItems), {Title:gblReqNo & "-001-" & Text(i.Value + 100, "000"), ReqNo:gblReqNo, Seq:1, GroupKind:"USER", GroupKey:gblUserGid, Operation:{Value:"DELETE"}, EntityKind:{Value:"GRANT"}, EntityKey:g.Title, ItemStatus:{Value:"PENDING"}, BeforeJson:"{""ScopeType"":""" & g.ScopeType.Value & """,""Org2Codes"":""" & Coalesce(g.Org2Codes, "") & """}", AfterJson:"{""IsActive"":false}", ChangeText:LookUp(colOrg1, Title = g.Org1Code).NameJa & " ／ " & LookUp(fRoles, rc = g.RoleCode.Value).rn & "：失効"})))); If(gblDelGo, If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1 || ApplicantId = gblMeGid, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})))); If(gblDelGo, Notify("削除を申請しました（" & gblReqNo & "／明細 " & gblItemN & "件）。管理者が作業すると失効します。", NotificationType.Success)); If(gblDelGo, Navigate(ScrHome)))
           RadiusTopLeft: =5
           RadiusTopRight: =5
           RadiusBottomLeft: =5
           RadiusBottomRight: =5
           Size: =13
-          Text: ="ユーザを削除"
+          Text: =If(fUDelPend, "削除を取り消す", "ユーザを削除")
           Width: =210
           X: =52
           Y: =Parent.Height - 76
@@ -1073,7 +1082,7 @@ Screens:
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Top
+          VerticalAlign: =VerticalAlign.Middle
     - btnSnapU:
         Control: ModernText@1.0.0
         Properties:
@@ -1176,3 +1185,35 @@ Screens:
           Height: =30
           X: =410
           Y: =198
+    - uDelBlock:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(243, 241, 234, 0.78)
+          Height: =Parent.Height - 420
+          Text: =""
+          Visible: =fUDelPend && !gblRO
+          Width: =Parent.Width - 56
+          X: =28
+          Y: =306
+    - uDelMsg:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(160, 62, 54, 1)
+          Fill: =RGBA(247, 226, 223, 1)
+          FontWeight: ='TextCanvas.Weight'.Bold
+          Height: =44
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =13
+          Text: ="このユーザは削除を申請中です。権限は変更できません。左下の「削除を取り消す」を押すと編集できます。"
+          Visible: =fUDelPend && !gblRO
+          Width: =Parent.Width - 160
+          X: =108
+          Y: =360
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle

@@ -3983,3 +3983,26 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
+    - rejBar:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(160, 62, 54, 1)
+          Fill: =RGBA(247, 226, 223, 1)
+          FontWeight: ='TextCanvas.Weight'.Bold
+          Height: =30
+          OnSelect: =Set(gblTab, "hist"); Set(gblHFilter, "all"); Set(gblSFilter, "rej")
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="　差し戻しが " & fRejMineN & " 件あります。押すと申請履歴へ"
+          Visible: =fRejMineN > 0 && !gblRO
+          Width: =Parent.Width - 548
+          X: =520
+          Y: =66
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
