@@ -604,7 +604,11 @@ if (-not $NoPublish) {
   else {
     # 単一引用符の中では $ が展開されないので、逃がし文字が要らない
     $q = $appDisp.Replace("'", "''")
+    # このモジュールの認証はセッション（プロセス）の中に持たれる。別プロセスで
+    # 叩くと引き継がれないので、同じ呼び出しの中でサインインを先に済ませる。
+    # キャッシュが生きていれば黙って通り、切れているときだけ画面が出る
     $inner = 'Import-Module Microsoft.PowerApps.Administration.PowerShell; ' +
+             'Add-PowerAppsAccount | Out-Null; ' +
              '$a = @(Get-AdminPowerApp | Where-Object { $_.DisplayName -eq ''' + $q + ''' }); ' +
              'if ($a.Count -eq 0) { throw ''その表示名のアプリが見つからない'' }; ' +
              'if ($a.Count -gt 1) { throw ''同じ表示名のアプリが複数ある'' }; ' +

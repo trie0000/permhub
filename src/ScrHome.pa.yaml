@@ -3876,7 +3876,7 @@ Screens:
           RadiusBottomRight: =4
           Size: =12
           Text: ="　申請中の変更が " & fPendN & " 件あります（押すと申請履歴へ）"
-          Visible: =(gblTab = "org" || gblTab = "user") && !gblRO && fPendN > 0
+          Visible: =(gblTab = "org" || gblTab = "user") && !gblRO
           Width: =Parent.Width - 650
           X: =324
           Y: =130
