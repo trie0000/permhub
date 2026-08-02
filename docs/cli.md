@@ -316,7 +316,7 @@ OS 依存の分岐はスクリプトに 1 箇所だけある。`pac` が入っ�
 
 に変わる。**毎回必要**で、1 回だけではない。
 
-`deploy.ps1` は取り込みのあとに公開まで行う。`Publish-AdminPowerApp` は
+`deploy.ps1` は取り込みのあとに公開まで行う。`Publish-PowerApp` は
 **.NET Framework 製で PowerShell 7 では動かない**ので、Windows PowerShell 5.1 を
 別に呼んでいる。5.1 が無い環境（WSL / Linux / macOS）では飛ばして、
 Studio で公開するよう促す。
@@ -325,7 +325,13 @@ Studio で公開するよう促す。
 
 ```powershell
 Install-Module Microsoft.PowerApps.Administration.PowerShell -Scope CurrentUser
+Install-Module Microsoft.PowerApps.PowerShell -Scope CurrentUser -AllowClobber
 ```
+
+> **公開のコマンドレットは `Publish-PowerApp`。** Administration 側ではなく
+> `Microsoft.PowerApps.PowerShell`（メーカー向け）にある。`Publish-AdminPowerApp`
+> という名前は**存在しない**。無い名前を呼んでも `;` で繋いだ後続は動くので、
+> 成否の判定を甘くすると失敗を成功と誤認する。`$ErrorActionPreference = 'Stop'` を置く。
 
 ```powershell
 Add-PowerAppsAccount
@@ -366,6 +372,16 @@ Add-PowerAppsAccount
    ```
 
 3 つそろっていれば無人でサインインし、そろっていなければ対話サインインに戻る。
+
+> **WSL から Windows の `powershell.exe` を呼ぶ場合は `WSLENV` に並べる。**
+> 並べないと環境変数が渡らず、値が空のまま**対話サインインに落ちる**。
+> 承認画面が出るのに「無人で動いている」と誤認しやすい。
+>
+> ```bash
+> export WSLENV="PERMHUB_SP_TENANT:PERMHUB_SP_APPID:PERMHUB_SP_SECRET"
+> ```
+>
+> `deploy.ps1` は Linux / macOS 上で動いているときに自分で設定する。
 
 > **シークレットはリポジトリにも env ファイルにも置かない。** 環境変数で渡す。
 > `deploy.ps1` はシークレットをコマンドラインに載せず、子プロセスが環境変数から

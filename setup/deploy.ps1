@@ -614,18 +614,29 @@ if (-not $NoPublish) {
     $spReady = $env:PERMHUB_SP_TENANT -and $env:PERMHUB_SP_APPID -and $env:PERMHUB_SP_SECRET
     if ($spReady) {
       Write-Host '  サービスプリンシパルでサインインする'
+      # WSL から Windows の powershell.exe を呼ぶ場合、WSLENV に並べないと
+      # 環境変数が渡らない。渡らないと値が空のまま対話サインインに落ちる
+      if ($IsLinux -or $IsMacOS) {
+        $keep = 'PERMHUB_SP_TENANT:PERMHUB_SP_APPID:PERMHUB_SP_SECRET'
+        $env:WSLENV = if ($env:WSLENV) { $env:WSLENV + ':' + $keep } else { $keep }
+      }
       $signIn = 'Add-PowerAppsAccount -TenantID $env:PERMHUB_SP_TENANT ' +
                 '-ApplicationId $env:PERMHUB_SP_APPID -ClientSecret $env:PERMHUB_SP_SECRET | Out-Null; '
     }
     else {
       $signIn = 'Add-PowerAppsAccount | Out-Null; '
     }
-    $inner = 'Import-Module Microsoft.PowerApps.Administration.PowerShell; ' +
+    # 公開のコマンドレットは Administration ではなく Microsoft.PowerApps.PowerShell 側。
+    # 名前は Publish-PowerApp（Publish-AdminPowerApp は存在しない）
+    # 失敗を見逃さないよう Stop にして、成功したときだけ published を出す
+    $inner = '$ErrorActionPreference = ''Stop''; ' +
+             'Import-Module Microsoft.PowerApps.Administration.PowerShell; ' +
+             'Import-Module Microsoft.PowerApps.PowerShell; ' +
              $signIn +
              '$a = @(Get-AdminPowerApp | Where-Object { $_.DisplayName -eq ''' + $q + ''' }); ' +
              'if ($a.Count -eq 0) { throw ''その表示名のアプリが見つからない'' }; ' +
              'if ($a.Count -gt 1) { throw ''同じ表示名のアプリが複数ある'' }; ' +
-             'Publish-AdminPowerApp -EnvironmentName $a[0].EnvironmentName -AppName $a[0].AppName; ' +
+             'Publish-PowerApp -AppName $a[0].AppName; ' +
              'Write-Output ''published'''
     $out = & $ps5 -NoProfile -ExecutionPolicy Bypass -Command $inner 2>&1
     if (($out -join [Environment]::NewLine) -match 'published') {
@@ -633,9 +644,10 @@ if (-not $NoPublish) {
     }
     else {
       foreach ($l in $out) { Write-Host "      $l" }
-      Write-Warn '公開できなかった。初回は次の 2 つが要る（Windows PowerShell 5.1 で実行）。'
+      Write-Warn '公開できなかった。初回は次が要る（Windows PowerShell 5.1 で実行）。'
       Write-Warn '  Install-Module Microsoft.PowerApps.Administration.PowerShell -Scope CurrentUser'
-      Write-Warn '  Add-PowerAppsAccount      # サインイン。8 時間ほど保つ'
+      Write-Warn '  Install-Module Microsoft.PowerApps.PowerShell -Scope CurrentUser -AllowClobber'
+      Write-Warn '  Add-PowerAppsAccount      # サインイン'
       Write-Warn 'それでも駄目なら Studio で「公開」を押す。'
     }
   }
