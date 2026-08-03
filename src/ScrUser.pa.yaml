@@ -775,7 +775,7 @@ Screens:
             Control: ModernText@1.0.0
             Properties:
               Text: =If((";" & ThisItem.Title & ";") in fEligUC, If(fGU.Scope = "ALL" || (fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, "")), "☑", "☐"), If(fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, ""), "☑", "―"))
-              Fill: =If(!((";" & ThisItem.Title & ";") in fEligUC) && fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, ""), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
+              Fill: =If(fUDelBsk || fUDelPend, RGBA(0, 0, 0, 0), If(!((";" & ThisItem.Title & ";") in fEligUC) && fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, ""), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0)))
               Color: =If((fGU.Scope = "ALL" || (fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, ""))) <> With({b:LookUp(colGrantsAll, GlobalId = gblUserGid && Org1Code = gblUserOrg1 && RoleCode.Value = gblUserRole)}, b.ScopeType.Value = "ALL" || (b.ScopeType.Value = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(b.Org2Codes, ""))), RGBA(184, 83, 74, 1), If((";" & ThisItem.Title & ";") in fEligUC, If(fGU.Scope = "ALL" || (fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, "")), RGBA(122, 138, 120, 1), RGBA(168, 163, 154, 1)), If(fGU.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(fGU.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
               Align: ='TextCanvas.Align'.Center
               FontWeight: ='TextCanvas.Weight'.Bold
