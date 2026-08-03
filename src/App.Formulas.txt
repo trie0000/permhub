@@ -60,7 +60,7 @@ fChgAll = Filter(ForAll(Filter(colGEdit, Gid <> "") As e, With({s:LookUp(colGran
 fInvAll = Filter(ForAll(Filter(colGEdit, Scope = "PICK" && Gid <> "") As e, With({p:LookUp(colO1Edit, Title = e.O1)}, {Nm:LookUp(colUsersAll, Title = e.Gid).FullName & "（" & LookUp(fRoles, rc = e.Role).rn & "）", Bad:CountRows(Filter(ForAll(Filter(colO2Edit, Org1Code = e.O1) As o, {C:o.Title, A:If(o.IsDel, false, If(e.Role = "EXTCONN", o.ApExt, If(e.Role = "WLAN", o.ApWlan, If(e.Role = "CLOUD", o.ApCloud, (o.ApExt) || (o.ApWlan) || (o.ApCloud)))))}), (";" & C & ";") in Coalesce(e.Codes, "") && Not(A)))})), Bad > 0);
 fInvAllN = Coalesce(Sum(fInvAll, Bad), 0);
 fInvAllTxt = Concat(fInvAll, Nm, "、");
-fBskN = CountRows(fO1ChgAll) + fO2ChgAllN + CountRows(Distinct(fChgAll, Gid)) + CountRows(Filter(Distinct(colNewU, Gid) As n, CountRows(Filter(fChgAll, Gid = n.Value)) = 0)) + CountRows(Filter(Distinct(colUEdit, Gid) As e, CountRows(Filter(fChgAll, Gid = e.Value)) = 0 && CountRows(Filter(colNewU, Gid = e.Value)) = 0));
+fBskN = CountRows(colDelU) + CountRows(fO1ChgAll) + fO2ChgAllN + CountRows(Distinct(fChgAll, Gid)) + CountRows(Filter(Distinct(colNewU, Gid) As n, CountRows(Filter(fChgAll, Gid = n.Value)) = 0)) + CountRows(Filter(Distinct(colUEdit, Gid) As e, CountRows(Filter(fChgAll, Gid = e.Value)) = 0 && CountRows(Filter(colNewU, Gid = e.Value)) = 0));
 fQIOrg = Filter(colQG, K = "ORG1" || K = "ORG2");
 fQIUser = Filter(colQG, K = "USER" || K = "USERORG1" || K = "GRANT");
 fQI = Sort(If(gblRTab = "org", fQIOrg, fQIUser), Seq);
@@ -97,4 +97,7 @@ fReqOtherN = CountRows(fReqOther);
 fReqDrift = Filter(ForAll(colQI As q, {Nm:q.Chg, D:With({B:ParseJSON(q.BJ)}, Switch(q.K, "ORG2", With({o:LookUp(colOrg2All, Title = q.EKey)}, If(q.Op = "ADD", !IsBlank(o.Title), IsBlank(o.Title) || Text(B.NameJa) <> o.NameJa || Text(B.NameEn) <> o.NameEn || Value(B.SortOrder) <> o.SortOrder || Boolean(B.ApExt) <> o.ApExt || Boolean(B.ApWlan) <> o.ApWlan || Boolean(B.ApCloud) <> o.ApCloud)), "USER", With({u:LookUp(colUsersAll, Title = q.EKey)}, If(q.Op = "ADD" || IsBlank(Text(B.FullName)), false, Text(B.FullName) <> u.FullName || Text(B.Mail) <> u.Mail || Text(B.Department) <> u.Department)), "GRANT", With({g:LookUp(colGrantsAll, Title = q.EKey)}, If(IsBlank(Text(B.ScopeType)), false, Text(B.ScopeType) <> Coalesce(g.ScopeType.Value, "NONE") || Coalesce(Text(B.Org2Codes), "") <> Coalesce(g.Org2Codes, ""))), false))}), D);
 fReqDriftN = CountRows(fReqDrift);
 fReqReOk = fReqOtherN = 0 && fReqDriftN = 0;
-fReqIssueTxt = If(fReqDriftN > 0, "申請後に変わったもの " & fReqDriftN & " 件（" & Concat(FirstN(fReqDrift, 3), Nm, "／") & "）", "") & If(fReqOtherN > 0 && fReqDriftN > 0, "、", "") & If(fReqOtherN > 0, "同じ対象に別の申請 " & fReqOtherN & " 件", "")
+fReqIssueTxt = If(fReqDriftN > 0, "申請後に変わったもの " & fReqDriftN & " 件（" & Concat(FirstN(fReqDrift, 3), Nm, "／") & "）", "") & If(fReqOtherN > 0 && fReqDriftN > 0, "、", "") & If(fReqOtherN > 0, "同じ対象に別の申請 " & fReqOtherN & " 件", "");
+fUInBskRaw = CountRows(Filter(fChgAll, Gid = gblUserGid)) + CountRows(Filter(colNewU, Gid = gblUserGid)) + CountRows(Filter(colUEdit, Gid = gblUserGid)) > 0;
+fUDelBsk = CountRows(Filter(colDelU, Gid = gblUserGid)) > 0
+fUInBsk = fUInBskRaw && !fUDelBsk

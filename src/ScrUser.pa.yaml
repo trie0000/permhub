@@ -846,16 +846,16 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(fUDelPend, RGBA(74, 71, 64, 1), RGBA(160, 62, 54, 1))
-          Fill: =If(fUDelPend, RGBA(232, 228, 216, 1), RGBA(247, 226, 223, 1))
+          Color: =If(fUInBskRaw && !fUDelBsk && !fUDelPend, RGBA(180, 176, 168, 1), If(fUDelPend || fUDelBsk, RGBA(74, 71, 64, 1), RGBA(160, 62, 54, 1)))
+          Fill: =If(fUInBskRaw && !fUDelBsk && !fUDelPend, RGBA(240, 238, 231, 1), If(fUDelPend || fUDelBsk, RGBA(232, 228, 216, 1), RGBA(247, 226, 223, 1)))
           Height: =36
-          OnSelect: =If(fUDelPend, Select(btnUDelCancel), Select(btnUDelReq))
+          OnSelect: =If(fUDelPend, Select(btnUDelCancel), If(fUDelBsk, Select(btnUDelOff), If(fUInBskRaw, Notify("この利用者には申請前の変更があります。先に申請するか取り消してから削除してください。", NotificationType.Warning), Select(btnUDelOn))))
           RadiusTopLeft: =5
           RadiusTopRight: =5
           RadiusBottomLeft: =5
           RadiusBottomRight: =5
           Size: =13
-          Text: =If(fUDelPend, "削除を取り消す", "ユーザを削除")
+          Text: =If(fUDelPend, "削除を取り消す", If(fUDelBsk, "削除をやめる", "ユーザを削除"))
           Width: =210
           X: =52
           Y: =Parent.Height - 76
@@ -1086,7 +1086,7 @@ Screens:
     - btnSnapU:
         Control: ModernText@1.0.0
         Properties:
-          OnSelect: =Set(gblStepU, gblStepU + 1); RemoveIf(colHUG, S >= gblStepU); RemoveIf(colHUN, S >= gblStepU); RemoveIf(colHUU, S >= gblStepU); Collect(colHUG, ForAll(Filter(colGEdit, Gid = gblUserGid) As e, {S:gblStepU, R:e})); Collect(colHUN, ForAll(Filter(colNewU, Gid = gblUserGid) As e, {S:gblStepU, R:e})); Collect(colHUU, ForAll(Filter(colUEdit, Gid = gblUserGid) As e, {S:gblStepU, R:e})); Set(gblStepUMax, gblStepU)
+          OnSelect: =Set(gblStepU, gblStepU + 1); RemoveIf(colHDU, S >= gblStepU); RemoveIf(colHUG, S >= gblStepU); RemoveIf(colHUN, S >= gblStepU); RemoveIf(colHUU, S >= gblStepU); Collect(colHUG, ForAll(Filter(colGEdit, Gid = gblUserGid) As e, {S:gblStepU, R:e})); Collect(colHUN, ForAll(Filter(colNewU, Gid = gblUserGid) As e, {S:gblStepU, R:e})); Collect(colHUU, ForAll(Filter(colUEdit, Gid = gblUserGid) As e, {S:gblStepU, R:e})); Collect(colHDU, ForAll(Filter(colDelU, Gid = gblUserGid) As e, {S:gblStepU, R:e})); Set(gblStepUMax, gblStepU)
           Height: =1
           Text: =""
           Visible: =false
@@ -1096,7 +1096,7 @@ Screens:
     - btnInitU:
         Control: ModernText@1.0.0
         Properties:
-          OnSelect: =Set(gblStepU, 0); Set(gblStepUMax, 0); Clear(colHUG); Clear(colHUN); Clear(colHUU); Collect(colHUG, ForAll(Filter(colGEdit, Gid = gblUserGid) As e, {S:0, R:e})); Collect(colHUN, ForAll(Filter(colNewU, Gid = gblUserGid) As e, {S:0, R:e})); Collect(colHUU, ForAll(Filter(colUEdit, Gid = gblUserGid) As e, {S:0, R:e}))
+          OnSelect: =Set(gblStepU, 0); Set(gblStepUMax, 0); Clear(colHDU); Clear(colHUG); Clear(colHUN); Clear(colHUU); Collect(colHDU, ForAll(Filter(colDelU, Gid = gblUserGid) As e, {S:0, R:e})); Collect(colHUG, ForAll(Filter(colGEdit, Gid = gblUserGid) As e, {S:0, R:e})); Collect(colHUN, ForAll(Filter(colNewU, Gid = gblUserGid) As e, {S:0, R:e})); Collect(colHUU, ForAll(Filter(colUEdit, Gid = gblUserGid) As e, {S:0, R:e}))
           Height: =1
           Text: =""
           Visible: =false
@@ -1191,7 +1191,7 @@ Screens:
           Fill: =RGBA(243, 241, 234, 0.78)
           Height: =Parent.Height - 420
           Text: =""
-          Visible: =fUDelPend && !gblRO
+          Visible: =(fUDelPend || fUDelBsk) && !gblRO
           Width: =Parent.Width - 56
           X: =28
           Y: =306
@@ -1208,8 +1208,8 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =13
-          Text: ="このユーザは削除を申請中です。権限は変更できません。左下の「削除を取り消す」を押すと編集できます。"
-          Visible: =fUDelPend && !gblRO
+          Text: =If(fUDelPend, "このユーザは削除を申請中です。権限は変更できません。左下の「削除を取り消す」を押すと編集できます。", "このユーザは削除の対象として申請明細に入っています。権限は変更できません。左下の「削除をやめる」を押すと編集できます。")
+          Visible: =(fUDelPend || fUDelBsk) && !gblRO
           Width: =Parent.Width - 160
           X: =108
           Y: =360
@@ -1231,6 +1231,26 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           OnSelect: =Set(gblDelReq, LookUp(colPendItem, GK = "USER" && GKey = gblUserGid && Op = "DELETE").No); Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblDelReq), {Status:{Value:"CANCELED"}, DecisionNote:"利用者の画面から削除を取り消し"}); ForAll(Filter(PRM_RequestItems, ReqNo = gblDelReq) As it, Patch(PRM_RequestItems, it, {ItemStatus:{Value:"CANCELED"}, HandledAt:Now(), HandledBy:gblMeGid})); RemoveIf(colPendItem, No = gblDelReq); If(!IsBlank(LookUp(colReq, No = gblDelReq).No), Patch(colReq, LookUp(colReq, No = gblDelReq), {S:"CANCELED"})); Notify("削除の申請を取り下げました。権限の設定ができるようになります。", NotificationType.Success)
+          Height: =1
+          Text: =""
+          Visible: =false
+          Width: =1
+          X: =0
+          Y: =0
+    - btnUDelOn:
+        Control: ModernText@1.0.0
+        Properties:
+          OnSelect: =Collect(colDelU, {Gid:gblUserGid, Nm:Coalesce(gblU.FullName, gblUserGid)}); Notify("削除を申請明細に入れました。組織マスタ／ユーザマスタの「申請」で確定します。", NotificationType.Success); Select(btnSnapU)
+          Height: =1
+          Text: =""
+          Visible: =false
+          Width: =1
+          X: =0
+          Y: =0
+    - btnUDelOff:
+        Control: ModernText@1.0.0
+        Properties:
+          OnSelect: =RemoveIf(colDelU, Gid = gblUserGid); Notify("削除を取り消しました。", NotificationType.Information); Select(btnSnapU)
           Height: =1
           Text: =""
           Visible: =false
