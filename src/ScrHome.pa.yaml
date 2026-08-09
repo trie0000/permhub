@@ -650,10 +650,10 @@ Screens:
                 - o2Ja:
                     Control: ModernTextInput@1.1.1
                     Properties:
-                      Color: =If((ThisItem.IsNew || ThisItem.NameJa <> LookUp(colOrg2All, Title = ThisItem.Title).NameJa), RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+                      Color: =If((";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), If((ThisItem.IsNew || ThisItem.NameJa <> LookUp(colOrg2All, Title = ThisItem.Title).NameJa), RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
                       Default: =ThisItem.NameJa
                       OnChange: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {NameJa:Trim(Self.Text)}); Select(btnSnapO)
-                      DisplayMode: =If(ThisItem.IsDel, DisplayMode.View, DisplayMode.Edit)
+                      DisplayMode: =If(ThisItem.IsDel || (";" & ThisItem.Title & ";") in fLockO2, DisplayMode.View, DisplayMode.Edit)
                       Width: =186
                       Height: =30
                       FillPortions: =0
@@ -661,10 +661,10 @@ Screens:
                 - o2En:
                     Control: ModernTextInput@1.1.1
                     Properties:
-                      Color: =If((ThisItem.IsNew || ThisItem.NameEn <> LookUp(colOrg2All, Title = ThisItem.Title).NameEn), RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1))
+                      Color: =If((";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), If((ThisItem.IsNew || ThisItem.NameEn <> LookUp(colOrg2All, Title = ThisItem.Title).NameEn), RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
                       Default: =ThisItem.NameEn
                       OnChange: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {NameEn:Trim(Self.Text)}); Select(btnSnapO)
-                      DisplayMode: =If(ThisItem.IsDel, DisplayMode.View, DisplayMode.Edit)
+                      DisplayMode: =If(ThisItem.IsDel || (";" & ThisItem.Title & ";") in fLockO2, DisplayMode.View, DisplayMode.Edit)
                       Width: =156
                       Height: =30
                       FillPortions: =0
@@ -686,7 +686,7 @@ Screens:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
-                      Color: =If(CountRows(Filter(fO2E, SortOrder < ThisItem.SortOrder)) > 0, RGBA(74, 71, 64, 1), RGBA(206, 202, 192, 1))
+                      Color: =If((";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), If(CountRows(Filter(fO2E, SortOrder < ThisItem.SortOrder)) > 0, RGBA(74, 71, 64, 1), RGBA(206, 202, 192, 1)))
                       Fill: =If(CountRows(Filter(fO2E, SortOrder < ThisItem.SortOrder)) > 0, RGBA(232, 228, 216, 1), RGBA(243, 241, 234, 1))
                       Size: =11
                       Text: ="▲"
@@ -703,12 +703,12 @@ Screens:
                       FillPortions: =0
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =Set(gblSwapA, ThisItem.Title); Set(gblSwapB, Coalesce(Last(Filter(fO2E, SortOrder < ThisItem.SortOrder)).Title, ThisItem.Title)); Set(gblSwapN, ThisItem.SortOrder); Set(gblSwapM, LookUp(colO2Edit, Title = gblSwapB).SortOrder); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapA), {SortOrder:gblSwapM}); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapB), {SortOrder:gblSwapN}); Select(btnSnapO)
+                      OnSelect: =If((";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), Set(gblSwapA, ThisItem.Title); Set(gblSwapB, Coalesce(Last(Filter(fO2E, SortOrder < ThisItem.SortOrder)).Title, ThisItem.Title)); Set(gblSwapN, ThisItem.SortOrder); Set(gblSwapM, LookUp(colO2Edit, Title = gblSwapB).SortOrder); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapA), {SortOrder:gblSwapM}); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapB), {SortOrder:gblSwapN}); Select(btnSnapO))
                 - o2Down:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
-                      Color: =If(CountRows(Filter(fO2E, SortOrder > ThisItem.SortOrder)) > 0, RGBA(74, 71, 64, 1), RGBA(206, 202, 192, 1))
+                      Color: =If((";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), If(CountRows(Filter(fO2E, SortOrder > ThisItem.SortOrder)) > 0, RGBA(74, 71, 64, 1), RGBA(206, 202, 192, 1)))
                       Fill: =If(CountRows(Filter(fO2E, SortOrder > ThisItem.SortOrder)) > 0, RGBA(232, 228, 216, 1), RGBA(243, 241, 234, 1))
                       Size: =11
                       Text: ="▼"
@@ -725,7 +725,7 @@ Screens:
                       FillPortions: =0
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =Set(gblSwapA, ThisItem.Title); Set(gblSwapB, Coalesce(First(Filter(fO2E, SortOrder > ThisItem.SortOrder)).Title, ThisItem.Title)); Set(gblSwapN, ThisItem.SortOrder); Set(gblSwapM, LookUp(colO2Edit, Title = gblSwapB).SortOrder); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapA), {SortOrder:gblSwapM}); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapB), {SortOrder:gblSwapN}); Select(btnSnapO)
+                      OnSelect: =If((";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), Set(gblSwapA, ThisItem.Title); Set(gblSwapB, Coalesce(First(Filter(fO2E, SortOrder > ThisItem.SortOrder)).Title, ThisItem.Title)); Set(gblSwapN, ThisItem.SortOrder); Set(gblSwapM, LookUp(colO2Edit, Title = gblSwapB).SortOrder); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapA), {SortOrder:gblSwapM}); Patch(colO2Edit, LookUp(colO2Edit, Title = gblSwapB), {SortOrder:gblSwapN}); Select(btnSnapO))
                 - o2SortSpR:
                     Control: ModernText@1.0.0
                     Properties:
@@ -749,7 +749,7 @@ Screens:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
-                      Color: =If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApExt <> LookUp(colOrg2All, Title = ThisItem.Title).ApExt, RGBA(184, 83, 74, 1), If(ThisItem.ApExt, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
+                      Color: =If((";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApExt <> LookUp(colOrg2All, Title = ThisItem.Title).ApExt, RGBA(184, 83, 74, 1), If(ThisItem.ApExt, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))))
                       Fill: =If(ThisItem.ApExt, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1))
                       FontWeight: ='TextCanvas.Weight'.Bold
                       RadiusTopLeft: =4
@@ -767,7 +767,7 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApExt:!ThisItem.ApExt}); Select(btnSnapO)
+                      OnSelect: =If((";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApExt:!ThisItem.ApExt}); Select(btnSnapO))
                       BorderThickness: =If(ThisItem.ApExt <> LookUp(colOrg2All, Title = ThisItem.Title).ApExt, 2, 0)
                       BorderColor: =RGBA(184, 83, 74, 1)
                 - o2ExtSpR:
@@ -792,7 +792,7 @@ Screens:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
-                      Color: =If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApWlan <> LookUp(colOrg2All, Title = ThisItem.Title).ApWlan, RGBA(184, 83, 74, 1), If(ThisItem.ApWlan, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
+                      Color: =If((";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApWlan <> LookUp(colOrg2All, Title = ThisItem.Title).ApWlan, RGBA(184, 83, 74, 1), If(ThisItem.ApWlan, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))))
                       Fill: =If(ThisItem.ApWlan, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1))
                       FontWeight: ='TextCanvas.Weight'.Bold
                       RadiusTopLeft: =4
@@ -810,7 +810,7 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApWlan:!ThisItem.ApWlan}); Select(btnSnapO)
+                      OnSelect: =If((";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApWlan:!ThisItem.ApWlan}); Select(btnSnapO))
                       BorderThickness: =If(ThisItem.ApWlan <> LookUp(colOrg2All, Title = ThisItem.Title).ApWlan, 2, 0)
                       BorderColor: =RGBA(184, 83, 74, 1)
                 - o2WlanSpR:
@@ -835,7 +835,7 @@ Screens:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
-                      Color: =If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApCloud <> LookUp(colOrg2All, Title = ThisItem.Title).ApCloud, RGBA(184, 83, 74, 1), If(ThisItem.ApCloud, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1)))
+                      Color: =If((";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), If(!ThisItem.IsNew && !ThisItem.IsDel && ThisItem.ApCloud <> LookUp(colOrg2All, Title = ThisItem.Title).ApCloud, RGBA(184, 83, 74, 1), If(ThisItem.ApCloud, RGBA(255, 255, 255, 1), RGBA(122, 118, 108, 1))))
                       Fill: =If(ThisItem.ApCloud, RGBA(122, 138, 120, 1), RGBA(243, 241, 234, 1))
                       FontWeight: ='TextCanvas.Weight'.Bold
                       RadiusTopLeft: =4
@@ -853,7 +853,7 @@ Screens:
                       Height: =26
                       AlignInContainer: =AlignInContainer.Center
                       LayoutMinHeight: =0
-                      OnSelect: =Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApCloud:!ThisItem.ApCloud}); Select(btnSnapO)
+                      OnSelect: =If((";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {ApCloud:!ThisItem.ApCloud}); Select(btnSnapO))
                       BorderThickness: =If(ThisItem.ApCloud <> LookUp(colOrg2All, Title = ThisItem.Title).ApCloud, 2, 0)
                       BorderColor: =RGBA(184, 83, 74, 1)
                 - o2CloudSpR:
@@ -885,11 +885,11 @@ Screens:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
-                      Color: =If(ThisItem.IsDel, RGBA(74, 71, 64, 1), RGBA(184, 83, 74, 1))
+                      Color: =If((";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), If(ThisItem.IsDel, RGBA(74, 71, 64, 1), RGBA(184, 83, 74, 1)))
                       Fill: =If(ThisItem.IsDel, RGBA(232, 228, 216, 1), RGBA(0, 0, 0, 0))
                       Size: =11
                       Text: =If(ThisItem.IsDel, "取消", "削除")
-                      OnSelect: =If(ThisItem.IsNew, RemoveIf(colO2Edit, Title = ThisItem.Title), Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {IsDel:!ThisItem.IsDel})); Select(btnSnapO)
+                      OnSelect: =If((";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(ThisItem.IsNew, RemoveIf(colO2Edit, Title = ThisItem.Title), Patch(colO2Edit, LookUp(colO2Edit, Title = ThisItem.Title), {IsDel:!ThisItem.IsDel})); Select(btnSnapO))
                       RadiusTopLeft: =4
                       RadiusTopRight: =4
                       RadiusBottomLeft: =4
@@ -2543,7 +2543,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =RGBA(255, 255, 255, 1)
+          Color: =If((";" & fG1 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG1), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2551,7 +2551,7 @@ Screens:
           RadiusBottomRight: =3
           Text: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG1), "", If(LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", "副", "正"))
           Visible: =gblTab = "user"
-          OnSelect: =If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG1), false, true), Set(gblG, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG1, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM))
+          OnSelect: =If((";" & fG1 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG1), false, true), Set(gblG, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG1, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM)))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2565,7 +2565,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =RGBA(255, 255, 255, 1)
+          Color: =If((";" & fG2 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG2), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2573,7 +2573,7 @@ Screens:
           RadiusBottomRight: =3
           Text: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG2), "", If(LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", "副", "正"))
           Visible: =gblTab = "user"
-          OnSelect: =If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG2), false, true), Set(gblG, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG2, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM))
+          OnSelect: =If((";" & fG2 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG2), false, true), Set(gblG, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG2, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM)))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2587,7 +2587,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =RGBA(255, 255, 255, 1)
+          Color: =If((";" & fG3 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG3), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2595,7 +2595,7 @@ Screens:
           RadiusBottomRight: =3
           Text: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG3), "", If(LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", "副", "正"))
           Visible: =gblTab = "user"
-          OnSelect: =If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG3), false, true), Set(gblG, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG3, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM))
+          OnSelect: =If((";" & fG3 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG3), false, true), Set(gblG, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG3, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM)))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2609,7 +2609,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =RGBA(255, 255, 255, 1)
+          Color: =If((";" & fG4 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG4), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2617,7 +2617,7 @@ Screens:
           RadiusBottomRight: =3
           Text: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG4), "", If(LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", "副", "正"))
           Visible: =gblTab = "user"
-          OnSelect: =If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG4), false, true), Set(gblG, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG4, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM))
+          OnSelect: =If((";" & fG4 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG4), false, true), Set(gblG, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG4, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM)))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2631,7 +2631,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =RGBA(255, 255, 255, 1)
+          Color: =If((";" & fG5 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG5), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2639,7 +2639,7 @@ Screens:
           RadiusBottomRight: =3
           Text: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG5), "", If(LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", "副", "正"))
           Visible: =gblTab = "user"
-          OnSelect: =If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG5), false, true), Set(gblG, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG5, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM))
+          OnSelect: =If((";" & fG5 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG5), false, true), Set(gblG, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG5, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM)))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2653,7 +2653,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =RGBA(255, 255, 255, 1)
+          Color: =If((";" & fG6 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG6), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2661,7 +2661,7 @@ Screens:
           RadiusBottomRight: =3
           Text: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG6), "", If(LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", "副", "正"))
           Visible: =gblTab = "user"
-          OnSelect: =If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG6), false, true), Set(gblG, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG6, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM))
+          OnSelect: =If((";" & fG6 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG6), false, true), Set(gblG, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG6, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM)))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2675,7 +2675,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =RGBA(255, 255, 255, 1)
+          Color: =If((";" & fG7 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG7), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2683,7 +2683,7 @@ Screens:
           RadiusBottomRight: =3
           Text: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG7), "", If(LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", "副", "正"))
           Visible: =gblTab = "user"
-          OnSelect: =If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG7), false, true), Set(gblG, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG7, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM))
+          OnSelect: =If((";" & fG7 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG7), false, true), Set(gblG, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG7, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM)))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2697,7 +2697,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =RGBA(255, 255, 255, 1)
+          Color: =If((";" & fG8 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG8), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2705,7 +2705,7 @@ Screens:
           RadiusBottomRight: =3
           Text: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG8), "", If(LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", "副", "正"))
           Visible: =gblTab = "user"
-          OnSelect: =If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG8), false, true), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM))
+          OnSelect: =If((";" & fG8 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG8), false, true), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM)))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2719,7 +2719,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =RGBA(255, 255, 255, 1)
+          Color: =If((";" & fG9 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG9), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2727,7 +2727,7 @@ Screens:
           RadiusBottomRight: =3
           Text: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG9), "", If(LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", "副", "正"))
           Visible: =gblTab = "user"
-          OnSelect: =If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG9), false, true), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM))
+          OnSelect: =If((";" & fG9 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG9), false, true), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM)))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2741,7 +2741,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =RGBA(255, 255, 255, 1)
+          Color: =If((";" & fG10 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG10), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2749,7 +2749,7 @@ Screens:
           RadiusBottomRight: =3
           Text: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG10), "", If(LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", "副", "正"))
           Visible: =gblTab = "user"
-          OnSelect: =If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG10), false, true), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM))
+          OnSelect: =If((";" & fG10 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG10), false, true), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {CR:If(gblG.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapM)))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2800,11 +2800,11 @@ Screens:
           Width: =105
           Height: =40
           Text: =If(IsBlank(fG1), "", If(LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If(LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Color: =If((";" & fG1 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG1), false, true), Set(gblG, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG1, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+          OnSelect: =If((";" & fG1 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG1), false, true), Set(gblG, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG1, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2817,11 +2817,11 @@ Screens:
           Width: =105
           Height: =40
           Text: =If(IsBlank(fG2), "", If(LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If(LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Color: =If((";" & fG2 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG2), false, true), Set(gblG, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG2, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+          OnSelect: =If((";" & fG2 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG2), false, true), Set(gblG, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG2, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2834,11 +2834,11 @@ Screens:
           Width: =105
           Height: =40
           Text: =If(IsBlank(fG3), "", If(LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If(LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Color: =If((";" & fG3 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG3), false, true), Set(gblG, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG3, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+          OnSelect: =If((";" & fG3 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG3), false, true), Set(gblG, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG3, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2851,11 +2851,11 @@ Screens:
           Width: =105
           Height: =40
           Text: =If(IsBlank(fG4), "", If(LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If(LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Color: =If((";" & fG4 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG4), false, true), Set(gblG, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG4, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+          OnSelect: =If((";" & fG4 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG4), false, true), Set(gblG, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG4, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2868,11 +2868,11 @@ Screens:
           Width: =105
           Height: =40
           Text: =If(IsBlank(fG5), "", If(LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If(LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Color: =If((";" & fG5 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG5), false, true), Set(gblG, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG5, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+          OnSelect: =If((";" & fG5 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG5), false, true), Set(gblG, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG5, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2885,11 +2885,11 @@ Screens:
           Width: =105
           Height: =40
           Text: =If(IsBlank(fG6), "", If(LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If(LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Color: =If((";" & fG6 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG6), false, true), Set(gblG, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG6, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+          OnSelect: =If((";" & fG6 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG6), false, true), Set(gblG, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG6, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2902,11 +2902,11 @@ Screens:
           Width: =105
           Height: =40
           Text: =If(IsBlank(fG7), "", If(LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If(LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Color: =If((";" & fG7 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG7), false, true), Set(gblG, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG7, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+          OnSelect: =If((";" & fG7 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG7), false, true), Set(gblG, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG7, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2919,11 +2919,11 @@ Screens:
           Width: =105
           Height: =40
           Text: =If(IsBlank(fG8), "", If(LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If(LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Color: =If((";" & fG8 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG8), false, true), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+          OnSelect: =If((";" & fG8 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG8), false, true), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2936,11 +2936,11 @@ Screens:
           Width: =105
           Height: =40
           Text: =If(IsBlank(fG9), "", If(LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If(LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Color: =If((";" & fG9 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG9), false, true), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+          OnSelect: =If((";" & fG9 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG9), false, true), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -2953,11 +2953,11 @@ Screens:
           Width: =105
           Height: =40
           Text: =If(IsBlank(fG10), "", If(LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If(LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Color: =If((";" & fG10 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
-          OnSelect: =If(If(IsBlank(fG10), false, true), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+          OnSelect: =If((";" & fG10 & ";") in fLockUsr, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG10), false, true), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblNC, ""); Set(gblNS, If(gblG.Scope = "ALL", "NONE", "ALL")); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
@@ -3057,7 +3057,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG1) && Not(fG1 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =If((";" & fG1 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3069,13 +3069,13 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG1), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG1, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+                      OnSelect: =If((";" & fG1 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG1), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG1, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
                 - mxC2:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG2) && Not(fG2 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =If((";" & fG2 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3087,13 +3087,13 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG2), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG2, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+                      OnSelect: =If((";" & fG2 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG2), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG2, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
                 - mxC3:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG3) && Not(fG3 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =If((";" & fG3 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3105,13 +3105,13 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG3), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG3, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+                      OnSelect: =If((";" & fG3 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG3), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG3, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
                 - mxC4:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG4) && Not(fG4 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =If((";" & fG4 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3123,13 +3123,13 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG4), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG4, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+                      OnSelect: =If((";" & fG4 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG4), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG4, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
                 - mxC5:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG5) && Not(fG5 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =If((";" & fG5 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3141,13 +3141,13 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG5), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG5, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+                      OnSelect: =If((";" & fG5 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG5), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG5, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
                 - mxC6:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG6) && Not(fG6 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =If((";" & fG6 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3159,13 +3159,13 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG6), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG6, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+                      OnSelect: =If((";" & fG6 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG6), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG6, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
                 - mxC7:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG7) && Not(fG7 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =If((";" & fG7 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3177,13 +3177,13 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG7), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG7, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+                      OnSelect: =If((";" & fG7 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG7), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG7, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
                 - mxC8:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG8) && Not(fG8 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =If((";" & fG8 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3195,13 +3195,13 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG8), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+                      OnSelect: =If((";" & fG8 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG8), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG8, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
                 - mxC9:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG9) && Not(fG9 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =If((";" & fG9 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3213,13 +3213,13 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG9), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+                      OnSelect: =If((";" & fG9 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG9), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG9, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
                 - mxC10:
                     Control: ModernText@1.0.0
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG10) && Not(fG10 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =If((";" & fG10 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3231,7 +3231,7 @@ Screens:
                       VerticalAlign: =VerticalAlign.Middle
                       FillPortions: =0
                       Width: =105
-                      OnSelect: =If(If(IsBlank(fG10), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM)
+                      OnSelect: =If((";" & fG10 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, Notify("この対象は申請中です。完了か取り下げまで変更できません。", NotificationType.Warning), If(If(IsBlank(fG10), false, (";" & ThisItem.Title & ";") in fEligMC || With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""))), Set(gblG, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)); Set(gblElig, fEligM); Set(gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(gblG.Codes, ""))); Set(gblNC, Concat(Filter(gblElig, If(Title = ThisItem.Title, !gblOn, gblG.Scope = "ALL" || (gblG.Scope = "PICK" && (";" & Title & ";") in Coalesce(gblG.Codes, "")))), ";" & Title, "") & ";"); Set(gblNS, With({n:CountRows(Filter(gblElig, (";" & Title & ";") in gblNC))}, If(n = 0, "NONE", If(n = CountRows(gblElig), "ALL", "PICK")))); If(gblNS <> "PICK", Set(gblNC, "")); If(IsBlank(gblG.Gid), Collect(colGEdit, {Gid:fG10, O1:gblOrg1, Role:gblView, Scope:gblNS, Codes:gblNC, CR:""}), Patch(colGEdit, LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), {Scope:gblNS, Codes:gblNC}))); Select(btnSnapM))
             - mxRowRule:
                 Control: ModernText@1.0.0
                 Properties:
