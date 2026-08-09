@@ -216,6 +216,45 @@ Screens:
           VerticalAlign: =VerticalAlign.Middle
           Visible: =!gblRO
 
+    - lblTabAdmin:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =RGBA(0, 0, 0, 0)
+          Height: =32
+          OnSelect: =Set(gblTab, "admin"); Set(gblPage, 0)
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =13
+          Text: ="管理"
+          Width: =150
+          X: =498
+          Y: =62
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+          Visible: =!gblRO && gblIsAdmin
+    - tabULAdmin:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(42, 42, 38, 1)
+          Fill: =If(gblTab = "admin", RGBA(122, 138, 120, 1), RGBA(0, 0, 0, 0))
+          Height: =2
+          Size: =13
+          Text: =""
+          Width: =150
+          X: =498
+          Y: =100
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+          Visible: =!gblRO && gblIsAdmin
     - tabRule:
         Control: ModernText@1.0.0
         Properties:
@@ -979,7 +1018,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: =If(Coalesce(LookUp(fChgRole, rc = "SECMGR").n, 0) > 0, "・", "") & "事業場ITセキュリティ責任者"
+          Text: =If(Coalesce(LookUp(fChgRole, rc = "SECMGR").n, 0) > 0, "・", "") & "事業場ITセ責任者"
           Visible: =gblTab = "user"
           Width: =150
           X: =28
@@ -1098,6 +1137,29 @@ Screens:
           Visible: =gblTab = "user"
           Width: =150
           X: =680
+          Y: =202
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - vwEUCLOUD:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(Coalesce(LookUp(fChgRole, rc = "EUCLOUD").n, 0) > 0, RGBA(184, 83, 74, 1), If(gblView = "EUCLOUD", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1)))
+          Fill: =If((Coalesce(LookUp(fInvRole, rc = "EUCLOUD").n, 0) > 0 || Coalesce(LookUp(fNoAppRoleO1, rc = "EUCLOUD").n, 0) > 0), If(gblView = "EUCLOUD", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblView = "EUCLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
+          FontWeight: =If(gblView = "EUCLOUD", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
+          Height: =32
+          OnSelect: =Set(gblView, "EUCLOUD"); Set(gblPage, 0)
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: =If(Coalesce(LookUp(fChgRole, rc = "EUCLOUD").n, 0) > 0, "・", "") & "欧州窓口"
+          Visible: =gblTab = "user"
+          Width: =150
+          X: =830
           Y: =202
           Wrap: =true
           PaddingTop: =0
@@ -3989,6 +4051,465 @@ Screens:
           Width: =150
           X: =(Parent.Width - 900) / 2 + 722
           Y: =(Parent.Height - 560) / 2 + 504
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admCard:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(250, 250, 247, 1)
+          Height: =Parent.Height - 150
+          RadiusTopLeft: =8
+          RadiusTopRight: =8
+          RadiusBottomLeft: =8
+          RadiusBottomRight: =8
+          Text: =""
+          Visible: =gblTab = "admin"
+          Width: =Parent.Width - 56
+          X: =28
+          Y: =124
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admK1:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(gblAdmKind = "tree", RGBA(255, 255, 255, 1), RGBA(42, 42, 38, 1))
+          Fill: =If(gblAdmKind = "tree", RGBA(122, 138, 120, 1), RGBA(238, 235, 227, 1))
+          Height: =30
+          OnSelect: =Set(gblAdmKind, "tree"); Set(gblAdmCols, 10); Reset(admIn); Clear(colAdmRow); Set(gblAdmN, 0); Set(gblAdmBad, 0)
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="組織の親子"
+          Visible: =gblTab = "admin"
+          Width: =190
+          X: =44
+          Y: =136
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admK2:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(gblAdmKind = "org", RGBA(255, 255, 255, 1), RGBA(42, 42, 38, 1))
+          Fill: =If(gblAdmKind = "org", RGBA(122, 138, 120, 1), RGBA(238, 235, 227, 1))
+          Height: =30
+          OnSelect: =Set(gblAdmKind, "org"); Set(gblAdmCols, 9); Reset(admIn); Clear(colAdmRow); Set(gblAdmN, 0); Set(gblAdmBad, 0)
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="組織マスタ（多段階承認）"
+          Visible: =gblTab = "admin"
+          Width: =190
+          X: =240
+          Y: =136
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admK3:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =If(gblAdmKind = "usr", RGBA(255, 255, 255, 1), RGBA(42, 42, 38, 1))
+          Fill: =If(gblAdmKind = "usr", RGBA(122, 138, 120, 1), RGBA(238, 235, 227, 1))
+          Height: =30
+          OnSelect: =Set(gblAdmKind, "usr"); Set(gblAdmCols, 7); Reset(admIn); Clear(colAdmRow); Set(gblAdmN, 0); Set(gblAdmBad, 0)
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="ユーザマスタ"
+          Visible: =gblTab = "admin"
+          Width: =190
+          X: =436
+          Y: =136
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admHdrCap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(110, 106, 98, 1)
+          Height: =20
+          Size: =11
+          Text: ="貼り付ける CSV の見出し"
+          Visible: =gblTab = "admin"
+          Width: =200
+          X: =44
+          Y: =176
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admHdr:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(42, 42, 38, 1)
+          Height: =36
+          Size: =11
+          Text: =If(gblAdmKind = "tree", "組織区分１,組織区分１日本語名称,組織区分１英語名称,組織区分２,組織区分２日本語名称,組織区分２英語名称,適用開始日,適用終了日,最終更新日,最終更新者", If(gblAdmKind = "org", "組織区分コード,組織区分日本語名称,組織区分英語名称,区分,クラウド多段,外部接続多段,無線LAN多段,最終更新日,最終更新者", "組織区分１,組織区分２,ロール名,ユーザ名,メールアドレス,最終更新日,最終更新者"))
+          Visible: =gblTab = "admin"
+          Width: =Parent.Width - 120
+          X: =44
+          Y: =196
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admInCap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(110, 106, 98, 1)
+          Height: =20
+          Size: =11
+          Text: ="1 行目を見出しとして読みます。Excel から全選択してそのまま貼り付けてください。"
+          Visible: =gblTab = "admin"
+          Width: =500
+          X: =44
+          Y: =240
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admIn:
+        Control: ModernTextInput@1.1.1
+        Properties:
+          Type: =TextInputType.Multiline
+          Size: =11
+          Height: =150
+          Width: =Parent.Width - 120
+          X: =44
+          Y: =262
+          Visible: =gblTab = "admin"
+    - admParse:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(255, 255, 255, 1)
+          Fill: =RGBA(122, 138, 120, 1)
+          Height: =32
+          OnSelect: =ClearCollect(colAdmLine, Filter(Split(Substitute(Substitute(admIn.Text, Char(13), ""), Char(9), ","), Char(10)) As l, Len(Trim(l.Value)) > 0)); Set(gblAdmN, CountRows(colAdmLine)); ClearCollect(colAdmRow, ForAll(Sequence(Max(gblAdmN - 1, 0)) As s, With({cs:Split(Index(colAdmLine, s.Value + 1).Value, ",")}, {No:s.Value, NC:CountRows(cs), C1:Trim(Coalesce(Last(FirstN(cs, 1)).Value, "")), C2:Trim(Coalesce(Last(FirstN(cs, 2)).Value, "")), C3:Trim(Coalesce(Last(FirstN(cs, 3)).Value, "")), C4:Trim(Coalesce(Last(FirstN(cs, 4)).Value, "")), C5:Trim(Coalesce(Last(FirstN(cs, 5)).Value, "")), C6:Trim(Coalesce(Last(FirstN(cs, 6)).Value, "")), C7:Trim(Coalesce(Last(FirstN(cs, 7)).Value, "")), C8:Trim(Coalesce(Last(FirstN(cs, 8)).Value, "")), C9:Trim(Coalesce(Last(FirstN(cs, 9)).Value, "")), C10:Trim(Coalesce(Last(FirstN(cs, 10)).Value, ""))}))); Set(gblAdmBad, CountRows(Filter(colAdmRow, NC <> gblAdmCols)))
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="読み取る"
+          Visible: =gblTab = "admin"
+          Width: =120
+          X: =44
+          Y: =424
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admStat:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =If(gblAdmBad > 0, RGBA(184, 83, 74, 1), RGBA(110, 106, 98, 1))
+          Height: =32
+          Size: =12
+          Text: ="見出し 1 行 ＋ 明細 " & CountRows(colAdmRow) & " 行" & If(gblAdmBad > 0, "／列数が合わない行 " & gblAdmBad & " 件（" & gblAdmCols & " 列のはず）", "")
+          Visible: =gblTab = "admin"
+          Width: =600
+          X: =176
+          Y: =424
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - cntAdm:
+        Control: GroupContainer@1.5.0
+        Variant: ManualLayout
+        Properties:
+          Height: =Parent.Height - 620
+          Width: =Parent.Width - 120
+          X: =44
+          Y: =464
+          Visible: =gblTab = "admin"
+        Children:
+          - galAdm:
+              Control: Gallery@2.15.0
+              Variant: Vertical
+              Properties:
+                Items: =colAdmRow
+                TemplateSize: =28
+                Height: =Parent.Height
+                Width: =Parent.Width
+                X: =0
+                Y: =0
+                ShowScrollbar: =true
+              Children:
+                - pvRow:
+                    Control: GroupContainer@1.5.0
+                    Variant: AutoLayout
+                    Properties:
+                      Height: =26
+                      Width: =Parent.TemplateWidth
+                      X: =0
+                      Y: =0
+                      LayoutDirection: =LayoutDirection.Horizontal
+                      LayoutAlignItems: =LayoutAlignItems.Stretch
+                      LayoutGap: =2
+                      PaddingLeft: =0
+                      PaddingRight: =0
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                    Children:
+                - pv1:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =ThisItem.C1
+                      Size: =10
+                      Color: =RGBA(42, 42, 38, 1)
+                      Width: =140
+                      Visible: =1 <= gblAdmCols
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      PaddingLeft: =4
+                      VerticalAlign: =VerticalAlign.Middle
+                      Wrap: =true
+                      FillPortions: =0
+                - pv2:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =ThisItem.C2
+                      Size: =10
+                      Color: =RGBA(42, 42, 38, 1)
+                      Width: =140
+                      Visible: =2 <= gblAdmCols
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      PaddingLeft: =4
+                      VerticalAlign: =VerticalAlign.Middle
+                      Wrap: =true
+                      FillPortions: =0
+                - pv3:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =ThisItem.C3
+                      Size: =10
+                      Color: =RGBA(42, 42, 38, 1)
+                      Width: =140
+                      Visible: =3 <= gblAdmCols
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      PaddingLeft: =4
+                      VerticalAlign: =VerticalAlign.Middle
+                      Wrap: =true
+                      FillPortions: =0
+                - pv4:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =ThisItem.C4
+                      Size: =10
+                      Color: =RGBA(42, 42, 38, 1)
+                      Width: =140
+                      Visible: =4 <= gblAdmCols
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      PaddingLeft: =4
+                      VerticalAlign: =VerticalAlign.Middle
+                      Wrap: =true
+                      FillPortions: =0
+                - pv5:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =ThisItem.C5
+                      Size: =10
+                      Color: =RGBA(42, 42, 38, 1)
+                      Width: =140
+                      Visible: =5 <= gblAdmCols
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      PaddingLeft: =4
+                      VerticalAlign: =VerticalAlign.Middle
+                      Wrap: =true
+                      FillPortions: =0
+                - pv6:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =ThisItem.C6
+                      Size: =10
+                      Color: =RGBA(42, 42, 38, 1)
+                      Width: =140
+                      Visible: =6 <= gblAdmCols
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      PaddingLeft: =4
+                      VerticalAlign: =VerticalAlign.Middle
+                      Wrap: =true
+                      FillPortions: =0
+                - pv7:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =ThisItem.C7
+                      Size: =10
+                      Color: =RGBA(42, 42, 38, 1)
+                      Width: =140
+                      Visible: =7 <= gblAdmCols
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      PaddingLeft: =4
+                      VerticalAlign: =VerticalAlign.Middle
+                      Wrap: =true
+                      FillPortions: =0
+                - pv8:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =ThisItem.C8
+                      Size: =10
+                      Color: =RGBA(42, 42, 38, 1)
+                      Width: =140
+                      Visible: =8 <= gblAdmCols
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      PaddingLeft: =4
+                      VerticalAlign: =VerticalAlign.Middle
+                      Wrap: =true
+                      FillPortions: =0
+                - pv9:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =ThisItem.C9
+                      Size: =10
+                      Color: =RGBA(42, 42, 38, 1)
+                      Width: =140
+                      Visible: =9 <= gblAdmCols
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      PaddingLeft: =4
+                      VerticalAlign: =VerticalAlign.Middle
+                      Wrap: =true
+                      FillPortions: =0
+                - pv10:
+                    Control: ModernText@1.0.0
+                    Properties:
+                      Text: =ThisItem.C10
+                      Size: =10
+                      Color: =RGBA(42, 42, 38, 1)
+                      Width: =140
+                      Visible: =10 <= gblAdmCols
+                      PaddingTop: =0
+                      PaddingBottom: =0
+                      PaddingLeft: =4
+                      VerticalAlign: =VerticalAlign.Middle
+                      Wrap: =true
+                      FillPortions: =0
+    - admClrRule:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(224, 220, 210, 1)
+          Height: =1
+          Text: =""
+          Visible: =gblTab = "admin"
+          Width: =Parent.Width - 120
+          X: =44
+          Y: =Parent.Height - 148
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admClrCap:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(184, 83, 74, 1)
+          FontWeight: ='TextCanvas.Weight'.Bold
+          Height: =22
+          Size: =13
+          Text: ="登録データの一括クリア"
+          Visible: =gblTab = "admin"
+          Width: =300
+          X: =44
+          Y: =Parent.Height - 138
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admClrMsg:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(110, 106, 98, 1)
+          Height: =36
+          Size: =11
+          Text: ="組織区分1・組織区分2・利用者・所属・権限・申請・申請明細の 7 本をすべて削除します。設定（管理者グループ）は残ります。取り消せません。実行するには右の枠に「削除」と入力してください。"
+          Visible: =gblTab = "admin"
+          Width: =Parent.Width - 400
+          X: =44
+          Y: =Parent.Height - 114
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admClrIn:
+        Control: ModernTextInput@1.1.1
+        Properties:
+          Size: =12
+          Height: =32
+          Width: =140
+          X: =Parent.Width - 330
+          Y: =Parent.Height - 112
+          Visible: =gblTab = "admin"
+          Placeholder: ="削除"
+    - admClrGo:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(255, 255, 255, 1)
+          Fill: =If(Trim(admClrIn.Text) = "削除", RGBA(184, 83, 74, 1), RGBA(206, 202, 192, 1))
+          Height: =32
+          OnSelect: =If(Trim(admClrIn.Text) <> "削除", Notify("実行するには「削除」と入力してください。", NotificationType.Warning), RemoveIf(PRM_RequestItems, true); RemoveIf(PRM_Requests, true); RemoveIf(PRM_Grants, true); RemoveIf(PRM_UserOrg1, true); RemoveIf(PRM_Users, true); RemoveIf(PRM_Org2, true); RemoveIf(PRM_Org1, true); ClearCollect(colOrg1, Sort(Filter(PRM_Org1, IsActive = true), SortOrder)); ClearCollect(colOrg2All, Sort(Filter(PRM_Org2, IsActive = true), SortOrder)); ClearCollect(colUsersAll, Filter(PRM_Users, IsActive = true)); ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true)); ClearCollect(colMemberAll, Filter(PRM_UserOrg1, IsActive = true)); ClearCollect(colO1Edit, colOrg1); ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false})); ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")})); Clear(colNewU); Clear(colUEdit); Clear(colDelU); Clear(colPendItem); Clear(colReq); Reset(admClrIn); Notify("マスタと申請履歴をすべて削除しました。", NotificationType.Success))
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="すべて削除する"
+          Visible: =gblTab = "admin"
+          Width: =150
+          X: =Parent.Width - 180
+          Y: =Parent.Height - 112
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - admGo:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(255, 255, 255, 1)
+          Fill: =If(CountRows(colAdmRow) > 0 && gblAdmBad = 0, RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
+          Height: =32
+          OnSelect: =If(CountRows(colAdmRow) = 0, Notify("先に「読み取る」を押してください。", NotificationType.Warning), If(gblAdmBad > 0, Notify("列数が合わない行があります。直してから読み取り直してください。", NotificationType.Warning), Set(gblAdmSkip, 0); If(gblAdmKind = "tree", ForAll(Filter(colAdmRow, Len(Trim(C1)) > 0) As r, If(IsBlank(LookUp(PRM_Org1, Title = r.C1).Title), Patch(PRM_Org1, Defaults(PRM_Org1), {Title:r.C1, NameJa:r.C2, NameEn:r.C3, SortOrder:r.No, IsActive:true}), Patch(PRM_Org1, LookUp(PRM_Org1, Title = r.C1), {NameJa:r.C2, NameEn:r.C3, IsActive:true}))); ForAll(Filter(colAdmRow, Len(Trim(C4)) > 0) As r, If(IsBlank(LookUp(PRM_Org2, Title = r.C4).Title), Patch(PRM_Org2, Defaults(PRM_Org2), {Title:r.C4, Org1Code:r.C1, NameJa:r.C5, NameEn:r.C6, SortOrder:r.No, ApExt:false, ApWlan:false, ApCloud:false, IsActive:true}), Patch(PRM_Org2, LookUp(PRM_Org2, Title = r.C4), {Org1Code:r.C1, NameJa:r.C5, NameEn:r.C6, IsActive:true}))), If(gblAdmKind = "org", ForAll(Filter(colAdmRow, Len(Trim(C1)) > 0 && "２" in C4) As r, If(IsBlank(LookUp(PRM_Org2, Title = r.C1).Title), false, Patch(PRM_Org2, LookUp(PRM_Org2, Title = r.C1), {NameJa:r.C2, NameEn:r.C3, ApCloud:(Trim(r.C5) = "あり"), ApExt:(Trim(r.C6) = "あり"), ApWlan:(Trim(r.C7) = "あり")}))); ForAll(Filter(colAdmRow, Len(Trim(C1)) > 0 && "１" in C4) As r, If(IsBlank(LookUp(PRM_Org1, Title = r.C1).Title), false, Patch(PRM_Org1, LookUp(PRM_Org1, Title = r.C1), {NameJa:r.C2, NameEn:r.C3}))), ForAll(Filter(colAdmRow, Len(Trim(C5)) > 0) As r, If(IsBlank(LookUp(PRM_Users, Title = r.C5).Title), Patch(PRM_Users, Defaults(PRM_Users), {Title:r.C5, FullName:r.C4, Mail:r.C5, IsActive:true}), Patch(PRM_Users, LookUp(PRM_Users, Title = r.C5), {FullName:r.C4, Mail:r.C5, IsActive:true}))); ClearCollect(colImpM, Distinct(Filter(colAdmRow, Len(Trim(C5)) > 0 && Len(Trim(C1)) > 0), C5 & "#" & C1)); ForAll(colImpM As m, If(IsBlank(LookUp(PRM_UserOrg1, Title = m.Value).Title), Patch(PRM_UserOrg1, Defaults(PRM_UserOrg1), {Title:m.Value, GlobalId:Index(Split(m.Value, "#"), 1).Value, Org1Code:Index(Split(m.Value, "#"), 2).Value, IsActive:true}))); ClearCollect(colImpG, ForAll(Filter(colAdmRow, Len(Trim(C5)) > 0) As r, With({m:LookUp(fRoleMap, n = Trim(r.C3))}, {K:r.C5 & "#" & r.C1 & "#" & Coalesce(m.rc, ""), Gid:r.C5, O1:r.C1, RC:Coalesce(m.rc, ""), CR:Coalesce(m.cr, ""), O2:Trim(r.C2)}))); ClearCollect(colImpG2, ForAll(Distinct(Filter(colImpG, RC <> ""), K) As d, With({rs:Filter(colImpG, K = d.Value)}, {K:d.Value, Gid:First(rs).Gid, O1:First(rs).O1, RC:First(rs).RC, CR:First(rs).CR, Codes:";" & Concat(rs, O2 & ";", "")}))); ForAll(colImpG2 As g, If(IsBlank(LookUp(PRM_Grants, Title = g.K).Title), Patch(PRM_Grants, Defaults(PRM_Grants), {Title:g.K, GlobalId:g.Gid, Org1Code:g.O1, RoleCode:{Value:g.RC}, ScopeType:{Value:"PICK"}, Org2Codes:g.Codes, CompanyRole:{Value:g.CR}, IsActive:true}), Patch(PRM_Grants, LookUp(PRM_Grants, Title = g.K), {ScopeType:{Value:"PICK"}, Org2Codes:g.Codes, CompanyRole:{Value:g.CR}, IsActive:true}))); Set(gblAdmSkip, CountRows(Filter(colImpG, RC = ""))))); ClearCollect(colOrg1, Sort(Filter(PRM_Org1, IsActive = true), SortOrder)); ClearCollect(colOrg2All, Sort(Filter(PRM_Org2, IsActive = true), SortOrder)); ClearCollect(colUsersAll, Filter(PRM_Users, IsActive = true)); ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true)); ClearCollect(colMemberAll, Filter(PRM_UserOrg1, IsActive = true)); ClearCollect(colO1Edit, colOrg1); ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false})); ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")})); Notify(CountRows(colAdmRow) & " 行を取り込みました。" & If(gblAdmSkip > 0, "ロール名が対応表に無い行 " & gblAdmSkip & " 件は飛ばしました。", ""), NotificationType.Success, 8000)))
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="取り込む"
+          Visible: =gblTab = "admin"
+          Width: =120
+          X: =Parent.Width - 180
+          Y: =424
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0

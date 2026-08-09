@@ -438,7 +438,7 @@ Screens:
           RadiusBottomLeft: =4
           RadiusBottomRight: =4
           Size: =12
-          Text: =If(Coalesce(LookUp(fChgRoleU, rc = "SECMGR").n, 0) > 0, "・", "") & With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "SECMGR")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "事業場ITセキュリティ責任者"
+          Text: =If(Coalesce(LookUp(fChgRoleU, rc = "SECMGR").n, 0) > 0, "・", "") & With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "SECMGR")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "事業場ITセ責任者"
           Width: =300
           X: =52
           Y: =418
@@ -641,6 +641,30 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
+    - rlEUCLOUD:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =If(Coalesce(LookUp(fChgRoleU, rc = "EUCLOUD").n, 0) > 0, RGBA(184, 83, 74, 1), If(gblUserRole = "EUCLOUD", RGBA(42, 42, 38, 1), RGBA(74, 71, 64, 1)))
+          Fill: =If((Coalesce(LookUp(fNoAppRole, rc = "EUCLOUD").n, 0) > 0 || Coalesce(LookUp(fInvRoleU, rc = "EUCLOUD").n, 0) > 0), If(gblUserRole = "EUCLOUD", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblUserRole = "EUCLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
+          FontWeight: =If(gblUserRole = "EUCLOUD", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
+          Height: =36
+          OnSelect: '=Set(gblUserRole, "EUCLOUD")
+
+            '
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: =If(Coalesce(LookUp(fChgRoleU, rc = "EUCLOUD").n, 0) > 0, "・", "") & With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "EUCLOUD")}, If(g.Scope = "ALL" || g.Scope = "PICK", "☑  ", "☐  ")) & "情報セキュリティ担当"
+          Width: =300
+          X: =52
+          Y: =658
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - rsINFOSEC:
         Control: ModernText@1.0.0
         Properties:
@@ -652,6 +676,21 @@ Screens:
           Width: =90
           X: =356
           Y: =618
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - rsEUCLOUD:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.End
+          Color: =RGBA(122, 118, 108, 1)
+          Height: =36
+          Size: =10
+          Text: =With({g:LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = "EUCLOUD")}, If(g.Scope = "ALL", "全体", If(g.Scope = "PICK", "個別 " & CountRows(Filter(colOrg2All, Org1Code = gblUserOrg1 && (";" & Title & ";") in Coalesce(g.Codes, ""))) & "件", "")))
+          Width: =90
+          X: =356
+          Y: =658
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -684,7 +723,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =26
           Size: =14
-          Text: =LookUp(Table({c:"SECMGR",n:"事業場ITセキュリティ責任者"},{c:"CONFORM",n:"適合化担当"},{c:"EXTCONN",n:"外部接続申請担当"},{c:"WLAN",n:"無線LAN申請担当"},{c:"CLOUD",n:"クラウド申請担当"},{c:"INFOSEC",n:"情報セキュリティ担当"}), c = gblUserRole).n
+          Text: =LookUp(Table({c:"SECMGR",n:"事業場ITセ責任者"},{c:"CONFORM",n:"適合化担当"},{c:"EXTCONN",n:"外部接続申請担当"},{c:"WLAN",n:"無線LAN申請担当"},{c:"CLOUD",n:"クラウド申請担当"},{c:"INFOSEC",n:"情報セキュリティ担当"}), c = gblUserRole).n
           Width: =400
           X: =480
           Y: =430
