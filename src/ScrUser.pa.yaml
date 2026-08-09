@@ -1230,7 +1230,7 @@ Screens:
     - btnUDelCancel:
         Control: ModernText@1.0.0
         Properties:
-          OnSelect: =Set(gblDelReq, LookUp(colPendItem, GK = "USER" && GKey = gblUserGid && Op = "DELETE").No); Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblDelReq), {Status:{Value:"CANCELED"}, DecisionNote:"利用者の画面から削除を取り消し"}); ForAll(Filter(PRM_RequestItems, ReqNo = gblDelReq) As it, Patch(PRM_RequestItems, it, {ItemStatus:{Value:"CANCELED"}, HandledAt:Now(), HandledBy:gblMeGid})); RemoveIf(colPendItem, No = gblDelReq); If(!IsBlank(LookUp(colReq, No = gblDelReq).No), Patch(colReq, LookUp(colReq, No = gblDelReq), {S:"CANCELED"})); Notify("削除の申請を取り下げました。権限の設定ができるようになります。", NotificationType.Success)
+          OnSelect: =Set(gblDelReq, LookUp(colPendItem, GK = "USER" && GKey = gblUserGid && Op = "DELETE").No); Patch(PRM_Requests, LookUp(PRM_Requests, Title = gblDelReq), {Status:{Value:"CANCELED"}, DecisionNote:"利用者の画面から削除を取り消し"}); ClearCollect(colCxlItem, Filter(PRM_RequestItems, ReqNo = gblDelReq)); ForAll(colCxlItem As it, Patch(PRM_RequestItems, it, {ItemStatus:{Value:"CANCELED"}, HandledAt:Now(), HandledBy:gblMeGid})); RemoveIf(colPendItem, No = gblDelReq); If(!IsBlank(LookUp(colReq, No = gblDelReq).No), Patch(colReq, LookUp(colReq, No = gblDelReq), {S:"CANCELED"})); Notify("削除の申請を取り下げました。権限の設定ができるようになります。", NotificationType.Success)
           Height: =1
           Text: =""
           Visible: =false
