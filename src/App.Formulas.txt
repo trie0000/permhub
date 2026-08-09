@@ -107,3 +107,5 @@ fLockO2 = Concat(Filter(colPendItem, GK = "ORG2"), ";" & GKey, "") & ";";
 fLockUsr = Concat(Filter(colPendItem, GK = "USER"), ";" & GKey, "") & ";";
 fLockO2N = CountRows(Filter(colPendItem, GK = "ORG2"));
 fLockUsrN = CountRows(Filter(colPendItem, GK = "USER"));
+fBskUKeys = Concat(Distinct(fChgAll, Gid), ";" & Value, "") & Concat(Distinct(colNewU, Gid), ";" & Value, "") & Concat(Distinct(colUEdit, Gid), ";" & Value, "") & Concat(Distinct(colDelU, Gid), ";" & Value, "") & ";";
+fBskO2Keys = Concat(Filter(ForAll(colO2Edit As e, With({o:LookUp(colOrg2All, Title = e.Title)}, {T:e.Title, Chg:e.IsNew || e.IsDel || (e.NameJa <> o.NameJa) || (e.NameEn <> o.NameEn) || (e.ApExt <> o.ApExt) || (e.ApWlan <> o.ApWlan) || (e.ApCloud <> o.ApCloud) || (e.SortOrder <> o.SortOrder)})), Chg), ";" & T, "") & ";";
