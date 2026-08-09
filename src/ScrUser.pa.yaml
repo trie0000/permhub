@@ -707,6 +707,58 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
+    - uCrCap:
+        Control: ModernText@1.0.0
+        Properties:
+          X: =480
+          Y: =486
+          Width: =120
+          Height: =24
+          Text: ="事業会社権限"
+          Size: =11
+          Color: =RGBA(110, 106, 98, 1)
+          Visible: =(gblUserRole = "EXTCONN" || gblUserRole = "WLAN" || gblUserRole = "CLOUD")
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+          Wrap: =true
+    - uCrVal:
+        Control: ModernText@1.0.0
+        Properties:
+          X: =600
+          Y: =486
+          Width: =44
+          Height: =24
+          Align: ='TextCanvas.Align'.Center
+          Size: =11
+          Color: =RGBA(255, 255, 255, 1)
+          Fill: =If(!(gblUserRole = "EXTCONN" || gblUserRole = "WLAN" || gblUserRole = "CLOUD"), RGBA(0, 0, 0, 0), If(fGU.CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
+          RadiusTopLeft: =3
+          RadiusTopRight: =3
+          RadiusBottomLeft: =3
+          RadiusBottomRight: =3
+          Text: =If(!(gblUserRole = "EXTCONN" || gblUserRole = "WLAN" || gblUserRole = "CLOUD"), "", If(fGU.CR = "DEPUTY", "副", "正"))
+          Visible: =(gblUserRole = "EXTCONN" || gblUserRole = "WLAN" || gblUserRole = "CLOUD")
+          OnSelect: =If(If(!(gblUserRole = "EXTCONN" || gblUserRole = "WLAN" || gblUserRole = "CLOUD") || gblRO, false, true), If(IsBlank(fGU.Gid), Collect(colGEdit, {Gid:gblUserGid, O1:gblUserOrg1, Role:gblUserRole, Scope:"NONE", Codes:"", CR:"DEPUTY"}), Patch(colGEdit, LookUp(colGEdit, Gid = gblUserGid && O1 = gblUserOrg1 && Role = gblUserRole), {CR:If(fGU.CR = "DEPUTY", "PRIMARY", "DEPUTY")})); Select(btnSnapU))
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+          Wrap: =true
+    - uCrHint:
+        Control: ModernText@1.0.0
+        Properties:
+          X: =650
+          Y: =486
+          Width: =260
+          Height: =24
+          Text: ="（クリックで 正 ↔ 副）"
+          Size: =11
+          Color: =RGBA(150, 145, 136, 1)
+          Visible: =(gblUserRole = "EXTCONN" || gblUserRole = "WLAN" || gblUserRole = "CLOUD")
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+          Wrap: =true
     - uAllChk:
         Control: ModernText@1.0.0
         Properties:
@@ -719,7 +771,7 @@ Screens:
           Text: =If(fGU.Scope = "ALL", "☑", "☐")
           Width: =30
           X: =480
-          Y: =488
+          Y: =514
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -736,7 +788,7 @@ Screens:
           Text: ="全体(組織区分2すべて)"
           Width: =240
           X: =512
-          Y: =488
+          Y: =514
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -751,7 +803,7 @@ Screens:
           Text: =""
           Width: =Parent.Width - 560
           X: =480
-          Y: =522
+          Y: =544
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -761,7 +813,7 @@ Screens:
         Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
         Properties:
           Fill: =RGBA(0, 0, 0, 0)
-          Height: =126
+          Height: =104
           Items: =fAllU
           ShowScrollbar: =true
           TemplatePadding: =0
@@ -769,7 +821,7 @@ Screens:
           Width: =Parent.Width - 560
           WrapCount: =2
           X: =480
-          Y: =530
+          Y: =552
         Children:
         - uo2Chk:
             Control: ModernText@1.0.0
@@ -872,7 +924,7 @@ Screens:
           Color: =RGBA(74, 71, 64, 1)
           Fill: =RGBA(232, 228, 216, 1)
           Height: =36
-          OnSelect: =If(gblRO, Set(gblRO, false); Set(gblROReq, ""); Set(gblROChg, ""); Set(gblHlKey, ""); Navigate(ScrReq), RemoveIf(colGEdit, Gid = gblUserGid); Collect(colGEdit, ForAll(Filter(colGrantsAll, GlobalId = gblUserGid) As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")})); Navigate(ScrHome))
+          OnSelect: =If(gblRO, Set(gblRO, false); Set(gblROReq, ""); Set(gblROChg, ""); Set(gblHlKey, ""); If(gblROLoad, ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false})); ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")})); Clear(colNewU); Clear(colUEdit); Clear(colDelU)); Set(gblROLoad, false); Navigate(ScrReq), RemoveIf(colGEdit, Gid = gblUserGid); Collect(colGEdit, ForAll(Filter(colGrantsAll, GlobalId = gblUserGid) As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")})); Navigate(ScrHome))
           RadiusTopLeft: =5
           RadiusTopRight: =5
           RadiusBottomLeft: =5
