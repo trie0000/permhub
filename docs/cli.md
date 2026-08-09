@@ -139,6 +139,59 @@ Studio の「…」メニューには「アプリのバージョン履歴」し�
 .\setup\deploy.ps1 -SolutionName permhub
 ```
 
+### 動かすのに要るもの
+
+`pac` は .NET のツールなので、**`DOTNET_ROOT` が通っていないと起動もしない**。
+`You must install .NET to run this application.` で落ちたらこれ。
+
+| | `DOTNET_ROOT` |
+|---|---|
+| macOS（Homebrew） | `/opt/homebrew/Cellar/dotnet/<版>/libexec` |
+| WSL / Linux | `$HOME/.dotnet` |
+
+`pac` の**認証プロファイルは機械ごと**。`pac auth list` で `No profiles were found`
+なら、その機械では `pac auth create` がまだ。**別の機械で作ったプロファイルは使えない。**
+
+スクリプト本体は PowerShell 7 で動かす。Windows PowerShell 5.1 だと
+`$IsWindows` が無いため、`pac` が見つからないときの案内でそのまま落ちる。
+
+```bash
+export DOTNET_ROOT=/opt/homebrew/Cellar/dotnet/10.0.108/libexec
+export PATH="$PATH:$HOME/.dotnet/tools"
+pwsh -NoProfile -File setup/deploy.ps1 -SolutionName permhub -WithApp
+```
+
+### 公開だけは Windows PowerShell 5.1
+
+`Publish-PowerApp` は `Microsoft.PowerApps.PowerShell` にしかなく、
+**このモジュールは PowerShell 7 では動かない**。macOS で動かすと
+`! Windows PowerShell 5.1 が無いので公開できない` で公開だけ飛ぶ。
+
+そうなると**保存版は新しいのに、利用者に配られる公開版は古いまま**になる。
+WSL がある環境なら、取り込みまでを macOS、公開だけを WSL 経由で叩けばよい。
+
+```bash
+. ~/.permhub-env
+export WSLENV="${WSLENV:+$WSLENV:}PERMHUB_SP_TENANT:PERMHUB_SP_APPID:PERMHUB_SP_SECRET"
+powershell.exe -NoProfile -Command "…; Publish-PowerApp -AppName <アプリID>"
+```
+
+**`409 Conflict` が返るのは、誰かが Studio でそのアプリを開いているとき。**
+タブを閉じてから叩き直す。`Write-Output` を成功の合図にしないこと。
+戻り値の `Code` を見る。
+
+### アプリの状態を確かめるときは公開後に
+
+`pac solution export` も `Get-AdminPowerApp` の `connectionReferences` も、
+**公開された版**を返す。Studio で保存しただけの変更は出てこない。
+
+公開が `409` で止まっている間にこれを見ると、いつまでも古い一覧が返る。
+**「保存したのに反映されない」と思ったら、まず公開が通っているか確かめる。**
+
+Studio 自身もアプリを強くキャッシュする。ハードリロードでも「すべて再確認」でも
+古い版が残ることがあるので、**確実なのはタブを閉じて開き直すこと**。
+手元と食い違うときは、エクスポートして中身を突き合わせるのが早い。
+
 実行の最初に**どのアプリを触るのかを表示名で出す**。
 
 ```
