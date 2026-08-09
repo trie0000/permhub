@@ -104,7 +104,7 @@ const BIND_GID = "1234567";
     ], idx: ["GlobalId", "Org1Code"] },
     PRM_Grants: { desc: "権限申請: 権限 (1行 = 利用者 × 組織区分1 × 権限)", title: "キー", fields: [
       T("GlobalId", "グローバルID", 50), T("Org1Code", "組織区分1コード", 50),
-      C("RoleCode", "権限", ["SECMGR", "CONFORM", "EXTCONN", "WLAN", "CLOUD", "INFOSEC"]),
+      C("RoleCode", "権限", ["SECMGR", "CONFORM", "EXTCONN", "WLAN", "CLOUD", "INFOSEC", "EUCLOUD"]),
       C("ScopeType", "範囲", ["ALL", "PICK"], "PICK"),
       NO("Org2Codes", "組織区分2コード (;区切り)"),
       C("CompanyRole", "権限種別", ["PRIMARY", "DEPUTY"]),
