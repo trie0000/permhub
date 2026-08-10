@@ -634,14 +634,19 @@ if (-not $NoPublish) {
     # 公開のコマンドレットは Administration ではなく Microsoft.PowerApps.PowerShell 側。
     # 名前は Publish-PowerApp（Publish-AdminPowerApp は存在しない）
     # 失敗を見逃さないよう Stop にして、成功したときだけ published を出す
+    # 子の中のメッセージは ASCII にする（コンソールのコードページで化けるため）。
+    # アプリの検索は作成者向けの Get-PowerApp を先に使う。
+    # Get-AdminPowerApp はテナント管理者でないと 0 件を返す。
     $inner = '[Console]::OutputEncoding = [Text.Encoding]::UTF8; ' +
              '$ErrorActionPreference = ''Stop''; ' +
-             'Import-Module Microsoft.PowerApps.Administration.PowerShell; ' +
              'Import-Module Microsoft.PowerApps.PowerShell; ' +
              $signIn +
-             '$a = @(Get-AdminPowerApp | Where-Object { $_.DisplayName -eq ''' + $q + ''' }); ' +
-             'if ($a.Count -eq 0) { throw ''その表示名のアプリが見つからない'' }; ' +
-             'if ($a.Count -gt 1) { throw ''同じ表示名のアプリが複数ある'' }; ' +
+             '$a = @(Get-PowerApp -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName -eq ''' + $q + ''' }); ' +
+             'if ($a.Count -eq 0) { ' +
+               'Import-Module Microsoft.PowerApps.Administration.PowerShell; ' +
+               '$a = @(Get-AdminPowerApp -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName -eq ''' + $q + ''' }) }; ' +
+             'if ($a.Count -eq 0) { throw ''App not found by display name. Are you the owner or co-owner?'' }; ' +
+             'if ($a.Count -gt 1) { throw ''Multiple apps share this display name.'' }; ' +
              'Publish-PowerApp -AppName $a[0].AppName; ' +
              'Write-Output ''published'''
     # 子の stderr をそのまま受けると、外側の ErrorActionPreference='Stop' に
@@ -659,6 +664,8 @@ if (-not $NoPublish) {
     else {
       foreach ($l in $out) { Write-Host "      $l" }
       Write-Warn '公開できなかった。取り込みは成功しているので、アプリの中身は最新。'
+      Write-Warn 'App not found by display name と出るなら、そのアカウントがアプリの'
+      Write-Warn '所有者・共同所有者でないか、テナント管理者でない。共同所有者に追加する。'
       Write-Warn '初回は次が要る（Windows PowerShell 5.1 で実行）。'
       Write-Warn '  Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser'
       Write-Warn '  Install-Module Microsoft.PowerApps.Administration.PowerShell -Scope CurrentUser -Force -AllowClobber'
