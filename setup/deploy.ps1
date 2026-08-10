@@ -55,6 +55,12 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+# PowerShell 5.1 には $IsWindows などの自動変数が無い（StrictMode で参照すると落ちる）。
+# 圧縮のアセンブリも 5.1 では自動で読み込まれないので、ここで揃えておく。
+$IsWin = ($env:OS -eq 'Windows_NT')
+Add-Type -AssemblyName System.IO.Compression -ErrorAction SilentlyContinue
+Add-Type -AssemblyName System.IO.Compression.FileSystem -ErrorAction SilentlyContinue
+
 $Root = Split-Path -Parent $PSScriptRoot
 if (-not $SrcDir) { $SrcDir = Join-Path $Root 'src' }
 
@@ -151,7 +157,7 @@ Write-Step '前提を確認'
 if (-not (Get-Command pac -ErrorAction SilentlyContinue)) {
   # Windows / WSL・Linux・macOS で入れ方が違う。pac 本体は .NET のツールなので
   # どれでも動く（このスクリプトも PowerShell 7 があれば OS を問わない）
-  if ($IsWindows) {
+  if ($IsWin) {
     $how = @'
     winget install Microsoft.DotNet.SDK.10
     # ここで新しいターミナルを開く（PATH を読み直すため）
@@ -302,7 +308,6 @@ if ($LASTEXITCODE -ne 0) {
 #
 # そこで解凍せず、zip を開いたまま .msapp のエントリだけ入れ替える。エントリ名は
 # 元のものをそのまま使い回すので区切り文字は変わらず、他のファイルには一切触らない。
-Add-Type -AssemblyName System.IO.Compression.FileSystem
 Copy-Item $zipIn $zipOut -Force
 
 $zip = [System.IO.Compression.ZipFile]::Open($zipOut, [System.IO.Compression.ZipArchiveMode]::Update)
@@ -616,7 +621,7 @@ if (-not $NoPublish) {
       Write-Host '  サービスプリンシパルでサインインする'
       # WSL から Windows の powershell.exe を呼ぶ場合、WSLENV に並べないと
       # 環境変数が渡らない。渡らないと値が空のまま対話サインインに落ちる
-      if ($IsLinux -or $IsMacOS) {
+      if (-not $IsWin) {
         $keep = 'PERMHUB_SP_TENANT:PERMHUB_SP_APPID:PERMHUB_SP_SECRET'
         $env:WSLENV = if ($env:WSLENV) { $env:WSLENV + ':' + $keep } else { $keep }
       }
