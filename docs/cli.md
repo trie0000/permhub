@@ -154,6 +154,7 @@ Studio の「…」メニューには「アプリのバージョン履歴」し�
 
 スクリプト本体は **PowerShell 7 でも Windows PowerShell 5.1 でも動く**。
 5.1 に無い `$IsWindows` を使わず、`System.IO.Compression` も明示的に読み込んでいる。
+**5.1 のみの Windows で、取り込みから公開まで通ることを実測済み。**
 
 ```bash
 export DOTNET_ROOT=/opt/homebrew/Cellar/dotnet/10.0.108/libexec

@@ -390,14 +390,24 @@ Power Apps 側の共有に加えて、**SharePoint リスト側の権限が要�
 **コマンドだけで入る。**
 
 ```powershell
-winget install Microsoft.DotNet.SDK.10
+Invoke-WebRequest https://dot.net/v1/dotnet-install.ps1 -OutFile "$env:TEMP\dotnet-install.ps1" -UseBasicParsing
+& "$env:TEMP\dotnet-install.ps1" -Channel 10.0 -InstallDir "$env:USERPROFILE\.dotnet"
 ```
 
-**ここで新しいターミナルを開く**（PATH を読み直すため）。続けて:
+> **`winget install Microsoft.DotNet.SDK.10` は使わない。** 実測で 10 分待っても
+> 入らず、出力も出ないまま終わらなかった。上の公式スクリプトなら
+> **管理者権限なしでユーザー領域**（`%USERPROFILE%\.dotnet`）に入る。
+
+続けて `pac` を入れる。**NuGet のソースを明示する。**
 
 ```powershell
-dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+$env:DOTNET_ROOT = "$env:USERPROFILE\.dotnet"
+& "$env:DOTNET_ROOT\dotnet.exe" tool install --global Microsoft.PowerApps.CLI.Tool `
+    --add-source https://api.nuget.org/v3/index.json
 ```
+
+> **`--add-source` を省くと `No NuGet sources are defined or enabled` で落ちる**機械がある。
+> NuGet のソースが 1 つも定義されていない状態が実在した。
 
 **バージョンは 10 でないと駄目。** `pac` は NuGet に出ている**全バージョンが
 `net10.0` 専用**で、SDK 9 以下だとインストール自体が次で失敗する。
@@ -423,7 +433,14 @@ dotnet tool install --global Microsoft.PowerApps.CLI.Tool
 pac auth create --name permhub
 ```
 
-ブラウザでサインイン画面が出る。**Entra ID のアプリ登録・サービスプリンシパルは不要**、
+ブラウザでサインイン画面が出る。**開かない環境ではデバイスコードを使う。**
+
+```powershell
+pac auth create --name permhub --deviceCode
+```
+
+`https://login.microsoft.com/device` とコードが出るので、**別の端末からでも**サインインできる。
+**Entra ID のアプリ登録・サービスプリンシパルは不要**、
 **Premium も不要**。無人実行（GitHub Actions 等）にするときだけアプリ登録が要る。
 
 > **`--name` は自分で好きに付ける手元のラベル。** テナント名やアカウント名とは関係なく、

@@ -634,7 +634,8 @@ if (-not $NoPublish) {
     # 公開のコマンドレットは Administration ではなく Microsoft.PowerApps.PowerShell 側。
     # 名前は Publish-PowerApp（Publish-AdminPowerApp は存在しない）
     # 失敗を見逃さないよう Stop にして、成功したときだけ published を出す
-    $inner = '$ErrorActionPreference = ''Stop''; ' +
+    $inner = '[Console]::OutputEncoding = [Text.Encoding]::UTF8; ' +
+             '$ErrorActionPreference = ''Stop''; ' +
              'Import-Module Microsoft.PowerApps.Administration.PowerShell; ' +
              'Import-Module Microsoft.PowerApps.PowerShell; ' +
              $signIn +
@@ -643,17 +644,27 @@ if (-not $NoPublish) {
              'if ($a.Count -gt 1) { throw ''同じ表示名のアプリが複数ある'' }; ' +
              'Publish-PowerApp -AppName $a[0].AppName; ' +
              'Write-Output ''published'''
-    $out = & $ps5 -NoProfile -ExecutionPolicy Bypass -Command $inner 2>&1
+    # 子の stderr をそのまま受けると、外側の ErrorActionPreference='Stop' に
+    # 引っかかって例外で止まる（案内が出せない）。ファイル経由にして握る。
+    # 文字コードも子と親で食い違うので UTF-8 に固定する。
+    $pubLog = Join-Path $Work 'publish.log'
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    & $ps5 -NoProfile -ExecutionPolicy Bypass -Command $inner > $pubLog 2>&1
+    $ErrorActionPreference = $prevEap
+    $out = @(Get-Content -LiteralPath $pubLog -Encoding UTF8 -ErrorAction SilentlyContinue)
     if (($out -join [Environment]::NewLine) -match 'published') {
       Write-Host "  公開した: $appDisp"
     }
     else {
       foreach ($l in $out) { Write-Host "      $l" }
-      Write-Warn '公開できなかった。初回は次が要る（Windows PowerShell 5.1 で実行）。'
-      Write-Warn '  Install-Module Microsoft.PowerApps.Administration.PowerShell -Scope CurrentUser'
-      Write-Warn '  Install-Module Microsoft.PowerApps.PowerShell -Scope CurrentUser -AllowClobber'
-      Write-Warn '  Add-PowerAppsAccount      # サインイン'
-      Write-Warn 'それでも駄目なら Studio で「公開」を押す。'
+      Write-Warn '公開できなかった。取り込みは成功しているので、アプリの中身は最新。'
+      Write-Warn '初回は次が要る（Windows PowerShell 5.1 で実行）。'
+      Write-Warn '  Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser'
+      Write-Warn '  Install-Module Microsoft.PowerApps.Administration.PowerShell -Scope CurrentUser -Force -AllowClobber'
+      Write-Warn '  Install-Module Microsoft.PowerApps.PowerShell -Scope CurrentUser -Force -AllowClobber'
+      Write-Warn 'それでも駄目なら Studio で「公開」→「このバージョンを公開する」。'
+      Write-Warn "出力の全文: $pubLog"
     }
   }
 }
