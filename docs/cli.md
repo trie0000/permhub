@@ -152,8 +152,8 @@ Studio の「…」メニューには「アプリのバージョン履歴」し�
 `pac` の**認証プロファイルは機械ごと**。`pac auth list` で `No profiles were found`
 なら、その機械では `pac auth create` がまだ。**別の機械で作ったプロファイルは使えない。**
 
-スクリプト本体は PowerShell 7 で動かす。Windows PowerShell 5.1 だと
-`$IsWindows` が無いため、`pac` が見つからないときの案内でそのまま落ちる。
+スクリプト本体は **PowerShell 7 でも Windows PowerShell 5.1 でも動く**。
+5.1 に無い `$IsWindows` を使わず、`System.IO.Compression` も明示的に読み込んでいる。
 
 ```bash
 export DOTNET_ROOT=/opt/homebrew/Cellar/dotnet/10.0.108/libexec

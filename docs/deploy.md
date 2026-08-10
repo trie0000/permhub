@@ -117,14 +117,14 @@ const DO = {
 ```
 Set(gblMe, LookUp(PRM_Users, AdObjectId = gblMyAdId));
 If(IsBlank(gblMe.Title) && !IsBlank(gblMyMail), Set(gblMe, LookUp(PRM_Users, Mail = gblMyMail)));
-Set(gblMeGid, If(IsBlank(gblMe.Title), "1234567", gblMe.Title));
+Set(gblMeGid, Coalesce(gblMe.Title, ""));
 ```
 
 **CSV で取り込んだ利用者はメールで引ける**ので、この手順は
 エイリアスでログインする場合など、メールが一致しないときだけ必要。
 
-引けないと `gblMeGid` が `"1234567"` に落ちる。新しいテナントにその ID の人は居ないので、
-**所属が 1 件も取れず、組織マスタもユーザマスタも空で開く**。
+引けないと `gblMeGid` が空になり、**所属が 1 件も取れず、組織マスタもユーザマスタも
+空で開く**。その状態では**申請と利用者の削除ができない**（理由を通知して止まる）。
 
 `bindMe: true` ならスクリプトが自動でやる（SharePoint のユーザープロファイル
 `msOnline-ObjectId` を読んで `PRM_Users` に書く）。手でやる場合は次を入れる。
@@ -145,11 +145,11 @@ Set(gblMeGid, If(IsBlank(gblMe.Title), "1234567", gblMe.Title));
   .UserProfileProperties.find(p => p.Key === "msOnline-ObjectId").Value
 ```
 
-### 本番に出す前にフォールバックを外す
+### 未登録の人は申請できない
 
-`"1234567"` のままだと、マスタ未登録の人が**全員そのグローバルIDとして申請できてしまう**。
-本番テナントでは `App.OnStart` のこの箇所を空文字にして、
-未登録なら申請させない作りに変えること（現状は未実装。ヘッダには「未登録」と出るだけ）。
+引けなかったときは `gblMeGid` が空になり、**申請と利用者の削除が止まる**。
+以前は `"1234567"` に落ちる作りで、その ID の人が居る環境では
+マスタ未登録の全員がその人として申請できてしまっていた（対応済み）。
 
 ## 3. 管理者グループ（`adminMe` を `false` にしたとき）
 
