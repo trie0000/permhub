@@ -444,6 +444,42 @@ pac auth create --name permhub
 > **`deploy.ps1` は「今アクティブなプロファイル」のテナントに対して実行される。**
 > 流す前に `pac auth who` で行き先を確かめる。
 
+### 9-1-2. 公開に使うモジュールを入れる
+
+**`deploy.ps1` は取り込みまでは `pac` だけで通るが、公開だけ PowerShell のモジュールを使う。**
+入っていないと取り込みの直後、`==> アプリを公開` の行でこう出て止まる。
+
+```
+Import-Module : The specified module 'Microsoft.PowerApps.Administration.PowerShell'
+was not loaded because no valid module file was found
+```
+
+**その機械で 1 回だけ入れる。Windows PowerShell 5.1 で実行すること**
+（このモジュールは PowerShell 7 では動かない）。
+
+```powershell
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
+Install-Module Microsoft.PowerApps.Administration.PowerShell -Scope CurrentUser -Force -AllowClobber
+Install-Module Microsoft.PowerApps.PowerShell -Scope CurrentUser -Force -AllowClobber
+```
+
+> **`Install-PackageProvider` を先に実行する。** 飛ばすと `Install-Module` が
+> NuGet プロバイダーの導入確認で**対話プロンプトを出して止まる**
+> （非対話で走らせていると例外になる）。
+
+**取り込みは既に成功している**ので、この失敗でアプリの中身が壊れることはない。
+保存された版は最新になっていて、公開されていないだけ。
+
+#### 入れられないとき
+
+社内の制限で `Install-Module` が使えないなら、取り込みだけにして公開は手でやる。
+
+```powershell
+.\setup\deploy.ps1 -SolutionName <一意名> -NoPublish
+```
+
+そのあと Studio でアプリを開き、**「公開」→「このバージョンを公開する」**。
+
 ### 9-2. ソリューションを作る
 
 ポータルの **ソリューション →「新しいソリューション」**。表示名と名前を入れる。

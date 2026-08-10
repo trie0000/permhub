@@ -176,6 +176,9 @@ export WSLENV="${WSLENV:+$WSLENV:}PERMHUB_SP_TENANT:PERMHUB_SP_APPID:PERMHUB_SP_
 powershell.exe -NoProfile -Command "…; Publish-PowerApp -AppName <アプリID>"
 ```
 
+公開に使うモジュールは**その機械に 1 回入れる**（→ [deploy.md](deploy.md) 9-1-2）。
+無いと `==> アプリを公開` で `no valid module file was found` になる。
+
 **`409 Conflict` が返るのは、誰かが Studio でそのアプリを開いているとき。**
 タブを閉じてから叩き直す。`Write-Output` を成功の合図にしないこと。
 戻り値の `Code` を見る。
