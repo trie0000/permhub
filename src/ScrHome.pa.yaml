@@ -43,7 +43,7 @@ Screens:
           Color: =RGBA(255, 255, 255, 1)
           Height: =52
           Size: =12
-          Text: =If(IsBlank(gblMe.FullName), "未登録", gblMe.FullName)
+          Text: =If(IsBlank(gblMe.FullName), "未登録（" & gblMyMail & "）", gblMe.FullName)
           Width: =320
           X: =Parent.Width - 348
           Y: =0
