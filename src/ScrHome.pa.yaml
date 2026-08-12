@@ -4239,11 +4239,11 @@ Screens:
         Control: GroupContainer@1.5.0
         Variant: ManualLayout
         Properties:
-          Height: =If(CountRows(colAdmNg) + CountRows(colAdmErr) > 0, Parent.Height - 940, Parent.Height - 620)
+          Height: =Parent.Height - 620
           Width: =Parent.Width - 120
           X: =44
           Y: =464
-          Visible: =gblTab = "admin"
+          Visible: =gblTab = "admin" && CountRows(colAdmNg) + CountRows(colAdmErr) = 0
         Children:
           - galAdm:
               Control: Gallery@2.15.0
@@ -4433,7 +4433,7 @@ Screens:
           Visible: =gblTab = "admin" && CountRows(colAdmNg) > 0
           Width: =500
           X: =44
-          Y: =Parent.Height - 490
+          Y: =464
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -4442,10 +4442,10 @@ Screens:
         Control: GroupContainer@1.5.0
         Variant: ManualLayout
         Properties:
-          Height: =140
+          Height: =If(CountRows(colAdmErr) > 0, 44, Parent.Height - 632)
           Width: =Parent.Width - 120
           X: =44
-          Y: =Parent.Height - 468
+          Y: =484
           Visible: =gblTab = "admin" && CountRows(colAdmNg) > 0
         Children:
           - galNg:
@@ -4521,7 +4521,7 @@ Screens:
           Visible: =gblTab = "admin" && CountRows(colAdmErr) > 0
           Width: =400
           X: =44
-          Y: =Parent.Height - 320
+          Y: =If(CountRows(colAdmNg) > 0, 532, 464)
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
@@ -4530,10 +4530,10 @@ Screens:
         Control: GroupContainer@1.5.0
         Variant: ManualLayout
         Properties:
-          Height: =150
+          Height: =If(CountRows(colAdmNg) > 0, Parent.Height - 700, Parent.Height - 632)
           Width: =Parent.Width - 120
           X: =44
-          Y: =Parent.Height - 298
+          Y: =If(CountRows(colAdmNg) > 0, 552, 484)
           Visible: =gblTab = "admin" && CountRows(colAdmErr) > 0
         Children:
           - galErr:
