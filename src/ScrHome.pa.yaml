@@ -464,7 +464,7 @@ Screens:
           Align: ='TextCanvas.Align'.Start
           Color: =RGBA(110, 106, 98, 1)
           Size: =11
-          Text: ="承認者"
+          Text: ="正副の担当"
           Visible: =gblTab = "org"
           Width: =150
           X: =920
@@ -480,7 +480,7 @@ Screens:
           Color: =RGBA(184, 83, 74, 1)
           Height: =24
           Size: =12
-          Text: =If(CountRows(fApNg) > 0, "承認者不在 " & CountRows(fApNg) & " 件（多段階承認が要なのに正か副がいない組織区分2）", "")
+          Text: =If(CountRows(fApNg) > 0, "正副の担当がそろっていない組織区分2 が " & CountRows(fApNg) & " 件", "")
           Visible: =gblTab = "org"
           Width: =620
           X: =460
@@ -938,7 +938,7 @@ Screens:
                 - o2Chg:
                     Control: ModernText@1.0.0
                     Properties:
-                      Text: =With({m:LookUp(fApNg, Code = ThisItem.Title).Miss}, If(IsBlank(m), "", "不在 " & m))
+                      Text: =With({m:LookUp(fApNg, Code = ThisItem.Title).Miss}, If(IsBlank(m), "", "不足 " & m))
                       Width: =150
                       Height: =26
                       FillPortions: =0
