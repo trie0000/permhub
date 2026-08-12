@@ -458,6 +458,37 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
+    - lblO2H7:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(110, 106, 98, 1)
+          Size: =11
+          Text: ="承認者"
+          Visible: =gblTab = "org"
+          Width: =150
+          X: =920
+          Y: =402
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - lblO2Ng:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(184, 83, 74, 1)
+          Height: =24
+          Size: =12
+          Text: =If(CountRows(fApNg) > 0, "承認者不在 " & CountRows(fApNg) & " 件（多段階承認が要なのに正か副がいない組織区分2）", "")
+          Visible: =gblTab = "org"
+          Width: =620
+          X: =460
+          Y: =364
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - btnO2New:
         Control: ModernText@1.0.0
         Properties:
@@ -907,8 +938,8 @@ Screens:
                 - o2Chg:
                     Control: ModernText@1.0.0
                     Properties:
-                      Text: =""
-                      Width: =96
+                      Text: =With({m:LookUp(fApNg, Code = ThisItem.Title).Miss}, If(IsBlank(m), "", "不在 " & m))
+                      Width: =150
                       Height: =26
                       FillPortions: =0
                       LayoutMinHeight: =0
