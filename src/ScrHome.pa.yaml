@@ -4204,7 +4204,7 @@ Screens:
           Color: =RGBA(255, 255, 255, 1)
           Fill: =RGBA(122, 138, 120, 1)
           Height: =32
-          OnSelect: =Set(gblAdmSep, If(Char(9) in admIn.Text, Char(9), ",")); ClearCollect(colAdmLine, Filter(Split(Substitute(admIn.Text, Char(13), ""), Char(10)) As l, Len(Trim(l.Value)) > 0)); Set(gblAdmN, CountRows(colAdmLine)); ClearCollect(colAdmAll, ForAll(colAdmLine As l, With({cs:Split(l.Value, gblAdmSep)}, {NC:CountRows(cs), C1:With({v:Trim(Coalesce(Last(FirstN(cs, 1)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C2:With({v:Trim(Coalesce(Last(FirstN(cs, 2)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C3:With({v:Trim(Coalesce(Last(FirstN(cs, 3)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C4:With({v:Trim(Coalesce(Last(FirstN(cs, 4)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C5:With({v:Trim(Coalesce(Last(FirstN(cs, 5)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C6:With({v:Trim(Coalesce(Last(FirstN(cs, 6)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C7:With({v:Trim(Coalesce(Last(FirstN(cs, 7)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C8:With({v:Trim(Coalesce(Last(FirstN(cs, 8)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C9:With({v:Trim(Coalesce(Last(FirstN(cs, 9)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C10:With({v:Trim(Coalesce(Last(FirstN(cs, 10)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v))}))); ClearCollect(colAdmRow, LastN(colAdmAll, Max(CountRows(colAdmAll) - 1, 0))); Set(gblAdmBad, CountRows(Filter(colAdmRow, NC <> gblAdmCols))); Set(gblAdmBadRole, If(gblAdmKind = "usr", CountRows(Filter(colAdmRow, IsBlank(LookUp(fRoleMap, n = Trim(C3)).rc))), 0)); Set(gblAdmBadRoleTxt, If(gblAdmKind = "usr", Concat(FirstN(Distinct(Filter(colAdmRow, IsBlank(LookUp(fRoleMap, n = Trim(C3)).rc)), C3), 3), Value, "、"), "")); Set(gblAdmBadOrg, If(gblAdmKind = "usr", CountRows(Filter(colAdmRow, IsBlank(LookUp(colOrg1, Title = Trim(C1)).Title) || IsBlank(LookUp(colOrg2All, Title = Trim(C2)).Title))), If(gblAdmKind = "org", CountRows(Filter(colAdmRow, "２" in C4 && IsBlank(LookUp(colOrg2All, Title = Trim(C1)).Title))), 0)))
+          OnSelect: =Set(gblAdmSep, If(Char(9) in admIn.Text, Char(9), ",")); ClearCollect(colAdmLine, Filter(Split(Substitute(admIn.Text, Char(13), ""), Char(10)) As l, Len(Trim(l.Value)) > 0)); Set(gblAdmN, CountRows(colAdmLine)); ClearCollect(colAdmAll, ForAll(colAdmLine As l, With({cs:Split(l.Value, gblAdmSep)}, {NC:CountRows(cs), C1:With({v:Trim(Coalesce(Last(FirstN(cs, 1)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C2:With({v:Trim(Coalesce(Last(FirstN(cs, 2)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C3:With({v:Trim(Coalesce(Last(FirstN(cs, 3)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C4:With({v:Trim(Coalesce(Last(FirstN(cs, 4)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C5:With({v:Trim(Coalesce(Last(FirstN(cs, 5)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C6:With({v:Trim(Coalesce(Last(FirstN(cs, 6)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C7:With({v:Trim(Coalesce(Last(FirstN(cs, 7)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C8:With({v:Trim(Coalesce(Last(FirstN(cs, 8)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C9:With({v:Trim(Coalesce(Last(FirstN(cs, 9)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v)), C10:With({v:Trim(Coalesce(Last(FirstN(cs, 10)).Value, ""))}, If(Len(v) >= 2 && Left(v, 1) = """" && Right(v, 1) = """", Substitute(Mid(v, 2, Len(v) - 2), """""""", """"), v))}))); ClearCollect(colAdmRow, LastN(colAdmAll, Max(CountRows(colAdmAll) - 1, 0))); Set(gblAdmBad, CountRows(Filter(colAdmRow, NC <> gblAdmCols))); Set(gblAdmBadRole, If(gblAdmKind = "usr", CountRows(Filter(colAdmRow, IsBlank(LookUp(fRoleMap, n = Trim(C3)).rc))), 0)); Set(gblAdmBadRoleTxt, If(gblAdmKind = "usr", Concat(FirstN(Distinct(Filter(colAdmRow, IsBlank(LookUp(fRoleMap, n = Trim(C3)).rc)), C3), 3), Value, "、"), "")); Set(gblAdmBadOrg, If(gblAdmKind = "usr", CountRows(Filter(colAdmRow, IsBlank(LookUp(colOrg1, Title = Trim(C1)).Title) || IsBlank(LookUp(colOrg2All, Title = Trim(C2)).Title))), If(gblAdmKind = "org", CountRows(Filter(colAdmRow, "２" in C4 && IsBlank(LookUp(colOrg2All, Title = Trim(C1)).Title))), 0))); Set(gblAdmBadOrgTxt, If(gblAdmKind = "usr", Concat(FirstN(Distinct(Filter(colAdmRow, IsBlank(LookUp(colOrg1, Title = Trim(C1)).Title)), C1), 3), Value, "、") & If(CountRows(Filter(colAdmRow, IsBlank(LookUp(colOrg2All, Title = Trim(C2)).Title))) > 0, "／" & Concat(FirstN(Distinct(Filter(colAdmRow, IsBlank(LookUp(colOrg2All, Title = Trim(C2)).Title)), C2), 3), Value, "、"), ""), If(gblAdmKind = "org", Concat(FirstN(Distinct(Filter(colAdmRow, "２" in C4 && IsBlank(LookUp(colOrg2All, Title = Trim(C1)).Title)), C1), 3), Value, "、"), "")))
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -4224,9 +4224,9 @@ Screens:
         Properties:
           Align: ='TextCanvas.Align'.Start
           Color: =If(gblAdmBad + gblAdmBadRole + gblAdmBadOrg > 0, RGBA(184, 83, 74, 1), RGBA(110, 106, 98, 1))
-          Height: =32
+          Height: =36
           Size: =12
-          Text: ="見出し 1 行 ＋ 明細 " & CountRows(colAdmRow) & " 行" & If(gblAdmBad > 0, "／列数が合わない行 " & gblAdmBad & " 件（" & gblAdmCols & " 列のはず）", "") & If(gblAdmBadRole > 0, "／対応表に無いロール名 " & gblAdmBadRole & " 件（" & gblAdmBadRoleTxt & "）", "") & If(gblAdmBadOrg > 0, "／マスタに無い組織コード " & gblAdmBadOrg & " 件（先に組織を取り込む）", "")
+          Text: ="見出し 1 行 ＋ 明細 " & CountRows(colAdmRow) & " 行" & If(gblAdmBad > 0, "／列数が合わない行 " & gblAdmBad & " 件（" & gblAdmCols & " 列のはず）", "") & If(gblAdmBadRole > 0, "／対応表に無いロール名 " & gblAdmBadRole & " 件（" & gblAdmBadRoleTxt & "）", "") & If(gblAdmBadOrg > 0, "／マスタに無い組織コード " & gblAdmBadOrg & " 件（" & gblAdmBadOrgTxt & "）先に組織を取り込む", "")
           Visible: =gblTab = "admin"
           Width: =600
           X: =176
@@ -4256,167 +4256,171 @@ Screens:
                 TemplatePadding: =0
                 TemplateSize: =28
                 Height: =Parent.Height
-                Width: =Parent.Width
+                Width: =Max(Parent.Width, gblAdmCols * 140 + 20)
                 X: =0
                 Y: =0
                 ShowScrollbar: =true
               Children:
-                - pvRow:
-                    Control: GroupContainer@1.5.0
-                    Variant: AutoLayout
-                    Properties:
-                      Height: =26
-                      Width: =Parent.TemplateWidth
-                      X: =0
-                      Y: =0
-                      LayoutDirection: =LayoutDirection.Horizontal
-                      LayoutAlignItems: =LayoutAlignItems.Stretch
-                      LayoutGap: =2
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      PaddingBottom: =0
-                    Children:
                 - pv1:
                     Control: ModernText@1.0.0
                     Properties:
                       Text: =ThisItem.C1
                       Size: =10
                       Color: =RGBA(42, 42, 38, 1)
-                      Width: =140
+                      X: =0
+                      Y: =0
+                      Width: =136
+                      Height: =26
                       Visible: =1 <= gblAdmCols
                       PaddingTop: =0
                       PaddingBottom: =0
                       PaddingLeft: =4
                       VerticalAlign: =VerticalAlign.Middle
-                      Wrap: =true
-                      FillPortions: =0
+                      Wrap: =false
                 - pv2:
                     Control: ModernText@1.0.0
                     Properties:
                       Text: =ThisItem.C2
                       Size: =10
                       Color: =RGBA(42, 42, 38, 1)
-                      Width: =140
+                      X: =140
+                      Y: =0
+                      Width: =136
+                      Height: =26
                       Visible: =2 <= gblAdmCols
                       PaddingTop: =0
                       PaddingBottom: =0
                       PaddingLeft: =4
                       VerticalAlign: =VerticalAlign.Middle
-                      Wrap: =true
-                      FillPortions: =0
+                      Wrap: =false
                 - pv3:
                     Control: ModernText@1.0.0
                     Properties:
                       Text: =ThisItem.C3
                       Size: =10
                       Color: =RGBA(42, 42, 38, 1)
-                      Width: =140
+                      X: =280
+                      Y: =0
+                      Width: =136
+                      Height: =26
                       Visible: =3 <= gblAdmCols
                       PaddingTop: =0
                       PaddingBottom: =0
                       PaddingLeft: =4
                       VerticalAlign: =VerticalAlign.Middle
-                      Wrap: =true
-                      FillPortions: =0
+                      Wrap: =false
                 - pv4:
                     Control: ModernText@1.0.0
                     Properties:
                       Text: =ThisItem.C4
                       Size: =10
                       Color: =RGBA(42, 42, 38, 1)
-                      Width: =140
+                      X: =420
+                      Y: =0
+                      Width: =136
+                      Height: =26
                       Visible: =4 <= gblAdmCols
                       PaddingTop: =0
                       PaddingBottom: =0
                       PaddingLeft: =4
                       VerticalAlign: =VerticalAlign.Middle
-                      Wrap: =true
-                      FillPortions: =0
+                      Wrap: =false
                 - pv5:
                     Control: ModernText@1.0.0
                     Properties:
                       Text: =ThisItem.C5
                       Size: =10
                       Color: =RGBA(42, 42, 38, 1)
-                      Width: =140
+                      X: =560
+                      Y: =0
+                      Width: =136
+                      Height: =26
                       Visible: =5 <= gblAdmCols
                       PaddingTop: =0
                       PaddingBottom: =0
                       PaddingLeft: =4
                       VerticalAlign: =VerticalAlign.Middle
-                      Wrap: =true
-                      FillPortions: =0
+                      Wrap: =false
                 - pv6:
                     Control: ModernText@1.0.0
                     Properties:
                       Text: =ThisItem.C6
                       Size: =10
                       Color: =RGBA(42, 42, 38, 1)
-                      Width: =140
+                      X: =700
+                      Y: =0
+                      Width: =136
+                      Height: =26
                       Visible: =6 <= gblAdmCols
                       PaddingTop: =0
                       PaddingBottom: =0
                       PaddingLeft: =4
                       VerticalAlign: =VerticalAlign.Middle
-                      Wrap: =true
-                      FillPortions: =0
+                      Wrap: =false
                 - pv7:
                     Control: ModernText@1.0.0
                     Properties:
                       Text: =ThisItem.C7
                       Size: =10
                       Color: =RGBA(42, 42, 38, 1)
-                      Width: =140
+                      X: =840
+                      Y: =0
+                      Width: =136
+                      Height: =26
                       Visible: =7 <= gblAdmCols
                       PaddingTop: =0
                       PaddingBottom: =0
                       PaddingLeft: =4
                       VerticalAlign: =VerticalAlign.Middle
-                      Wrap: =true
-                      FillPortions: =0
+                      Wrap: =false
                 - pv8:
                     Control: ModernText@1.0.0
                     Properties:
                       Text: =ThisItem.C8
                       Size: =10
                       Color: =RGBA(42, 42, 38, 1)
-                      Width: =140
+                      X: =980
+                      Y: =0
+                      Width: =136
+                      Height: =26
                       Visible: =8 <= gblAdmCols
                       PaddingTop: =0
                       PaddingBottom: =0
                       PaddingLeft: =4
                       VerticalAlign: =VerticalAlign.Middle
-                      Wrap: =true
-                      FillPortions: =0
+                      Wrap: =false
                 - pv9:
                     Control: ModernText@1.0.0
                     Properties:
                       Text: =ThisItem.C9
                       Size: =10
                       Color: =RGBA(42, 42, 38, 1)
-                      Width: =140
+                      X: =1120
+                      Y: =0
+                      Width: =136
+                      Height: =26
                       Visible: =9 <= gblAdmCols
                       PaddingTop: =0
                       PaddingBottom: =0
                       PaddingLeft: =4
                       VerticalAlign: =VerticalAlign.Middle
-                      Wrap: =true
-                      FillPortions: =0
+                      Wrap: =false
                 - pv10:
                     Control: ModernText@1.0.0
                     Properties:
                       Text: =ThisItem.C10
                       Size: =10
                       Color: =RGBA(42, 42, 38, 1)
-                      Width: =140
+                      X: =1260
+                      Y: =0
+                      Width: =136
+                      Height: =26
                       Visible: =10 <= gblAdmCols
                       PaddingTop: =0
                       PaddingBottom: =0
                       PaddingLeft: =4
                       VerticalAlign: =VerticalAlign.Middle
-                      Wrap: =true
-                      FillPortions: =0
+                      Wrap: =false
     - admClrRule:
         Control: ModernText@1.0.0
         Properties:
