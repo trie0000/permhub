@@ -4226,7 +4226,7 @@ Screens:
           Color: =If(gblAdmBad + gblAdmBadRole + gblAdmBadOrg > 0, RGBA(184, 83, 74, 1), RGBA(110, 106, 98, 1))
           Height: =36
           Size: =12
-          Text: ="見出し 1 行 ＋ 明細 " & CountRows(colAdmRow) & " 行" & If(gblAdmBad > 0, "／列数が合わない行 " & gblAdmBad & " 件（" & gblAdmCols & " 列のはず）", "") & If(gblAdmBadRole > 0, "／対応表に無いロール名 " & gblAdmBadRole & " 件（" & gblAdmBadRoleTxt & "）は飛ばす", "") & If(gblAdmBadOrg > 0, If(gblAdmKind = "org", "／組織区分コードが 8 桁でない行 " & gblAdmBadOrg & " 件（" & gblAdmBadOrgTxt & "）", "／組織区分2 のコードが 8 桁でない行 " & gblAdmBadOrg & " 件（" & gblAdmBadOrgTxt & "）"), "")
+          Text: ="［" & If(gblAdmKind = "tree", "組織の親子", If(gblAdmKind = "org", "組織マスタ（多段階承認）", "ユーザマスタ")) & "］ 見出し 1 行 ＋ 明細 " & CountRows(colAdmRow) & " 行" & If(gblAdmBad > 0, "／列数が合わない行 " & gblAdmBad & " 件（" & gblAdmCols & " 列のはず）", "") & If(gblAdmBadRole > 0, "／対応表に無いロール名 " & gblAdmBadRole & " 件（" & gblAdmBadRoleTxt & "）は飛ばす", "") & If(gblAdmBadOrg > 0, If(gblAdmKind = "org", "／組織区分コードが 8 桁でない行 " & gblAdmBadOrg & " 件（" & gblAdmBadOrgTxt & "）", "／組織区分2 のコードが 8 桁でない行 " & gblAdmBadOrg & " 件（" & gblAdmBadOrgTxt & "）"), "")
           Visible: =gblTab = "admin"
           Width: =600
           X: =176
@@ -4429,7 +4429,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =20
           Size: =12
-          Text: ="読み取りで見つかった問題（" & CountRows(colAdmNg) & " 件）"
+          Text: ="読み取りで見つかった問題　［" & If(gblAdmKind = "tree", "組織の親子", If(gblAdmKind = "org", "組織マスタ（多段階承認）", "ユーザマスタ")) & "］　" & CountRows(colAdmNg) & " 件"
           Visible: =gblTab = "admin" && CountRows(colAdmNg) > 0
           Width: =500
           X: =44
@@ -4517,7 +4517,7 @@ Screens:
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =20
           Size: =12
-          Text: ="書き込みに失敗した行（" & CountRows(colAdmErr) & " 件）"
+          Text: ="書き込みに失敗した行　［" & If(gblAdmKind = "tree", "組織の親子", If(gblAdmKind = "org", "組織マスタ（多段階承認）", "ユーザマスタ")) & "］　" & CountRows(colAdmErr) & " 件"
           Visible: =gblTab = "admin" && CountRows(colAdmErr) > 0
           Width: =400
           X: =44
