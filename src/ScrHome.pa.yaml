@@ -465,7 +465,7 @@ Screens:
           Color: =RGBA(184, 83, 74, 1)
           Height: =24
           Size: =11
-          Text: =If(CountRows(fApNg) > 0, "⚠ 多段階承認が要なのに正か副の担当がいない組織区分2 が " & CountRows(fApNg) & " 件あります（" & Concat(FirstN(fApNg, 4), Nm & "：" & Miss, "、") & If(CountRows(fApNg) > 4, " ほか", "") & "）", "")
+          Text: =With({g:Filter(fApNg, O1 = gblOrg1)}, If(CountRows(g) > 0, "⚠ 多段階承認が要なのに正か副の担当がいない組織区分2 が " & CountRows(g) & " 件あります（" & Concat(FirstN(g, 4), Nm & "：" & Miss, "、") & If(CountRows(g) > 4, " ほか", "") & "）", ""))
           Visible: =gblTab = "org"
           Width: =Parent.Width - 120
           X: =52
