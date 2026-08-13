@@ -3096,6 +3096,16 @@ Screens:
               TemplatePadding: =0
               TemplateSize: =46
             Children:
+            - mxNg:
+                Control: ModernText@1.0.0
+                Properties:
+                  Fill: =RGBA(184, 83, 74, 0.14)
+                  Height: =Parent.TemplateHeight
+                  Text: =""
+                  Visible: =(";" & ThisItem.Title & ";") in fApNgVC
+                  Width: =Parent.TemplateWidth
+                  X: =0
+                  Y: =0
             - mxRow:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
@@ -3446,7 +3456,7 @@ Screens:
           Color: =RGBA(122, 118, 108, 1)
           Height: =24
           Size: =11
-          Text: ="☑ 権限あり　　☐ 権限なし　　赤いセル 無効になった権限（外すまで申請できない）　　セルのクリックで付与・削除　　氏名クリックで詳細へ"
+          Text: ="☑ 権限あり　　☐ 権限なし　　赤い行 担当が足りない／余っている組織区分2　　セルのクリックで付与・削除　　氏名クリックで詳細へ"
           Visible: '=gblTab = "user"
 
             '
