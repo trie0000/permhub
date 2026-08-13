@@ -2130,7 +2130,7 @@ Screens:
           Visible: '=gblTab = "user"
 
             '
-          Width: =160
+          Width: =288
           X: =44
           Y: =292
           Wrap: =true
@@ -3131,7 +3131,7 @@ Screens:
                       Text: '=ThisItem.NameJa
 
                         '
-                      Width: =150
+                      Width: =230
                       Wrap: =true
                       PaddingTop: =0
                       PaddingBottom: =0
@@ -3143,7 +3143,7 @@ Screens:
                       Align: ='TextCanvas.Align'.Start
                       Color: =RGBA(168, 163, 154, 1)
                       Size: =10
-                      Text: =If(ThisItem.IsNew, "未割当", ThisItem.Title)
+                      Text: =If(If(gblView = "EXTCONN", ThisItem.ApExt, If(gblView = "WLAN", ThisItem.ApWlan, If(gblView = "CLOUD", ThisItem.ApCloud, false))), "多段", "")
                       Width: =58
                       Wrap: =true
                       PaddingTop: =0
@@ -3456,7 +3456,7 @@ Screens:
           Color: =RGBA(122, 118, 108, 1)
           Height: =24
           Size: =11
-          Text: ="☑ 権限あり　　☐ 権限なし　　赤い行 担当が足りない／余っている組織区分2　　セルのクリックで付与・削除　　氏名クリックで詳細へ"
+          Text: ="☑ 権限あり　　☐ 権限なし　　赤い行 承認者不足 / 不要な副担当　　セルのクリックで付与・削除　　氏名クリックで詳細へ"
           Visible: '=gblTab = "user"
 
             '
