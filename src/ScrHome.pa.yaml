@@ -43,7 +43,7 @@ Screens:
           Color: =RGBA(255, 255, 255, 1)
           Height: =52
           Size: =12
-          Text: =If(!IsBlank(gblMe.FullName), gblMe.FullName, If(gblIsAdmin, gblMeName & "（管理者・マスタ未登録）", gblMeName & "（マスタ未登録）"))
+          Text: =If(!IsBlank(gblMe.FullName), gblMe.FullName & If(gblIsAdmin, "（管理者）", ""), If(gblIsAdmin, gblMeName & "（管理者・マスタ未登録）", gblMeName & "（マスタ未登録）"))
           Width: =320
           X: =Parent.Width - 348
           Y: =0
@@ -220,9 +220,10 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =RGBA(42, 42, 38, 1)
+          Color: =If(gblTab = \"admin\", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          FontWeight: =If(gblTab = \"admin\", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Fill: =RGBA(0, 0, 0, 0)
-          Height: =32
+          Height: =40
           OnSelect: =Set(gblTab, "admin"); Set(gblPage, 0)
           RadiusTopLeft: =4
           RadiusTopRight: =4
@@ -2242,13 +2243,13 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG1 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG1 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG1)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG1 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG1 && Role = gblView)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG1)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG1).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG1 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG1).FullName
 
             '
           Visible: '=gblTab = "user"
@@ -2289,13 +2290,13 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG2 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG2 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG2)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG2 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG2 && Role = gblView)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG2)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG2).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG2 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG2).FullName
 
             '
           Visible: '=gblTab = "user"
@@ -2336,13 +2337,13 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG3 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG3 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG3)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG3 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG3 && Role = gblView)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG3)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG3).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG3 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG3).FullName
 
             '
           Visible: '=gblTab = "user"
@@ -2383,13 +2384,13 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG4 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG4 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG4)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG4 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG4 && Role = gblView)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG4)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG4).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG4 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG4).FullName
 
             '
           Visible: '=gblTab = "user"
@@ -2430,13 +2431,13 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG5 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG5 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG5)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG5 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG5 && Role = gblView)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG5)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG5).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG5 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG5).FullName
 
             '
           Visible: '=gblTab = "user"
@@ -2477,13 +2478,13 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG6 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG6 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG6)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG6 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG6 && Role = gblView)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG6)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG6).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG6 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG6).FullName
 
             '
           Visible: '=gblTab = "user"
@@ -2524,13 +2525,13 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG7 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG7 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG7)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG7 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG7 && Role = gblView)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG7)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG7).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG7 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG7).FullName
 
             '
           Visible: '=gblTab = "user"
@@ -2571,13 +2572,13 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG8 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG8 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG8)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG8 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG8 && Role = gblView)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG8)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG8).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG8 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG8).FullName
 
             '
           Visible: '=gblTab = "user"
@@ -2595,13 +2596,13 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG9 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG9 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG9)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG9 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG9 && Role = gblView)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG9)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG9).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG9 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG9).FullName
 
             '
           Visible: '=gblTab = "user"
@@ -2619,13 +2620,13 @@ Screens:
         Properties:
           Strikethrough: =!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG10 && Op = "DELETE").No)
           Align: ='TextCanvas.Align'.Center
-          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG10 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG10)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
+          Color: =If(!IsBlank(LookUp(colPendItem, GK = "USER" && GKey = fG10 && Op = "DELETE").No), RGBA(184, 83, 74, 1), If(CountRows(Filter(fChg, Gid = fG10 && Role = gblView)) > 0, RGBA(184, 83, 74, 1), RGBA(42, 42, 38, 1)))
           FontWeight: '=''TextCanvas.Weight''.Bold
 
             '
           Height: =22
           Size: =11
-          Text: '=If(CountRows(Filter(fChg, Gid = fG10)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG10).FullName
+          Text: '=If(CountRows(Filter(fChg, Gid = fG10 && Role = gblView)) > 0, "● ", "") & LookUp(colUsersAll, Title = fG10).FullName
 
             '
           Visible: '=gblTab = "user"
