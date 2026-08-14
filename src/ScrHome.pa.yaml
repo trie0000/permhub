@@ -2,7 +2,7 @@ Screens:
   ScrHome:
     Properties:
       Fill: =RGBA(243, 241, 234, 1)
-      OnVisible: =If(IsEmpty(colO2Edit), ClearCollect(colO2Edit, colOrg2All)); If(IsEmpty(colO1Edit), ClearCollect(colO1Edit, colOrg1)); If(IsEmpty(colGEdit), ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(IsEmpty(colReq), If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})))); Select(btnInitOM)
+      OnVisible: =If(IsEmpty(colO2Edit), ClearCollect(colO2Edit, colOrg2All)); If(IsEmpty(colO1Edit), ClearCollect(colO1Edit, colOrg1)); If(IsEmpty(colGEdit), ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")}))); If(IsEmpty(colReq), If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})))); Select(btnInitOM); Select(btnCalcNg)
     Children:
     - hdrBg:
         Control: ModernText@1.0.0
@@ -75,7 +75,7 @@ Screens:
           Items: =fMyOrg1D
           ItemDisplayText: =ThisItem.Disp
           Default: =LookUp(fMyOrg1D, Title = gblOrg1)
-          OnChange: =Set(gblOrg1, drpOrg1.Selected.Title); Set(gblPage, 0); If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")}))); Select(btnInitOM)
+          OnChange: =Set(gblOrg1, drpOrg1.Selected.Title); Set(gblPage, 0); Select(btnCalcNg); If(gblIsAdmin, ClearCollect(colReq, ForAll(Filter(PRM_Requests, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")})), ClearCollect(colReq, ForAll(Filter(PRM_Requests, Org1Code = gblOrg1, SubmittedAt > DateAdd(Now(), -365, TimeUnit.Days)) As r, {No:r.Title, W:r.SubmittedAt, By:r.ApplicantName, ApId:Coalesce(r.ApplicantId, ""), O1:r.Org1Code, S:Coalesce(r.Status.Value, "SUBMITTED"), RT:Coalesce(r.ReqType.Value, ""), N:r.ItemCount, T:r.TargetName, Sm:Coalesce(r.Summary, "")}))); Select(btnInitOM)
           X: =28
           Y: =130
           Width: =280
@@ -465,7 +465,7 @@ Screens:
           Color: =RGBA(184, 83, 74, 1)
           Height: =24
           Size: =11
-          Text: =If(CountRows(fApNg) > 0, "⚠ 担当が足りない／余っている組織区分2 が " & CountRows(fApNg) & " 件あります（" & Concat(FirstN(fApNg, 4), Nm & "：" & Miss, "、") & If(CountRows(fApNg) > 4, " ほか", "") & "）", "")
+          Text: =If(CountRows(colApNg) > 0, "⚠ 担当が足りない／余っている組織区分2 が " & CountRows(colApNg) & " 件あります（" & Concat(FirstN(colApNg, 4), Nm & "：" & Miss, "、") & If(CountRows(colApNg) > 4, " ほか", "") & "）", "")
           Visible: =gblTab = "org"
           Width: =Parent.Width - 120
           X: =52
@@ -679,7 +679,7 @@ Screens:
                   Fill: =RGBA(184, 83, 74, 0.14)
                   Height: =43
                   Text: =""
-                  Visible: =(";" & ThisItem.Title & ";") in fApNgC
+                  Visible: =(";" & ThisItem.Title & ";") in gblApNgC
                   Width: =Parent.TemplateWidth
                   X: =0
                   Y: =0
@@ -1038,7 +1038,7 @@ Screens:
           Fill: =If((Coalesce(LookUp(fInvRole, rc = "SECMGR").n, 0) > 0 || Coalesce(LookUp(fNoAppRoleO1, rc = "SECMGR").n, 0) > 0), If(gblView = "SECMGR", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblView = "SECMGR", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblView = "SECMGR", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
-          OnSelect: =Set(gblView, "SECMGR"); Set(gblPage, 0)
+          OnSelect: =Set(gblView, "SECMGR"); Set(gblPage, 0); Select(btnCalcNg)
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -1061,7 +1061,7 @@ Screens:
           Fill: =If((Coalesce(LookUp(fInvRole, rc = "CONFORM").n, 0) > 0 || Coalesce(LookUp(fNoAppRoleO1, rc = "CONFORM").n, 0) > 0), If(gblView = "CONFORM", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblView = "CONFORM", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblView = "CONFORM", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
-          OnSelect: =Set(gblView, "CONFORM"); Set(gblPage, 0)
+          OnSelect: =Set(gblView, "CONFORM"); Set(gblPage, 0); Select(btnCalcNg)
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -1084,7 +1084,7 @@ Screens:
           Fill: =If((Coalesce(LookUp(fInvRole, rc = "EXTCONN").n, 0) > 0 || Coalesce(LookUp(fNoAppRoleO1, rc = "EXTCONN").n, 0) > 0), If(gblView = "EXTCONN", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblView = "EXTCONN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblView = "EXTCONN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
-          OnSelect: =Set(gblView, "EXTCONN"); Set(gblPage, 0)
+          OnSelect: =Set(gblView, "EXTCONN"); Set(gblPage, 0); Select(btnCalcNg)
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -1107,7 +1107,7 @@ Screens:
           Fill: =If((Coalesce(LookUp(fInvRole, rc = "WLAN").n, 0) > 0 || Coalesce(LookUp(fNoAppRoleO1, rc = "WLAN").n, 0) > 0), If(gblView = "WLAN", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblView = "WLAN", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblView = "WLAN", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
-          OnSelect: =Set(gblView, "WLAN"); Set(gblPage, 0)
+          OnSelect: =Set(gblView, "WLAN"); Set(gblPage, 0); Select(btnCalcNg)
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -1130,7 +1130,7 @@ Screens:
           Fill: =If((Coalesce(LookUp(fInvRole, rc = "CLOUD").n, 0) > 0 || Coalesce(LookUp(fNoAppRoleO1, rc = "CLOUD").n, 0) > 0), If(gblView = "CLOUD", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblView = "CLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblView = "CLOUD", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
-          OnSelect: =Set(gblView, "CLOUD"); Set(gblPage, 0)
+          OnSelect: =Set(gblView, "CLOUD"); Set(gblPage, 0); Select(btnCalcNg)
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -1153,7 +1153,7 @@ Screens:
           Fill: =If((Coalesce(LookUp(fInvRole, rc = "INFOSEC").n, 0) > 0 || Coalesce(LookUp(fNoAppRoleO1, rc = "INFOSEC").n, 0) > 0), If(gblView = "INFOSEC", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblView = "INFOSEC", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblView = "INFOSEC", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
-          OnSelect: =Set(gblView, "INFOSEC"); Set(gblPage, 0)
+          OnSelect: =Set(gblView, "INFOSEC"); Set(gblPage, 0); Select(btnCalcNg)
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -1176,7 +1176,7 @@ Screens:
           Fill: =If((Coalesce(LookUp(fInvRole, rc = "EUCLOUD").n, 0) > 0 || Coalesce(LookUp(fNoAppRoleO1, rc = "EUCLOUD").n, 0) > 0), If(gblView = "EUCLOUD", RGBA(184, 83, 74, 0.26), RGBA(184, 83, 74, 0.14)), If(gblView = "EUCLOUD", RGBA(122, 138, 120, 0.18), RGBA(0, 0, 0, 0)))
           FontWeight: =If(gblView = "EUCLOUD", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Height: =32
-          OnSelect: =Set(gblView, "EUCLOUD"); Set(gblPage, 0)
+          OnSelect: =Set(gblView, "EUCLOUD"); Set(gblPage, 0); Select(btnCalcNg)
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -2117,6 +2117,106 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
+    - mxLk1:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(150, 145, 136, 0.16)
+          Height: =Parent.Height - 320
+          Text: =""
+          Visible: =gblTab = "user" && !IsBlank(fG1) && (";" & fG1 & ";") in fLockUsr
+          Width: =96
+          X: =332
+          Y: =284
+    - mxLk2:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(150, 145, 136, 0.16)
+          Height: =Parent.Height - 320
+          Text: =""
+          Visible: =gblTab = "user" && !IsBlank(fG2) && (";" & fG2 & ";") in fLockUsr
+          Width: =96
+          X: =428
+          Y: =284
+    - mxLk3:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(150, 145, 136, 0.16)
+          Height: =Parent.Height - 320
+          Text: =""
+          Visible: =gblTab = "user" && !IsBlank(fG3) && (";" & fG3 & ";") in fLockUsr
+          Width: =96
+          X: =524
+          Y: =284
+    - mxLk4:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(150, 145, 136, 0.16)
+          Height: =Parent.Height - 320
+          Text: =""
+          Visible: =gblTab = "user" && !IsBlank(fG4) && (";" & fG4 & ";") in fLockUsr
+          Width: =96
+          X: =620
+          Y: =284
+    - mxLk5:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(150, 145, 136, 0.16)
+          Height: =Parent.Height - 320
+          Text: =""
+          Visible: =gblTab = "user" && !IsBlank(fG5) && (";" & fG5 & ";") in fLockUsr
+          Width: =96
+          X: =716
+          Y: =284
+    - mxLk6:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(150, 145, 136, 0.16)
+          Height: =Parent.Height - 320
+          Text: =""
+          Visible: =gblTab = "user" && !IsBlank(fG6) && (";" & fG6 & ";") in fLockUsr
+          Width: =96
+          X: =812
+          Y: =284
+    - mxLk7:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(150, 145, 136, 0.16)
+          Height: =Parent.Height - 320
+          Text: =""
+          Visible: =gblTab = "user" && !IsBlank(fG7) && (";" & fG7 & ";") in fLockUsr
+          Width: =96
+          X: =908
+          Y: =284
+    - mxLk8:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(150, 145, 136, 0.16)
+          Height: =Parent.Height - 320
+          Text: =""
+          Visible: =gblTab = "user" && !IsBlank(fG8) && (";" & fG8 & ";") in fLockUsr
+          Width: =96
+          X: =1004
+          Y: =284
+    - mxLk9:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(150, 145, 136, 0.16)
+          Height: =Parent.Height - 320
+          Text: =""
+          Visible: =gblTab = "user" && !IsBlank(fG9) && (";" & fG9 & ";") in fLockUsr
+          Width: =96
+          X: =1100
+          Y: =284
+    - mxLk10:
+        Control: ModernText@1.0.0
+        Properties:
+          Fill: =RGBA(150, 145, 136, 0.16)
+          Height: =Parent.Height - 320
+          Text: =""
+          Visible: =gblTab = "user" && !IsBlank(fG10) && (";" & fG10 & ";") in fLockUsr
+          Width: =96
+          X: =1196
+          Y: =284
     - lblMxRowCap:
         Control: ModernText@1.0.0
         Properties:
@@ -2631,7 +2731,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =If((";" & fG1 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
+          Color: =RGBA(255, 255, 255, 1)
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG1), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2653,7 +2753,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =If((";" & fG2 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
+          Color: =RGBA(255, 255, 255, 1)
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG2), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2675,7 +2775,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =If((";" & fG3 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
+          Color: =RGBA(255, 255, 255, 1)
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG3), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2697,7 +2797,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =If((";" & fG4 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
+          Color: =RGBA(255, 255, 255, 1)
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG4), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2719,7 +2819,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =If((";" & fG5 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
+          Color: =RGBA(255, 255, 255, 1)
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG5), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2741,7 +2841,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =If((";" & fG6 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
+          Color: =RGBA(255, 255, 255, 1)
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG6), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2763,7 +2863,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =If((";" & fG7 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
+          Color: =RGBA(255, 255, 255, 1)
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG7), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2785,7 +2885,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =If((";" & fG8 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
+          Color: =RGBA(255, 255, 255, 1)
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG8), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2807,7 +2907,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =If((";" & fG9 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
+          Color: =RGBA(255, 255, 255, 1)
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG9), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2829,7 +2929,7 @@ Screens:
           Height: =24
           Align: ='TextCanvas.Align'.Center
           Size: =11
-          Color: =If((";" & fG10 & ";") in fLockUsr, RGBA(206, 202, 192, 1), RGBA(255, 255, 255, 1))
+          Color: =RGBA(255, 255, 255, 1)
           Fill: =If(!(gblView = "EXTCONN" || gblView = "WLAN" || gblView = "CLOUD") || IsBlank(fG10), RGBA(0, 0, 0, 0), If(LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView).CR = "DEPUTY", RGBA(150, 145, 136, 1), RGBA(122, 138, 120, 1)))
           RadiusTopLeft: =3
           RadiusTopRight: =3
@@ -2888,7 +2988,7 @@ Screens:
           Width: =96
           Height: =40
           Text: =If(IsBlank(fG1), "", If(LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If((";" & fG1 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
+          Color: =If(LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
@@ -2905,7 +3005,7 @@ Screens:
           Width: =96
           Height: =40
           Text: =If(IsBlank(fG2), "", If(LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If((";" & fG2 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
+          Color: =If(LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
@@ -2922,7 +3022,7 @@ Screens:
           Width: =96
           Height: =40
           Text: =If(IsBlank(fG3), "", If(LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If((";" & fG3 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
+          Color: =If(LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
@@ -2939,7 +3039,7 @@ Screens:
           Width: =96
           Height: =40
           Text: =If(IsBlank(fG4), "", If(LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If((";" & fG4 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
+          Color: =If(LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
@@ -2956,7 +3056,7 @@ Screens:
           Width: =96
           Height: =40
           Text: =If(IsBlank(fG5), "", If(LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If((";" & fG5 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
+          Color: =If(LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
@@ -2973,7 +3073,7 @@ Screens:
           Width: =96
           Height: =40
           Text: =If(IsBlank(fG6), "", If(LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If((";" & fG6 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
+          Color: =If(LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
@@ -2990,7 +3090,7 @@ Screens:
           Width: =96
           Height: =40
           Text: =If(IsBlank(fG7), "", If(LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If((";" & fG7 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
+          Color: =If(LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
@@ -3007,7 +3107,7 @@ Screens:
           Width: =96
           Height: =40
           Text: =If(IsBlank(fG8), "", If(LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If((";" & fG8 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
+          Color: =If(LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
@@ -3024,7 +3124,7 @@ Screens:
           Width: =96
           Height: =40
           Text: =If(IsBlank(fG9), "", If(LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If((";" & fG9 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
+          Color: =If(LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
@@ -3041,7 +3141,7 @@ Screens:
           Width: =96
           Height: =40
           Text: =If(IsBlank(fG10), "", If(LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", "☑", "☐"))
-          Color: =If((";" & fG10 & ";") in fLockUsr, RGBA(206, 202, 192, 1), If(LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))
+          Color: =If(LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView).Scope = "ALL", RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1))
           Size: =16
           Align: ='TextCanvas.Align'.Center
           Visible: =gblTab = "user"
@@ -3102,7 +3202,7 @@ Screens:
                   Fill: =RGBA(184, 83, 74, 0.14)
                   Height: =Parent.TemplateHeight
                   Text: =""
-                  Visible: =(";" & ThisItem.Title & ";") in fApNgVC
+                  Visible: =(";" & ThisItem.Title & ";") in gblApNgVC
                   Width: =Parent.TemplateWidth
                   X: =0
                   Y: =0
@@ -3155,7 +3255,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG1) && Not(fG1 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =If((";" & fG1 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3173,7 +3273,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG2) && Not(fG2 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =If((";" & fG2 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3191,7 +3291,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG3) && Not(fG3 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =If((";" & fG3 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3209,7 +3309,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG4) && Not(fG4 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =If((";" & fG4 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3227,7 +3327,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG5) && Not(fG5 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =If((";" & fG5 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3245,7 +3345,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG6) && Not(fG6 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =If((";" & fG6 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3263,7 +3363,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG7) && Not(fG7 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =If((";" & fG7 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3281,7 +3381,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG8) && Not(fG8 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =If((";" & fG8 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3299,7 +3399,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG9) && Not(fG9 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =If((";" & fG9 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3317,7 +3417,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG10) && Not(fG10 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =If((";" & fG10 & ";") in fLockUsr || (";" & ThisItem.Title & ";") in fLockO2, RGBA(206, 202, 192, 1), With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1)))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -4808,6 +4908,16 @@ Screens:
           Width: =1
           X: =0
           Y: =0
+    - btnCalcNg:
+        Control: ModernText@1.0.0
+        Properties:
+          Height: =1
+          OnSelect: =ClearCollect(colCovS, ForAll(Table({rc:"EXTCONN",cr:"PRIMARY"},{rc:"WLAN",cr:"PRIMARY"},{rc:"CLOUD",cr:"PRIMARY"},{rc:"EXTCONN",cr:"DEPUTY"},{rc:"WLAN",cr:"DEPUTY"},{rc:"CLOUD",cr:"DEPUTY"},{rc:"SECMGR",cr:""},{rc:"CONFORM",cr:""},{rc:"INFOSEC",cr:""}) As k, {K:k.rc & "#" & k.cr, All:CountRows(Filter(colGEdit, O1 = gblOrg1 && Role = k.rc && If(k.cr = "DEPUTY", CR = "DEPUTY", If(k.cr = "PRIMARY", CR <> "DEPUTY", true)) && Scope = "ALL")) > 0, P:Concat(Filter(colGEdit, O1 = gblOrg1 && Role = k.rc && If(k.cr = "DEPUTY", CR = "DEPUTY", If(k.cr = "PRIMARY", CR <> "DEPUTY", true)) && Scope = "PICK"), Codes, "") & ";"})); ClearCollect(colApNg, Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1 && !IsDel) As o, With({t:";" & o.Title & ";"}, With({ep:With({x:LookUp(colCovS, K = "EXTCONN#PRIMARY")}, x.All || t in x.P), ed:With({x:LookUp(colCovS, K = "EXTCONN#DEPUTY")}, x.All || t in x.P), wp:With({x:LookUp(colCovS, K = "WLAN#PRIMARY")}, x.All || t in x.P), wd:With({x:LookUp(colCovS, K = "WLAN#DEPUTY")}, x.All || t in x.P), cp:With({x:LookUp(colCovS, K = "CLOUD#PRIMARY")}, x.All || t in x.P), cd:With({x:LookUp(colCovS, K = "CLOUD#DEPUTY")}, x.All || t in x.P), sse:With({x:LookUp(colCovS, K = "SECMGR#")}, x.All || t in x.P), sco:With({x:LookUp(colCovS, K = "CONFORM#")}, x.All || t in x.P), sin:With({x:LookUp(colCovS, K = "INFOSEC#")}, x.All || t in x.P)}, {Code:o.Title, Nm:o.NameJa, Miss:TrimEnds(If(o.ApExt, If(ep, "", "外部接続(正) ") & If(ed, "", "外部接続(副) "), If(ep, "", "外部接続(正) ") & If(ed, "外部接続(副が不要) ", "")) & If(o.ApWlan, If(wp, "", "無線LAN(正) ") & If(wd, "", "無線LAN(副) "), If(wp, "", "無線LAN(正) ") & If(wd, "無線LAN(副が不要) ", "")) & If(o.ApCloud, If(cp, "", "クラウド(正) ") & If(cd, "", "クラウド(副) "), If(cp, "", "クラウド(正) ") & If(cd, "クラウド(副が不要) ", "")) & If(sse, "", "事業場ITセ責任者 ") & If(sco, "", "適合化担当 ") & If(sin, "", "情報セキュリティ担当 "))}))), Len(Miss) > 0)); ClearCollect(colApNgV, Filter(ForAll(Filter(colO2Edit, Org1Code = gblOrg1 && !IsDel) As o, With({t:";" & o.Title & ";"}, {Code:o.Title, Bad:Switch(gblView, "EXTCONN", If(o.ApExt, !(With({x:LookUp(colCovS, K = "EXTCONN#PRIMARY")}, x.All || t in x.P)) || !(With({x:LookUp(colCovS, K = "EXTCONN#DEPUTY")}, x.All || t in x.P)), !(With({x:LookUp(colCovS, K = "EXTCONN#PRIMARY")}, x.All || t in x.P)) || (With({x:LookUp(colCovS, K = "EXTCONN#DEPUTY")}, x.All || t in x.P))), "WLAN", If(o.ApWlan, !(With({x:LookUp(colCovS, K = "WLAN#PRIMARY")}, x.All || t in x.P)) || !(With({x:LookUp(colCovS, K = "WLAN#DEPUTY")}, x.All || t in x.P)), !(With({x:LookUp(colCovS, K = "WLAN#PRIMARY")}, x.All || t in x.P)) || (With({x:LookUp(colCovS, K = "WLAN#DEPUTY")}, x.All || t in x.P))), "CLOUD", If(o.ApCloud, !(With({x:LookUp(colCovS, K = "CLOUD#PRIMARY")}, x.All || t in x.P)) || !(With({x:LookUp(colCovS, K = "CLOUD#DEPUTY")}, x.All || t in x.P)), !(With({x:LookUp(colCovS, K = "CLOUD#PRIMARY")}, x.All || t in x.P)) || (With({x:LookUp(colCovS, K = "CLOUD#DEPUTY")}, x.All || t in x.P))), "SECMGR", !(With({x:LookUp(colCovS, K = "SECMGR#")}, x.All || t in x.P)), "CONFORM", !(With({x:LookUp(colCovS, K = "CONFORM#")}, x.All || t in x.P)), "INFOSEC", !(With({x:LookUp(colCovS, K = "INFOSEC#")}, x.All || t in x.P)), false)})), Bad)); Set(gblApNgC, Concat(colApNg, ";" & Code, "") & ";"); Set(gblApNgVC, Concat(colApNgV, ";" & Code, "") & ";")
+          Text: =""
+          Visible: =false
+          Width: =1
+          X: =0
+          Y: =0
     - csvBg:
         Control: ModernText@1.0.0
         Properties:
@@ -4978,7 +5088,7 @@ Screens:
           Color: =RGBA(255, 255, 255, 1)
           Fill: =RGBA(122, 96, 40, 1)
           Height: =34
-          OnSelect: =Set(gblRO, false); Set(gblROReq, ""); Set(gblROChg, ""); Set(gblHlKey, ""); If(gblROLoad, ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false})); ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")})); Clear(colNewU); Clear(colUEdit); Clear(colDelU)); Set(gblROLoad, false); Navigate(ScrReq)
+          OnSelect: =Set(gblRO, false); Set(gblROReq, ""); Set(gblROChg, ""); Set(gblHlKey, ""); If(gblROLoad, ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false})); ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")})); Clear(colNewU); Clear(colUEdit); Clear(colDelU)); Set(gblROLoad, false); Navigate(ScrReq); Select(btnCalcNg)
           RadiusTopLeft: =4
           RadiusTopRight: =4
           RadiusBottomLeft: =4
@@ -5046,7 +5156,7 @@ Screens:
           Fill: =If(fBskN > 0, RGBA(240, 238, 231, 1), RGBA(232, 228, 216, 1))
           FontWeight: ='TextCanvas.Weight'.Bold
           Height: =34
-          OnSelect: =If(fBskN > 0, Notify("編集中の内容があります。申請するか取り消してから読み直してください。", NotificationType.Warning), Refresh(PRM_Org1); Refresh(PRM_Org2); Refresh(PRM_Users); Refresh(PRM_Grants); Refresh(PRM_UserOrg1); ClearCollect(colOrg1, Sort(Filter(PRM_Org1, IsActive = true), SortOrder)); ClearCollect(colO1Edit, colOrg1); ClearCollect(colOrg2All, Sort(Filter(PRM_Org2, IsActive = true), SortOrder)); ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false})); ClearCollect(colO2Any, ForAll(PRM_Org2 As o2, {Title:o2.Title, Org1Code:o2.Org1Code})); ClearCollect(colUsersAll, Filter(PRM_Users, IsActive = true)); ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true)); ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")})); ClearCollect(colMemberAll, Filter(PRM_UserOrg1, IsActive = true)); Notify("マスタを読み直しました。", NotificationType.Success)); ClearCollect(colPendItem, ForAll(Filter(PRM_RequestItems, ItemStatus.Value = "PENDING") As i, {No:i.ReqNo, GK:Coalesce(i.GroupKind, i.EntityKind.Value), GKey:Coalesce(i.GroupKey, i.EntityKey), Op:i.Operation.Value, Chg:Coalesce(i.ChangeText, ""), O1:If(Coalesce(i.GroupKind, i.EntityKind.Value) = "ORG1", Coalesce(i.GroupKey, i.EntityKey), If(Coalesce(i.GroupKind, i.EntityKind.Value) = "ORG2", Coalesce(LookUp(colOrg2All, Title = Coalesce(i.GroupKey, i.EntityKey)).Org1Code, ""), Coalesce(LookUp(colMemberAll, GlobalId = Coalesce(i.GroupKey, i.EntityKey)).Org1Code, "")))})); Collect(colPendItem, ForAll(Filter(PRM_RequestItems, ItemStatus.Value = "READY") As i, {No:i.ReqNo, GK:Coalesce(i.GroupKind, i.EntityKind.Value), GKey:Coalesce(i.GroupKey, i.EntityKey), Op:i.Operation.Value, Chg:Coalesce(i.ChangeText, ""), O1:If(Coalesce(i.GroupKind, i.EntityKind.Value) = "ORG1", Coalesce(i.GroupKey, i.EntityKey), If(Coalesce(i.GroupKind, i.EntityKind.Value) = "ORG2", Coalesce(LookUp(colOrg2All, Title = Coalesce(i.GroupKey, i.EntityKey)).Org1Code, ""), Coalesce(LookUp(colMemberAll, GlobalId = Coalesce(i.GroupKey, i.EntityKey)).Org1Code, "")))}))
+          OnSelect: =If(fBskN > 0, Notify("編集中の内容があります。申請するか取り消してから読み直してください。", NotificationType.Warning), Refresh(PRM_Org1); Refresh(PRM_Org2); Refresh(PRM_Users); Refresh(PRM_Grants); Refresh(PRM_UserOrg1); ClearCollect(colOrg1, Sort(Filter(PRM_Org1, IsActive = true), SortOrder)); ClearCollect(colO1Edit, colOrg1); ClearCollect(colOrg2All, Sort(Filter(PRM_Org2, IsActive = true), SortOrder)); ClearCollect(colO2Edit, ForAll(colOrg2All As o, {Title:o.Title, NameJa:o.NameJa, NameEn:o.NameEn, Org1Code:o.Org1Code, SortOrder:o.SortOrder, ApExt:o.ApExt, ApWlan:o.ApWlan, ApCloud:o.ApCloud, IsNew:false, IsDel:false})); ClearCollect(colO2Any, ForAll(PRM_Org2 As o2, {Title:o2.Title, Org1Code:o2.Org1Code})); ClearCollect(colUsersAll, Filter(PRM_Users, IsActive = true)); ClearCollect(colGrantsAll, Filter(PRM_Grants, IsActive = true)); ClearCollect(colGEdit, ForAll(colGrantsAll As g, {Gid:g.GlobalId, O1:g.Org1Code, Role:g.RoleCode.Value, Scope:g.ScopeType.Value, Codes:Coalesce(g.Org2Codes, ""), CR:Coalesce(g.CompanyRole.Value, "")})); ClearCollect(colMemberAll, Filter(PRM_UserOrg1, IsActive = true)); Notify("マスタを読み直しました。", NotificationType.Success)); ClearCollect(colPendItem, ForAll(Filter(PRM_RequestItems, ItemStatus.Value = "PENDING") As i, {No:i.ReqNo, GK:Coalesce(i.GroupKind, i.EntityKind.Value), GKey:Coalesce(i.GroupKey, i.EntityKey), Op:i.Operation.Value, Chg:Coalesce(i.ChangeText, ""), O1:If(Coalesce(i.GroupKind, i.EntityKind.Value) = "ORG1", Coalesce(i.GroupKey, i.EntityKey), If(Coalesce(i.GroupKind, i.EntityKind.Value) = "ORG2", Coalesce(LookUp(colOrg2All, Title = Coalesce(i.GroupKey, i.EntityKey)).Org1Code, ""), Coalesce(LookUp(colMemberAll, GlobalId = Coalesce(i.GroupKey, i.EntityKey)).Org1Code, "")))})); Collect(colPendItem, ForAll(Filter(PRM_RequestItems, ItemStatus.Value = "READY") As i, {No:i.ReqNo, GK:Coalesce(i.GroupKind, i.EntityKind.Value), GKey:Coalesce(i.GroupKey, i.EntityKey), Op:i.Operation.Value, Chg:Coalesce(i.ChangeText, ""), O1:If(Coalesce(i.GroupKind, i.EntityKind.Value) = "ORG1", Coalesce(i.GroupKey, i.EntityKey), If(Coalesce(i.GroupKind, i.EntityKind.Value) = "ORG2", Coalesce(LookUp(colOrg2All, Title = Coalesce(i.GroupKey, i.EntityKey)).Org1Code, ""), Coalesce(LookUp(colMemberAll, GlobalId = Coalesce(i.GroupKey, i.EntityKey)).Org1Code, "")))})); Select(btnCalcNg)
           RadiusTopLeft: =5
           RadiusTopRight: =5
           RadiusBottomLeft: =5
