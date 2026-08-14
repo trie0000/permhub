@@ -3255,7 +3255,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG1) && Not(fG1 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG1 && O1 = gblOrg1 && Role = gblView), c:LookUp(fChg, Gid = fG1 && Role = gblView)}, With({now:g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), was:c.BS = "ALL" || (c.BS = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(c.BC, ""))}, If(!IsBlank(c.Gid) && now <> was, RGBA(184, 83, 74, 1), If(now, RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3273,7 +3273,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG2) && Not(fG2 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG2 && O1 = gblOrg1 && Role = gblView), c:LookUp(fChg, Gid = fG2 && Role = gblView)}, With({now:g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), was:c.BS = "ALL" || (c.BS = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(c.BC, ""))}, If(!IsBlank(c.Gid) && now <> was, RGBA(184, 83, 74, 1), If(now, RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3291,7 +3291,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG3) && Not(fG3 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG3 && O1 = gblOrg1 && Role = gblView), c:LookUp(fChg, Gid = fG3 && Role = gblView)}, With({now:g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), was:c.BS = "ALL" || (c.BS = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(c.BC, ""))}, If(!IsBlank(c.Gid) && now <> was, RGBA(184, 83, 74, 1), If(now, RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3309,7 +3309,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG4) && Not(fG4 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG4 && O1 = gblOrg1 && Role = gblView), c:LookUp(fChg, Gid = fG4 && Role = gblView)}, With({now:g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), was:c.BS = "ALL" || (c.BS = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(c.BC, ""))}, If(!IsBlank(c.Gid) && now <> was, RGBA(184, 83, 74, 1), If(now, RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3327,7 +3327,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG5) && Not(fG5 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG5 && O1 = gblOrg1 && Role = gblView), c:LookUp(fChg, Gid = fG5 && Role = gblView)}, With({now:g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), was:c.BS = "ALL" || (c.BS = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(c.BC, ""))}, If(!IsBlank(c.Gid) && now <> was, RGBA(184, 83, 74, 1), If(now, RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3345,7 +3345,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG6) && Not(fG6 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG6 && O1 = gblOrg1 && Role = gblView), c:LookUp(fChg, Gid = fG6 && Role = gblView)}, With({now:g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), was:c.BS = "ALL" || (c.BS = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(c.BC, ""))}, If(!IsBlank(c.Gid) && now <> was, RGBA(184, 83, 74, 1), If(now, RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3363,7 +3363,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG7) && Not(fG7 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG7 && O1 = gblOrg1 && Role = gblView), c:LookUp(fChg, Gid = fG7 && Role = gblView)}, With({now:g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), was:c.BS = "ALL" || (c.BS = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(c.BC, ""))}, If(!IsBlank(c.Gid) && now <> was, RGBA(184, 83, 74, 1), If(now, RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3381,7 +3381,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG8) && Not(fG8 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG8 && O1 = gblOrg1 && Role = gblView), c:LookUp(fChg, Gid = fG8 && Role = gblView)}, With({now:g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), was:c.BS = "ALL" || (c.BS = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(c.BC, ""))}, If(!IsBlank(c.Gid) && now <> was, RGBA(184, 83, 74, 1), If(now, RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3399,7 +3399,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG9) && Not(fG9 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG9 && O1 = gblOrg1 && Role = gblView), c:LookUp(fChg, Gid = fG9 && Role = gblView)}, With({now:g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), was:c.BS = "ALL" || (c.BS = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(c.BC, ""))}, If(!IsBlank(c.Gid) && now <> was, RGBA(184, 83, 74, 1), If(now, RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
@@ -3417,7 +3417,7 @@ Screens:
                     Properties:
                       Align: ='TextCanvas.Align'.Center
                       Fill: =If(!IsBlank(fG10) && Not(fG10 in colDelU.Gid) && !((";" & ThisItem.Title & ";") in fEligMC) && With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(184, 83, 74, 0.14), RGBA(0, 0, 0, 0))
-                      Color: =With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView)}, If((";" & ThisItem.Title & ";") in fEligMC, If(g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)), If(g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, ""), RGBA(184, 83, 74, 1), RGBA(196, 192, 184, 1))))
+                      Color: =With({g:LookUp(colGEdit, Gid = fG10 && O1 = gblOrg1 && Role = gblView), c:LookUp(fChg, Gid = fG10 && Role = gblView)}, With({now:g.Scope = "ALL" || (g.Scope = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(g.Codes, "")), was:c.BS = "ALL" || (c.BS = "PICK" && (";" & ThisItem.Title & ";") in Coalesce(c.BC, ""))}, If(!IsBlank(c.Gid) && now <> was, RGBA(184, 83, 74, 1), If(now, RGBA(122, 138, 120, 1), RGBA(206, 202, 192, 1)))))
                       FontWeight: '=''TextCanvas.Weight''.Bold
 
                         '
