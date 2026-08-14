@@ -93,11 +93,12 @@ const BIND_GID = "1234567";
       B("ApCloud", "多段階承認要否(クラウド申請)", false),
       B("IsActive", "有効", true),
     ], idx: ["Org1Code"] },
-    PRM_Users: { desc: "権限申請: 利用者マスタ", title: "グローバルID", fields: [
+    PRM_Users: { desc: "権限申請: 利用者マスタ", title: "キー(メールアドレス)", fields: [
+      T("GlobalId", "グローバルID", 50),
       T("FullName", "氏名"), T("Mail", "メールアドレス"), T("Department", "部署名"),
       T("AdObjectId", "ADオブジェクトID", 100), DT("SyncedAt", "AD最終突合日時"),
       B("IsActive", "有効", true),
-    ], idx: ["Mail", "AdObjectId"] },
+    ], idx: ["GlobalId", "Mail", "AdObjectId"] },
     PRM_UserOrg1: { desc: "権限申請: 所属 (利用者 × 組織区分1)", title: "キー", fields: [
       T("GlobalId", "グローバルID", 50), T("Org1Code", "組織区分1コード", 50),
       B("IsActive", "有効", true),

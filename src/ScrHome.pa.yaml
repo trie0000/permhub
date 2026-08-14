@@ -220,8 +220,8 @@ Screens:
         Control: ModernText@1.0.0
         Properties:
           Align: ='TextCanvas.Align'.Center
-          Color: =If(gblTab = \"admin\", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
-          FontWeight: =If(gblTab = \"admin\", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
+          Color: =If(gblTab = "admin", RGBA(42, 42, 38, 1), RGBA(122, 118, 108, 1))
+          FontWeight: =If(gblTab = "admin", 'TextCanvas.Weight'.Bold, 'TextCanvas.Weight'.Regular)
           Fill: =RGBA(0, 0, 0, 0)
           Height: =40
           OnSelect: =Set(gblTab, "admin"); Set(gblPage, 0)
