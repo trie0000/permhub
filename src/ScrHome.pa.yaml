@@ -3567,6 +3567,51 @@ Screens:
           PaddingTop: =0
           PaddingBottom: =0
           VerticalAlign: =VerticalAlign.Middle
+    - pendBar:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Start
+          Color: =RGBA(122, 96, 40, 1)
+          Fill: =RGBA(247, 236, 214, 1)
+          Height: =34
+          OnSelect: =Set(gblTab, "hist"); Set(gblHFilter, "all"); Set(gblSFilter, "chk")
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          Size: =12
+          Text: ="　申請中の変更が " & fPendN & " 件あります（押すと申請履歴へ）"
+          Visible: =(gblTab = "org" || gblTab = "user") && !gblRO
+          Width: =Parent.Width - 650
+          X: =324
+          Y: =130
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
+    - btnCsv:
+        Control: ModernText@1.0.0
+        Properties:
+          Align: ='TextCanvas.Align'.Center
+          Color: =RGBA(74, 71, 64, 1)
+          Fill: =RGBA(232, 228, 216, 1)
+          FontWeight: ='TextCanvas.Weight'.Bold
+          Height: =32
+          OnSelect: =ClearCollect(colDoneAt, ForAll(Filter(PRM_RequestItems, ItemStatus.Value = "DONE") As i, {No:i.ReqNo, EKey:i.EntityKey, At:i.HandledAt})); ClearCollect(colCsv, Ungroup(ForAll(Filter(colGrantsAll, IsActive = true) As g, {rows:ForAll(Sort(Filter(colOrg2All, Org1Code = g.Org1Code && (g.ScopeType.Value = "ALL" || (";" & Title & ";") in Coalesce(g.Org2Codes, ""))), SortOrder) As o, {O1:Coalesce(LookUp(colOrg1, Title = g.Org1Code).NameJa, g.Org1Code), O2:o.NameJa, Rl:Coalesce(LookUp(fRoles, rc = g.RoleCode.Value).rn, g.RoleCode.Value), Cr:If(g.RoleCode.Value = "EXTCONN" || g.RoleCode.Value = "WLAN" || g.RoleCode.Value = "CLOUD", If(Coalesce(g.CompanyRole.Value, "") = "DEPUTY", "副", "正"), ""), Nm:Coalesce(LookUp(colUsersAll, Title = g.GlobalId).FullName, g.GlobalId), Ml:Coalesce(LookUp(colUsersAll, Title = g.GlobalId).Mail, ""), At:Text(LookUp(colDoneAt, No = g.LastReqNo && EKey = g.Title).At, "yyyy/mm/dd hh:mm")})}), rows)); Set(gblCsv, UniChar(65279) & "組織区分1,組織区分2,ロール名,事業会社権限,ユーザ名,メールアドレス,更新時間" & Char(13) & Char(10) & Concat(colCsv, """" & Substitute(O1, """", """""") & """,""" & Substitute(O2, """", """""") & """,""" & Substitute(Rl, """", """""") & """,""" & Substitute(Cr, """", """""") & """,""" & Substitute(Nm, """", """""") & """,""" & Substitute(Ml, """", """""") & """,""" & At & """", Char(13) & Char(10))); If(CountRows(colCsv) = 0, Notify("出力するものがありません。", NotificationType.Warning)); If(CountRows(colCsv) > 0, Set(gblModal, "csv")); Reset(csvBox)
+          RadiusTopLeft: =5
+          RadiusTopRight: =5
+          RadiusBottomLeft: =5
+          RadiusBottomRight: =5
+          Size: =12
+          Text: ="⧉ CSV を表示"
+          Visible: =gblTab = "user" && !gblRO
+          Width: =130
+          X: =Parent.Width - 342
+          Y: =202
+          Wrap: =true
+          PaddingTop: =0
+          PaddingBottom: =0
+          VerticalAlign: =VerticalAlign.Middle
     - mdlBg:
         Control: ModernText@1.0.0
         Properties:
@@ -5126,28 +5171,6 @@ Screens:
           PaddingLeft: =12
           PaddingRight: =12
           VerticalAlign: =VerticalAlign.Top
-    - pendBar:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Start
-          Color: =RGBA(122, 96, 40, 1)
-          Fill: =RGBA(247, 236, 214, 1)
-          Height: =34
-          OnSelect: =Set(gblTab, "hist"); Set(gblHFilter, "all"); Set(gblSFilter, "chk")
-          RadiusTopLeft: =4
-          RadiusTopRight: =4
-          RadiusBottomLeft: =4
-          RadiusBottomRight: =4
-          Size: =12
-          Text: ="　申請中の変更が " & fPendN & " 件あります（押すと申請履歴へ）"
-          Visible: =(gblTab = "org" || gblTab = "user") && !gblRO
-          Width: =Parent.Width - 650
-          X: =324
-          Y: =130
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
     - btnReload:
         Control: ModernText@1.0.0
         Properties:
@@ -5266,29 +5289,6 @@ Screens:
           Width: =Parent.Width - 548
           X: =520
           Y: =66
-          Wrap: =true
-          PaddingTop: =0
-          PaddingBottom: =0
-          VerticalAlign: =VerticalAlign.Middle
-    - btnCsv:
-        Control: ModernText@1.0.0
-        Properties:
-          Align: ='TextCanvas.Align'.Center
-          Color: =RGBA(74, 71, 64, 1)
-          Fill: =RGBA(232, 228, 216, 1)
-          FontWeight: ='TextCanvas.Weight'.Bold
-          Height: =32
-          OnSelect: =ClearCollect(colDoneAt, ForAll(Filter(PRM_RequestItems, ItemStatus.Value = "DONE") As i, {No:i.ReqNo, EKey:i.EntityKey, At:i.HandledAt})); ClearCollect(colCsv, Ungroup(ForAll(Filter(colGrantsAll, IsActive = true) As g, {rows:ForAll(Sort(Filter(colOrg2All, Org1Code = g.Org1Code && (g.ScopeType.Value = "ALL" || (";" & Title & ";") in Coalesce(g.Org2Codes, ""))), SortOrder) As o, {O1:Coalesce(LookUp(colOrg1, Title = g.Org1Code).NameJa, g.Org1Code), O2:o.NameJa, Rl:Coalesce(LookUp(fRoles, rc = g.RoleCode.Value).rn, g.RoleCode.Value), Cr:If(g.RoleCode.Value = "EXTCONN" || g.RoleCode.Value = "WLAN" || g.RoleCode.Value = "CLOUD", If(Coalesce(g.CompanyRole.Value, "") = "DEPUTY", "副", "正"), ""), Nm:Coalesce(LookUp(colUsersAll, Title = g.GlobalId).FullName, g.GlobalId), Ml:Coalesce(LookUp(colUsersAll, Title = g.GlobalId).Mail, ""), At:Text(LookUp(colDoneAt, No = g.LastReqNo && EKey = g.Title).At, "yyyy/mm/dd hh:mm")})}), rows)); Set(gblCsv, UniChar(65279) & "組織区分1,組織区分2,ロール名,事業会社権限,ユーザ名,メールアドレス,更新時間" & Char(13) & Char(10) & Concat(colCsv, """" & Substitute(O1, """", """""") & """,""" & Substitute(O2, """", """""") & """,""" & Substitute(Rl, """", """""") & """,""" & Substitute(Cr, """", """""") & """,""" & Substitute(Nm, """", """""") & """,""" & Substitute(Ml, """", """""") & """,""" & At & """", Char(13) & Char(10))); If(CountRows(colCsv) = 0, Notify("出力するものがありません。", NotificationType.Warning)); If(CountRows(colCsv) > 0, Set(gblModal, "csv")); Reset(csvBox)
-          RadiusTopLeft: =5
-          RadiusTopRight: =5
-          RadiusBottomLeft: =5
-          RadiusBottomRight: =5
-          Size: =12
-          Text: ="⧉ CSV を表示"
-          Visible: =gblTab = "user" && !gblRO
-          Width: =130
-          X: =Parent.Width - 342
-          Y: =202
           Wrap: =true
           PaddingTop: =0
           PaddingBottom: =0
