@@ -13,8 +13,9 @@
  *                     これだけでアプリが開いて動くところまで揃う
  *   本番に立てる    … seed / bindMe / adminMe を false にして実行し、
  *                     実データと AdObjectId を手で入れる（docs/deploy.md）
- *   既存サイトの更新 … 既定のまま lists だけ true にして実行すると、
- *                     足りない列と選択肢だけが足される
+ *   稼働中の更新    … fields だけ true にして実行する。足りない列と選択肢だけを
+ *                     足し、リスト作成・索引・一意制約・ダミー投入はしない。
+ *                     データが入っているサイトはこれを使う
  *
  * 列の内部名は英語で作られる（表示名は日本語）。
  * Power Fx はこの内部名を参照するので変えないこと。
@@ -23,6 +24,7 @@
 const SITE_URL = "https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE";
 
 const DO = {
+  fields:   false, // 稼働中のサイトに「足りない列だけ」を追加する（他は何もしない）
   lists:    true,  // リスト 8 本・列・索引・一意制約
   seed:     true,  // ダミーのマスタ（本番では false）
   bindMe:   true,  // 今ログインしている自分を BIND_GID の利用者に紐づける
@@ -186,6 +188,19 @@ const BIND_GID = "1234567";
     }
     log(`${t} 投入 ${n} 件 / 既存 ${known.length} 件`);
   };
+
+  // ---- 0. 稼働中のサイトに足りない列だけを足す -----------------------------
+  // 既にデータが入っているサイトを新しい版に合わせるときに使う。
+  // リストの作成・索引・一意制約・ダミー投入はしない。DO.fields だけ true にして流す。
+  if (DO.fields) {
+    for (const t of Object.keys(SCHEMA)) {
+      const has = await fieldsOf(t).catch(() => null);
+      if (!has) { log(`${t} が無いので飛ばす`); continue; }
+      await ensureFields(t);
+    }
+    log("足りない列の追加が終わり");
+    return;
+  }
 
   // ---- 1. リスト・列・索引 -------------------------------------------------
   if (DO.lists) {
